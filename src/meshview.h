@@ -7,45 +7,56 @@
 #include <QOpenGLWidget>
 #include <QVector3D>
 
-/**
- * @brief The MainView class represents the main view of the UI.
- */
+#include "renderers/surfacerenderer.h"
+
 class MeshView : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core {
   Q_OBJECT
 
  public:
   MeshView(QWidget* parent = nullptr);
   ~MeshView() override;
-
-  QVector3D convertHSLtoRGB(float H, float S, float L);
-  void updateBuffers(unsigned short n);
-  void clearArrays();
+  void updateMatrices();
+  void updateUniforms();
+  void updateProjectionMatrix();
 
  protected:
   void initializeGL() override;
   void resizeGL(int newWidth, int newHeight) override;
   void paintGL() override;
 
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void wheelEvent(QWheelEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
+  void keyReleaseEvent(QKeyEvent* event) override;
+
  private:
-  QOpenGLDebugLogger* debugLogger;
+  QOpenGLDebugLogger debugLogger;
+  // for zoom
+  float scale;
+  // for handling rotation
+  QVector3D oldRotationVec;
+  QVector2D oldMouseCoords;
+  QQuaternion rotationQuaternion;
+  QVector3D translation;
+  bool dragging;
+  bool shiftPressed;
 
-  QOpenGLShaderProgram* mainShaderProg;
-  GLuint fanVAO, fanCoordsBO, fanColourBO, fanIndexBO;
+  SurfaceRenderer surfaceRenderer;
+  Settings settings;
+  // save this matrix here to prevent recalculating this every time the mouse is
+  // pressed.
+  QMatrix4x4 toWorldCoordsMatrix;
 
-  void createShaderPrograms();
-  void initBuffers();
-  void updateMatrices();
-  void updateUniforms();
+  // we make mainwindow a friend so it can access settings
+  friend class MainWindow;
 
-  bool updateUniformsRequired;
+  void resetModelViewMatrix();
+  void resetOrientation();
+  QVector2D toNormalizedScreenCoordinates(float x, float y) const;
 
-  QVector<QVector2D> triaCoords;
-  QVector<QVector3D> triaColours;
-  QVector<unsigned short> triaIndices;
-
-  GLint uniModelViewMatrix, uniProjectionMatrix;
-  QMatrix4x4 modelViewMatrix, projectionMatrix;
-
+  void mouseMoveRotate(QMouseEvent* Event);
+  void mouseMoveTranslate(QMouseEvent* Event);
  private slots:
   void onMessageLogged(QOpenGLDebugMessage Message);
 };

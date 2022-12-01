@@ -1,273 +1,268 @@
 #include "meshview.h"
 
+#include <QLoggingCategory>
+#include <QMouseEvent>
+#include <QOpenGLVersionFunctionsFactory>
+
 #include "math.h"
 
-/**
- * @brief MainView::MainView Creates a new main view.
- * @param parent QT parent widget.
- */
-MeshView::MeshView(QWidget *parent) : QOpenGLWidget(parent) {
-  qDebug() << "✓✓ MainView constructor";
+MeshView::MeshView(QWidget* Parent)
+    : QOpenGLWidget(Parent), shiftPressed(false) {
+  resetOrientation();
 }
 
-/**
- * @brief MainView::~MainView Deconstructs the main view.
- */
-MeshView::~MeshView() {
-  debugLogger->stopLogging();
-  clearArrays();
+MeshView::~MeshView() { makeCurrent(); }
 
-  // Clean up the buffers
-  glDeleteBuffers(1, &fanCoordsBO);
-  glDeleteBuffers(1, &fanColourBO);
-  glDeleteBuffers(1, &fanIndexBO);
-  glDeleteVertexArrays(1, &fanVAO);
-
-  delete mainShaderProg;
-  delete debugLogger;
-  qDebug() << "✗✗ MainView destructor";
-}
-
-// ---
-
-/**
- * @brief MainView::createShaderPrograms Creates the shader program used by this
- * application.
- */
-void MeshView::createShaderPrograms() {
-  // Qt approach
-  mainShaderProg = new QOpenGLShaderProgram();
-  mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Vertex,
-                                          ":/shaders/flat.vert");
-  mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment,
-                                          ":/shaders/flat.frag");
-
-  mainShaderProg->link();
-
-  // Qt wrappers:
-  uniModelViewMatrix = mainShaderProg->uniformLocation("modelviewmatrix");
-  uniProjectionMatrix = mainShaderProg->uniformLocation("projectionmatrix");
-
-  // Pure OpenGL
-  //  uniModelViewMatrix =
-  //      glGetUniformLocation(mainShaderProg->programId(), "modelviewmatrix");
-  //  uniProjectionMatrix =
-  //      glGetUniformLocation(mainShaderProg->programId(), "projectionmatrix");
-}
-
-/**
- * @brief MainView::initBuffers Initialises the buffers.
- */
-void MeshView::initBuffers() {
-  // Pure OpenGL
-  glGenVertexArrays(1, &fanVAO);
-  glBindVertexArray(fanVAO);
-
-  glGenBuffers(1, &fanCoordsBO);
-  glBindBuffer(GL_ARRAY_BUFFER, fanCoordsBO);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-  glGenBuffers(1, &fanColourBO);
-  glBindBuffer(GL_ARRAY_BUFFER, fanColourBO);
-  glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-  glGenBuffers(1, &fanIndexBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, fanIndexBO);
-
-  glBindVertexArray(0);
-}
-
-/**
- * @brief MainView::updateBuffers Updates the n-gon with a new value for n.
- * @param n How many points the n-gon should have.
- */
-void MeshView::updateBuffers(unsigned short n) {
-  unsigned short k;
-  float length = 0.6f;
-  float tau = 6.283185f;
-
-  clearArrays();
-
-  triaCoords.reserve(n + 1);
-  triaColours.reserve(n + 1);
-  triaIndices.reserve(n + 2);
-
-  triaCoords.append(QVector2D(0.0, 0.0));
-  triaColours.append(convertHSLtoRGB(0.0, 1.0, 1.0));
-  triaIndices.append(0);
-
-  for (k = 0; k < n; k++) {
-    float kn = static_cast<float>(k) / n;
-    triaCoords.append(
-        QVector2D(length * cos(tau * kn), length * sin(tau * kn)));
-    triaColours.append(convertHSLtoRGB(kn, 0.8f, 0.5));
-
-    triaIndices.append(k + 1);
-  }
-
-  triaIndices.append(1);
-
-  glBindBuffer(GL_ARRAY_BUFFER, fanCoordsBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D) * triaCoords.size(),
-               triaCoords.data(), GL_DYNAMIC_DRAW);
-
-  glBindBuffer(GL_ARRAY_BUFFER, fanColourBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * triaColours.size(),
-               triaColours.data(), GL_DYNAMIC_DRAW);
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, fanIndexBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               sizeof(unsigned short) * triaIndices.size(), triaIndices.data(),
-               GL_DYNAMIC_DRAW);
-}
-
-void MeshView::updateMatrices() {
-  modelViewMatrix.setToIdentity();
-
-  projectionMatrix.setToIdentity();
-  projectionMatrix.perspective(80.0, (float)width() / height(), 0.2, 2.0);
-
-  updateUniformsRequired = true;
-}
-
-/**
- * @brief MainView::updateUniforms Updates the uniform. In this case the
- * modelview and the projection matrices used in the shaders.
- */
-void MeshView::updateUniforms() {
-  // Qt wrappers
-  // mainShaderProg->setUniformValue(uniModelViewMatrix, modelViewMatrix);
-  // mainShaderProg->setUniformValue(uniProjectionMatrix, projectionMatrix);
-
-  // Pure OpenGL
-  glUniformMatrix4fv(uniModelViewMatrix, 1, false, modelViewMatrix.data());
-  glUniformMatrix4fv(uniProjectionMatrix, 1, false, projectionMatrix.data());
-
-  updateUniformsRequired = false;
-}
-
-/**
- * @brief MainView::clearArrays Clears the data of the n-gon.
- */
-void MeshView::clearArrays() {
-  triaCoords.clear();
-  triaCoords.squeeze();
-  triaColours.clear();
-  triaColours.squeeze();
-  triaIndices.clear();
-  triaIndices.squeeze();
-}
-
-// ---
-
-/**
- * @brief MainView::convertHSLtoRGB Converts from HSL color space to RGB color
- * space.
- * @param H Hue.
- * @param S Saturation.
- * @param L Lightness.
- * @return RGB vector representation.
- */
-QVector3D MeshView::convertHSLtoRGB(float H, float S, float L) {
-  // Grey values, S=0.0, so C=0.0
-  float C = (1.0f - abs(2.0f * L - 1.0f)) * S;
-  float m = L - (C / 2.0f);
-  float Hp = (H * 360.0f) / 60.0f;
-  float X = C * (1.0f - abs(fmod(Hp, 2.0f) - 1.0f));
-
-  QVector3D preRGB;
-  if (Hp > 5.0f) {
-    preRGB = QVector3D(C, 0.0, X);
-  } else if (Hp > 4.0f) {
-    preRGB = QVector3D(X, 0.0, C);
-  } else if (Hp > 3.0f) {
-    preRGB = QVector3D(0.0, X, C);
-  } else if (Hp > 2.0f) {
-    preRGB = QVector3D(0.0, C, X);
-  } else if (Hp > 1.0f) {
-    preRGB = QVector3D(X, C, 0.0);
-  } else if (Hp >= 0.0f) {
-    preRGB = QVector3D(C, X, 0.0);
-  }
-
-  return preRGB + QVector3D(m, m, m);
-}
-
-// ---
-
-/**
- * @brief MainView::initializeGL Initialises the OpenGL context.
- */
 void MeshView::initializeGL() {
-  qDebug() << ":: Initializing OpenGL";
   initializeOpenGLFunctions();
 
-  debugLogger = new QOpenGLDebugLogger();
-  connect(debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this,
+  connect(&debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this,
           SLOT(onMessageLogged(QOpenGLDebugMessage)), Qt::DirectConnection);
 
-  if (debugLogger->initialize()) {
-    qDebug() << ":: Logging initialized";
-    debugLogger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
-    debugLogger->enableMessages();
+  if (debugLogger.initialize()) {
+    QLoggingCategory::setFilterRules(
+        "qt.*=false\n"
+        "qt.text.font.*=false");
+
+    debugLogger.startLogging(QOpenGLDebugLogger::SynchronousLogging);
+    debugLogger.enableMessages();
   }
 
-  updateUniformsRequired = true;
-
   QString glVersion;
-  glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
+  glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
   qDebug() << ":: Using OpenGL" << qPrintable(glVersion);
+
+  makeCurrent();
 
   // Enable depth buffer
   glEnable(GL_DEPTH_TEST);
   // Default is GL_LESS
   glDepthFunc(GL_LEQUAL);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glPointSize(16);
+  // grab the opengl context
+  QOpenGLFunctions_4_1_Core* functions =
+      QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_4_1_Core>(
+          this->context());
 
-  createShaderPrograms();
-  initBuffers();
-  updateBuffers(6);
+  // initialize renderers here with the current context
+  surfaceRenderer.init(functions, &settings);
+
+  updateMatrices();
+}
+
+void MeshView::resizeGL(int newWidth, int newHeight) {
+  settings.view.dispRatio = float(newWidth) / float(newHeight);
+
+  settings.projectionMatrix.setToIdentity();
+  settings.projectionMatrix.perspective(settings.view.fov,
+                                        settings.view.dispRatio, 0.5f, 10.0f);
+  updateMatrices();
+}
+
+void MeshView::updateProjectionMatrix() {
+  settings.projectionMatrix.setToIdentity();
+  settings.projectionMatrix.perspective(settings.view.fov,
+                                        settings.view.dispRatio, 0.5f, 10.0f);
+}
+
+void MeshView::resetModelViewMatrix() {
+  settings.modelViewMatrix.setToIdentity();
+  settings.modelViewMatrix.translate(translation);
+}
+
+void MeshView::resetOrientation() {
+  scale = 1.0f;
+  translation = QVector3D(0.0, 0.0, -settings.view.distFromCamera);
+  rotationQuaternion = QQuaternion();
+}
+
+void MeshView::updateMatrices() {
+  resetModelViewMatrix();
+  settings.modelViewMatrix.scale(scale);
+  settings.modelViewMatrix.rotate(rotationQuaternion);
+
+  settings.normalMatrix = settings.modelViewMatrix.normalMatrix();
+  // create the matrix to map clipping space coordinates to world space
+  // coordinates. Do this calculation here to prevent redoing this calculating
+  // everytime the mouse is pressed. Only needs to be updated whenever the
+  // projection or the modelview matrix is being updated
+  bool inverted = false;
+  toWorldCoordsMatrix = (settings.projectionMatrix * settings.modelViewMatrix)
+                            .inverted(&inverted);
+
+  settings.uniformUpdateRequired = true;
+
+  update();
+}
+
+void MeshView::paintGL() {
+  QVector3D bCol = settings.view.cols.background;
+  glClearColor(bCol.x(), bCol.y(), bCol.z(), 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  if (settings.view.wireframeMode) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+
+  surfaceRenderer.draw();
+}
+
+/**
+ * @brief MainView::toNormalizedScreenCoordinates Normalizes the mouse
+ * coordinates to screen coordinates.
+ * @param x X coordinate.
+ * @param y Y coordinate.
+ * @return A vector containing the normalized x and y screen coordinates.
+ */
+QVector2D MeshView::toNormalizedScreenCoordinates(float x, float y) const {
+  float xRatio = x / float(width());
+  float yRatio = y / float(height());
+
+  // By default, the drawing canvas is the square [-1,1]^2:
+  float xScene = (1 - xRatio) * -1 + xRatio * 1;
+  // Note that the origin of the canvas is in the top left corner (not the lower
+  // left).
+  float yScene = yRatio * -1 + (1 - yRatio) * 1;
+
+  return {xScene, yScene};
+}
+
+/**
+ * @brief MeshView::mouseMoveRotate Updates the camera rotation based on mouse
+ * movement.
+ * @param Event Mouse event.
+ */
+void MeshView::mouseMoveRotate(QMouseEvent* event) {
+  QVector2D sPos = toNormalizedScreenCoordinates(event->position().x(),
+                                                 event->position().y());
+  QVector3D newVec = QVector3D(sPos.x(), sPos.y(), 0.0);
+
+  // project onto sphere
+  float sqrZ = 1.0f - QVector3D::dotProduct(newVec, newVec);
+  if (sqrZ > 0) {
+    newVec.setZ(sqrt(sqrZ));
+  } else {
+    newVec.normalize();
+  }
+
+  QVector3D v2 = newVec.normalized();
+  // reset if we are starting a drag
+  if (!dragging) {
+    dragging = true;
+    oldRotationVec = newVec;
+    return;
+  }
+
+  // calculate axis and angle
+  QVector3D v1 = oldRotationVec.normalized();
+  QVector3D N = QVector3D::crossProduct(v1, v2).normalized();
+  if (N.length() == 0.0f) {
+    oldRotationVec = newVec;
+    return;
+  }
+  float angle = 180.0f / M_PI * acos(QVector3D::dotProduct(v1, v2));
+  rotationQuaternion =
+      QQuaternion::fromAxisAndAngle(N, angle) * rotationQuaternion;
+  updateMatrices();
+
+  // for next iteration
+  oldRotationVec = newVec;
+}
+
+/**
+ * @brief MeshView::mouseMoveTranslate Updates camera translation based on mouse
+ * movement.
+ * @param event Mouse event.
+ */
+void MeshView::mouseMoveTranslate(QMouseEvent* event) {
+  QVector2D sPos = toNormalizedScreenCoordinates(event->position().x(),
+                                                 event->position().y());
+  if (!dragging) {
+    dragging = true;
+    oldMouseCoords = sPos;
+    return;
+  }
+  QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(),
+                                          sPos.y() - oldMouseCoords.y(), 0.0);
+  translationUpdate *= settings.view.dragSensitivity;
+  translation += translationUpdate;
+  updateMatrices();
+  oldMouseCoords = sPos;
+}
+
+/**
+ * @brief MeshView::mouseMoveEvent Event that is called when the mouse is moved.
+ * @param Event The mouse event.
+ */
+void MeshView::mouseMoveEvent(QMouseEvent* event) {
+  if (event->buttons() == Qt::LeftButton) {
+    if (shiftPressed) {
+      oldRotationVec = QVector3D();
+      mouseMoveTranslate(event);
+    } else {
+      mouseMoveRotate(event);
+    }
+  } else {
+    dragging = false;
+    oldRotationVec = QVector3D();
+  }
+}
+
+/**
+ * @brief MainView::mousePressEvent Event that is called when the mouse is
+ * pressed.
+ * @param event The mouse event.
+ */
+void MeshView::mousePressEvent(QMouseEvent* event) { setFocus(); }
+
+/**
+ * @brief MainView::wheelEvent Event that is called when the user scrolls.
+ * @param event The mouse event.
+ */
+void MeshView::wheelEvent(QWheelEvent* event) {
+  float phi = 1.0f + (event->angleDelta().y() / 2000.0f);
+  scale = fmin(fmax(phi * scale, 0.01f), 100.0f);
   updateMatrices();
 }
 
 /**
- * @brief MainView::resizeGL Handles resizing of the window.
- * @param newWidth New width in pixels.
- * @param newHeight New height in pixels.
+ * @brief MainView::keyPressEvent Event that is called when a key is pressed.
+ * @param event The key event.
  */
-void MeshView::resizeGL(int newWidth, int newHeight) { updateMatrices(); }
+void MeshView::keyPressEvent(QKeyEvent* event) {
+  switch (event->key()) {
+    case 'Z':
+      settings.view.wireframeMode = !settings.view.wireframeMode;
+      update();
+      break;
+    case 'R':
+      resetOrientation();
+      updateMatrices();
+      update();
+      break;
+    case Qt::Key_Shift:
+      shiftPressed = true;
+  }
+}
 
 /**
- * @brief MainView::paintGL Draw call. Paints the n-gon on the screen.
+ * @brief MainView::keyReleaseEvent Event that is called when a key is released.
+ * @param event The key event.
  */
-void MeshView::paintGL() {
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  mainShaderProg->bind();
-
-  if (updateUniformsRequired) {
-    updateUniforms();
+void MeshView::keyReleaseEvent(QKeyEvent* event) {
+  switch (event->key()) {
+    case Qt::Key_Shift:
+      shiftPressed = false;
   }
-
-  glBindVertexArray(fanVAO);
-
-  glDrawElements(GL_TRIANGLE_FAN, triaIndices.size(), GL_UNSIGNED_SHORT,
-                 nullptr);
-  glDrawElements(GL_POINTS, triaIndices.size() - 2, GL_UNSIGNED_SHORT,
-                 (GLvoid *)(sizeof(GLushort)));
-
-  glBindVertexArray(0);
-
-  mainShaderProg->release();
 }
 
 /**
  * @brief MainView::onMessageLogged Helper function for logging messages.
- * @param message The message to log.
+ * @param Message The message to log.
  */
 void MeshView::onMessageLogged(QOpenGLDebugMessage Message) {
   qDebug() << " → Log:" << Message;

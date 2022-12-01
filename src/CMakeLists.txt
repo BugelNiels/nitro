@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(BasicOpenGL VERSION 1.0 LANGUAGES CXX)
+project(CbdImage VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -21,6 +21,10 @@ qt_add_executable(BasicOpenGL WIN32 MACOSX_BUNDLE
     imageview.cpp imageview.h
     meshview.cpp meshview.h
     mainwindow.cpp mainwindow.h mainwindow.ui
+    renderers/renderer.cpp renderers/renderer.h
+    renderers/surfacerenderer.cpp renderers/surfacerenderer.h
+    settings/settings.h settings/viewsettings.h settings/colorsettings.h
+    settings/shadertypes.h
     resources.qrc
 )
 

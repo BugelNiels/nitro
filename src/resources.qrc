@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>shaders/flat.frag</file>
-        <file>shaders/flat.vert</file>
+        <file>shaders/phong.frag</file>
+        <file>shaders/phong.vert</file>
+        <file>shaders/shading.glsl</file>
+        <file>shaders/raycast.frag</file>
+        <file>shaders/raycast.vert</file>
     </qresource>
 </RCC>
