@@ -25,7 +25,6 @@ class SurfaceRenderer : public Renderer {
   GLuint vao;
   GLuint coordsBO, indexBO;
   GLuint* textureBOs;
-  QOpenGLShaderProgram* raycastShader;
   int meshIBOSize;
 };
 

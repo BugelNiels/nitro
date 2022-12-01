@@ -14,7 +14,8 @@ SurfaceRenderer::~SurfaceRenderer() {
 }
 
 void SurfaceRenderer::initShaders() {
-  raycastShader = constructDefaultShader("raycast");
+  shaders.insert(ShaderType::VOXEL, constructDefaultShader("voxel"));
+  shaders.insert(ShaderType::SURFACE, constructDefaultShader("raycast"));
 }
 
 void SurfaceRenderer::initBuffers() {
@@ -59,26 +60,29 @@ void SurfaceRenderer::updateUniforms() {
   QVector3D p4 = QVector3D(settings->modelViewMatrix *
                            QVector4D(dims.x(), -dims.y(), -dims.z(), 1));
 
-  mat4Uniform(raycastShader, "modelviewmatrix", settings->modelViewMatrix);
-  mat4Uniform(raycastShader, "projectionmatrix", settings->projectionMatrix);
+  QOpenGLShaderProgram* shader = shaders[settings->activeShader];
 
-  vec3Uniform(raycastShader, "boundp1", p1);
-  vec3Uniform(raycastShader, "boundp2", p2);
-  vec3Uniform(raycastShader, "boundp3", p3);
-  vec3Uniform(raycastShader, "boundp4", p4);
+  mat4Uniform(shader, "modelviewmatrix", settings->modelViewMatrix);
+  mat4Uniform(shader, "projectionmatrix", settings->projectionMatrix);
 
-  floatUniform(raycastShader, "boxheight", dims.y() * 2);
+  vec3Uniform(shader, "boundp1", p1);
+  vec3Uniform(shader, "boundp2", p2);
+  vec3Uniform(shader, "boundp3", p3);
+  vec3Uniform(shader, "boundp4", p4);
+
+  floatUniform(shader, "boxheight", dims.y() * 2);
 }
 
 void SurfaceRenderer::draw() {
+  QOpenGLShaderProgram* shader = shaders[settings->activeShader];
   gl->glBindVertexArray(vao);
-  raycastShader->bind();
+  shader->bind();
   if (settings->uniformUpdateRequired) {
     updateUniforms();
   }
 
   gl->glDrawElements(GL_TRIANGLES, meshIBOSize, GL_UNSIGNED_INT, nullptr);
 
-  raycastShader->release();
+  shader->release();
   gl->glBindVertexArray(0);
 }

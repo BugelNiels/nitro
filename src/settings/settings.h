@@ -14,7 +14,7 @@ typedef struct Settings {
   ViewSettings view;
 
   bool uniformUpdateRequired = true;
-  ShaderType currentShader = ShaderType::PHONG;
+  ShaderType activeShader = ShaderType::VOXEL;
 
   QMatrix4x4 modelViewMatrix, projectionMatrix;
   QMatrix3x3 normalMatrix;
