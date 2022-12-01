@@ -1,0 +1,62 @@
+# C++ and Qt (general)
+*.pro.*
+.qmake.stash
+Makefile*
+*.o
+ui_*
+moc*.cpp
+moc*.h
+qrc_*
+build-*
+qrc_resources.cpp
+cmake-build*
+CMakeLists.txt.user*
+
+# C++ and Qt (specific)
+BasicOpenGL
+SubdivCurves
+LoopSubdiv
+CatmarkSubdiv
+
+# VSCode files
+.vs
+.vscode/
+.code-workspace
+
+# Other IDE files
+
+.idea
+
+# OS X
+.DS_Store
+
+# executables and other files
+*.out
+*.exe
+*.exp
+*.lib
+*.pdb
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# LaTeX (documents)
+*.aux
+*.tex.swp
+*.log
+*.out
+*.pdf
+*.pdf_tex
+*.synctex.gz
+
+# LaTeX (beamer)
+*.nav
+*.snm
+*.toc
+*.vrb
