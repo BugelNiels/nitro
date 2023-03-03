@@ -21,8 +21,6 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   ~ImageView() override;
   bool loadFile(const QString& fileName);
   inline const QImage& getOriginalImage() { return originalImg; }
-  inline const QImage& getQuantisizedImage() { return quantisizedImg; }
-  inline const QImage& getResampledImage() { return resmapledImg; }
 
   void quantisize();
   void calcDistanceField();
@@ -44,14 +42,15 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   // Probably extract this to own image class or something
   QImage quantisize(QImage& image, int numLevels);
   QVector<float**> calcDistanceField(QImage& image, bool use3D);
-  QImage resample(QImage& image, int numLevels, Resampler* resampler);
+  QImage resample(QImage& image, int numLevels,
+                  std::shared_ptr<Resampler> resampler);
 
   void setImage(const QImage& newImage);
   SampleSettings sampleSettings;
   ImViewSettings viewSettings;
 
   QImage originalImg;
-  QImage resmapledImg;
+  QMap<SampleMethod, QImage> resampledImages;
   QImage quantisizedImg;
   QImage displayQuantImg;
 

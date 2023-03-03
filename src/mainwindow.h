@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "ProgressListener.h"
 #include "imageview.h"
+#include "progresslistener.h"
 #include "renderview.h"
 
 namespace Ui {

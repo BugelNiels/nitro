@@ -39,9 +39,13 @@ qt_add_executable(BasicOpenGL WIN32 MACOSX_BUNDLE
     resources.qrc
     settings/samplesettings.h
     settings/imviewsettings.h
-    ProgressListener.h
+    progresslistener.h
     cbdimage.h cbdimage.cpp
     progressupdater.h progressupdater.cpp
+    imageops.cpp
+    resamplers/cubichermiteresampler.h resamplers/cubichermiteresampler.cpp
+    resamplers/cubicinterpolatoryresampler.h resamplers/cubicinterpolatoryresampler.cpp
+    resamplers/samplemethod.h resamplers/samplemethod.cpp
 )
 
 target_link_libraries(BasicOpenGL PRIVATE

@@ -3,13 +3,13 @@
 
 #include "resampler.h"
 
-class LinearResampler : public Resampler {
+class LinearSampler : public Resampler {
  public:
-  LinearResampler();
-  ~LinearResampler() override;
+  LinearSampler();
+  ~LinearSampler() override;
 
-  QImage resample(QImage& image, int dynRangeInput,
-                  const QVector<float**>& imValues, int numLevels) override;
+  QImage resample(QImage& image, const QVector<float**>& sdf,
+                  int numDesiredLevels) override;
 };
 
 #endif  // LINEARRESAMPLER_H

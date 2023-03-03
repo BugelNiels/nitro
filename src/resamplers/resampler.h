@@ -7,9 +7,8 @@ class Resampler {
  public:
   Resampler();
   virtual ~Resampler();
-  virtual QImage resample(QImage& image, int dynRangeInput,
-                          const QVector<float**>& distanceField,
-                          int numLevels) = 0;
+  virtual QImage resample(QImage& image, const QVector<float**>& distanceField,
+                          int numDesiredLevels) = 0;
 };
 
 #endif  // RESAMPLER_H

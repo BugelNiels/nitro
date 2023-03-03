@@ -3,7 +3,7 @@
 
 #include <QVector>
 
-#include "ProgressListener.h"
+#include "progresslistener.h"
 
 class ProgressUpdater {
  public:

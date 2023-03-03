@@ -77,7 +77,7 @@ void MainWindow::on_loadImageButton_pressed() {
   }
 
   ui->imageView->viewSettings.activeImage = DispImgType::ORIGINAL;
-  const QImage& img = ui->imageView->getOriginalImage();
+  const QImage& img = ui->imageView->getActiveImage();
   ui->depthNumLabel->setText(QString("%1").arg(img.depth()));
   ui->sizeNumLabel->setText(
       QString("%1 x %2").arg(img.width()).arg(img.height()));
@@ -104,7 +104,6 @@ void MainWindow::on_quantisizeLevelSpinBox_valueChanged(int value) {
 void MainWindow::on_methodComboBox_currentIndexChanged(int index) {
   SampleSettings& sampleSettings = ui->imageView->sampleSettings;
   sampleSettings.sampleMethod = static_cast<SampleMethod>(index);
-  ui->imageView->resample();
   ui->imageView->updateImage();
 }
 
@@ -162,4 +161,5 @@ void MainWindow::on_computeSDFButton_pressed() {
   ui->computeSDFButton->setDown(false);
   ui->computeSDFButton->setEnabled(false);
   ui->sampleSettingsGroupBox->setEnabled(true);
+  ui->sampleButton->setEnabled(true);
 }
