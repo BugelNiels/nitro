@@ -11,13 +11,11 @@
  * number of default values.
  */
 typedef struct Settings {
+  // settings for the visualization of the mesh.
   ViewSettings view;
 
   bool uniformUpdateRequired = true;
-  ShaderType activeShader = ShaderType::VOXEL;
 
-  QMatrix4x4 modelViewMatrix, projectionMatrix;
-  QMatrix3x3 normalMatrix;
 } Settings;
 
 #endif  // SETTINGS_H

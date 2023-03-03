@@ -24,6 +24,8 @@ vec3 surfaceNormal(vec3 p) {
 
 // Ray-quadric intersection
 bool intersectSurface(vec3 ro, vec3 rd, out float t0, out float t1) {
+  t0 = t1 = 1;
+  return true;
 }
 
 // Manually calculate the frag depth, since the geometry we get from the vertex

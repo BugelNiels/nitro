@@ -31,3 +31,6 @@ vec3 phongShading(vec3 matCol, vec3 coords, vec3 normal) {
 
   return compCol;
 }
+
+// Basic normal shading
+vec3 normalShading(vec3 normal) { return normalize(normal) * 0.5 + 0.5; }

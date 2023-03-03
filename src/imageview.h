@@ -1,26 +1,72 @@
 #ifndef IMAGE_VIEW_H
 #define IMAGE_VIEW_H
 
+#include <resamplers/resampler.h>
+
 #include <QLabel>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLWidget>
 #include <QScrollArea>
 #include <QVector3D>
 
-class ImageView : public QScrollArea {
+#include "progressupdater.h"
+#include "settings/imviewsettings.h"
+#include "settings/samplesettings.h"
+
+class ImageView : public QScrollArea, public ProgressUpdater {
   Q_OBJECT
 
  public:
   ImageView(QWidget* parent = nullptr);
   ~ImageView() override;
-  void loadFile(const QString& fileName);
+  bool loadFile(const QString& fileName);
+  inline const QImage& getOriginalImage() { return originalImg; }
+  inline const QImage& getQuantisizedImage() { return quantisizedImg; }
+  inline const QImage& getResampledImage() { return resmapledImg; }
+
+  void quantisize();
+  void calcDistanceField();
+  void resample();
+
+  const QImage& getActiveImage(bool display = false);
+
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void wheelEvent(QWheelEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
+
+  void scaleImToFit();
+  void resetImScale();
+  void updateImage();
 
  private:
-  void setImage(const QImage& newImage);
+  // Probably extract this to own image class or something
+  QImage quantisize(QImage& image, int numLevels);
+  QVector<float**> calcDistanceField(QImage& image, bool use3D);
+  QImage resample(QImage& image, int numLevels, Resampler* resampler);
 
-  QImage image;
+  void setImage(const QImage& newImage);
+  SampleSettings sampleSettings;
+  ImViewSettings viewSettings;
+
+  QImage originalImg;
+  QImage resmapledImg;
+  QImage quantisizedImg;
+  QImage displayQuantImg;
+
+  QVector<float**> distanceField;
+  QVector2D oldMouseCoords;
+  QVector2D translation;
+  QVector2D oldScrollValue;
+
   QLabel* imageLabel;
-  double scaleFactor = 1;
+  float scale = 1.0;
+  bool dragging;
+  bool quantisized;
+
+  // we make mainwindow a friend so it can access settings
+  friend class MainWindow;
 };
 
 #endif  // IMAGE_VIEW_H

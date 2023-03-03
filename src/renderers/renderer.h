@@ -23,6 +23,7 @@ class Renderer {
 
   QOpenGLShaderProgram *constructDefaultShader(const QString &name) const;
   void init(QOpenGLFunctions_4_1_Core *f, Settings *s);
+  virtual void draw() = 0;
 
  protected:
   QMap<ShaderType, QOpenGLShaderProgram *> shaders;

@@ -1,3 +1,5 @@
+#include <omp.h>
+
 #include <QApplication>
 #include <QSurfaceFormat>
 
@@ -17,6 +19,7 @@ int main(int argc, char *argv[]) {
   glFormat.setVersion(4, 1);
   glFormat.setOption(QSurfaceFormat::DebugContext);
   QSurfaceFormat::setDefaultFormat(glFormat);
+  omp_set_num_threads(8);
 
   MainWindow w;
   w.show();

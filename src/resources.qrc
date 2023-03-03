@@ -5,7 +5,9 @@
         <file>shaders/shading.glsl</file>
         <file>shaders/raycast.frag</file>
         <file>shaders/raycast.vert</file>
-        <file>shaders/voxel.frag</file>
-        <file>shaders/voxel.vert</file>
+        <file>shaders/sdf.frag</file>
+        <file>shaders/sdf.vert</file>
+        <file>shaders/level.frag</file>
+        <file>shaders/level.vert</file>
     </qresource>
 </RCC>

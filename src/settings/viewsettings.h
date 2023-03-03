@@ -4,11 +4,18 @@
 #include <QVector3D>
 
 #include "colorsettings.h"
+#include "shadertypes.h"
 
 /*
  * Contains all settings related to the view.
  */
 typedef struct ViewSettings {
+  ShaderType activeShader = ShaderType::LEVEL;
+  ColorSettings cols;
+
+  QMatrix4x4 modelViewMatrix, projectionMatrix;
+  QMatrix3x3 normalMatrix;
+
   float fov = 40.0f;
   float dispRatio = 16.0f / 9.0f;
   float rotAngle = 0.0f;
@@ -20,7 +27,6 @@ typedef struct ViewSettings {
   float alpha = 0.8f;
   QVector3D boundingBoxDims = QVector3D(4, 4, 4);
 
-  ColorSettings cols;
 } ViewSettings;
 
 #endif  // VIEW_SETTINGS_H
