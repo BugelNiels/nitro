@@ -5,6 +5,7 @@
 
 typedef struct SampleSettings {
   int quantisizeLevel = 8;
+  double distMult = 1.0f;
   bool autoSample = false;
   int sampleLevel = 255;
   SampleMethod sampleMethod = LINEAR;

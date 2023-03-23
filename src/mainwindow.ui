@@ -117,7 +117,7 @@ QGroupBox::title {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>320</y>
+         <y>360</y>
          <width>221</width>
          <height>161</height>
         </rect>
@@ -177,7 +177,7 @@ QGroupBox::title {
          <x>10</x>
          <y>120</y>
          <width>221</width>
-         <height>191</height>
+         <height>231</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -218,6 +218,16 @@ QGroupBox::title {
            <string>3D Distance Field</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="pixelDistMultLabel">
+          <property name="text">
+           <string>Grey val distance</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="greyValMultiplierSpinBox"/>
         </item>
        </layout>
       </widget>
@@ -278,7 +288,7 @@ QGroupBox::title {
                <x>10</x>
                <y>20</y>
                <width>181</width>
-               <height>331</height>
+               <height>344</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -309,6 +319,9 @@ QGroupBox::title {
                  <string>Show:</string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <widget class="QListWidget" name="savedImagesView"/>
               </item>
               <item>
                <widget class="QComboBox" name="showComboBox">

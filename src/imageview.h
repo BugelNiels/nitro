@@ -41,7 +41,7 @@ class ImageView : public QScrollArea, public ProgressUpdater {
  private:
   // Probably extract this to own image class or something
   QImage quantisize(QImage& image, int numLevels);
-  QVector<float**> calcDistanceField(QImage& image, bool use3D);
+  QVector<float**> calcDistanceField(QImage& image, double pixelMult = -1);
   QImage resample(QImage& image, int numLevels,
                   std::shared_ptr<Resampler> resampler);
 
@@ -63,6 +63,8 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   float scale = 1.0;
   bool dragging;
   bool quantisized;
+
+  QMap<int, QImage> savedImages;
 
   // we make mainwindow a friend so it can access settings
   friend class MainWindow;

@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget* parent)
   ui->sampleSettingsGroupBox->setEnabled(false);
   ui->imgSettingsGroupBox->setEnabled(false);
   ui->imageInfoGroupBox->setEnabled(false);
+  ui->greyValMultiplierSpinBox->setValue(
+      ui->imageView->sampleSettings.distMult);
+  ui->greyValMultiplierSpinBox->setEnabled(false);
 
   SampleSettings sampleSettings = ui->imageView->sampleSettings;
   ui->quantisizeLevelSpinBox->setValue(sampleSettings.quantisizeLevel);
@@ -65,6 +68,10 @@ void MainWindow::on_sampleButton_pressed() {
       static_cast<DispImgType>(DispImgType::RESAMPLED);
   ui->showComboBox->setCurrentIndex(static_cast<int>(DispImgType::RESAMPLED));
   ui->sampleButton->setEnabled(false);
+
+  // TODO: check if it exists
+  ui->savedImagesView->addItem(
+      QString("Resampled %1").arg(ui->imageView->sampleSettings.sampleMethod));
   // TODO: disable button after pressed once and then re-enable when other
   // settings are changed.
 }
@@ -75,7 +82,7 @@ void MainWindow::on_loadImageButton_pressed() {
           tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm)")))) {
     return;
   }
-
+  ui->savedImagesView->clear();
   ui->imageView->viewSettings.activeImage = DispImgType::ORIGINAL;
   const QImage& img = ui->imageView->getActiveImage();
   ui->depthNumLabel->setText(QString("%1").arg(img.depth()));
@@ -89,6 +96,7 @@ void MainWindow::on_loadImageButton_pressed() {
   ui->sampleSettingsGroupBox->setEnabled(false);
   ui->imageInfoGroupBox->setEnabled(true);
   ui->imageView->scaleImToFit();
+  ui->savedImagesView->addItem("Original");
 }
 
 void MainWindow::on_quantisizeLevelSpinBox_valueChanged(int value) {
@@ -110,7 +118,9 @@ void MainWindow::on_methodComboBox_currentIndexChanged(int index) {
 void MainWindow::on_df3DCheckBox_toggled(bool checked) {
   SampleSettings& sampleSettings = ui->imageView->sampleSettings;
   sampleSettings.use3dDistanceField = checked;
-  ui->computeSDFButton->setEnabled(!ui->computeSDFButton->isEnabled());
+  ui->computeSDFButton->setEnabled(true);
+  ui->greyValMultiplierSpinBox->setEnabled(
+      !ui->greyValMultiplierSpinBox->isEnabled());
 }
 
 void MainWindow::on_showComboBox_currentIndexChanged(int index) {
@@ -129,6 +139,10 @@ void MainWindow::on_quantisizeButton_clicked() {
   ui->showComboBox->setCurrentIndex(static_cast<int>(DispImgType::QUANTISIZED));
   ui->imageView->updateImage();
   ui->quantisizeButton->setEnabled(false);
+  // TODO: check if it exists
+  ui->savedImagesView->addItem(
+      QString("Quantisized %1")
+          .arg(ui->imageView->sampleSettings.quantisizeLevel));
 }
 
 void MainWindow::on_compareComboBox_currentIndexChanged(int index) {
@@ -162,4 +176,11 @@ void MainWindow::on_computeSDFButton_pressed() {
   ui->computeSDFButton->setEnabled(false);
   ui->sampleSettingsGroupBox->setEnabled(true);
   ui->sampleButton->setEnabled(true);
+}
+
+void MainWindow::on_greyValMultiplierSpinBox_valueChanged(double value) {
+  if (value != ui->imageView->sampleSettings.distMult) {
+    ui->imageView->sampleSettings.distMult = value;
+    ui->computeSDFButton->setEnabled(true);
+  }
 }

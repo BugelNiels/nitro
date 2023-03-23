@@ -45,8 +45,11 @@ bool ImageView::loadFile(const QString &fileName) {
 
 void ImageView::calcDistanceField() {
   QImage &inputImg = quantisized ? quantisizedImg : originalImg;
-  distanceField =
-      calcDistanceField(inputImg, sampleSettings.use3dDistanceField);
+  if (sampleSettings.use3dDistanceField) {
+    distanceField = calcDistanceField(inputImg, sampleSettings.distMult);
+  } else {
+    distanceField = calcDistanceField(inputImg);
+  }
 }
 
 void ImageView::resample() {

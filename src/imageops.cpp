@@ -32,6 +32,29 @@ static float **allocFloatMatrix(int width, int height) {
   return matrix;
 }
 
+static float computeEuclideanDistance3D(int xp, int yp, QImage &image, int col,
+                                        int d, double pixelMult) {
+  int width = image.width();
+  int height = image.height();
+  double minDistance = width * width + height * height;
+  for (int y = 0; y < height; y++) {
+    int yDiff2 = (yp - y) * (yp - y);
+    uchar *inputRow = image.scanLine(y);
+    for (int x = 0; x < width; x++) {
+      int pixel = inputRow[x];
+      if ((pixel < d && col >= d) || (pixel >= d && col < d)) {
+        int xDiff2 = (xp - x) * (xp - x);
+        int diff = d - pixel;
+        double distance = xDiff2 + yDiff2 + diff * diff * pixelMult;
+        if (distance < minDistance) {
+          minDistance = distance;
+        }
+      }
+    }
+  }
+  return col >= d ? -std::sqrt(minDistance) : std::sqrt(minDistance);
+}
+
 static float computeEuclideanDistance(int xp, int yp, QImage &image, int col,
                                       int d) {
   int width = image.width();
@@ -106,7 +129,7 @@ static float computeEuclideanDistance(int xp, int yp, QImage &image, int col,
   return col >= d ? -std::sqrt(minDistance) : std::sqrt(minDistance);
 }
 
-static float **getDistanceField(QImage &image, int d) {
+static float **getDistanceField(QImage &image, int d, const double pixelMult) {
   int width = image.width();
   int height = image.height();
   float **output = allocFloatMatrix(width, height);
@@ -115,13 +138,19 @@ static float **getDistanceField(QImage &image, int d) {
   for (int y = 0; y < height; y++) {
     uchar *inputRow = image.scanLine(y);
     for (int x = 0; x < width; x++) {
-      output[y][x] = computeEuclideanDistance(x, y, image, inputRow[x], d);
+      if (pixelMult >= 0.0) {
+        output[y][x] =
+            computeEuclideanDistance3D(x, y, image, inputRow[x], d, pixelMult);
+      } else {
+        output[y][x] = computeEuclideanDistance(x, y, image, inputRow[x], d);
+      }
     }
   }
   return output;
 }
 
-QVector<float **> ImageView::calcDistanceField(QImage &image, bool use3D) {
+QVector<float **> ImageView::calcDistanceField(QImage &image,
+                                               double pixelMult) {
   resetProgress();
   int width = image.width();
   int height = image.height();
@@ -131,19 +160,27 @@ QVector<float **> ImageView::calcDistanceField(QImage &image, bool use3D) {
   df.resize(dynRange);
 
   float **l0 = allocFloatMatrix(width, height);
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
-      l0[y][x] = -10;
+  if (pixelMult >= 0.0) {
+    for (int d = 0; d < dynRange; d++) {
+      df[d] = getDistanceField(image, d, pixelMult);
+      setProgress((d + 1) / static_cast<float>(dynRange) * 100);
     }
-  }
+    finalizeProgress();
+  } else {
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        l0[y][x] = -10;
+      }
+    }
 
-  df[0] = l0;
-  setProgress(1.0f / static_cast<float>(dynRange) * 100);
+    df[0] = l0;
+    setProgress(1.0f / static_cast<float>(dynRange) * 100);
 
-  for (int d = 1; d < dynRange; d++) {
-    df[d] = getDistanceField(image, d);
-    setProgress((d + 1) / static_cast<float>(dynRange) * 100);
+    for (int d = 1; d < dynRange; d++) {
+      df[d] = getDistanceField(image, d, pixelMult);
+      setProgress((d + 1) / static_cast<float>(dynRange) * 100);
+    }
+    finalizeProgress();
   }
-  finalizeProgress();
   return df;
 }

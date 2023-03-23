@@ -43,6 +43,8 @@ class MainWindow : public QMainWindow, public ProgressListener {
 
   void progressUpdated(int value) override;
 
+  void on_greyValMultiplierSpinBox_valueChanged(double arg1);
+
  private:
   DispImgType oldShowSetting;
   void updateRenderImage();
