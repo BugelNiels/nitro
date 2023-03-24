@@ -21,12 +21,16 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   ~ImageView() override;
   bool loadFile(const QString& fileName);
   inline const QImage& getOriginalImage() { return originalImg; }
+  inline const QImage& getQuantisizedImage() { return quantisizedImg; }
+
+  const QImage getImageByIndex(int index);
 
   void quantisize();
   void calcDistanceField();
   void resample();
 
   const QImage& getActiveImage(bool display = false);
+  const QImage& getActiveDisplayImage();
 
   void mouseMoveEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
@@ -50,9 +54,7 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   ImViewSettings viewSettings;
 
   QImage originalImg;
-  QMap<SampleMethod, QImage> resampledImages;
   QImage quantisizedImg;
-  QImage displayQuantImg;
 
   QVector<float**> distanceField;
   QVector2D oldMouseCoords;
@@ -64,7 +66,7 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   bool dragging;
   bool quantisized;
 
-  QMap<int, QImage> savedImages;
+  QList<QImage> savedImages;
 
   // we make mainwindow a friend so it can access settings
   friend class MainWindow;

@@ -12,12 +12,13 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QtAlgorithms>
 
 #define MIN(A, B) (A) < (B) ? (A) : (B)
 #define MAX(A, B) (A) > (B) ? (A) : (B)
 
 ImageView::ImageView(QWidget *parent)
-    : QScrollArea(parent), imageLabel(new QLabel) {
+    : QScrollArea(parent), imageLabel(new QLabel), quantisized(false) {
   imageLabel->setBackgroundRole(QPalette::Base);
   imageLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   imageLabel->setScaledContents(true);
@@ -28,6 +29,7 @@ ImageView::~ImageView() {}
 
 bool ImageView::loadFile(const QString &fileName) {
   quantisized = false;
+  scale = 1.0;
   QImageReader reader(fileName);
   reader.setAutoTransform(true);
   const QImage newImage = reader.read();
@@ -39,7 +41,9 @@ bool ImageView::loadFile(const QString &fileName) {
     return false;
   }
   originalImg = newImage;
-  setImage(newImage);
+  savedImages.clear();
+  savedImages.append(originalImg);
+  setImage(originalImg);
   return true;
 }
 
@@ -54,10 +58,47 @@ void ImageView::calcDistanceField() {
 
 void ImageView::resample() {
   QImage &inputImg = quantisized ? quantisizedImg : originalImg;
-  resampledImages[sampleSettings.sampleMethod] =
-      resample(inputImg, sampleSettings.sampleLevel,
-               getSampler(sampleSettings.sampleMethod));
+  savedImages.append(resample(inputImg, sampleSettings.sampleLevel,
+                              getSampler(sampleSettings.sampleMethod)));
 }
+
+// void medianFilter(QImage &image, int filterSize) {
+//   int width = image.width();
+//   int height = image.height();
+//   QVector<int> vals;
+//   vals.reserve(filterSize * filterSize);
+
+//  QImage result(width, height, QImage::Format_Grayscale8);
+//  int a = filterSize / 2;
+//  for (int y = 0; y < height; y++) {
+//    uchar *inputRow = image.scanLine(y);
+//    uchar *outputRow = result.scanLine(y);
+//    for (int x = 0; x < width; x++) {
+//      vals.clear();
+
+//      for (int yf = -a; yf < a; yf++) {
+//        int yi = y + yf;
+//        if (yi < 0 || yi >= height) {
+//          break;
+//        }
+//        for (int xf = -a; xf < a; xf++) {
+//          int xi = x + xf;
+//          if (xi < 0 || xi >= width) {
+//            break;
+//          }
+//          vals.append(image.scanLine(yi)[xi]);
+//        }
+//      }
+//      std::sort(vals);
+//      int val = inputRow[x];
+
+//      float proportion = val / (float)(dynRange);
+//      int newVal = proportion * (newNumGreyLevels - 1) + 0.5f;
+//      resampledRow[x] = newVal;
+//    }
+//    setProgress(y / (float)height * 90);
+//  }
+//}
 
 QImage ImageView::quantisize(QImage &image, int newNumGreyLevels) {
   int width = image.width();
@@ -84,34 +125,27 @@ QImage ImageView::quantisize(QImage &image, int newNumGreyLevels) {
 
 QImage ImageView::resample(QImage &image, int numDesiredLevels,
                            std::shared_ptr<Resampler> resampler) {
-  int depth = image.depth();
   return resampler->resample(image, distanceField, numDesiredLevels);
 }
 
 void ImageView::updateImage() {
-  imageLabel->setPixmap(QPixmap::fromImage(getActiveImage(true)));
+  QImage img = getActiveDisplayImage();
+  const QPixmap &p = QPixmap::fromImage(img);
+  int w = img.width() * scale + 0.5;
+  int h = img.height() * scale + 0.5;
+  imageLabel->setPixmap(p.scaled(w, h, Qt::KeepAspectRatio));
+  imageLabel->adjustSize();
 }
 
-const QImage &ImageView::getActiveImage(bool display) {
-  switch (viewSettings.activeImage) {
-    case ORIGINAL:
-      return originalImg;
-    case QUANTISIZED:
-      return display ? displayQuantImg : quantisizedImg;
-    case RESAMPLED:
-      if (resampledImages.contains(sampleSettings.sampleMethod)) {
-        return resampledImages[sampleSettings.sampleMethod];
-      }
-      if (distanceField.length() > 0) {
-        resample();
-        return resampledImages[sampleSettings.sampleMethod];
-      }
-  }
+const QImage &ImageView::getActiveDisplayImage() {
+  return savedImages[viewSettings.activeImgIndex];
 }
 
-void ImageView::setImage(const QImage &image) {
-  imageLabel->setPixmap(QPixmap::fromImage(image));
-  scale = 1.0;
+void ImageView::setImage(const QImage &img) {
+  const QPixmap &p = QPixmap::fromImage(img);
+  int w = img.width() * scale + 0.5;
+  int h = img.height() * scale + 0.5;
+  imageLabel->setPixmap(p.scaled(w, h, Qt::KeepAspectRatio));
   imageLabel->adjustSize();
 }
 
@@ -170,7 +204,7 @@ void ImageView::mousePressEvent(QMouseEvent *event) { setFocus(); }
 void ImageView::wheelEvent(QWheelEvent *event) {
   float phi = 1.0f + (event->angleDelta().y() / 1000.0f);
   scale = fmin(fmax(phi * scale, 0.1f), 10.0f);
-  const QImage &img = getActiveImage(true);
+  const QImage &img = getActiveDisplayImage();
   int w = img.width() * scale + 0.5;
   int h = img.height() * scale + 0.5;
 
@@ -203,18 +237,19 @@ void ImageView::keyPressEvent(QKeyEvent *event) {
 }
 
 void ImageView::scaleImToFit() {
-  const QImage &img = getActiveImage(true);
+  const QImage &img = getActiveDisplayImage();
+  const QPixmap &p = QPixmap::fromImage(img);
   int w = width();
   int h = height();
-  const QPixmap &p = QPixmap::fromImage(img);
   // calculate new scale factor
   imageLabel->setPixmap(p.scaled(w, h, Qt::KeepAspectRatio));
   int newW = imageLabel->pixmap().width();
   scale = newW / static_cast<float>(img.width());
   imageLabel->adjustSize();
 }
+
 void ImageView::resetImScale() {
-  const QPixmap &p = QPixmap::fromImage(getActiveImage(true));
+  const QPixmap &p = QPixmap::fromImage(getActiveDisplayImage());
   imageLabel->setPixmap(p);
   imageLabel->adjustSize();
   scale = 1;

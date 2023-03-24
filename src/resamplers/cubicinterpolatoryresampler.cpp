@@ -46,33 +46,50 @@ float CubicInterpolatorySampler::distFunc(const QVector<float **> &sdf, int x,
 void CubicInterpolatorySampler::computeMonotonicTangents(
     const QVector<float **> &distanceField, int x, int y, int n) {
   // This performs the first step of averaging the tangents
-  for (int k = 0; k < n; k++) {
+  for (int k = 0; k < n - 1; k++) {
     // index k for tangent computation
     int layer0 = k;
     // index k + 1 for tangent computation
-    int layer1 = std::min(k + 1, n - 1);
+    int layer1 = k + 1;  // std::min(k + 1, n - 1);
 
     // tangent delta_k
     float p0 = distanceField[layer0][y][x];
     // tangent delta_k+1
     float p1 = distanceField[layer1][y][x];
-    tangents[k] = (p1 - p0) / (float)(layer1 - layer0);
+    //    tangents[k] = (p1 - p0) / (float)(layer1 - layer0);
+    tangents[k] = (p1 - p0);
   }
-  // This performs the second step of ensuring monotonicity
-  for (int k = 0; k < n - 1; k++) {
-    // Calculate minimum and maximum slope between the two neighboring tangents
-    float minSlope = std::min(tangents[k], tangents[k + 1]);
-    float maxSlope = std::max(tangents[k], tangents[k + 1]);
 
-    // Ensure monotonicity by forcing the tangent to be within the bounds of the
-    // min and max slope
-    //    tangents[k] = std::max(tangents[k], minSlope);
-    //    tangents[k] = std::min(tangents[k], maxSlope);
-    //    tangents[k + 1] = tangents[k];
-    tangents[k + 1] = std::max(std::min(tangents[k + 1], maxSlope), minSlope);
+  QVector<float> secants;
+  secants.resize(n);
+  for (int k = 1; k < n - 1; k++) {
+    secants[k] = (tangents[k - 1] + tangents[k]) / 2.0f;
+    if (tangents[k - 1] < 0 && tangents[k] >= 0) {
+      secants[k] = 0.0f;
+    } else if (tangents[k - 1] >= 0 && tangents[k] < 0) {
+      secants[k] = 0.0f;
+    }
   }
-  tangents[0] = tangents[1];
-  tangents[n - 1] = tangents[n - 2];
+
+  for (int k = 0; k < n - 1; k++) {
+    if (tangents[k] = 0.0f) {
+      secants[k] = 0.0f;
+
+      secants[k + 1] = 0.0f;
+    }
+  }
+  for (int k = 0; k < n - 1; k++) {
+    float alpha = secants[k] / tangents[k];
+    float beta = secants[k + 1] / tangents[k];
+    if (alpha < 0 || beta < 0) {
+      qDebug() << "Data not monotonic";
+    }
+    if (alpha > 3.0 || beta > 3.0) {
+      tangents[k] = 3 * tangents[k];
+    } else {
+      tangents[k] = secants[k];
+    }
+  }
 }
 
 QImage CubicInterpolatorySampler::resample(QImage &image,
@@ -96,7 +113,7 @@ QImage CubicInterpolatorySampler::resample(QImage &image,
       for (int d = numDesiredLevels - 1; d >= 0; d--) {
         float dist =
             distFunc(sdf, x, y, d, numLevelsInput - 1, numDesiredLevels);
-        if (dist < 0) {
+        if (dist <= 0.0f) {
           resampledRow[x] = d;
           break;
         }

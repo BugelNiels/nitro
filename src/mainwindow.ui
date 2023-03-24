@@ -288,7 +288,7 @@ QGroupBox::title {
                <x>10</x>
                <y>20</y>
                <width>181</width>
-               <height>344</height>
+               <height>711</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -324,25 +324,6 @@ QGroupBox::title {
                <widget class="QListWidget" name="savedImagesView"/>
               </item>
               <item>
-               <widget class="QComboBox" name="showComboBox">
-                <item>
-                 <property name="text">
-                  <string>Original</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Quantisized</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Resampled</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item>
                <widget class="QLabel" name="label_2">
                 <property name="text">
                  <string>Compare with:</string>
@@ -350,23 +331,7 @@ QGroupBox::title {
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="compareComboBox">
-                <item>
-                 <property name="text">
-                  <string>Original</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Quantisized</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Resampled</string>
-                 </property>
-                </item>
-               </widget>
+               <widget class="QListWidget" name="compareImagesView"/>
               </item>
               <item>
                <widget class="QPushButton" name="compareButton">
@@ -391,22 +356,6 @@ QGroupBox::title {
           </item>
          </layout>
         </item>
-        <item>
-         <widget class="RenderView" name="renderView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
@@ -420,11 +369,6 @@ QGroupBox::title {
    <class>ImageView</class>
    <extends>QOpenGLWidget</extends>
    <header>imageview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>RenderView</class>
-   <extends>QOpenGLWidget</extends>
-   <header>renderview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

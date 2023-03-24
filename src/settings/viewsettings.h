@@ -1,6 +1,7 @@
 #ifndef VIEW_SETTINGS_H
 #define VIEW_SETTINGS_H
 
+#include <QMatrix4x4>
 #include <QVector3D>
 
 #include "colorsettings.h"

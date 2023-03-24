@@ -4,8 +4,8 @@
 enum DispImgType { ORIGINAL, QUANTISIZED, RESAMPLED };
 
 typedef struct ImViewSettings {
-  DispImgType activeImage = DispImgType::ORIGINAL;
-  DispImgType compareImage = DispImgType::ORIGINAL;
+  int activeImgIndex = 0;
+  int compareImgIndex = 0;
 } ImViewSettings;
 
 #endif  // IM_VIEW_SETTINGS_H

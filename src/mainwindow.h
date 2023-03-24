@@ -27,26 +27,23 @@ class MainWindow : public QMainWindow, public ProgressListener {
   void on_sampleButton_pressed();
   void on_methodComboBox_currentIndexChanged(int index);
   void on_df3DCheckBox_toggled(bool checked);
-  void on_showComboBox_currentIndexChanged(int index);
   void on_compareButton_pressed();
   void on_compareButton_released();
-
   void on_fitButton_clicked();
-
   void on_resetButton_clicked();
-
   void on_quantisizeButton_clicked();
-
-  void on_compareComboBox_currentIndexChanged(int index);
-
   void on_computeSDFButton_pressed();
-
   void progressUpdated(int value) override;
-
   void on_greyValMultiplierSpinBox_valueChanged(double arg1);
 
+  void on_savedImagesView_itemSelectionChanged();
+
+  void on_compareImagesView_itemSelectionChanged();
+
  private:
-  DispImgType oldShowSetting;
+  void newImage(const QString &name);
+
+  int oldShowIdx;
   void updateRenderImage();
   void updateNumLevels(int value);
   Ui::MainWindow *ui;

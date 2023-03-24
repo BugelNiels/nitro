@@ -9,16 +9,17 @@ void ImageView::quantisize() {
   int width = quantisizedImg.width();
   int height = quantisizedImg.height();
   float scaleFactor = 255.0f / sampleSettings.quantisizeLevel;
-  qDebug() << scaleFactor;
-  displayQuantImg = QImage(width, height, QImage::Format_Grayscale8);
+
+  QImage displayQuantImg = QImage(width, height, QImage::Format_Grayscale8);
 
   for (int y = 0; y < height; y++) {
     const uchar *inputRow = quantisizedImg.constScanLine(y);
     uchar *upscaledRow = displayQuantImg.scanLine(y);
     for (int x = 0; x < width; x++) {
-      upscaledRow[x] = inputRow[x] * scaleFactor;
+      upscaledRow[x] = inputRow[x] * scaleFactor + 0.5f;
     }
   }
+  savedImages.append(displayQuantImg);
   finalizeProgress();
 }
 
@@ -159,7 +160,6 @@ QVector<float **> ImageView::calcDistanceField(QImage &image,
   QVector<float **> df;
   df.resize(dynRange);
 
-  float **l0 = allocFloatMatrix(width, height);
   if (pixelMult >= 0.0) {
     for (int d = 0; d < dynRange; d++) {
       df[d] = getDistanceField(image, d, pixelMult);
@@ -167,20 +167,33 @@ QVector<float **> ImageView::calcDistanceField(QImage &image,
     }
     finalizeProgress();
   } else {
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        l0[y][x] = -10;
-      }
-    }
-
-    df[0] = l0;
     setProgress(1.0f / static_cast<float>(dynRange) * 100);
 
     for (int d = 1; d < dynRange; d++) {
       df[d] = getDistanceField(image, d, pixelMult);
       setProgress((d + 1) / static_cast<float>(dynRange) * 100);
     }
+
+    float **l0 = allocFloatMatrix(width, height);
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        l0[y][x] = df[1][y][x] - 10;
+      }
+    }
+
+    df[0] = l0;
     finalizeProgress();
   }
+  //  QVector<float> vals;
+  //  vals.reserve(dynRange);
+  //  for (int y = 0; y < height; y++) {
+  //    for (int x = 0; x < 2; x++) {
+  //      vals.clear();
+  //      for (int d = 0; d < dynRange; d++) {
+  //        vals.append(df[d][y][x]);
+  //      }
+  //      qDebug() << vals;
+  //    }
+  //  }
   return df;
 }

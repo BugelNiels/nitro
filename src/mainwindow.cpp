@@ -33,47 +33,50 @@ MainWindow::MainWindow(QWidget* parent)
  */
 MainWindow::~MainWindow() { delete ui; }
 
+void MainWindow::newImage(const QString& name) {
+  int index = ui->savedImagesView->count();
+  ui->imageView->viewSettings.activeImgIndex = index;
+  ui->savedImagesView->addItem(name);
+  ui->compareImagesView->addItem(name);
+  QModelIndex qIndex = ui->savedImagesView->model()->index(index, 0);
+  ui->savedImagesView->setCurrentIndex(qIndex);
+  if (index == 0) {
+    QModelIndex qIndex = ui->compareImagesView->model()->index(index, 0);
+    ui->compareImagesView->setCurrentIndex(qIndex);
+  }
+  ui->imageView->updateImage();
+}
+
 void MainWindow::progressUpdated(int value) {
   if (value == 0) {
     ui->progressBar->setEnabled(true);
   }
   ui->progressBar->setValue(value);
-  if (value == 100) {
-    //    ui->progressBar->setDisabled(true);
-  }
 }
 
 void MainWindow::updateRenderImage() {
   ui->imageView->updateImage();
-  ui->renderView->settings.uniformUpdateRequired = true;
-  ui->renderView->update();
+  //  ui->renderView->settings.uniformUpdateRequired = true;
+  //  ui->renderView->update();
 }
 
 void MainWindow::on_compareButton_pressed() {
-  oldShowSetting = ui->imageView->viewSettings.activeImage;
-  ui->imageView->viewSettings.activeImage =
-      ui->imageView->viewSettings.compareImage;
+  oldShowIdx = ui->imageView->viewSettings.activeImgIndex;
+  ui->imageView->viewSettings.activeImgIndex =
+      ui->imageView->viewSettings.compareImgIndex;
   ui->imageView->updateImage();
 }
 
 void MainWindow::on_compareButton_released() {
-  ui->imageView->viewSettings.activeImage = oldShowSetting;
+  ui->imageView->viewSettings.activeImgIndex = oldShowIdx;
   ui->imageView->updateImage();
 }
 
 void MainWindow::on_sampleButton_pressed() {
   ui->imageView->resample();
-  ui->imageView->updateImage();
-  ui->imageView->viewSettings.activeImage =
-      static_cast<DispImgType>(DispImgType::RESAMPLED);
-  ui->showComboBox->setCurrentIndex(static_cast<int>(DispImgType::RESAMPLED));
   ui->sampleButton->setEnabled(false);
-
-  // TODO: check if it exists
-  ui->savedImagesView->addItem(
+  newImage(
       QString("Resampled %1").arg(ui->imageView->sampleSettings.sampleMethod));
-  // TODO: disable button after pressed once and then re-enable when other
-  // settings are changed.
 }
 
 void MainWindow::on_loadImageButton_pressed() {
@@ -82,9 +85,10 @@ void MainWindow::on_loadImageButton_pressed() {
           tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm)")))) {
     return;
   }
+  ui->imageView->viewSettings.compareImgIndex = 0;
+  ui->imageView->viewSettings.activeImgIndex = 0;
   ui->savedImagesView->clear();
-  ui->imageView->viewSettings.activeImage = DispImgType::ORIGINAL;
-  const QImage& img = ui->imageView->getActiveImage();
+  const QImage& img = ui->imageView->getActiveDisplayImage();
   ui->depthNumLabel->setText(QString("%1").arg(img.depth()));
   ui->sizeNumLabel->setText(
       QString("%1 x %2").arg(img.width()).arg(img.height()));
@@ -96,22 +100,19 @@ void MainWindow::on_loadImageButton_pressed() {
   ui->sampleSettingsGroupBox->setEnabled(false);
   ui->imageInfoGroupBox->setEnabled(true);
   ui->imageView->scaleImToFit();
-  ui->savedImagesView->addItem("Original");
+  newImage("Original");
 }
 
 void MainWindow::on_quantisizeLevelSpinBox_valueChanged(int value) {
   SampleSettings& sampleSettings = ui->imageView->sampleSettings;
   sampleSettings.quantisizeLevel = value;
-  if (ui->imageView->quantisized) {
-    ui->imageView->quantisize();
-    ui->imageView->updateImage();
-  }
-  ui->computeSDFButton->setEnabled(true);
+  ui->quantisizeButton->setEnabled(true);
 }
 
 void MainWindow::on_methodComboBox_currentIndexChanged(int index) {
   SampleSettings& sampleSettings = ui->imageView->sampleSettings;
   sampleSettings.sampleMethod = static_cast<SampleMethod>(index);
+  ui->sampleButton->setEnabled(true);
   ui->imageView->updateImage();
 }
 
@@ -123,30 +124,18 @@ void MainWindow::on_df3DCheckBox_toggled(bool checked) {
       !ui->greyValMultiplierSpinBox->isEnabled());
 }
 
-void MainWindow::on_showComboBox_currentIndexChanged(int index) {
-  ui->imageView->viewSettings.activeImage = static_cast<DispImgType>(index);
-  ui->imageView->updateImage();
-}
-
 void MainWindow::on_fitButton_clicked() { ui->imageView->scaleImToFit(); }
 
 void MainWindow::on_resetButton_clicked() { ui->imageView->resetImScale(); }
 
 void MainWindow::on_quantisizeButton_clicked() {
   ui->imageView->quantisize();
-  ui->imageView->viewSettings.activeImage =
-      static_cast<DispImgType>(DispImgType::QUANTISIZED);
-  ui->showComboBox->setCurrentIndex(static_cast<int>(DispImgType::QUANTISIZED));
   ui->imageView->updateImage();
   ui->quantisizeButton->setEnabled(false);
-  // TODO: check if it exists
-  ui->savedImagesView->addItem(
-      QString("Quantisized %1")
-          .arg(ui->imageView->sampleSettings.quantisizeLevel));
-}
 
-void MainWindow::on_compareComboBox_currentIndexChanged(int index) {
-  ui->imageView->viewSettings.compareImage = static_cast<DispImgType>(index);
+  newImage(QString("Quantisized %1")
+               .arg(ui->imageView->sampleSettings.quantisizeLevel));
+  ui->computeSDFButton->setEnabled(true);
 }
 
 void MainWindow::on_computeSDFButton_pressed() {
@@ -157,14 +146,13 @@ void MainWindow::on_computeSDFButton_pressed() {
         this, tr("CBD Convert"),
         tr("You are attempting to compute the distance field of an image with "
            "more than 32 grey levels. This can take a long time. Do you wish "
-           "to quantisize the image first?"),
+           "to continue?"),
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
         QMessageBox::Cancel)) {
       case QMessageBox::Yes:
-        on_quantisizeButton_clicked();
         break;
       case QMessageBox::No:
-        break;
+        return;
       case QMessageBox::Cancel:
         return;
       default:
@@ -183,4 +171,16 @@ void MainWindow::on_greyValMultiplierSpinBox_valueChanged(double value) {
     ui->imageView->sampleSettings.distMult = value;
     ui->computeSDFButton->setEnabled(true);
   }
+}
+
+void MainWindow::on_savedImagesView_itemSelectionChanged() {
+  ui->imageView->viewSettings.activeImgIndex =
+      ui->savedImagesView->currentIndex().row();
+  ui->imageView->updateImage();
+}
+
+void MainWindow::on_compareImagesView_itemSelectionChanged() {
+  ui->imageView->viewSettings.compareImgIndex =
+      ui->compareImagesView->currentIndex().row();
+  ui->imageView->updateImage();
 }
