@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow, public ProgressListener {
 
   void on_compareImagesView_itemSelectionChanged();
 
+  void on_fastDistFieldCheckBox_toggled(bool checked);
+
  private:
   void newImage(const QString &name);
 

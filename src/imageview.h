@@ -9,9 +9,13 @@
 #include <QScrollArea>
 #include <QVector3D>
 
+#include "matrix.h"
 #include "progressupdater.h"
 #include "settings/imviewsettings.h"
 #include "settings/samplesettings.h"
+
+#define MIN(A, B) (A) < (B) ? (A) : (B)
+#define MAX(A, B) (A) > (B) ? (A) : (B)
 
 class ImageView : public QScrollArea, public ProgressUpdater {
   Q_OBJECT
@@ -28,6 +32,7 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   void quantisize();
   void calcDistanceField();
   void resample();
+  void compressDecompress();
 
   const QImage& getActiveImage(bool display = false);
   const QImage& getActiveDisplayImage();
@@ -45,9 +50,14 @@ class ImageView : public QScrollArea, public ProgressUpdater {
  private:
   // Probably extract this to own image class or something
   QImage quantisize(QImage& image, int numLevels);
-  QVector<float**> calcDistanceField(QImage& image, double pixelMult = -1);
+  QVector<Matrix<float>> calcDistanceField(QImage& image,
+                                           double pixelMult = -1);
   QImage resample(QImage& image, int numLevels,
                   std::shared_ptr<Resampler> resampler);
+
+  QImage compress(QImage& img, int targetBitDepth);
+
+  QImage decompress(QImage& img, int targetBitDepth);
 
   void setImage(const QImage& newImage);
   SampleSettings sampleSettings;
@@ -56,7 +66,7 @@ class ImageView : public QScrollArea, public ProgressUpdater {
   QImage originalImg;
   QImage quantisizedImg;
 
-  QVector<float**> distanceField;
+  QVector<Matrix<float>> distanceField;
   QVector2D oldMouseCoords;
   QVector2D translation;
   QVector2D oldScrollValue;

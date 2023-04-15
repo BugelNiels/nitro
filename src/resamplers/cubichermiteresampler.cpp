@@ -6,7 +6,7 @@ CubicHermiteSampler::CubicHermiteSampler() {}
 
 CubicHermiteSampler::~CubicHermiteSampler() {}
 
-static inline float distFunc(const QVector<float **> &sdf, int x, int y,
+static inline float distFunc(const QVector<Matrix<float>> &sdf, int x, int y,
                              int greyLevel, int numLevelsInput,
                              int numDesiredLevels) {
   float p = greyLevel / (numDesiredLevels - 1.0f);
@@ -18,10 +18,10 @@ static inline float distFunc(const QVector<float **> &sdf, int x, int y,
 
   float t = p * numLevelsInput - layer0;
 
-  float p_1 = sdf[layer_1][y][x];
-  float p0 = sdf[layer0][y][x];
-  float p1 = sdf[layer1][y][x];
-  float p2 = sdf[layer2][y][x];
+  float p_1 = sdf[layer_1].get(x, y);
+  float p0 = sdf[layer0].get(x, y);
+  float p2 = sdf[layer2].get(x, y);
+  float p1 = sdf[layer1].get(x, y);
 
   float t2 = t * t;
   float t3 = t2 * t;
@@ -45,7 +45,7 @@ static inline float distFunc(const QVector<float **> &sdf, int x, int y,
 }
 
 QImage CubicHermiteSampler::resample(QImage &image,
-                                     const QVector<float **> &sdf,
+                                     const QVector<Matrix<float>> &sdf,
                                      int numDesiredLevels) {
   int width = image.width();
   int height = image.height();

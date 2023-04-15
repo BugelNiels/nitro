@@ -164,6 +164,7 @@ void MainWindow::on_computeSDFButton_pressed() {
   ui->computeSDFButton->setEnabled(false);
   ui->sampleSettingsGroupBox->setEnabled(true);
   ui->sampleButton->setEnabled(true);
+  ui->imageView->updateImage();
 }
 
 void MainWindow::on_greyValMultiplierSpinBox_valueChanged(double value) {
@@ -183,4 +184,11 @@ void MainWindow::on_compareImagesView_itemSelectionChanged() {
   ui->imageView->viewSettings.compareImgIndex =
       ui->compareImagesView->currentIndex().row();
   ui->imageView->updateImage();
+}
+
+void MainWindow::on_fastDistFieldCheckBox_toggled(bool checked) {
+  ui->df3DCheckBox->setEnabled(!checked);
+  ui->greyValMultiplierSpinBox->setEnabled(!checked);
+  ui->imageView->sampleSettings.fastSdf = checked;
+  ui->computeSDFButton->setEnabled(true);
 }

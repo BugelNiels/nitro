@@ -8,13 +8,13 @@ class CubicInterpolatorySampler : public Resampler {
   CubicInterpolatorySampler();
   ~CubicInterpolatorySampler() override;
 
-  QImage resample(QImage& image, const QVector<float**>& sdf,
+  QImage resample(QImage& image, const QVector<Matrix<float>>& sdf,
                   int numDesiredLevels) override;
 
  private:
-  void computeMonotonicTangents(const QVector<float**>& distanceField, int x,
-                                int y, int n);
-  float distFunc(const QVector<float**>& sdf, int x, int y, int greyLevel,
+  void computeMonotonicTangents(const QVector<Matrix<float>>& distanceField,
+                                int x, int y, int n);
+  float distFunc(const QVector<Matrix<float>>& sdf, int x, int y, int greyLevel,
                  int numLevelsInput, int numDesiredLevels);
   QVector<float> tangents;
 };

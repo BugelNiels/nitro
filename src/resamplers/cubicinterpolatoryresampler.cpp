@@ -6,8 +6,8 @@ CubicInterpolatorySampler::CubicInterpolatorySampler() {}
 
 CubicInterpolatorySampler::~CubicInterpolatorySampler() {}
 
-float CubicInterpolatorySampler::distFunc(const QVector<float **> &sdf, int x,
-                                          int y, int greyLevel,
+float CubicInterpolatorySampler::distFunc(const QVector<Matrix<float>> &sdf,
+                                          int x, int y, int greyLevel,
                                           int numLevelsInput,
                                           int numDesiredLevels) {
   float p = greyLevel / (numDesiredLevels - 1.0f);
@@ -17,8 +17,8 @@ float CubicInterpolatorySampler::distFunc(const QVector<float **> &sdf, int x,
 
   float t = p * numLevelsInput - layer0;
 
-  float p0 = sdf[layer0][y][x];
-  float p1 = sdf[layer1][y][x];
+  float p0 = sdf[layer0].get(x, y);
+  float p1 = sdf[layer1].get(x, y);
   float m0 = tangents[layer0];
   float m1 = tangents[layer1];
 
@@ -44,7 +44,7 @@ float CubicInterpolatorySampler::distFunc(const QVector<float **> &sdf, int x,
  * @param n The number of data points to calculate tangents for.
  */
 void CubicInterpolatorySampler::computeMonotonicTangents(
-    const QVector<float **> &distanceField, int x, int y, int n) {
+    const QVector<Matrix<float>> &distanceField, int x, int y, int n) {
   // This performs the first step of averaging the tangents
   for (int k = 0; k < n - 1; k++) {
     // index k for tangent computation
@@ -53,9 +53,9 @@ void CubicInterpolatorySampler::computeMonotonicTangents(
     int layer1 = k + 1;  // std::min(k + 1, n - 1);
 
     // tangent delta_k
-    float p0 = distanceField[layer0][y][x];
+    float p0 = distanceField[layer0].get(x, y);
     // tangent delta_k+1
-    float p1 = distanceField[layer1][y][x];
+    float p1 = distanceField[layer1].get(x, y);
     //    tangents[k] = (p1 - p0) / (float)(layer1 - layer0);
     tangents[k] = (p1 - p0);
   }
@@ -93,7 +93,7 @@ void CubicInterpolatorySampler::computeMonotonicTangents(
 }
 
 QImage CubicInterpolatorySampler::resample(QImage &image,
-                                           const QVector<float **> &sdf,
+                                           const QVector<Matrix<float>> &sdf,
                                            int numDesiredLevels) {
   int width = image.width();
   int height = image.height();

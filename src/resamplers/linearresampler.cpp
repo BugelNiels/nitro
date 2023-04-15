@@ -10,7 +10,7 @@ static float mix(float a, float b, float w) {
   return (1.0f - w) * a + w * b + 0.5f;
 }
 
-static inline float distFunc(const QVector<float **> &distanceField, int x,
+static inline float distFunc(const QVector<Matrix<float>> &distanceField, int x,
                              int y, int greyLevel, int numLevelsInput,
                              int numDesiredLevels) {
   float p = greyLevel / (numDesiredLevels - 1.0f);
@@ -20,12 +20,12 @@ static inline float distFunc(const QVector<float **> &distanceField, int x,
 
   float t = p * numLevelsInput - layer1;
 
-  float d1 = distanceField[layer1][y][x];
-  float d2 = distanceField[layer2][y][x];
+  float d1 = distanceField[layer1].get(x, y);
+  float d2 = distanceField[layer2].get(x, y);
   return mix(d1, d2, t);
 }
 
-QImage LinearSampler::resample(QImage &image, const QVector<float **> &sdf,
+QImage LinearSampler::resample(QImage &image, const QVector<Matrix<float>> &sdf,
                                int numDesiredLevels) {
   int width = image.width();
   int height = image.height();
@@ -37,7 +37,6 @@ QImage LinearSampler::resample(QImage &image, const QVector<float **> &sdf,
   qDebug() << numLevelsInput;
   for (int y = 0; y < height; y++) {
     uchar *resampledRow = resampled.scanLine(y);
-    uchar *inputRow = image.scanLine(y);
     for (int x = 0; x < width; x++) {
       //      for (int d = numLevelsInput - 1; d >= 0; d--) {
       //        float dist = sdf[d][y][x];

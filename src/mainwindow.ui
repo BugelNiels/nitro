@@ -213,6 +213,13 @@ QGroupBox::title {
          </widget>
         </item>
         <item>
+         <widget class="QCheckBox" name="fastDistFieldCheckBox">
+          <property name="text">
+           <string>Fast Distance Field</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QCheckBox" name="df3DCheckBox">
           <property name="text">
            <string>3D Distance Field</string>

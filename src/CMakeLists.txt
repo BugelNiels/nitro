@@ -46,6 +46,7 @@ qt_add_executable(BasicOpenGL WIN32 MACOSX_BUNDLE
     resamplers/cubichermiteresampler.h resamplers/cubichermiteresampler.cpp
     resamplers/cubicinterpolatoryresampler.h resamplers/cubicinterpolatoryresampler.cpp
     resamplers/samplemethod.h resamplers/samplemethod.cpp
+    matrix.h
 )
 
 target_link_libraries(BasicOpenGL PRIVATE

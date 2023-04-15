@@ -14,9 +14,6 @@
 #include <QScrollBar>
 #include <QtAlgorithms>
 
-#define MIN(A, B) (A) < (B) ? (A) : (B)
-#define MAX(A, B) (A) > (B) ? (A) : (B)
-
 ImageView::ImageView(QWidget *parent)
     : QScrollArea(parent), imageLabel(new QLabel), quantisized(false) {
   imageLabel->setBackgroundRole(QPalette::Base);
@@ -32,7 +29,7 @@ bool ImageView::loadFile(const QString &fileName) {
   scale = 1.0;
   QImageReader reader(fileName);
   reader.setAutoTransform(true);
-  const QImage newImage = reader.read();
+  QImage newImage = reader.read();
   if (newImage.isNull()) {
     QMessageBox::information(
         this, QGuiApplication::applicationDisplayName(),
@@ -40,6 +37,7 @@ bool ImageView::loadFile(const QString &fileName) {
             .arg(QDir::toNativeSeparators(fileName), reader.errorString()));
     return false;
   }
+  newImage = newImage.convertToFormat(QImage::Format_Grayscale8);
   originalImg = newImage;
   savedImages.clear();
   savedImages.append(originalImg);

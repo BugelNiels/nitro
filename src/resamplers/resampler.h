@@ -3,11 +3,14 @@
 
 #include <QImage>
 
+#include "matrix.h"
+
 class Resampler {
  public:
   Resampler();
   virtual ~Resampler();
-  virtual QImage resample(QImage& image, const QVector<float**>& distanceField,
+  virtual QImage resample(QImage& image,
+                          const QVector<Matrix<float>>& distanceField,
                           int numDesiredLevels) = 0;
 };
 

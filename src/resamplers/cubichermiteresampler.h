@@ -8,7 +8,7 @@ class CubicHermiteSampler : public Resampler {
   CubicHermiteSampler();
   ~CubicHermiteSampler() override;
 
-  QImage resample(QImage& image, const QVector<float**>& sdf,
+  QImage resample(QImage& image, const QVector<Matrix<float>>& sdf,
                   int numDesiredLevels) override;
 };
 
