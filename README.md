@@ -1,6 +1,6 @@
 # NITRO
 
-Niels' Thesis on Image Processing and Reconstruction Operations
+Niels' Image-processing Thesis on Reconstruction Operations
 
 
 ## Pre-requisites

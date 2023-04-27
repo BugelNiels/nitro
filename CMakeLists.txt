@@ -17,56 +17,51 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS OpenGL OpenGLWidgets Widgets)
 find_package(OpenMP REQUIRED)
 
-#cmake_path(GET PROJECT_SOURCE_DIR PARENT_PATH PARENT_DIR)
 # TODO: check this
- include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/CPP)
- include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/common)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/CPP)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/common)
 
 include_directories(${CMAKE_BINARY_DIR})
-# include_directories(${PARENT_DIR}/nodeeditor/includes)
-
 
 add_subdirectory(3rdparty)
 
-file(GLOB_RECURSE CPPS  src/*.cpp )
-file(GLOB_RECURSE HPPS  src/*.hpp )
-file(GLOB_RECURSE HS  src/*.h )
+file(GLOB_RECURSE CPPS src/*.cpp)
+file(GLOB_RECURSE HPPS src/*.hpp)
+file(GLOB_RECURSE HS src/*.h)
 
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
-    ${CPPS} ${HPPS} ${HS}
-    src/gui/mainwindow.ui
-    src/resources.qrc
-)
-#add_definitions(-DNODE_EDITOR_SHARED)
-# target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)
-# target_link_libraries(${PROJECT_NAME} PRIVATE flip)
+        ${CPPS} ${HPPS} ${HS}
+        src/gui/mainwindow.ui
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
-PRIVATE
-  ${CMAKE_CURRENT_LIST_DIR}
-  ${CMAKE_CURRENT_LIST_DIR}/src/common
-  ${CMAKE_CURRENT_LIST_DIR}/src/components
-  ${CMAKE_CURRENT_LIST_DIR}/src/gui
-)
+        PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/src/common
+        ${CMAKE_CURRENT_LIST_DIR}/src/components
+        ${CMAKE_CURRENT_LIST_DIR}/src/gui
+        )
+
+target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    Qt::Core
-    Qt::Gui
-)
+        Qt::Core
+        Qt::Gui
+        )
 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
 
-if((QT_VERSION_MAJOR GREATER 5))
+if ((QT_VERSION_MAJOR GREATER 5))
     target_link_libraries(${PROJECT_NAME} PRIVATE
-        Qt::OpenGL
-        Qt::OpenGLWidgets
-        Qt::Widgets
-    )
-endif()
+            Qt::OpenGL
+            Qt::OpenGLWidgets
+            Qt::Widgets
+            )
+endif ()
 
 install(TARGETS ${PROJECT_NAME}
-    BUNDLE DESTINATION .
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+        BUNDLE DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
