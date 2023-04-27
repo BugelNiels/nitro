@@ -8,6 +8,7 @@ moc*.cpp
 moc*.h
 qrc_*
 build-*
+build/
 qrc_resources.cpp
 cmake-build*
 CMakeLists.txt.user*
