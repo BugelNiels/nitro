@@ -3,17 +3,10 @@ project(nitro VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-# Set up AUTOMOC and some sensible defaults for runtime execution
-# When using Qt 6.3, you can replace the code block below with
-# qt_standard_project_setup()
 set(CMAKE_AUTOMOC ON)
 include(GNUInstallDirs)
 set(CMAKE_AUTOUIC ON)
@@ -24,24 +17,28 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS OpenGL OpenGLWidgets Widgets)
 find_package(OpenMP REQUIRED)
 
-cmake_path(GET PROJECT_SOURCE_DIR PARENT_PATH PARENT_DIR)
+#cmake_path(GET PROJECT_SOURCE_DIR PARENT_PATH PARENT_DIR)
+# TODO: check this
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/CPP)
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/common)
 
-# include_directories(${PARENT_DIR}/flip/cpp/CPP)
-# include_directories(${PARENT_DIR}/flip/cpp/common)
+include_directories(${CMAKE_BINARY_DIR})
 # include_directories(${PARENT_DIR}/nodeeditor/includes)
 
 
+add_subdirectory(3rdparty)
+
 file(GLOB_RECURSE CPPS  src/*.cpp )
 file(GLOB_RECURSE HPPS  src/*.hpp )
+file(GLOB_RECURSE HS  src/*.h )
 
-add_subdirectory(3rdparty)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
     ${CPPS} ${HPPS} ${HS}
     src/gui/mainwindow.ui
     src/resources.qrc
 )
-add_definitions(-DNODE_EDITOR_SHARED)
+#add_definitions(-DNODE_EDITOR_SHARED)
 # target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)
 # target_link_libraries(${PROJECT_NAME} PRIVATE flip)
 

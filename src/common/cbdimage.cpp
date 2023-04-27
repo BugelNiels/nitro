@@ -9,7 +9,7 @@
 
 nitro::CbdImage::CbdImage() = default;
 
-nitro::CbdImage::CbdImage(const CbdImage &img) {
+nitro::CbdImage::CbdImage(const nitro::CbdImage &img) {
     numGreyLevels = img.numGreyLevels;
     matrix = nitro::Matrix<int>(img.matrix);
     distanceField = img.distanceField;
@@ -566,7 +566,7 @@ QImage nitro::CbdImage::getDisplayImg() {
     return displayImg;
 }
 
-void CbdImage::setIndexed(QVector<int> vals) {
+void nitro::CbdImage::setIndexed(QVector<int> t_vals) {
     indexed = true;
-    this->vals = vals;
+    this->vals = t_vals;
 }

@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     QSurfaceFormat::setDefaultFormat(glFormat);
     omp_set_num_threads(8);
 
-    nitro::MainWindow w;
+    MainWindow w;
     w.show();
 
     return a.exec();

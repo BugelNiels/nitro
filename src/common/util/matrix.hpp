@@ -23,7 +23,7 @@ namespace nitro {
         Matrix(int width, int height) : matWidth(width), matHeight(height) { data.resize(matWidth * matHeight); }
 
         ~Matrix() = default;
-
+        Matrix& operator=(const Matrix&) = default;
         inline T get(int x, int y) const { return data[y * matWidth + x]; }
 
         inline T get(int idx) const { return data[idx]; }

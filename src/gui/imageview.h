@@ -13,9 +13,8 @@
 #include "util/matrix.hpp"
 #include "util/progressupdater.hpp"
 
-namespace nitro {
 
-    class ImageView : public QScrollArea, public ProgressUpdater {
+class ImageView : public QScrollArea, public nitro::ProgressUpdater {
     Q_OBJECT
 
     public:
@@ -56,12 +55,12 @@ namespace nitro {
     private:
         void setImage(const QImage &newImage);
 
-        SampleSettings sampleSettings;
-        ImViewSettings viewSettings;
+        nitro::SampleSettings sampleSettings;
+        nitro::ImViewSettings viewSettings;
 
         // vector allows for rgb
-        QVector<CbdImage> originalImg;
-        QVector<CbdImage> quantisizedImg;
+        QVector<nitro::CbdImage> originalImg;
+        QVector<nitro::CbdImage> quantisizedImg;
         QVector<QImage> savedImages;
 
         QVector2D oldMouseCoords;
@@ -77,4 +76,3 @@ namespace nitro {
         friend class MainWindow;
     };
 
-}  // namespace nitro

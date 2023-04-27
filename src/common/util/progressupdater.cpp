@@ -29,7 +29,7 @@ void nitro::ProgressUpdater::finalizeProgress() {
 }
 
 void nitro::ProgressUpdater::addProgress(float value) {
-#pragma atomic
+#pragma atomic add
     progress += value;
     notifyListeners();
 }

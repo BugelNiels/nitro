@@ -1,6 +1,6 @@
-#include "imageview.hpp"
+#include "imageview.h"
 
-#include <math.h>
+#include <cmath>
 #include <omp.h>
 
 #include <QColorSpace>
@@ -19,7 +19,7 @@
 #include "util/imgconvert.hpp"
 
 
-nitro::ImageView::ImageView(QWidget *parent)
+ImageView::ImageView(QWidget *parent)
         : QScrollArea(parent), imageLabel(new QLabel), quantisized(false) {
     imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -27,9 +27,9 @@ nitro::ImageView::ImageView(QWidget *parent)
     this->setWidget(imageLabel);
 }
 
-nitro::ImageView::~ImageView() = default;
+ImageView::~ImageView() = default;
 
-bool nitro::ImageView::loadFile(const QString &fileName) {
+bool ImageView::loadFile(const QString &fileName) {
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
     QImage newImage = reader.read();
@@ -48,13 +48,13 @@ bool nitro::ImageView::loadFile(const QString &fileName) {
     //  newImage = newImage.convertToFormat(QImage::Format_Grayscale8);
     if (newImage.format() == QImage::Format_Grayscale8 ||
         newImage.format() == QImage::Format_Grayscale16) {
-        originalImg.append(CbdImage(newImage));
+        originalImg.append(nitro::CbdImage(newImage));
     } else if (newImage.format() == QImage::Format_RGB32) {
         // extract channels
-        auto rgb = separateYCbCr(newImage);
-        originalImg.append(CbdImage(rgb[0]));
-        originalImg.append(CbdImage(rgb[1]));
-        originalImg.append(CbdImage(rgb[2]));
+        auto rgb = nitro::separateYCbCr(newImage);
+        originalImg.append(nitro::CbdImage(rgb[0]));
+        originalImg.append(nitro::CbdImage(rgb[1]));
+        originalImg.append(nitro::CbdImage(rgb[2]));
     } else {
         qDebug() << "Unsupported format" << newImage.format();
         return false;
@@ -64,7 +64,7 @@ bool nitro::ImageView::loadFile(const QString &fileName) {
     return true;
 }
 
-void nitro::ImageView::calcDistanceField() {
+void ImageView::calcDistanceField() {
     resetProgress();
     if (quantisized) {
         for (auto &img: quantisizedImg) {
@@ -80,19 +80,19 @@ void nitro::ImageView::calcDistanceField() {
     finalizeProgress();
 }
 
-void nitro::ImageView::resample() {
+void ImageView::resample() {
     resetProgress();
     QVector<QImage> results;
     if (quantisized) {
         for (auto &img: quantisizedImg) {
-            CbdImage resampled = img.resample(
+            nitro::CbdImage resampled = img.resample(
                     sampleSettings.sampleLevel, getSampler(sampleSettings.sampleMethod));
             results.append(resampled.getDisplayImg());
             addProgress(100 / float(quantisizedImg.size()));
         }
     } else {
         for (auto &img: originalImg) {
-            CbdImage resampled = img.resample(
+            nitro::CbdImage resampled = img.resample(
                     sampleSettings.sampleLevel, getSampler(sampleSettings.sampleMethod));
             results.append(resampled.getDisplayImg());
             addProgress(100 / float(originalImg.size()));
@@ -100,13 +100,13 @@ void nitro::ImageView::resample() {
     }
     QImage dispImg = results[0];
     if (results.size() == 3) {
-        dispImg = combineYCbCr(results);
+        dispImg = nitro::combineYCbCr(results);
     }
     savedImages.append(dispImg);
     finalizeProgress();
 }
 
-void nitro::ImageView::quantisize() {
+void ImageView::quantisize() {
     resetProgress();
     int dynRange = 1 << sampleSettings.quantisizeLevel;
 
@@ -125,7 +125,7 @@ void nitro::ImageView::quantisize() {
         for (auto &img: quantisizedImg) {
             dispImgs.append(img.getDisplayImg());
         }
-        dispImg = combineRGB(dispImgs);
+        dispImg = nitro::combineRGB(dispImgs);
     }
     savedImages.append(dispImg);
     finalizeProgress();
@@ -163,7 +163,7 @@ void nitro::ImageView::quantisize() {
 //   finalizeProgress();
 // }
 
-void nitro::ImageView::updateImage() {
+void ImageView::updateImage() {
     QImage img = getActiveDisplayImage();
     const QPixmap &p = QPixmap::fromImage(img);
     int w = img.width() * scale + 0.5;
@@ -172,13 +172,13 @@ void nitro::ImageView::updateImage() {
     imageLabel->adjustSize();
 }
 
-const QImage &nitro::ImageView::getActiveDisplayImage() {
+const QImage &ImageView::getActiveDisplayImage() {
     return savedImages[viewSettings.activeImgIndex];
 }
 
-const QImage &nitro::ImageView::getImageByIndex(int idx) { return savedImages[idx]; }
+const QImage &ImageView::getImageByIndex(int idx) { return savedImages[idx]; }
 
-void nitro::ImageView::setImage(const QImage &img) {
+void ImageView::setImage(const QImage &img) {
     const QPixmap &p = QPixmap::fromImage(img);
     int w = img.width() * scale + 0.5;
     int h = img.height() * scale + 0.5;
@@ -190,7 +190,7 @@ void nitro::ImageView::setImage(const QImage &img) {
  * @brief MeshView::mouseMoveEvent Event that is called when the mouse is moved.
  * @param Event The mouse event.
  */
-void nitro::ImageView::mouseMoveEvent(QMouseEvent *event) {
+void ImageView::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() == Qt::LeftButton) {
         QVector2D sPos(event->position().x(), event->position().y());
 
@@ -216,7 +216,7 @@ void nitro::ImageView::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void nitro::ImageView::mouseReleaseEvent(QMouseEvent *event) {
+void ImageView::mouseReleaseEvent(QMouseEvent *event) {
     QVector2D sPos(event->position().x(), event->position().y());
 
     const auto &hBar = horizontalScrollBar();
@@ -232,13 +232,13 @@ void nitro::ImageView::mouseReleaseEvent(QMouseEvent *event) {
  * pressed.
  * @param event The mouse event.
  */
-void nitro::ImageView::mousePressEvent(QMouseEvent *event) { setFocus(); }
+void ImageView::mousePressEvent(QMouseEvent *event) { setFocus(); }
 
 /**
  * @brief MainView::wheelEvent Event that is called when the user scrolls.
  * @param event The mouse event.
  */
-void nitro::ImageView::wheelEvent(QWheelEvent *event) {
+void ImageView::wheelEvent(QWheelEvent *event) {
     float phi = 1.0f + (event->angleDelta().y() / 1000.0f);
     scale = fmin(fmax(phi * scale, 0.1f), 10.0f);
     const QImage &img = getActiveDisplayImage();
@@ -265,7 +265,7 @@ void nitro::ImageView::wheelEvent(QWheelEvent *event) {
  * @brief MainView::keyPressEvent Event that is called when a key is pressed.
  * @param event The key event.
  */
-void nitro::ImageView::keyPressEvent(QKeyEvent *event) {
+void ImageView::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case 'R':
             resetImScale();
@@ -273,7 +273,7 @@ void nitro::ImageView::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void nitro::ImageView::scaleImToFit() {
+void ImageView::scaleImToFit() {
     const QImage &img = getActiveDisplayImage();
     const QPixmap &p = QPixmap::fromImage(img);
     int w = width();
@@ -285,7 +285,7 @@ void nitro::ImageView::scaleImToFit() {
     imageLabel->adjustSize();
 }
 
-void nitro::ImageView::resetImScale() {
+void ImageView::resetImScale() {
     const QPixmap &p = QPixmap::fromImage(getActiveDisplayImage());
     imageLabel->setPixmap(p);
     imageLabel->adjustSize();

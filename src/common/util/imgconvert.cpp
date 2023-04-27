@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-float mse(const QImage &a, const QImage &b) {
+float nitro::mse(const QImage &a, const QImage &b) {
     int width = a.width();
     int height = a.height();
 
@@ -20,14 +20,14 @@ float mse(const QImage &a, const QImage &b) {
     return err / float(width * height);
 }
 
-inline uchar clampConvert(float a) {
+static inline uchar clampConvert(float a) {
     a += 0.5f;
     a = a < 0 ? 0 : a;
     a = a > 255 ? 255 : a;
     return uchar(a);
 }
 
-void rgb2YCbCr(int r, int g, int b, uchar &y, uchar &cb, uchar &cr) {
+void nitro::rgb2YCbCr(int r, int g, int b, uchar &y, uchar &cb, uchar &cr) {
     float fr = float(r);
     float fg = float(g);
     float fb = float(b);
@@ -42,7 +42,7 @@ void rgb2YCbCr(int r, int g, int b, uchar &y, uchar &cb, uchar &cr) {
     cr = clampConvert(fcr);
 }
 
-void yCbCr2Rgb(int y, int cb, int cr, uchar &r, uchar &g, uchar &b) {
+void nitro::yCbCr2Rgb(int y, int cb, int cr, uchar &r, uchar &g, uchar &b) {
     float fy = float(y);
     float fcb = float(cb);
     float fcr = float(cr);
@@ -55,7 +55,7 @@ void yCbCr2Rgb(int y, int cb, int cr, uchar &r, uchar &g, uchar &b) {
     b = clampConvert(fb);
 }
 
-QVector<QImage> separateYCbCr(const QImage &img) {
+QVector<QImage> nitro::separateYCbCr(const QImage &img) {
     int width = img.width();
     int height = img.height();
     QImage yChannel(width, height, QImage::Format_Grayscale8);
@@ -75,7 +75,7 @@ QVector<QImage> separateYCbCr(const QImage &img) {
     return {yChannel, cbChannel, crChannel};
 }
 
-QImage combineYCbCr(const QVector<QImage> &imgs) {
+QImage nitro::combineYCbCr(const QVector<QImage> &imgs) {
     int width = imgs[0].width();
     int height = imgs[0].height();
     QImage colorImg(width, height, QImage::Format_RGB32);
@@ -96,7 +96,7 @@ QImage combineYCbCr(const QVector<QImage> &imgs) {
     return colorImg;
 }
 
-QVector<QImage> separateRGB(const QImage &img) {
+QVector<QImage> nitro::separateRGB(const QImage &img) {
     int width = img.width();
     int height = img.height();
     QImage red(width, height, QImage::Format_Grayscale8);
@@ -117,7 +117,7 @@ QVector<QImage> separateRGB(const QImage &img) {
     return {red, green, blue};
 }
 
-QImage combineRGB(const QVector<QImage> &imgs) {
+QImage nitro::combineRGB(const QVector<QImage> &imgs) {
     int width = imgs[0].width();
     int height = imgs[0].height();
     QImage colorImg(width, height, QImage::Format_RGB32);
@@ -136,7 +136,7 @@ QImage combineRGB(const QVector<QImage> &imgs) {
     return colorImg;
 }
 
-FLIP::image <FLIP::color3> qColImgToFlipImg(const QImage &img) {
+static FLIP::image <FLIP::color3> qColImgToFlipImg(const QImage &img) {
     int width = img.width();
     int height = img.height();
 
@@ -153,7 +153,7 @@ FLIP::image <FLIP::color3> qColImgToFlipImg(const QImage &img) {
     return res;
 }
 
-FLIP::image <FLIP::color3> qImgToFlipImg(const QImage &img) {
+static FLIP::image <FLIP::color3> qImgToFlipImg(const QImage &img) {
     int width = img.width();
     int height = img.height();
 
@@ -167,7 +167,7 @@ FLIP::image <FLIP::color3> qImgToFlipImg(const QImage &img) {
     return res;
 }
 
-QImage flipImgToQimg(const FLIP::image <FLIP::color3> &img) {
+static QImage flipImgToQimg(const FLIP::image <FLIP::color3> &img) {
     int width = img.getWidth();
     int height = img.getHeight();
 
@@ -189,7 +189,7 @@ inline static float calculatePPD(const float dist, const float resolutionX,
     return dist * (resolutionX / monitorWidth) * (float(FLIP::PI) / 180.0f);
 }
 
-QImage flipErr(const QImage &a, const QImage &b) {
+QImage nitro::flipErr(const QImage &a, const QImage &b) {
     int width = a.width();
     int height = b.height();
     int ppd = calculatePPD(0.7f, 1920, 0.7f);

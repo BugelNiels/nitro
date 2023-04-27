@@ -6,22 +6,22 @@
 #include <QScreen>
 #include <iostream>
 
-ShaderRenderer::ShaderRenderer() : meshIBOSize(0) {}
+nitro::ShaderRenderer::ShaderRenderer() : meshIBOSize(0) {}
 
-ShaderRenderer::~ShaderRenderer() {
+nitro::ShaderRenderer::~ShaderRenderer() {
   gl->glDeleteVertexArrays(1, &vao);
   gl->glDeleteBuffers(1, &coordsBO);
   gl->glDeleteBuffers(1, &indexBO);
   gl->glDeleteTextures(1, &textureBO);
 }
 
-void ShaderRenderer::initShaders() {
+void nitro::ShaderRenderer::initShaders() {
   shaders.insert(ShaderType::SDF, constructDefaultShader("sdf"));
   shaders.insert(ShaderType::SURFACE, constructDefaultShader("raycast"));
   shaders.insert(ShaderType::LEVEL, constructDefaultShader("level"));
 }
 
-void ShaderRenderer::initBuffers() {
+void nitro::ShaderRenderer::initBuffers() {
   gl->glGenVertexArrays(1, &vao);
   gl->glBindVertexArray(vao);
 
@@ -56,7 +56,7 @@ void ShaderRenderer::initBuffers() {
   meshIBOSize = meshIndices.size();
 }
 
-QVector<quint8> ShaderRenderer::imageToBytes(const QImage& image) const {
+QVector<quint8> nitro::ShaderRenderer::imageToBytes(const QImage& image) const {
   // needed since (0,0) is bottom left in OpenGL
   QImage im = image.mirrored();
   QVector<quint8> pixelData;
@@ -84,7 +84,7 @@ QVector<quint8> ShaderRenderer::imageToBytes(const QImage& image) const {
   return pixelData;
 }
 
-void ShaderRenderer::updateBuffers(const QImage& image) {
+void nitro::ShaderRenderer::updateBuffers(const QImage& image) {
   QVector<quint8> bytes = imageToBytes(image);
   gl->glBindTexture(GL_TEXTURE_2D, textureBO);
   gl->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.width(), image.height(), 0,
@@ -92,7 +92,7 @@ void ShaderRenderer::updateBuffers(const QImage& image) {
   settings->uniformUpdateRequired = true;
 }
 
-void ShaderRenderer::updateUniforms() {
+void nitro::ShaderRenderer::updateUniforms() {
   const QVector3D& dims = settings->view.boundingBoxDims;
   QVector3D p1 = QVector3D(settings->view.modelViewMatrix *
                            QVector4D(-dims.x(), -dims.y(), -dims.z(), 1));
@@ -124,7 +124,7 @@ void ShaderRenderer::updateUniforms() {
   intUniform(shader, "depth", 0);  // TODO
 }
 
-void ShaderRenderer::draw() {
+void nitro::ShaderRenderer::draw() {
   QOpenGLShaderProgram* shader = shaders[settings->view.activeShader];
   gl->glBindVertexArray(vao);
   shader->bind();

@@ -3,12 +3,12 @@
 /**
  * @brief Renderer::Renderer Creates a new renderer.
  */
-Renderer::Renderer() : gl(nullptr) {}
+nitro::Renderer::Renderer() : gl(nullptr) {}
 
 /**
  * @brief Renderer::~Renderer Deconstructs the renderer by deleting all shaders.
  */
-Renderer::~Renderer() { qDeleteAll(shaders); }
+nitro::Renderer::~Renderer() { qDeleteAll(shaders); }
 
 /**
  * @brief Renderer::init Initialises the renderer with an OpenGL context and
@@ -16,7 +16,7 @@ Renderer::~Renderer() { qDeleteAll(shaders); }
  * @param f OpenGL functions pointer.
  * @param s Settings.
  */
-void Renderer::init(QOpenGLFunctions_4_1_Core* f, Settings* s) {
+void nitro::Renderer::init(QOpenGLFunctions_4_1_Core* f, Settings* s) {
   gl = f;
   settings = s;
 
@@ -32,7 +32,7 @@ void Renderer::init(QOpenGLFunctions_4_1_Core* f, Settings* s) {
  * @param name Name of the shader.
  * @return The constructed shader.
  */
-QOpenGLShaderProgram* Renderer::constructDefaultShader(
+QOpenGLShaderProgram* nitro::Renderer::constructDefaultShader(
     const QString& name) const {
   QString pathVert = ":/shaders/" + name + ".vert";
   QString pathFrag = ":/shaders/" + name + ".frag";
@@ -53,7 +53,7 @@ QOpenGLShaderProgram* Renderer::constructDefaultShader(
  * @param shaderUniName Uniform name in the shader.
  * @param val Value to update the uniform with.
  */
-void Renderer::intUniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::intUniform(QOpenGLShaderProgram* shader,
                           const char* shaderUniName, int val) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniform1i(uni, val);
@@ -65,7 +65,7 @@ void Renderer::intUniform(QOpenGLShaderProgram* shader,
  * @param shaderUniName Uniform name in the shader.
  * @param val Value to update the uniform with.
  */
-void Renderer::floatUniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::floatUniform(QOpenGLShaderProgram* shader,
                             const char* shaderUniName, float val) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniform1f(uni, val);
@@ -77,7 +77,7 @@ void Renderer::floatUniform(QOpenGLShaderProgram* shader,
  * @param shaderUniName Uniform name in the shader.
  * @param vec Vector to update the uniform with.
  */
-void Renderer::vec3Uniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::vec3Uniform(QOpenGLShaderProgram* shader,
                            const char* shaderUniName, const QVector3D& vec) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniform3f(uni, vec.x(), vec.y(), vec.z());
@@ -89,7 +89,7 @@ void Renderer::vec3Uniform(QOpenGLShaderProgram* shader,
  * @param shaderUniName Uniform name in the shader.
  * @param vec Matrix to update the uniform with.
  */
-void Renderer::mat3Uniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::mat3Uniform(QOpenGLShaderProgram* shader,
                            const char* shaderUniName, const QMatrix3x3& mat) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniformMatrix3fv(uni, 1, false, mat.data());
@@ -101,7 +101,7 @@ void Renderer::mat3Uniform(QOpenGLShaderProgram* shader,
  * @param shaderUniName Uniform name in the shader.
  * @param vec Matrix to update the uniform with.
  */
-void Renderer::mat4Uniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::mat4Uniform(QOpenGLShaderProgram* shader,
                            const char* shaderUniName, const QMatrix4x4& mat) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniformMatrix4fv(uni, 1, false, mat.data());
@@ -113,7 +113,7 @@ void Renderer::mat4Uniform(QOpenGLShaderProgram* shader,
  * @param shaderUniName Uniform name in the shader.
  * @param vec Vector to update the uniform with.
  */
-void Renderer::textureUniform(QOpenGLShaderProgram* shader,
+void nitro::Renderer::textureUniform(QOpenGLShaderProgram* shader,
                               const char* shaderUniName, int index) {
   GLint uni = shader->uniformLocation(shaderUniName);
   gl->glUniform1i(uni, index);
