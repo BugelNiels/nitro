@@ -2,6 +2,10 @@
 
 #include <QDebug>
 #include <iostream>
+#include <QImageReader>
+#include <QMessageBox>
+#include <QGuiApplication>
+#include <QDir>
 
 #include "resamplers/resampler.hpp"
 
@@ -24,6 +28,26 @@ nitro::CbdImage::CbdImage(const nitro::CbdImage &img) {
 nitro::CbdImage::CbdImage(int width, int height, int dynRange)
         : numGreyLevels(dynRange) {
     matrix = nitro::Matrix<int>(width, height);
+}
+
+nitro::CbdImage::CbdImage(const QString &path) {
+    QImageReader reader(path);
+    reader.setAutoTransform(true);
+    QImage img = reader.read();
+    if (img.isNull()) {
+        return;
+    }
+    int width = img.width();
+    int height = img.height();
+    matrix = nitro::Matrix<int>(width, height);
+    numGreyLevels = 1 << img.depth();
+    for (int y = 0; y < height; y++) {
+        uchar *inputRow = img.scanLine(y);
+        for (int x = 0; x < width; x++) {
+            int val = inputRow[x];
+            matrix.set(x, y, val);
+        }
+    }
 }
 
 nitro::CbdImage::CbdImage(QImage &img) {

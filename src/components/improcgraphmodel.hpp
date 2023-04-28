@@ -4,9 +4,9 @@
 #include <QtCore/QPointF>
 #include <QtCore/QSize>
 
-#include <QtNodes/AbstractGraphModel>
-#include <QtNodes/ConnectionIdUtils>
-#include <QtNodes/StyleCollection>
+#include "3rdparty/nodeeditor/include/QtNodes/AbstractGraphModel"
+#include "3rdparty/nodeeditor/include/QtNodes/ConnectionIdUtils"
+#include "3rdparty/nodeeditor/include/QtNodes/StyleCollection"
 
 using ConnectionId = QtNodes::ConnectionId;
 using ConnectionPolicy = QtNodes::ConnectionPolicy;
@@ -23,7 +23,7 @@ using QtNodes::InvalidNodeId;
  * The class implements a bare minimum required to demonstrate a model-based
  * graph.
  */
-class SimpleGraphModel : public QtNodes::AbstractGraphModel {
+class ImprocGraphModel : public QtNodes::AbstractGraphModel {
 Q_OBJECT
 public:
     struct NodeGeometryData {
@@ -32,9 +32,9 @@ public:
     };
 
 public:
-    SimpleGraphModel();
+    ImprocGraphModel();
 
-    ~SimpleGraphModel() override;
+    ~ImprocGraphModel() override;
 
     std::unordered_set<NodeId> allNodeIds() const override;
 

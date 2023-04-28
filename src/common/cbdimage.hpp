@@ -17,6 +17,8 @@ namespace nitro {
 
         CbdImage(int width, int height, int dynRange);
 
+        explicit CbdImage(const QString& string);
+
         explicit CbdImage(QImage &img);
 
         void calcDistanceField(ProgressUpdater *updater = nullptr);

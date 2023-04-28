@@ -1,17 +1,17 @@
-#include "simplegraphmodel.hpp"
+#include "improcgraphmodel.hpp"
 
-SimpleGraphModel::SimpleGraphModel()
+ImprocGraphModel::ImprocGraphModel()
         : _nextNodeId{0} {}
 
-SimpleGraphModel::~SimpleGraphModel() {
+ImprocGraphModel::~ImprocGraphModel() {
     //
 }
 
-std::unordered_set<NodeId> SimpleGraphModel::allNodeIds() const {
+std::unordered_set<NodeId> ImprocGraphModel::allNodeIds() const {
     return _nodeIds;
 }
 
-std::unordered_set<ConnectionId> SimpleGraphModel::allConnectionIds(NodeId const nodeId) const {
+std::unordered_set<ConnectionId> ImprocGraphModel::allConnectionIds(NodeId const nodeId) const {
     std::unordered_set<ConnectionId> result;
 
     std::copy_if(_connectivity.begin(),
@@ -24,7 +24,7 @@ std::unordered_set<ConnectionId> SimpleGraphModel::allConnectionIds(NodeId const
     return result;
 }
 
-std::unordered_set<ConnectionId> SimpleGraphModel::connections(NodeId nodeId,
+std::unordered_set<ConnectionId> ImprocGraphModel::connections(NodeId nodeId,
                                                                PortType portType,
                                                                PortIndex portIndex) const {
     std::unordered_set<ConnectionId> result;
@@ -40,11 +40,11 @@ std::unordered_set<ConnectionId> SimpleGraphModel::connections(NodeId nodeId,
     return result;
 }
 
-bool SimpleGraphModel::connectionExists(ConnectionId const connectionId) const {
+bool ImprocGraphModel::connectionExists(ConnectionId const connectionId) const {
     return (_connectivity.find(connectionId) != _connectivity.end());
 }
 
-NodeId SimpleGraphModel::addNode(QString const nodeType) {
+NodeId ImprocGraphModel::addNode(QString const nodeType) {
     NodeId newId = newNodeId();
     // Create new node.
     _nodeIds.insert(newId);
@@ -54,21 +54,21 @@ NodeId SimpleGraphModel::addNode(QString const nodeType) {
     return newId;
 }
 
-bool SimpleGraphModel::connectionPossible(ConnectionId const connectionId) const {
+bool ImprocGraphModel::connectionPossible(ConnectionId const connectionId) const {
     return _connectivity.find(connectionId) == _connectivity.end();
 }
 
-void SimpleGraphModel::addConnection(ConnectionId const connectionId) {
+void ImprocGraphModel::addConnection(ConnectionId const connectionId) {
     _connectivity.insert(connectionId);
 
     Q_EMIT connectionCreated(connectionId);
 }
 
-bool SimpleGraphModel::nodeExists(NodeId const nodeId) const {
+bool ImprocGraphModel::nodeExists(NodeId const nodeId) const {
     return (_nodeIds.find(nodeId) != _nodeIds.end());
 }
 
-QVariant SimpleGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
+QVariant ImprocGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
     Q_UNUSED(nodeId);
 
     QVariant result;
@@ -119,7 +119,7 @@ QVariant SimpleGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
     return result;
 }
 
-bool SimpleGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
+bool ImprocGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
     bool result = false;
 
     switch (role) {
@@ -165,7 +165,7 @@ bool SimpleGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value)
     return result;
 }
 
-QVariant SimpleGraphModel::portData(NodeId nodeId,
+QVariant ImprocGraphModel::portData(NodeId nodeId,
                                     PortType portType,
                                     PortIndex portIndex,
                                     PortRole role) const {
@@ -198,7 +198,7 @@ QVariant SimpleGraphModel::portData(NodeId nodeId,
     return QVariant();
 }
 
-bool SimpleGraphModel::setPortData(
+bool ImprocGraphModel::setPortData(
         NodeId nodeId, PortType portType, PortIndex portIndex, QVariant const &value, PortRole role) {
     Q_UNUSED(nodeId);
     Q_UNUSED(portType);
@@ -209,7 +209,7 @@ bool SimpleGraphModel::setPortData(
     return false;
 }
 
-bool SimpleGraphModel::deleteConnection(ConnectionId const connectionId) {
+bool ImprocGraphModel::deleteConnection(ConnectionId const connectionId) {
     bool disconnected = false;
 
     auto it = _connectivity.find(connectionId);
@@ -226,7 +226,7 @@ bool SimpleGraphModel::deleteConnection(ConnectionId const connectionId) {
     return disconnected;
 }
 
-bool SimpleGraphModel::deleteNode(NodeId const nodeId) {
+bool ImprocGraphModel::deleteNode(NodeId const nodeId) {
     // Delete connections to this node first.
     auto connectionIds = allConnectionIds(nodeId);
 
@@ -242,7 +242,7 @@ bool SimpleGraphModel::deleteNode(NodeId const nodeId) {
     return true;
 }
 
-QJsonObject SimpleGraphModel::saveNode(NodeId const nodeId) const {
+QJsonObject ImprocGraphModel::saveNode(NodeId const nodeId) const {
     QJsonObject nodeJson;
 
     nodeJson["id"] = static_cast<qint64>(nodeId);
@@ -259,7 +259,7 @@ QJsonObject SimpleGraphModel::saveNode(NodeId const nodeId) const {
     return nodeJson;
 }
 
-void SimpleGraphModel::loadNode(QJsonObject const &nodeJson) {
+void ImprocGraphModel::loadNode(QJsonObject const &nodeJson) {
     NodeId restoredNodeId = static_cast<NodeId>(nodeJson["id"].toInt());
 
     // Next NodeId must be larger that any id existing in the graph
