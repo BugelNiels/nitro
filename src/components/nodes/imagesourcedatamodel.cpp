@@ -7,7 +7,8 @@
 #include <QVBoxLayout>
 
 nitro::ImageSourceDataModel::ImageSourceDataModel()
-        : _image(std::make_shared<ColImageData>()), _displayWrapper(nullptr), _loadButton{nullptr}, _pathLabel(nullptr) {}
+        : _image(std::make_shared<ColImageData>()), _displayWrapper(nullptr), _loadButton{nullptr},
+          _imgLabel(nullptr) {}
 
 QJsonObject nitro::ImageSourceDataModel::save() const {
     QJsonObject modelJson = NodeDelegateModel::save();
@@ -35,15 +36,15 @@ void nitro::ImageSourceDataModel::load(QJsonObject const &p) {
 //    }
 }
 
-unsigned int nitro::ImageSourceDataModel::nPorts(PortType portType) const {
+unsigned int nitro::ImageSourceDataModel::nPorts(QtNodes::PortType portType) const {
     unsigned int result = 1;
 
     switch (portType) {
-        case PortType::In:
+        case QtNodes::PortType::In:
             result = 0;
             break;
 
-        case PortType::Out:
+        case QtNodes::PortType::Out:
             result = 1;
 
         default:
@@ -53,11 +54,11 @@ unsigned int nitro::ImageSourceDataModel::nPorts(PortType portType) const {
     return result;
 }
 
-NodeDataType nitro::ImageSourceDataModel::dataType(PortType, PortIndex) const {
+QtNodes::NodeDataType nitro::ImageSourceDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
     return ColImageData().type();
 }
 
-std::shared_ptr<NodeData> nitro::ImageSourceDataModel::outData(PortIndex) {
+std::shared_ptr<QtNodes::NodeData> nitro::ImageSourceDataModel::outData(QtNodes::PortIndex) {
     return _image;
 }
 
@@ -71,11 +72,13 @@ QWidget *nitro::ImageSourceDataModel::embeddedWidget() {
         connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
         _loadButton->setMaximumSize(_loadButton->sizeHint());
         layout->addWidget(_loadButton);
-        _pathLabel = new QLabel("");
-        _pathLabel->setFixedSize(_embedImgSize, _embedImgSize);
+        _imgLabel = new QLabel("");
+        _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
 
-        _pathLabel->setMaximumSize(_pathLabel->sizeHint());
-        layout->addWidget(_pathLabel);
+        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+        layout->addWidget(_imgLabel);
+        // TODO: Temporary ugliness fix
+        _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
 
     }
 
@@ -96,9 +99,7 @@ void nitro::ImageSourceDataModel::onLoadButtonPressed() {
     _image = std::make_shared<ColImageData>(img);
 
     const QPixmap &p = QPixmap::fromImage(img);
-    _pathLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
-//    _pathLabel->adjustSize();
-    _pathLabel->setMaximumSize(_pathLabel->sizeHint());
-//    _pathLabel->setText(filePath);
+    _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
+    _imgLabel->setMaximumSize(_imgLabel->sizeHint());
     Q_EMIT dataUpdated(0);
 }

@@ -30,33 +30,13 @@ nitro::CbdImage::CbdImage(int width, int height, int dynRange)
     matrix = nitro::Matrix<int>(width, height);
 }
 
-nitro::CbdImage::CbdImage(const QString &path) {
-    QImageReader reader(path);
-    reader.setAutoTransform(true);
-    QImage img = reader.read();
-    if (img.isNull()) {
-        return;
-    }
+nitro::CbdImage::CbdImage(const QImage &img) {
     int width = img.width();
     int height = img.height();
     matrix = nitro::Matrix<int>(width, height);
     numGreyLevels = 1 << img.depth();
     for (int y = 0; y < height; y++) {
-        uchar *inputRow = img.scanLine(y);
-        for (int x = 0; x < width; x++) {
-            int val = inputRow[x];
-            matrix.set(x, y, val);
-        }
-    }
-}
-
-nitro::CbdImage::CbdImage(QImage &img) {
-    int width = img.width();
-    int height = img.height();
-    matrix = nitro::Matrix<int>(width, height);
-    numGreyLevels = 1 << img.depth();
-    for (int y = 0; y < height; y++) {
-        uchar *inputRow = img.scanLine(y);
+        const uchar *inputRow = img.constScanLine(y);
         for (int x = 0; x < width; x++) {
             int val = inputRow[x];
             matrix.set(x, y, val);

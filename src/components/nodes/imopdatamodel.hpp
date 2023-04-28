@@ -8,24 +8,21 @@
 #include <QPushButton>
 #include <QLabel>
 
+
 #include "cbdimage.hpp"
-#include "colimagedata.hpp"
+#include "imagedata.hpp"
 
 namespace nitro {
-    class ImageSourceDataModel : public QtNodes::NodeDelegateModel {
+    class ImOpDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ImageSourceDataModel();
+        ImOpDataModel();
 
-        virtual ~ImageSourceDataModel() {}
+        virtual ~ImOpDataModel() {}
 
     public:
-        QString caption() const override { return QStringLiteral("Image Source"); }
-
         bool captionVisible() const override { return true; }
-
-        QString name() const override { return QStringLiteral("ImageSource"); }
 
     public:
         QJsonObject save() const override;
@@ -39,23 +36,19 @@ namespace nitro {
 
         std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
-        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
+        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
         QWidget *embeddedWidget() override;
 
-    public:
-
-    private Q_SLOTS:
-
-        void onLoadButtonPressed();
+    protected:
+        virtual nitro::CbdImage compute(const nitro::CbdImage &inputImg) = 0;
 
     private:
 
         const int _embedImgSize = 256;
-        std::shared_ptr<ColImageData> _image;
+        std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;
-        QPushButton *_loadButton;
         QLabel *_imgLabel;
     };
 }

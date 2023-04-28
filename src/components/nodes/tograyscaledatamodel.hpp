@@ -10,22 +10,28 @@
 
 #include "cbdimage.hpp"
 #include "colimagedata.hpp"
+#include "imagedata.hpp"
+
+class QLineEdit;
+
+/// The model dictates the number of inputs and outputs for the Node.
+/// In this example it has no logic.
 
 namespace nitro {
-    class ImageSourceDataModel : public QtNodes::NodeDelegateModel {
+    class ToGrayScaleDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ImageSourceDataModel();
+        ToGrayScaleDataModel();
 
-        virtual ~ImageSourceDataModel() {}
+        virtual ~ToGrayScaleDataModel() {}
 
     public:
-        QString caption() const override { return QStringLiteral("Image Source"); }
+        QString caption() const override { return QStringLiteral("To Grayscale"); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return QStringLiteral("ImageSource"); }
+        QString name() const override { return QStringLiteral("ToGrayscale"); }
 
     public:
         QJsonObject save() const override;
@@ -39,23 +45,17 @@ namespace nitro {
 
         std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
-        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
+        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
         QWidget *embeddedWidget() override;
-
-    public:
-
-    private Q_SLOTS:
-
-        void onLoadButtonPressed();
 
     private:
 
         const int _embedImgSize = 256;
-        std::shared_ptr<ColImageData> _image;
+        std::shared_ptr<ColImageData> _in;
+        std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;
-        QPushButton *_loadButton;
         QLabel *_imgLabel;
     };
 }

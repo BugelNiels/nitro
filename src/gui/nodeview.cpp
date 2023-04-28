@@ -1,5 +1,7 @@
 #include "nodeview.h"
 #include "nodes/imagesourcedatamodel.hpp"
+#include "nodes/tograyscaledatamodel.hpp"
+#include "nodes/operators/thresholddatamodel.hpp"
 
 #include <QtGui/QScreen>
 #include <QtNodes/BasicGraphicsScene>
@@ -15,7 +17,8 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
 
 //    ret->registerModel<NumberDisplayDataModel>("Displays");
 //
-//    ret->registerModel<AdditionModel>("Operators");
+    ret->registerModel<nitro::ToGrayScaleDataModel>("Operators");
+    ret->registerModel<nitro::ThresholdDataModel>("Operators");
 //
 //    ret->registerModel<SubtractionModel>("Operators");
 //
@@ -46,6 +49,23 @@ NodeView::NodeView(QWidget *parent) : QDockWidget(parent) {
 
     auto *view = new QtNodes::GraphicsView(scene);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    // TODO: cleaner
+
+
+    auto *convertMenu = new QMenu("Conversions");
+    auto toGrayscaleAction = new QAction(QStringLiteral("To Grayscale"), view);
+    QObject::connect(toGrayscaleAction, &QAction::triggered, [view, dataFlowGraphModel]() {
+        // Mouse position in scene coordinates.
+        QPointF posView = view->mapToScene(view->mapFromGlobal(QCursor::pos()));
+
+        QtNodes::NodeId const newId = dataFlowGraphModel->addNode("ToGrayscale");
+        dataFlowGraphModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
+    });
+    view->addAction(toGrayscaleAction);
+
+
+    auto *inputMenu = new QMenu("Input");
     auto createNodeAction = new QAction(QStringLiteral("Image Source"), view);
     QObject::connect(createNodeAction, &QAction::triggered, [view, dataFlowGraphModel]() {
         // Mouse position in scene coordinates.
@@ -54,7 +74,20 @@ NodeView::NodeView(QWidget *parent) : QDockWidget(parent) {
         QtNodes::NodeId const newId = dataFlowGraphModel->addNode("ImageSource");
         dataFlowGraphModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
-    view->insertAction(view->actions().front(), createNodeAction);
+    view->addAction(createNodeAction);
+
+    auto *opsMenu = new QMenu("Operations");
+    auto ThresholdAction = new QAction(QStringLiteral("Threshold"), view);
+    QObject::connect(ThresholdAction, &QAction::triggered, [view, dataFlowGraphModel]() {
+        // Mouse position in scene coordinates.
+        QPointF posView = view->mapToScene(view->mapFromGlobal(QCursor::pos()));
+
+        QtNodes::NodeId const newId = dataFlowGraphModel->addNode("Threshold");
+        dataFlowGraphModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
+    });
+    view->addAction(ThresholdAction);
+
+
     view->showNormal();
     this->setWidget(view);
 }
