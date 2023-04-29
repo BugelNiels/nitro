@@ -20,13 +20,13 @@ nitro::NodeGraphicsView::NodeGraphicsView(QWidget *parent) : GraphicsView(parent
 }
 
 // TODO: extract model class from viewer so that it doesn't depend on the GUI
-nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageView *viewer, QtNodes::BasicGraphicsScene *scene,
+nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
                                           QtNodes::DataFlowGraphModel *model,
                                           QWidget *parent) : GraphicsView(scene,
                                                                           parent), _dataModel(model),
                                                              _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId) {
 
-    auto *spawnMenu = new QAction(QStringLiteral("Add"), this);
+    auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
     connect(spawnMenu,
@@ -34,7 +34,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageView *viewer, QtNodes::Bas
             this,
             &NodeGraphicsView::spawnNodeMenu);
 
-    addAction(spawnMenu);
+    insertAction(actions().front(), spawnMenu);
 
     _nodeMenu = initNodeMenu();
 }
@@ -90,14 +90,14 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
 }
 
 QMenu *nitro::NodeGraphicsView::initConversionsSubMenu() {
-    auto *convertMenu = new QMenu("Conversions");
+    auto *convertMenu = new QMenu("Converter");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
                                            nitro::ToGrayScaleDataModel::nodeName()));
     return convertMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
-    auto *opsMenu = new QMenu("Operations");
+    auto *opsMenu = new QMenu("Operator");
     opsMenu->addAction(spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(),
                                        nitro::ThresholdDataModel::nodeName()));
     return opsMenu;

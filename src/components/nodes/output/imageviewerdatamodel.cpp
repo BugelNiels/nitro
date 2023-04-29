@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 
 
-nitro::ImageView *nitro::ImageViewerDataModel::_imViewer = nullptr;
+nitro::ImageViewer *nitro::ImageViewerDataModel::_imViewer = nullptr;
 
 nitro::ImageViewerDataModel::ImageViewerDataModel()
         : _image(std::make_shared<ImageData>()), _displayWrapper(nullptr) {
@@ -69,11 +69,17 @@ void nitro::ImageViewerDataModel::setInData(std::shared_ptr<QtNodes::NodeData> d
     auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
     if (!data) {
+        _imViewer->removeImage();
+        _sizeLabel->setText("");
+        _layersLabel->setText("");
         return;
     }
 
     if (portIndex == 0) {
-        _imViewer->setImage(inputImg->image().getDisplayImg());
+        auto img = inputImg->image();
+        _imViewer->setImage(img.getDisplayImg());
+        _sizeLabel->setText(QString("%1 x %2").arg(img.width()).arg(img.height()));
+        _layersLabel->setText(QString("%1 layers").arg(inputImg->image().numLevels()));
     }
 
 
@@ -84,6 +90,13 @@ QWidget *nitro::ImageViewerDataModel::embeddedWidget() {
         _displayWrapper = new QWidget();
         auto *layout = new QVBoxLayout(_displayWrapper);
 
+        _sizeLabel = new QLabel();
+        _layersLabel = new QLabel();
+        _sizeLabel->setMinimumWidth(100);
+        layout->addWidget(_sizeLabel);
+        layout->addWidget(_layersLabel);
+        _displayWrapper->setLayout(layout);
+
         // TODO: Temporary ugliness fix
         _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
 
@@ -93,6 +106,6 @@ QWidget *nitro::ImageViewerDataModel::embeddedWidget() {
 }
 
 
-void nitro::ImageViewerDataModel::setViewer(nitro::ImageView *viewer) {
+void nitro::ImageViewerDataModel::setViewer(nitro::ImageViewer *viewer) {
     ImageViewerDataModel::_imViewer = viewer;
 }

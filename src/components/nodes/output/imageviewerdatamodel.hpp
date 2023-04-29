@@ -11,7 +11,7 @@
 #include "cbdimage.hpp"
 #include "src/components/nodes/imagedata.hpp"
 #include "src/gui/nodeview.hpp"
-#include "imageview.hpp"
+#include "src/gui/imgviewer/imgviewer.hpp"
 
 
 
@@ -52,7 +52,7 @@ namespace nitro {
         QWidget *embeddedWidget() override;
 
     public:
-        static void setViewer(nitro::ImageView *viewer);
+        static void setViewer(nitro::ImageViewer *viewer);
 
 
     private:
@@ -62,6 +62,8 @@ namespace nitro {
 
         QWidget *_displayWrapper;
 //        static ImageView *_imViewer;
-        static ImageView *_imViewer;
+        static ImageViewer *_imViewer;
+        QLabel *_sizeLabel;
+        QLabel *_layersLabel;
     };
 }

@@ -3,7 +3,7 @@
 #include <QtNodes/GraphicsView>
 #include <QMenu>
 #include "QtNodes/DataFlowGraphModel"
-#include "imageview.hpp"
+#include "src/gui/imgviewer/imgviewer.hpp"
 
 namespace nitro {
 
@@ -11,7 +11,7 @@ namespace nitro {
     public:
         NodeGraphicsView(QWidget *parent = Q_NULLPTR);
 
-        NodeGraphicsView(nitro::ImageView *viewer, QtNodes::BasicGraphicsScene *scene,
+        NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
                          QtNodes::DataFlowGraphModel *model,
                          QWidget *parent);
 
@@ -26,7 +26,7 @@ namespace nitro {
 
     private:
         QtNodes::DataFlowGraphModel *_dataModel;
-        nitro::ImageView *_imViewer;
+        nitro::ImageViewer *_imViewer;
         QAction *spawnViewNodeAction = nullptr;
 
         bool shiftPressed = false;

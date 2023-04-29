@@ -7,6 +7,7 @@
 #include <QVector3D>
 #include <resamplers/resampler.hpp>
 #include <QMenu>
+#include <QGraphicsView>
 
 #include "cbdimage.hpp"
 #include "settings/imviewsettings.hpp"

@@ -19,13 +19,14 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::GreyImageSourceDataModel>("Input");
     ret->registerModel<nitro::ColImageSourceDataModel>("Input");
     ret->registerModel<nitro::ImageViewerDataModel>("Output");
-    ret->registerModel<nitro::ToGrayScaleDataModel>("Conversions");
-    ret->registerModel<nitro::ThresholdDataModel>("Operators");
+    ret->registerModel<nitro::ToGrayScaleDataModel>("Converter");
+    ret->registerModel<nitro::ThresholdDataModel>("Operator");
 
     return ret;
 }
 
-nitro::NodeView::NodeView(nitro::ImageView* imViewer, QWidget *parent) : QDockWidget(parent) {
+nitro::NodeView::NodeView(nitro::ImageViewer* imViewer, QWidget *parent) : QDockWidget(parent) {
+    setWindowTitle("Node Editor");
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
     dataFlowGraphModel->addNode(nitro::GreyImageSourceDataModel::nodeName());
