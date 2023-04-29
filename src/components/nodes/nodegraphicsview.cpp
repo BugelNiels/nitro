@@ -14,7 +14,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(QtNodes::BasicGraphicsScene *scene, Qt
                                           QWidget *parent) : GraphicsView(scene,
                                                                           parent), _dataModel(model) {
 
-    auto spawnMenu = new QAction(QStringLiteral("Spawn Node"), this);
+    auto *spawnMenu = new QAction(QStringLiteral("Add"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
     connect(spawnMenu,
@@ -28,7 +28,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(QtNodes::BasicGraphicsScene *scene, Qt
 }
 
 QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType) {
-    auto createNodeAction = new QAction(menuName, this);
+    auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
         QPointF posView = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
@@ -50,14 +50,14 @@ QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
 QMenu *nitro::NodeGraphicsView::initConversionsSubMenu() {
     auto *convertMenu = new QMenu("Conversions");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
-                                         nitro::ToGrayScaleDataModel::nodeName()));
+                                           nitro::ToGrayScaleDataModel::nodeName()));
     return convertMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
     auto *opsMenu = new QMenu("Operations");
     opsMenu->addAction(spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(),
-                                           nitro::ThresholdDataModel::nodeName()));
+                                       nitro::ThresholdDataModel::nodeName()));
     return opsMenu;
 }
 
@@ -66,6 +66,14 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     auto *convertMenu = initConversionsSubMenu();
     auto *inputMenu = initInputSubMenu();
     auto *opsMenu = initOperationsSubMenu();
+
+    QAction *sectionTitle = menu->addSection("Add");
+    QFont font;
+    font.setWeight(QFont::Light);
+    font.setPixelSize(10);
+    sectionTitle->setFont(font);
+
+    menu->addSeparator();
     menu->addMenu(inputMenu);
     menu->addMenu(opsMenu);
     menu->addMenu(convertMenu);
