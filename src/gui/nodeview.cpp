@@ -25,16 +25,26 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     return ret;
 }
 
-nitro::NodeView::NodeView(nitro::ImageViewer* imViewer, QWidget *parent) : QDockWidget(parent) {
+nitro::NodeView::NodeView(nitro::ImageViewer *imViewer, QWidget *parent) : QDockWidget(parent),
+                                                                           dataFlowGraphModel(nullptr) {
     setWindowTitle("Node Editor");
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
-    auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
+    dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
     dataFlowGraphModel->addNode(nitro::GreyImageSourceDataModel::nodeName());
     auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
     auto *view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
 //    view->showNormal();
     this->setWidget(view);
+}
+
+void nitro::NodeView::clearModel() {
+    if (dataFlowGraphModel) {
+        for (const auto &item: dataFlowGraphModel->allNodeIds()) {
+            dataFlowGraphModel->deleteNode(item);
+        }
+    }
+
 }
 
 nitro::NodeView::~NodeView() = default;

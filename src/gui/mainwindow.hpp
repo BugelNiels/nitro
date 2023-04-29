@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include "nodeview.hpp"
 
 namespace nitro {
 
@@ -15,7 +16,10 @@ namespace nitro {
     private slots:
 
     private:
+        NodeView* nodeView;
+        QMenuBar *initMenuBar();
 
+        QStatusBar *initFooter();
     };
 
 } // nitro

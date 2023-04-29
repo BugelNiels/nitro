@@ -2,6 +2,7 @@
 
 #include <QDockWidget>
 #include "src/gui/imgviewer/imgviewer.hpp"
+#include "QtNodes/DataFlowGraphModel"
 
 namespace nitro {
 
@@ -12,7 +13,10 @@ namespace nitro {
 
         ~NodeView() override;
 
+        void clearModel();
+
     private:
+        QtNodes::DataFlowGraphModel* dataFlowGraphModel;
     };
 
 } // nitro

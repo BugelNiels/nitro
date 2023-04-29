@@ -25,6 +25,7 @@ nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
 
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
+    setResizeAnchor(QGraphicsView::transformationAnchor());
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
