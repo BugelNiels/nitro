@@ -180,7 +180,7 @@ QMenu *nitro::ImageViewer::createContextMenu() {
                 return;
             }
             if (displayImg->save(filePath)) {
-                QMessageBox::information(this, tr("Save Successful"), QString("File saved to\n %1").arg(filePath));
+                QMessageBox::information(this, tr("Save Successful"), QString("File canQuitSafely to\n %1").arg(filePath));
             } else {
                 QMessageBox::warning(this, tr("Could not save"),
                                      QString("Something went wrong while trying to save to\n %1").arg(filePath));

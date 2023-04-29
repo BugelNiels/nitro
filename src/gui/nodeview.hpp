@@ -15,7 +15,16 @@ namespace nitro {
 
         void clearModel();
 
+        bool canQuitSafely();
+
+        void saveModel(bool askFile = false);
+
+        void loadModel();
+
     private:
+        QJsonObject prevSave;
+        QString filename;
+        QString saveFilePath;
         QtNodes::DataFlowGraphModel* dataFlowGraphModel;
     };
 

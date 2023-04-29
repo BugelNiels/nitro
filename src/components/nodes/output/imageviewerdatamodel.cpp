@@ -13,32 +13,6 @@ nitro::ImageViewerDataModel::ImageViewerDataModel()
         : _image(std::make_shared<ImageData>()), _displayWrapper(nullptr) {
 }
 
-QJsonObject nitro::ImageViewerDataModel::save() const {
-    QJsonObject modelJson = NodeDelegateModel::save();
-
-//    modelJson["image"] = QString::number(_number->number());
-// TODO: implement this properly
-    return modelJson;
-}
-
-void nitro::ImageViewerDataModel::load(QJsonObject const &p) {
-    // TODO: implemenet
-//    QJsonValue v = p["number"];
-//
-//    if (!v.isUndefined()) {
-//        QString strNum = v.toString();
-//
-//        bool ok;
-//        double d = strNum.toDouble(&ok);
-//        if (ok) {
-//            _number = std::make_shared<DecimalData>(d);
-//
-//            if (_lineEdit)
-//                _lineEdit->setText(strNum);
-//        }
-//    }
-}
-
 unsigned int nitro::ImageViewerDataModel::nPorts(QtNodes::PortType portType) const {
     unsigned int result = 1;
 

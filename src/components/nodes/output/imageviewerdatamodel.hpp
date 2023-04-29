@@ -14,7 +14,6 @@
 #include "src/gui/imgviewer/imgviewer.hpp"
 
 
-
 namespace nitro {
     class ImageViewerDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
@@ -34,11 +33,6 @@ namespace nitro {
         bool captionVisible() const override { return true; }
 
         QString name() const override { return nodeName(); }
-
-    public:
-        QJsonObject save() const override;
-
-        void load(QJsonObject const &p) override;
 
     public:
         unsigned int nPorts(QtNodes::PortType portType) const override;

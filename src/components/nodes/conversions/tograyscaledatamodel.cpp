@@ -9,32 +9,6 @@
 nitro::ToGrayScaleDataModel::ToGrayScaleDataModel()
         : _displayWrapper(nullptr), _imgLabel(nullptr) {}
 
-QJsonObject nitro::ToGrayScaleDataModel::save() const {
-    QJsonObject modelJson = NodeDelegateModel::save();
-
-//    modelJson["image"] = QString::number(_number->number());
-// TODO: implement this properly
-    return modelJson;
-}
-
-void nitro::ToGrayScaleDataModel::load(QJsonObject const &p) {
-    // TODO: implemenet
-//    QJsonValue v = p["number"];
-//
-//    if (!v.isUndefined()) {
-//        QString strNum = v.toString();
-//
-//        bool ok;
-//        double d = strNum.toDouble(&ok);
-//        if (ok) {
-//            _number = std::make_shared<DecimalData>(d);
-//
-//            if (_lineEdit)
-//                _lineEdit->setText(strNum);
-//        }
-//    }
-}
-
 unsigned int nitro::ToGrayScaleDataModel::nPorts(QtNodes::PortType portType) const {
     unsigned int result = 1;
 

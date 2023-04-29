@@ -35,7 +35,6 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
             &NodeGraphicsView::spawnNodeMenu);
 
     insertAction(actions().front(), spawnMenu);
-
     _nodeMenu = initNodeMenu();
 }
 

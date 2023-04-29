@@ -12,6 +12,8 @@
 #include <QtWidgets/QApplication>
 #include <QtNodes/DataFlowGraphModel>
 #include <QtNodes/NodeDelegateModelRegistry>
+#include <QFileDialog>
+#include <QMessageBox>
 
 
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
@@ -26,7 +28,8 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
 }
 
 nitro::NodeView::NodeView(nitro::ImageViewer *imViewer, QWidget *parent) : QDockWidget(parent),
-                                                                           dataFlowGraphModel(nullptr) {
+                                                                           dataFlowGraphModel(nullptr),
+                                                                           filename("untitled.json") {
     setWindowTitle("Node Editor");
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
@@ -34,9 +37,12 @@ nitro::NodeView::NodeView(nitro::ImageViewer *imViewer, QWidget *parent) : QDock
     auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
     auto *view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
-//    view->showNormal();
+    prevSave = dataFlowGraphModel->save();
     this->setWidget(view);
 }
+
+
+nitro::NodeView::~NodeView() = default;
 
 void nitro::NodeView::clearModel() {
     if (dataFlowGraphModel) {
@@ -44,7 +50,70 @@ void nitro::NodeView::clearModel() {
             dataFlowGraphModel->deleteNode(item);
         }
     }
-
+    prevSave = dataFlowGraphModel->save();
 }
 
-nitro::NodeView::~NodeView() = default;
+bool nitro::NodeView::canQuitSafely() {
+    if (prevSave == dataFlowGraphModel->save()) {
+        return true;
+    }
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Save changes before closing?", filename,
+                                  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    if (reply == QMessageBox::Yes) {
+        saveModel();
+    } else if (reply == QMessageBox::Cancel) {
+        return false;
+    }
+    return true;
+}
+
+void nitro::NodeView::saveModel(bool askFile) {
+
+    if (!dataFlowGraphModel) {
+        return;
+    }
+    QString filePath;
+    if (askFile || filename == "untitled.json") {
+        filePath = QFileDialog::getSaveFileName(
+                this, "Save NITRO Config", "../saves/" + filename,
+                tr("Json Files (*.json)"));
+        if (filePath == "") {
+            return;
+        }
+        saveFilePath = filePath;
+        filename = QFileInfo(filePath).fileName();
+    } else {
+        filePath = saveFilePath;
+    }
+    auto saveObject = dataFlowGraphModel->save();
+    QFile jsonFile(filePath);
+    if (jsonFile.open(QFile::WriteOnly)) {
+        QJsonDocument document;
+        document.setObject(saveObject);
+        jsonFile.write(document.toJson());
+        prevSave = saveObject;
+    } else {
+        QMessageBox::warning(this, "Failed to open file", filePath);
+    }
+}
+
+void nitro::NodeView::loadModel() {
+    if (!dataFlowGraphModel) {
+        return;
+    }
+    if (!canQuitSafely()) {
+        return;
+    }
+    QString filePath = QFileDialog::getOpenFileName(
+            nullptr, "Load NITRO Config", "../saves/",
+            tr("Json Files (*.json)"));
+    if (filePath == "") {
+        return;
+    }
+    QFile jsonFile(filePath);
+    jsonFile.open(QFile::ReadOnly);
+    auto doc = QJsonDocument().fromJson(jsonFile.readAll());
+    dataFlowGraphModel->load(doc.object());
+}
+

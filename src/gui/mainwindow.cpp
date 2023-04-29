@@ -5,6 +5,7 @@
 #include <QMenuBar>
 #include <QSplitter>
 #include <QStatusBar>
+#include <QMessageBox>
 
 #include "util/imgconvert.hpp"
 
@@ -73,6 +74,9 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
             &QAction::triggered,
             [this]() {
                 if (nodeView) {
+                    if (!nodeView->canQuitSafely()) {
+                        return;
+                    }
                     nodeView->clearModel();
                 }
             });
@@ -82,29 +86,48 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     connect(openAction,
             &QAction::triggered,
-            []() {
-                qDebug() << "Opening...";
-                // TODO: open scene
+            [this]() {
+                if (nodeView) {
+                    nodeView->loadModel();
+                }
             });
     fileMenu->addAction(openAction);
+    fileMenu->addSeparator();
 
     auto *saveAction = new QAction(QStringLiteral("Save"), this);
     saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     connect(saveAction,
             &QAction::triggered,
-            []() {
-                qDebug() << "Saving...";
-                // TODO: save scene
+            [this]() {
+                if (nodeView) {
+                    nodeView->saveModel();
+                }
             });
     fileMenu->addAction(saveAction);
+
+    auto *saveAsAction = new QAction(QStringLiteral("Save As..."), this);
+    saveAsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
+    connect(saveAsAction,
+            &QAction::triggered,
+            [this]() {
+                if (nodeView) {
+                    nodeView->saveModel(true);
+                }
+            });
+    fileMenu->addAction(saveAsAction);
+    fileMenu->addSeparator();
 
     auto *quitAction = new QAction(QStringLiteral("Quit"), this);
     quitAction->setShortcutContext(Qt::ShortcutContext::ApplicationShortcut);
     quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     connect(quitAction,
             &QAction::triggered,
-            []() {
-                // TODO: check save
+            [this]() {
+                if (nodeView) {
+                    if (!nodeView->canQuitSafely()) {
+                        return;
+                    }
+                }
                 exit(EXIT_SUCCESS);
             });
     fileMenu->addAction(quitAction);

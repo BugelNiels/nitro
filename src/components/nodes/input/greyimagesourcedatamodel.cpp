@@ -7,33 +7,25 @@
 #include <QVBoxLayout>
 
 nitro::GreyImageSourceDataModel::GreyImageSourceDataModel()
-        : _image(std::make_shared<ImageData>()), _displayWrapper(nullptr), _loadButton{nullptr},
+        : _image(std::make_shared<ImageData>()), _path(nullptr), _displayWrapper(nullptr), _loadButton{nullptr},
           _imgLabel(nullptr) {}
 
 QJsonObject nitro::GreyImageSourceDataModel::save() const {
     QJsonObject modelJson = NodeDelegateModel::save();
 
-//    modelJson["image"] = QString::number(_number->number());
-// TODO: implement this properly
+    if (_path) {
+        modelJson["image"] = *_path;
+    }
     return modelJson;
 }
 
 void nitro::GreyImageSourceDataModel::load(QJsonObject const &p) {
-    // TODO: implemenet
-//    QJsonValue v = p["number"];
-//
-//    if (!v.isUndefined()) {
-//        QString strNum = v.toString();
-//
-//        bool ok;
-//        double d = strNum.toDouble(&ok);
-//        if (ok) {
-//            _number = std::make_shared<DecimalData>(d);
-//
-//            if (_lineEdit)
-//                _lineEdit->setText(strNum);
-//        }
-//    }
+    QJsonValue v = p["image"];
+
+    if (!v.isUndefined()) {
+        QString path = v.toString();
+        loadImage(path);
+    }
 }
 
 unsigned int nitro::GreyImageSourceDataModel::nPorts(QtNodes::PortType portType) const {
@@ -92,6 +84,11 @@ void nitro::GreyImageSourceDataModel::onLoadButtonPressed() {
             nullptr, "Load Image", "../images/",
             tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
 
+    loadImage(filePath);
+
+}
+
+void nitro::GreyImageSourceDataModel::loadImage(const QString &filePath) {
     QImageReader reader(filePath);
     reader.setAutoTransform(true);
     QImage img = reader.read();
@@ -99,9 +96,9 @@ void nitro::GreyImageSourceDataModel::onLoadButtonPressed() {
     if (img.isNull()) {
         return;
     }
-
-    nitro::CbdImage cbdimg(img);
-    _image = std::make_shared<ImageData>(cbdimg);
+    _path = new QString(filePath);
+    CbdImage cbdImg(img);
+    _image = std::make_shared<ImageData>(cbdImg);
 
     const QPixmap &p = QPixmap::fromImage(img);
     _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));

@@ -57,8 +57,11 @@ namespace nitro {
         const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _image;
 
+        QString* _path;
         QWidget *_displayWrapper;
         QPushButton *_loadButton;
         QLabel *_imgLabel;
+
+        void loadImage(const QString &filePath);
     };
 }
