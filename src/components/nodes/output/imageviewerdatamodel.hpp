@@ -50,12 +50,9 @@ namespace nitro {
 
 
     private:
-        // TODO: create a super node class that has this param
-        const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _image;
 
         QWidget *_displayWrapper;
-//        static ImageView *_imViewer;
         static ImageViewer *_imViewer;
         QLabel *_sizeLabel;
         QLabel *_layersLabel;

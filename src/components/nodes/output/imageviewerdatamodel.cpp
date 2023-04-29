@@ -32,6 +32,7 @@ unsigned int nitro::ImageViewerDataModel::nPorts(QtNodes::PortType portType) con
 }
 
 QtNodes::NodeDataType nitro::ImageViewerDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
+    // TODO: have a setting that switches between col and grayscale
     return ImageData().type();
 }
 

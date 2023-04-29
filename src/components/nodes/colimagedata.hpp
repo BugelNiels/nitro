@@ -16,7 +16,7 @@ namespace nitro {
 
         QtNodes::NodeDataType type() const override { return QtNodes::NodeDataType{"col_image", "Image"}; }
 
-        QImage image() const { return _image; }
+        QImage& image() { return _image; }
 
     private:
         QImage _image;
