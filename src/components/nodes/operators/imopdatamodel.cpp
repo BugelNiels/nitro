@@ -63,7 +63,7 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     if (!data) {
         Q_EMIT dataInvalidated(0);
     }
-
+    _input = inputImg;
     if (portIndex == 0) {
         auto img = compute(inputImg->image());
         _result = std::make_shared<ImageData>(img);
@@ -73,9 +73,19 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
         _imgLabel->setMaximumSize(_imgLabel->sizeHint());
         Q_EMIT dataUpdated(0);
     }
-
-
 }
+
+void nitro::ImOpDataModel::recompute() {
+
+        auto img = compute(_input->image());
+        _result = std::make_shared<ImageData>(img);
+
+        const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
+        _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
+        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+        Q_EMIT dataUpdated(0);
+}
+
 
 
 std::shared_ptr<QtNodes::NodeData> nitro::ImOpDataModel::outData(QtNodes::PortIndex) {
@@ -93,7 +103,7 @@ QWidget *nitro::ImOpDataModel::embeddedWidget() {
 
         _imgLabel->setMaximumSize(_imgLabel->sizeHint());
         layout->addWidget(_imgLabel);
-
+        addWidgets(layout);
         _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
     }
 

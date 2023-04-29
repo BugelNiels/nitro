@@ -1,5 +1,6 @@
 #include "nodeview.hpp"
-#include "src/components/nodes/input/imagesourcedatamodel.hpp"
+#include "src/components/nodes/input/greyimagesourcedatamodel.hpp"
+#include "src/components/nodes/input/colimagesourcedatamodel.hpp"
 #include "src/components/nodes/conversions/tograyscaledatamodel.hpp"
 #include "nodes/operators/thresholddatamodel.hpp"
 #include "nodes/nodegraphicsview.hpp"
@@ -15,7 +16,8 @@
 
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
-    ret->registerModel<nitro::ImageSourceDataModel>("Input");
+    ret->registerModel<nitro::GreyImageSourceDataModel>("Input");
+    ret->registerModel<nitro::ColImageSourceDataModel>("Input");
     ret->registerModel<nitro::ImageViewerDataModel>("Output");
     ret->registerModel<nitro::ToGrayScaleDataModel>("Conversions");
     ret->registerModel<nitro::ThresholdDataModel>("Operators");
@@ -26,7 +28,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
 nitro::NodeView::NodeView(nitro::ImageView* imViewer, QWidget *parent) : QDockWidget(parent) {
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
-    dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
+    dataFlowGraphModel->addNode(nitro::GreyImageSourceDataModel::nodeName());
     auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
     auto *view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);

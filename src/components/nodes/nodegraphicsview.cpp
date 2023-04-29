@@ -1,11 +1,13 @@
 #include "nodegraphicsview.hpp"
 #include "QtNodes/DataFlowGraphModel"
-#include "src/components/nodes/input/imagesourcedatamodel.hpp"
+#include "src/components/nodes/input/greyimagesourcedatamodel.hpp"
+#include "src/components/nodes/input/colimagesourcedatamodel.hpp"
 #include "src/components/nodes/output/imageviewerdatamodel.hpp"
 #include "src/components/nodes/conversions/tograyscaledatamodel.hpp"
 #include "nodes/operators/thresholddatamodel.hpp"
-#include "QtNodes/internal/ConnectionGraphicsObject.hpp"
-#include "QtNodes/internal/NodeGraphicsObject.hpp"
+
+#include <QtNodes/internal/ConnectionGraphicsObject.hpp>
+#include <QtNodes/internal/NodeGraphicsObject.hpp>
 #include <QAction>
 #include <QMenu>
 
@@ -72,8 +74,10 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
 // TODO: check pointer usage
 QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
     auto *inputMenu = new QMenu("Input");
-    inputMenu->addAction(spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(),
-                                         nitro::ImageSourceDataModel::nodeName()));
+    inputMenu->addAction(spawnNodeAction(nitro::GreyImageSourceDataModel::nodeCaption(),
+                                         nitro::GreyImageSourceDataModel::nodeName()));
+    inputMenu->addAction(spawnNodeAction(nitro::ColImageSourceDataModel::nodeCaption(),
+                                         nitro::ColImageSourceDataModel::nodeName()));
     return inputMenu;
 }
 

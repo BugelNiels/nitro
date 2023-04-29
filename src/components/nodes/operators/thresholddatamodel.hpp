@@ -22,7 +22,9 @@ namespace nitro {
 
         virtual ~ThresholdDataModel() {}
 
-    public:static QString nodeCaption() { return QStringLiteral("Threshold"); }
+    public:
+        static QString nodeCaption() { return QStringLiteral("Threshold"); }
+
         static QString nodeName() { return QStringLiteral("Threshold"); }
 
         QString caption() const override { return nodeCaption(); }
@@ -31,8 +33,15 @@ namespace nitro {
 
         QString name() const override { return nodeName(); }
 
+    public Q_SLOTS:
+
+        void modeChanged(int mode);
+
     protected:
-        nitro::CbdImage compute(const nitro::CbdImage& inputImg) override;
+        int _mode = 0;
+        nitro::CbdImage compute(const nitro::CbdImage &inputImg) override;
+
+        void addWidgets(QLayout *layout) override;
 
     private:
         int threshold = 128;

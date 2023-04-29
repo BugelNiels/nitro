@@ -6,6 +6,7 @@
 #include <QScrollArea>
 #include <QVector3D>
 #include <resamplers/resampler.hpp>
+#include <QMenu>
 
 #include "cbdimage.hpp"
 #include "settings/imviewsettings.hpp"
@@ -77,6 +78,8 @@ namespace nitro {
 
         // we make mainwindow a friend so it can access settings
         friend class MainWindow;
+
+        QMenu *initMenu();
     };
 
 } // nitro

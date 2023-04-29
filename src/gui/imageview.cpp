@@ -13,6 +13,8 @@
 #include <QScrollBar>
 #include <QtAlgorithms>
 #include <cmath>
+#include <QMenu>
+#include <QHBoxLayout>
 
 #include "quantisizers/quantisizemethod.hpp"
 #include "quantisizers/quantisizer.hpp"
@@ -23,9 +25,21 @@ nitro::ImageView::ImageView(QWidget *parent)
     imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     imageLabel->setScaledContents(true);
+    auto* layout = new QHBoxLayout();
     this->setWidget(imageLabel);
     QAbstractScrollArea::setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QAbstractScrollArea::setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+}
+
+QMenu* nitro::ImageView::initMenu() {
+    auto* menu = new QMenu();
+    auto *saveAction = new QAction("Save Image", this);
+    QObject::connect(saveAction, &QAction::triggered, [this]() {
+        // TODO
+    });
+    menu->addAction(saveAction);
+    return menu;
 }
 
 nitro::ImageView::~ImageView() = default;
@@ -294,7 +308,7 @@ void nitro::ImageView::scaleImToFit() {
     // calculate new scale factor
     imageLabel->setPixmap(p.scaled(w, h, Qt::KeepAspectRatio));
     int newW = imageLabel->pixmap().width();
-    scale = newW / static_cast<float>(w);
+    scale = newW / float(w);
     imageLabel->adjustSize();
 }
 

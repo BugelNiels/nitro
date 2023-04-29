@@ -31,7 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc)
+        resources/resources.qrc src/components/nodes/input/colimagesourcedatamodel.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

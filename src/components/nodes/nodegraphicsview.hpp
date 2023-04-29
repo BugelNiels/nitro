@@ -23,10 +23,11 @@ namespace nitro {
 
     public Q_SLOTS:
 
+
     private:
         QtNodes::DataFlowGraphModel *_dataModel;
         nitro::ImageView *_imViewer;
-        QAction* spawnViewNodeAction = nullptr;
+        QAction *spawnViewNodeAction = nullptr;
 
         bool shiftPressed = false;
         bool controlPressed = false;

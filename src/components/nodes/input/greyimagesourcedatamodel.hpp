@@ -1,28 +1,28 @@
 #pragma once
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
-
 #include <QtCore/QObject>
 
 #include <iostream>
 #include <QPushButton>
 #include <QLabel>
+#include <QtNodes/NodeDelegateModel>
 
 #include "cbdimage.hpp"
-#include "src/components/nodes/colimagedata.hpp"
+#include "src/components/nodes/imagedata.hpp"
 
 namespace nitro {
-    class ImageSourceDataModel : public QtNodes::NodeDelegateModel {
+    class GreyImageSourceDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ImageSourceDataModel();
+        GreyImageSourceDataModel();
 
-        virtual ~ImageSourceDataModel() {}
+        virtual ~GreyImageSourceDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Image Source"); }
-        static QString nodeName() { return QStringLiteral("ImageSource"); }
+        static QString nodeCaption() { return QStringLiteral("Greyscale Image Source"); }
+
+        static QString nodeName() { return QStringLiteral("GreyImageSource"); }
 
         QString caption() const override { return nodeCaption(); }
 
@@ -55,7 +55,7 @@ namespace nitro {
     private:
         // TODO: create a super node class that has this param
         const int _embedImgSize = 128;
-        std::shared_ptr<ColImageData> _image;
+        std::shared_ptr<ImageData> _image;
 
         QWidget *_displayWrapper;
         QPushButton *_loadButton;

@@ -1,4 +1,4 @@
-#include "imagesourcedatamodel.hpp"
+#include "greyimagesourcedatamodel.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -6,11 +6,11 @@
 #include <QImageReader>
 #include <QVBoxLayout>
 
-nitro::ImageSourceDataModel::ImageSourceDataModel()
-        : _image(std::make_shared<ColImageData>()), _displayWrapper(nullptr), _loadButton{nullptr},
+nitro::GreyImageSourceDataModel::GreyImageSourceDataModel()
+        : _image(std::make_shared<ImageData>()), _displayWrapper(nullptr), _loadButton{nullptr},
           _imgLabel(nullptr) {}
 
-QJsonObject nitro::ImageSourceDataModel::save() const {
+QJsonObject nitro::GreyImageSourceDataModel::save() const {
     QJsonObject modelJson = NodeDelegateModel::save();
 
 //    modelJson["image"] = QString::number(_number->number());
@@ -18,7 +18,7 @@ QJsonObject nitro::ImageSourceDataModel::save() const {
     return modelJson;
 }
 
-void nitro::ImageSourceDataModel::load(QJsonObject const &p) {
+void nitro::GreyImageSourceDataModel::load(QJsonObject const &p) {
     // TODO: implemenet
 //    QJsonValue v = p["number"];
 //
@@ -36,7 +36,7 @@ void nitro::ImageSourceDataModel::load(QJsonObject const &p) {
 //    }
 }
 
-unsigned int nitro::ImageSourceDataModel::nPorts(QtNodes::PortType portType) const {
+unsigned int nitro::GreyImageSourceDataModel::nPorts(QtNodes::PortType portType) const {
     unsigned int result = 1;
 
     switch (portType) {
@@ -54,22 +54,22 @@ unsigned int nitro::ImageSourceDataModel::nPorts(QtNodes::PortType portType) con
     return result;
 }
 
-QtNodes::NodeDataType nitro::ImageSourceDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
-    return ColImageData().type();
+QtNodes::NodeDataType nitro::GreyImageSourceDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
+    return ImageData().type();
 }
 
-std::shared_ptr<QtNodes::NodeData> nitro::ImageSourceDataModel::outData(QtNodes::PortIndex) {
+std::shared_ptr<QtNodes::NodeData> nitro::GreyImageSourceDataModel::outData(QtNodes::PortIndex) {
     return _image;
 }
 
-QWidget *nitro::ImageSourceDataModel::embeddedWidget() {
+QWidget *nitro::GreyImageSourceDataModel::embeddedWidget() {
     if (!_displayWrapper) {
         _displayWrapper = new QWidget();
         auto *layout = new QVBoxLayout(_displayWrapper);
 
         _loadButton = new QPushButton("Load Image");
         _loadButton->setMaximumSize(_loadButton->sizeHint());
-        connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
+        connect(_loadButton, &QPushButton::pressed, this, &GreyImageSourceDataModel::onLoadButtonPressed);
 
         _imgLabel = new QLabel("");
         _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
@@ -87,7 +87,7 @@ QWidget *nitro::ImageSourceDataModel::embeddedWidget() {
     return _displayWrapper;
 }
 
-void nitro::ImageSourceDataModel::onLoadButtonPressed() {
+void nitro::GreyImageSourceDataModel::onLoadButtonPressed() {
     QString filePath = QFileDialog::getOpenFileName(
             nullptr, "Load Image", "../images/",
             tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
@@ -95,10 +95,13 @@ void nitro::ImageSourceDataModel::onLoadButtonPressed() {
     QImageReader reader(filePath);
     reader.setAutoTransform(true);
     QImage img = reader.read();
+    img = img.convertToFormat(QImage::Format_Grayscale8);
     if (img.isNull()) {
-        Q_EMIT dataInvalidated(0);
+        return;
     }
-    _image = std::make_shared<ColImageData>(img);
+
+    nitro::CbdImage cbdimg(img);
+    _image = std::make_shared<ImageData>(cbdimg);
 
     const QPixmap &p = QPixmap::fromImage(img);
     _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
