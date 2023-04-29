@@ -27,11 +27,15 @@ namespace nitro {
         virtual ~ToGrayScaleDataModel() {}
 
     public:
-        QString caption() const override { return QStringLiteral("To Grayscale"); }
+
+        static QString nodeCaption() { return QStringLiteral("To Grayscale"); }
+        static QString nodeName() { return QStringLiteral("ToGrayscale"); }
+
+        QString caption() const override { return nodeCaption(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return QStringLiteral("ToGrayscale"); }
+        QString name() const override { return nodeName(); }
 
     public:
         QJsonObject save() const override;
@@ -51,7 +55,7 @@ namespace nitro {
 
     private:
 
-        const int _embedImgSize = 256;
+        const int _embedImgSize = 128;
         std::shared_ptr<ColImageData> _in;
         std::shared_ptr<ImageData> _result;
 

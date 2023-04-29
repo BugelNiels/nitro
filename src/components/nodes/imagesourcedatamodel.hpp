@@ -21,11 +21,14 @@ namespace nitro {
         virtual ~ImageSourceDataModel() {}
 
     public:
-        QString caption() const override { return QStringLiteral("Image Source"); }
+        static QString nodeCaption() { return QStringLiteral("Image Source"); }
+        static QString nodeName() { return QStringLiteral("ImageSource"); }
+
+        QString caption() const override { return nodeCaption(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return QStringLiteral("ImageSource"); }
+        QString name() const override { return nodeName(); }
 
     public:
         QJsonObject save() const override;
@@ -50,8 +53,8 @@ namespace nitro {
         void onLoadButtonPressed();
 
     private:
-
-        const int _embedImgSize = 256;
+        // TODO: create a super node class that has this param
+        const int _embedImgSize = 128;
         std::shared_ptr<ColImageData> _image;
 
         QWidget *_displayWrapper;

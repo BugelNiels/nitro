@@ -33,7 +33,7 @@ file(GLOB_RECURSE HS src/*.h)
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS} ${HS}
         src/gui/mainwindow.ui
-        resources/resources.qrc src/components/nodes/tograyscaledatamodel.hpp src/components/nodes/imopdatamodel.hpp src/components/nodes/operators/thresholddatamodel.hpp)
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

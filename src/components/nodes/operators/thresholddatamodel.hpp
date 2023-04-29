@@ -22,12 +22,14 @@ namespace nitro {
 
         virtual ~ThresholdDataModel() {}
 
-    public:
-        QString caption() const override { return QStringLiteral("Threshold"); }
+    public:static QString nodeCaption() { return QStringLiteral("Threshold"); }
+        static QString nodeName() { return QStringLiteral("Threshold"); }
+
+        QString caption() const override { return nodeCaption(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return QStringLiteral("Threshold"); }
+        QString name() const override { return nodeName(); }
 
     protected:
         nitro::CbdImage compute(const nitro::CbdImage& inputImg) override;

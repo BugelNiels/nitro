@@ -3,28 +3,15 @@
 Niels' Image-processing Thesis on Reconstruction Operations
 
 
-## Pre-requisites
-
-Install NVIDIA Flip:
+## Installing
 
 ```sh
-git clone git@github.com:NVlabs/flip.git
-cd flip
-mkdir build
-cd build
-cmake ..
-make
-make install
+git clone --recurse-submodules -j8 git@github.com:BugelNiels/continuous-bit-depth-images.git
 ```
 
-Install QtNodes:
+In case `--recurse-submodules` was not used, you can initialize the submodules using:
 
 ```sh
-git clone git@github.com:paceholder/nodeeditor.git
-cd nodeeditor
-mkdir build
-cd build
-cmake ..
-make
-make install
+git submodule init
+git submodule update
 ```

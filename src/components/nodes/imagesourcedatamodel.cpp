@@ -66,17 +66,19 @@ QWidget *nitro::ImageSourceDataModel::embeddedWidget() {
     if (!_displayWrapper) {
         _displayWrapper = new QWidget();
         auto *layout = new QVBoxLayout(_displayWrapper);
-        layout->setAlignment(Qt::AlignCenter);
 
         _loadButton = new QPushButton("Load Image");
-        connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
         _loadButton->setMaximumSize(_loadButton->sizeHint());
-        layout->addWidget(_loadButton);
+        connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
+
         _imgLabel = new QLabel("");
         _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
-
         _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+
+        layout->addWidget(_loadButton);
         layout->addWidget(_imgLabel);
+        layout->setAlignment(_loadButton, Qt::AlignCenter);
+        layout->setAlignment(_imgLabel, Qt::AlignCenter);
         // TODO: Temporary ugliness fix
         _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
 

@@ -45,7 +45,7 @@ namespace nitro {
 
     private:
 
-        const int _embedImgSize = 256;
+        const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;
