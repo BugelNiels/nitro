@@ -3,6 +3,7 @@
 #include <QtNodes/GraphicsView>
 #include <QMenu>
 #include "QtNodes/DataFlowGraphModel"
+#include "imageview.hpp"
 
 namespace nitro {
 
@@ -10,9 +11,12 @@ namespace nitro {
     public:
         NodeGraphicsView(QWidget *parent = Q_NULLPTR);
 
-        NodeGraphicsView(QtNodes::BasicGraphicsScene *scene, QtNodes::DataFlowGraphModel* model, QWidget *parent = Q_NULLPTR);
+        NodeGraphicsView(nitro::ImageView *viewer, QtNodes::BasicGraphicsScene *scene,
+                         QtNodes::DataFlowGraphModel *model,
+                         QWidget *parent);
 
         NodeGraphicsView(const GraphicsView &) = delete;
+
 
         NodeGraphicsView operator=(const GraphicsView &) = delete;
 
@@ -20,11 +24,16 @@ namespace nitro {
     public Q_SLOTS:
 
     private:
-        QtNodes::DataFlowGraphModel* _dataModel;
+        QtNodes::DataFlowGraphModel *_dataModel;
+        nitro::ImageView *_imViewer;
+        QAction* spawnViewNodeAction = nullptr;
 
-        QMenu* initNodeMenu();
+        bool shiftPressed = false;
+        bool controlPressed = false;
 
-        QMenu* _nodeMenu{};
+        QMenu *initNodeMenu();
+
+        QMenu *_nodeMenu{};
 
         void spawnNodeMenu();
 
@@ -35,6 +44,18 @@ namespace nitro {
         QMenu *initOperationsSubMenu();
 
         QAction *spawnNodeAction(const QString &menuName, const QString &nodeType);
+
+        QMenu *initOutputSubMenu();
+
+        QtNodes::NodeId viewerNodeId;
+
+        QAction *spawnViewerNodeAction();
+
+        void keyPressEvent(QKeyEvent *event) override;
+
+        void keyReleaseEvent(QKeyEvent *event) override;
+
+        void mousePressEvent(QMouseEvent *event) override;
     };
 
 } // nitro

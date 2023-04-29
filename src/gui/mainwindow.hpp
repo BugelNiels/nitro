@@ -2,7 +2,7 @@
 
 #include <QMainWindow>
 
-#include "imageview.h"
+#include "imageview.hpp"
 #include "renderview.hpp"
 //#include "util/progresslistener.hpp"
 
@@ -32,13 +32,13 @@ class MainWindow : public QMainWindow {
 
   // void on_methodComboBox_currentIndexChanged(int index);
 
-  void on_compareButton_pressed();
-
-  void on_compareButton_released();
-
-  void on_fitButton_clicked();
-
-  void on_resetButton_clicked();
+//  void on_compareButton_pressed();
+//
+//  void on_compareButton_released();
+//
+//  void on_fitButton_clicked();
+//
+//  void on_resetButton_clicked();
 
   //    void on_quantisizeButton_clicked();
 
@@ -56,14 +56,14 @@ class MainWindow : public QMainWindow {
 
   //    void on_quantMethodComboBox_currentIndexChanged(int index);
 
-  void on_differencePushButton_pressed();
+//  void on_differencePushButton_pressed();
 
  private:
-  void newImage(const QString &name);
-
-  int oldShowIdx;
-
-  void updateRenderImage();
-
-  Ui::MainWindow *ui;
+//  void newImage(const QString &name);
+//
+//  int oldShowIdx;
+//
+//  void updateRenderImage();
+//
+//  Ui::MainWindow *ui;
 };

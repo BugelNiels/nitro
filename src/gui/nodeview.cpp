@@ -1,9 +1,9 @@
-#include "nodeview.h"
-#include "nodes/imagesourcedatamodel.hpp"
-#include "nodes/tograyscaledatamodel.hpp"
+#include "nodeview.hpp"
+#include "src/components/nodes/input/imagesourcedatamodel.hpp"
+#include "src/components/nodes/conversions/tograyscaledatamodel.hpp"
 #include "nodes/operators/thresholddatamodel.hpp"
 #include "nodes/nodegraphicsview.hpp"
-#include "nodes/nodegraphicsscene.hpp"
+#include "nodes/output/imageviewerdatamodel.hpp"
 
 #include <QtGui/QScreen>
 #include <QtNodes/BasicGraphicsScene>
@@ -15,40 +15,23 @@
 
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
-    ret->registerModel<nitro::ImageSourceDataModel>("Sources");
-
-//    ret->registerModel<NumberDisplayDataModel>("Displays");
-//
-    ret->registerModel<nitro::ToGrayScaleDataModel>("Operators");
+    ret->registerModel<nitro::ImageSourceDataModel>("Input");
+    ret->registerModel<nitro::ImageViewerDataModel>("Output");
+    ret->registerModel<nitro::ToGrayScaleDataModel>("Conversions");
     ret->registerModel<nitro::ThresholdDataModel>("Operators");
-//
-//    ret->registerModel<SubtractionModel>("Operators");
-//
-//    ret->registerModel<MultiplicationModel>("Operators");
-//
-//    ret->registerModel<DivisionModel>("Operators");
 
     return ret;
 }
 
-NodeView::NodeView(QWidget *parent) : QDockWidget(parent) {
-
+nitro::NodeView::NodeView(nitro::ImageView* imViewer, QWidget *parent) : QDockWidget(parent) {
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
+    dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
     auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
-//    auto scene = new nitro::NodeGraphicsScene(*dataFlowGraphModel);
-//    auto *view = new QtNodes::GraphicsView(scene);
-    auto *view = new nitro::NodeGraphicsView(scene, dataFlowGraphModel);
+    auto *view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-    // TODO: cleaner
-
-
-
-
-
-    view->showNormal();
+//    view->showNormal();
     this->setWidget(view);
 }
 
-NodeView::~NodeView() = default;
+nitro::NodeView::~NodeView() = default;

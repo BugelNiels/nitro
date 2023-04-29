@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 
@@ -9,27 +9,25 @@
 #include <QLabel>
 
 #include "cbdimage.hpp"
-#include "colimagedata.hpp"
-#include "imagedata.hpp"
+#include "src/components/nodes/imagedata.hpp"
+#include "src/gui/nodeview.hpp"
+#include "imageview.hpp"
 
-class QLineEdit;
 
-/// The model dictates the number of inputs and outputs for the Node.
-/// In this example it has no logic.
 
 namespace nitro {
-    class ToGrayScaleDataModel : public QtNodes::NodeDelegateModel {
+    class ImageViewerDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ToGrayScaleDataModel();
+        ImageViewerDataModel();
 
-        virtual ~ToGrayScaleDataModel() {}
+        virtual ~ImageViewerDataModel() {}
 
     public:
+        static QString nodeCaption() { return QStringLiteral("Image Viewer"); }
 
-        static QString nodeCaption() { return QStringLiteral("To Grayscale"); }
-        static QString nodeName() { return QStringLiteral("ToGrayscale"); }
+        static QString nodeName() { return QStringLiteral("ImageViewer"); }
 
         QString caption() const override { return nodeCaption(); }
 
@@ -53,13 +51,17 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
-    private:
+    public:
+        static void setViewer(nitro::ImageView *viewer);
 
+
+    private:
+        // TODO: create a super node class that has this param
         const int _embedImgSize = 128;
-        std::shared_ptr<ColImageData> _in;
-        std::shared_ptr<ImageData> _result;
+        std::shared_ptr<ImageData> _image;
 
         QWidget *_displayWrapper;
-        QLabel *_imgLabel;
+//        static ImageView *_imViewer;
+        static ImageView *_imViewer;
     };
 }

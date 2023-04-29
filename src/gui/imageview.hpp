@@ -13,8 +13,9 @@
 #include "util/matrix.hpp"
 #include "util/progressupdater.hpp"
 
+namespace nitro {
 
-class ImageView : public QScrollArea, public nitro::ProgressUpdater {
+    class ImageView : public QScrollArea, public nitro::ProgressUpdater {
     Q_OBJECT
 
     public:
@@ -22,19 +23,19 @@ class ImageView : public QScrollArea, public nitro::ProgressUpdater {
 
         ~ImageView() override;
 
-        bool loadFile(const QString &fileName);
-
-        void quantisize();
-
-        void calcDistanceField();
-
-        void resample();
+//        bool loadFile(const QString &fileName);
+//
+//        void quantisize();
+//
+//        void calcDistanceField();
+//
+//        void resample();
         //  CbdImage compress();
         //  void decompress(CbdImage& compressImg);
 
-        const QImage &getActiveDisplayImage();
-
-        const QImage &getImageByIndex(int index);
+//        const QImage &getActiveDisplayImage();
+//
+//        const QImage &getImageByIndex(int index);
 
         void mouseMoveEvent(QMouseEvent *event) override;
 
@@ -50,17 +51,19 @@ class ImageView : public QScrollArea, public nitro::ProgressUpdater {
 
         void resetImScale();
 
-        void updateImage();
-
-    private:
+//        void updateImage();
         void setImage(const QImage &newImage);
 
-        nitro::SampleSettings sampleSettings;
+    private:
+
+//        nitro::SampleSettings sampleSettings;
         nitro::ImViewSettings viewSettings;
 
+        QImage* curImg;
+
         // vector allows for rgb
-        QVector<nitro::CbdImage> originalImg;
-        QVector<nitro::CbdImage> quantisizedImg;
+//        QVector<nitro::CbdImage> originalImg;
+//        QVector<nitro::CbdImage> quantisizedImg;
         QVector<QImage> savedImages;
 
         QVector2D oldMouseCoords;
@@ -70,9 +73,10 @@ class ImageView : public QScrollArea, public nitro::ProgressUpdater {
         QLabel *imageLabel;
         float scale = 1.0;
         bool dragging;
-        bool quantisized;
+//        bool quantisized;
 
         // we make mainwindow a friend so it can access settings
         friend class MainWindow;
     };
 
+} // nitro

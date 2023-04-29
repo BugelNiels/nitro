@@ -9,7 +9,7 @@
 #include <QLabel>
 
 #include "cbdimage.hpp"
-#include "nodes/imopdatamodel.hpp"
+#include "imopdatamodel.hpp"
 
 class QLineEdit;
 

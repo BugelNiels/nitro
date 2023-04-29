@@ -27,12 +27,10 @@ add_subdirectory(3rdparty)
 
 file(GLOB_RECURSE CPPS src/*.cpp)
 file(GLOB_RECURSE HPPS src/*.hpp)
-file(GLOB_RECURSE HS src/*.h)
 
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
-        ${CPPS} ${HPPS} ${HS}
-        src/gui/mainwindow.ui
+        ${CPPS} ${HPPS}
         resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}

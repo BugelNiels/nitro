@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 
@@ -8,21 +8,34 @@
 #include <QPushButton>
 #include <QLabel>
 
-
 #include "cbdimage.hpp"
-#include "imagedata.hpp"
+#include "src/components/nodes/colimagedata.hpp"
+#include "src/components/nodes/imagedata.hpp"
+
+class QLineEdit;
+
+/// The model dictates the number of inputs and outputs for the Node.
+/// In this example it has no logic.
 
 namespace nitro {
-    class ImOpDataModel : public QtNodes::NodeDelegateModel {
+    class ToGrayScaleDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ImOpDataModel();
+        ToGrayScaleDataModel();
 
-        virtual ~ImOpDataModel() {}
+        virtual ~ToGrayScaleDataModel() {}
 
     public:
+
+        static QString nodeCaption() { return QStringLiteral("To Grayscale"); }
+        static QString nodeName() { return QStringLiteral("ToGrayscale"); }
+
+        QString caption() const override { return nodeCaption(); }
+
         bool captionVisible() const override { return true; }
+
+        QString name() const override { return nodeName(); }
 
     public:
         QJsonObject save() const override;
@@ -40,12 +53,10 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
-    protected:
-        virtual nitro::CbdImage compute(const nitro::CbdImage &inputImg) = 0;
-
     private:
 
         const int _embedImgSize = 128;
+        std::shared_ptr<ColImageData> _in;
         std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;

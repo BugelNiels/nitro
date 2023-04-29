@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 
@@ -9,7 +9,7 @@
 #include <QLabel>
 
 #include "cbdimage.hpp"
-#include "colimagedata.hpp"
+#include "src/components/nodes/colimagedata.hpp"
 
 namespace nitro {
     class ImageSourceDataModel : public QtNodes::NodeDelegateModel {
