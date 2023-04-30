@@ -9,9 +9,10 @@
 
 #include "cbdimage.hpp"
 #include "src/components/nodes/imagedata.hpp"
+#include "nodes/imagedatamodel.hpp"
 
 namespace nitro {
-    class ImageSourceDataModel : public QtNodes::NodeDelegateModel {
+    class ImageSourceDataModel : public ImageDataModel {
     Q_OBJECT
 
     public:
@@ -44,25 +45,21 @@ namespace nitro {
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
 
-        QWidget *embeddedWidget() override;
-
-    public:
+    protected:
+        QWidget *initBeforeWidget() override;
+        QWidget *initAfterWidget() override;
 
     private Q_SLOTS:
 
         void onLoadButtonPressed();
 
     private:
-        // TODO: create a super node class that has this param
-        const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _image;
 
-
         QString *_path;
-        QWidget *_displayWrapper;
         QPushButton *_loadButton;
-        QLabel *_imgLabel;
 
         void loadImage(const QString &filePath);
+
     };
 }

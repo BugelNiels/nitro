@@ -6,8 +6,8 @@
 #include <QOpenGLWidget>
 #include <QVector3D>
 
-#include "renderers/renderer.hpp"
-#include "renderers/shaderrenderer.hpp"
+#include "src/gui/surfacevis/renderers/renderer.hpp"
+#include "src/gui/surfacevis/renderers/shaderrenderer.hpp"
 
 namespace nitro {
 

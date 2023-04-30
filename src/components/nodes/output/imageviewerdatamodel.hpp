@@ -10,8 +10,9 @@
 
 #include "cbdimage.hpp"
 #include "src/components/nodes/imagedata.hpp"
-#include "src/gui/nodeview.hpp"
+#include "src/gui/nodeeditor/nodeview.hpp"
 #include "src/gui/imgviewer/imgviewer.hpp"
+#include "nodes/imagedatamodel.hpp"
 
 
 namespace nitro {

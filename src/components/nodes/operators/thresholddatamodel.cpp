@@ -35,24 +35,41 @@ nitro::CbdImage nitro::ThresholdDataModel::compute(const nitro::CbdImage &inputI
     return result;
 }
 
-void nitro::ThresholdDataModel::addWidgets(QLayout *layout) {
+
+void nitro::ThresholdDataModel::modeChanged(int mode) {
+    _mode = mode;
+    recompute();
+}
+
+void nitro::ThresholdDataModel::thresholdValChanged(int val) {
+    threshold = val;
+    recompute();
+}
+
+QWidget *nitro::ThresholdDataModel::initBeforeWidget() {
     auto *wrapper = new QWidget();
     auto *grid = new QGridLayout();
-    grid->addWidget(new QLabel("Mode"), 1, 0);
+
+    grid->addWidget(new QLabel("Threshold:"), 0, 0);
+    auto *spinBox = new QSpinBox();
+    spinBox->setMinimum(0);
+    spinBox->setMaximum(255); // TODO: don't limit to 255?
+    connect(spinBox, SIGNAL (valueChanged(int)), this, SLOT(thresholdValChanged(int)));
+    grid->addWidget(spinBox, 0, 1);
+
+    grid->addWidget(new QLabel("Mode:"), 1, 0);
     auto *combobox = new QComboBox();
     combobox->addItem(">");
     combobox->addItem(">=");
     combobox->addItem("<");
     combobox->addItem("<=");
-
     connect(combobox, SIGNAL (currentIndexChanged(int)), this, SLOT(modeChanged(int)));
     grid->addWidget(combobox, 1, 1);
     wrapper->setLayout(grid);
-    layout->addWidget(wrapper);
+    return wrapper;
 }
 
-void nitro::ThresholdDataModel::modeChanged(int mode) {
-    _mode = mode;
-    recompute();
+QWidget *nitro::ThresholdDataModel::initAfterWidget() {
+    return nullptr;
 }
 

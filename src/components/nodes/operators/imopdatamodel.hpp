@@ -11,9 +11,10 @@
 
 #include "cbdimage.hpp"
 #include "src/components/nodes/imagedata.hpp"
+#include "nodes/imagedatamodel.hpp"
 
 namespace nitro {
-    class ImOpDataModel : public QtNodes::NodeDelegateModel {
+    class ImOpDataModel : public ImageDataModel {
     Q_OBJECT
 
     public:
@@ -33,23 +34,15 @@ namespace nitro {
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
-        QWidget *embeddedWidget() override;
-
     protected:
         void recompute();
 
         virtual nitro::CbdImage compute(const nitro::CbdImage &inputImg) = 0;
 
-        virtual void addWidgets(QLayout *layout) = 0;
-
     private:
-
-        const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _result;
         std::shared_ptr<ImageData> _input;
 
-        QWidget *_displayWrapper;
-        QLabel *_imgLabel;
 
     };
 }

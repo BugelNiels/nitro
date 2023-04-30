@@ -50,38 +50,26 @@ nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
 
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     QGraphicsView::drawBackground(painter, r);
+    painter->setBrush(QBrush(QColor(42, 42, 42)));
+    painter->drawRect(r);
     if (_imgDisplayItem != nullptr) {
         return;
     }
+    QPen pBounds(QColor(128, 128, 128), 2.0);
+    painter->setPen(pBounds);
+    QRectF gridRect(-emptySize, -emptySize, emptySize * 2, emptySize * 2);
+    painter->drawRect(gridRect);
 
-    auto drawGrid = [&](double gridStep) {
-        QPointF tl(-emptySize, -emptySize);
-        QPointF br(emptySize, emptySize);
+    QPen pfine(QColor(66, 66, 66), 1.0);
 
-        double left = std::floor(tl.x() / gridStep - 0.5);
-        double right = std::floor(br.x() / gridStep + 1.0);
-        double bottom = std::floor(tl.y() / gridStep - 0.5);
-        double top = std::floor(br.y() / gridStep + 1.0);
-
-        // vertical lines
-        for (int xi = int(left); xi <= int(right); ++xi) {
-            QLineF line(xi * gridStep, bottom * gridStep, xi * gridStep, top * gridStep);
-
-            painter->drawLine(line);
-        }
-
-        // horizontal lines
-        for (int yi = int(bottom); yi <= int(top); ++yi) {
-            QLineF line(left * gridStep, yi * gridStep, right * gridStep, yi * gridStep);
-            painter->drawLine(line);
-        }
-    };
-
-    // TODO: put in stylesheet somewhere
-    QPen pfine(QColor(57, 62, 70), 1.0);
-
+    const int gridSize = 32;
     painter->setPen(pfine);
-    drawGrid(15);
+    for (qreal x = gridRect.x(); x < gridRect.x() + gridRect.width(); x += gridSize) {
+        painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
+    }
+    for (qreal y = gridRect.y(); y < gridRect.y() + gridRect.height(); y += gridSize) {
+        painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
+    }
 }
 
 void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {

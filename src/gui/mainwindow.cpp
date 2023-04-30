@@ -1,5 +1,5 @@
 #include "mainwindow.hpp"
-#include "nodeview.hpp"
+#include "src/gui/nodeeditor/nodeview.hpp"
 #include "imageview.hpp"
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include <QMenuBar>
@@ -65,11 +65,14 @@ bool nitro::MainWindow::eventFilter(QObject *obj, QEvent *event) {
 }
 
 QStatusBar *nitro::MainWindow::initFooter() {
-    auto *footerLabel = new QLabel("version 0.1", this);
+    auto *versionLabel = new QLabel("version 0.1", this);
+    fileNameLabel = new QLabel("untitled.json", this);
 
     auto *statusBar = new QStatusBar(this);
-    statusBar->insertPermanentWidget(0, footerLabel, 0);
+    statusBar->insertPermanentWidget(0, fileNameLabel, 1);
+    statusBar->insertPermanentWidget(1, versionLabel, 0);
     statusBar->setSizeGripEnabled(false);
+    statusBar->setStyleSheet("color: grey;");
     return statusBar;
 }
 
@@ -89,6 +92,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
                     if (!nodeView->canQuitSafely()) {
                         return;
                     }
+                    fileNameLabel->setText(nodeView->getFileName());
                     nodeView->clearModel();
                 }
             });
@@ -101,6 +105,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
             [this]() {
                 if (nodeView) {
                     nodeView->loadModel();
+                    fileNameLabel->setText(nodeView->getFileName());
                 }
             });
     fileMenu->addAction(openAction);
@@ -113,6 +118,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
             [this]() {
                 if (nodeView) {
                     nodeView->saveModel();
+                    fileNameLabel->setText(nodeView->getFileName());
                 }
             });
     fileMenu->addAction(saveAction);
@@ -124,6 +130,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
             [this]() {
                 if (nodeView) {
                     nodeView->saveModel(true);
+                    fileNameLabel->setText(nodeView->getFileName());
                 }
             });
     fileMenu->addAction(saveAsAction);

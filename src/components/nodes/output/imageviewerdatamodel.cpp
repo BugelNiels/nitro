@@ -68,9 +68,9 @@ QWidget *nitro::ImageViewerDataModel::embeddedWidget() {
         layout->addWidget(_sizeLabel);
         layout->addWidget(_layersLabel);
         _displayWrapper->setLayout(layout);
-
-        // TODO: Temporary ugliness fix
-        _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
+        QPalette palette;
+        palette.setColor(QPalette::Window, QColor(52, 52, 52));             // Window background color
+        _displayWrapper->setPalette(palette);
 
     }
 

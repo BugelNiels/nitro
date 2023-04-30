@@ -6,11 +6,11 @@
 #include "nodes/output/imageviewerdatamodel.hpp"
 
 #include <QtGui/QScreen>
-#include <QtNodes/BasicGraphicsScene>
-#include <QtNodes/GraphicsView>
+#include "3rdparty/nodeeditor/include/QtNodes/BasicGraphicsScene"
+#include "3rdparty/nodeeditor/include/QtNodes/GraphicsView"
 #include <QtWidgets/QApplication>
-#include <QtNodes/DataFlowGraphModel>
-#include <QtNodes/NodeDelegateModelRegistry>
+#include "3rdparty/nodeeditor/include/QtNodes/DataFlowGraphModel"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
 #include <QFileDialog>
 #include <QMessageBox>
 

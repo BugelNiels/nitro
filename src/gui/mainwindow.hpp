@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
-#include "nodeview.hpp"
+#include "src/gui/nodeeditor/nodeview.hpp"
 
 namespace nitro {
 
@@ -20,6 +20,7 @@ namespace nitro {
     private slots:
 
     private:
+        QLabel* fileNameLabel = nullptr;
         NodeView *nodeView;
 
         QMenuBar *initMenuBar();

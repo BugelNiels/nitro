@@ -6,8 +6,7 @@
 #include <QVBoxLayout>
 
 
-nitro::ImOpDataModel::ImOpDataModel()
-        : _displayWrapper(nullptr), _imgLabel(nullptr) {}
+nitro::ImOpDataModel::ImOpDataModel() {}
 
 
 unsigned int nitro::ImOpDataModel::nPorts(QtNodes::PortType portType) const {
@@ -40,48 +39,29 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     }
     _input = inputImg;
     if (portIndex == 0) {
-        // TODO: check whether color or not
         auto img = compute(inputImg->image());
         _result = std::make_shared<ImageData>(img);
 
         const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
-        _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
-        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+        updateImage(p);
         Q_EMIT dataUpdated(0);
     }
 }
 
 void nitro::ImOpDataModel::recompute() {
 
-        auto img = compute(_input->image());
-        _result = std::make_shared<ImageData>(img);
+    if(_input == nullptr) {
+        return;
+    }
+    auto img = compute(_input->image());
+    _result = std::make_shared<ImageData>(img);
 
-        const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
-        _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
-        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
-        Q_EMIT dataUpdated(0);
+    const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
+    updateImage(p);
+    Q_EMIT dataUpdated(0);
 }
-
 
 
 std::shared_ptr<QtNodes::NodeData> nitro::ImOpDataModel::outData(QtNodes::PortIndex) {
     return _result;
-}
-
-QWidget *nitro::ImOpDataModel::embeddedWidget() {
-    if (!_displayWrapper) {
-        _displayWrapper = new QWidget();
-        auto *layout = new QVBoxLayout(_displayWrapper);
-        layout->setAlignment(Qt::AlignCenter);
-
-        _imgLabel = new QLabel("");
-        _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
-
-        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
-        layout->addWidget(_imgLabel);
-        addWidgets(layout);
-        _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
-    }
-
-    return _displayWrapper;
 }

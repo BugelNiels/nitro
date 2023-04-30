@@ -36,14 +36,17 @@ namespace nitro {
     public Q_SLOTS:
 
         void modeChanged(int mode);
+        void thresholdValChanged(int val);
 
     protected:
         int _mode = 0;
         nitro::CbdImage compute(const nitro::CbdImage &inputImg) override;
 
-        void addWidgets(QLayout *layout) override;
+        QWidget *initBeforeWidget() override;
+        QWidget *initAfterWidget() override;
 
     private:
         int threshold = 128;
+
     };
 }

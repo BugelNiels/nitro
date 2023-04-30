@@ -21,14 +21,19 @@ namespace nitro {
         void saveModel(bool askFile = false);
 
         void loadModel();
+
         void forwardKeyPress(QKeyEvent *event);
 
+        const QString &getFileName() const {
+            return filename;
+        }
+
     private:
-        NodeGraphicsView* view;
+        NodeGraphicsView *view;
         QJsonObject prevSave;
         QString filename;
         QString saveFilePath;
-        QtNodes::DataFlowGraphModel* dataFlowGraphModel;
+        QtNodes::DataFlowGraphModel *dataFlowGraphModel;
 
     };
 

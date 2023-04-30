@@ -5,10 +5,11 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QVBoxLayout>
+#include <QPainter>
 
 nitro::ImageSourceDataModel::ImageSourceDataModel()
-        : _image(std::make_shared<ImageData>()), _path(nullptr), _displayWrapper(nullptr), _loadButton{nullptr},
-          _imgLabel(nullptr) {}
+        : _image(std::make_shared<ImageData>()), _path(nullptr), _loadButton{nullptr} {
+}
 
 QJsonObject nitro::ImageSourceDataModel::save() const {
     QJsonObject modelJson = NodeDelegateModel::save();
@@ -54,29 +55,15 @@ std::shared_ptr<QtNodes::NodeData> nitro::ImageSourceDataModel::outData(QtNodes:
     return _image;
 }
 
-QWidget *nitro::ImageSourceDataModel::embeddedWidget() {
-    if (!_displayWrapper) {
-        _displayWrapper = new QWidget();
-        auto *layout = new QVBoxLayout(_displayWrapper);
+QWidget *nitro::ImageSourceDataModel::initBeforeWidget() {
+    _loadButton = new QPushButton("Load Image");
+    connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
+    _loadButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    return _loadButton;
+}
 
-        _loadButton = new QPushButton("Load Image");
-        _loadButton->setMaximumSize(_loadButton->sizeHint());
-        connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
-
-        _imgLabel = new QLabel("");
-        _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
-        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
-
-        layout->addWidget(_loadButton);
-        layout->addWidget(_imgLabel);
-        layout->setAlignment(_loadButton, Qt::AlignCenter);
-        layout->setAlignment(_imgLabel, Qt::AlignCenter);
-        // TODO: Temporary ugliness fix
-        _displayWrapper->setStyleSheet("background-color: rgba(0,0,0,0)");
-
-    }
-
-    return _displayWrapper;
+QWidget *nitro::ImageSourceDataModel::initAfterWidget() {
+    return nullptr;
 }
 
 void nitro::ImageSourceDataModel::onLoadButtonPressed() {
@@ -105,8 +92,8 @@ void nitro::ImageSourceDataModel::loadImage(const QString &filePath) {
 
     _path = new QString(filePath);
 
+
     const QPixmap &p = QPixmap::fromImage(img);
-    _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
-    _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+    updateImage(p);
     Q_EMIT dataUpdated(0);
 }
