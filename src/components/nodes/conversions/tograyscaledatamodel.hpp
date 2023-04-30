@@ -9,7 +9,6 @@
 #include <QLabel>
 
 #include "cbdimage.hpp"
-#include "src/components/nodes/colimagedata.hpp"
 #include "src/components/nodes/imagedata.hpp"
 
 class QLineEdit;
@@ -51,7 +50,7 @@ namespace nitro {
     private:
 
         const int _embedImgSize = 128;
-        std::shared_ptr<ColImageData> _in;
+        std::shared_ptr<ImageData> _in;
         std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;

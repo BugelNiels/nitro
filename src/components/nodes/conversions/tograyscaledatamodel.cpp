@@ -30,7 +30,7 @@ unsigned int nitro::ToGrayScaleDataModel::nPorts(QtNodes::PortType portType) con
 QtNodes::NodeDataType nitro::ToGrayScaleDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex) const {
     switch (portType) {
         case QtNodes::PortType::In:
-            return ColImageData().type();
+            return ImageData().type();
         case QtNodes::PortType::Out:
             return ImageData().type();
         case QtNodes::PortType::None:
@@ -41,20 +41,26 @@ QtNodes::NodeDataType nitro::ToGrayScaleDataModel::dataType(QtNodes::PortType po
 }
 
 void nitro::ToGrayScaleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-    auto numberData = std::dynamic_pointer_cast<ColImageData>(data);
+    auto imageData = std::dynamic_pointer_cast<ImageData>(data);
 
     if (!data) {
         Q_EMIT dataInvalidated(0);
     }
-
-    if (portIndex == 0) {
-        _in = numberData;
+    if(imageData == nullptr) {
+        return;
     }
 
-    // TODO: add options?
-    nitro::CbdImage img(_in->image().convertToFormat(QImage::Format_Grayscale8));
+    if (portIndex == 0) {
+        _in = imageData;
+    }
+    if (_in->isGrayscaleImg()) {
+        _result = _in;
+    } else {
+        // TODO: add options?
+        nitro::CbdImage img(_in->colImage().convertToFormat(QImage::Format_Grayscale8));
+        _result = std::make_shared<ImageData>(img);
+    }
 
-    _result = std::make_shared<ImageData>(img);
 
     const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
     _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));

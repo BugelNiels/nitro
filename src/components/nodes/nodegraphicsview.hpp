@@ -20,6 +20,11 @@ namespace nitro {
 
         NodeGraphicsView operator=(const GraphicsView &) = delete;
 
+        void keyPressEvent(QKeyEvent *event) override;
+
+        void keyReleaseEvent(QKeyEvent *event) override;
+
+        void mousePressEvent(QMouseEvent *event) override;
 
     public Q_SLOTS:
 
@@ -52,11 +57,6 @@ namespace nitro {
 
         QAction *spawnViewerNodeAction();
 
-        void keyPressEvent(QKeyEvent *event) override;
-
-        void keyReleaseEvent(QKeyEvent *event) override;
-
-        void mousePressEvent(QMouseEvent *event) override;
     };
 
 } // nitro

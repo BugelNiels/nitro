@@ -3,6 +3,7 @@
 #include <QDockWidget>
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include "QtNodes/DataFlowGraphModel"
+#include "nodes/nodegraphicsview.hpp"
 
 namespace nitro {
 
@@ -20,12 +21,15 @@ namespace nitro {
         void saveModel(bool askFile = false);
 
         void loadModel();
+        void forwardKeyPress(QKeyEvent *event);
 
     private:
+        NodeGraphicsView* view;
         QJsonObject prevSave;
         QString filename;
         QString saveFilePath;
         QtNodes::DataFlowGraphModel* dataFlowGraphModel;
+
     };
 
 } // nitro

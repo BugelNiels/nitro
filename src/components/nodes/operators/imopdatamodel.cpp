@@ -40,6 +40,7 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     }
     _input = inputImg;
     if (portIndex == 0) {
+        // TODO: check whether color or not
         auto img = compute(inputImg->image());
         _result = std::make_shared<ImageData>(img);
 

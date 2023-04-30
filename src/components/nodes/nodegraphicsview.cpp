@@ -1,7 +1,6 @@
 #include "nodegraphicsview.hpp"
 #include "QtNodes/DataFlowGraphModel"
-#include "src/components/nodes/input/greyimagesourcedatamodel.hpp"
-#include "src/components/nodes/input/colimagesourcedatamodel.hpp"
+#include "src/components/nodes/input/imagesourcedatamodel.hpp"
 #include "src/components/nodes/output/imageviewerdatamodel.hpp"
 #include "src/components/nodes/conversions/tograyscaledatamodel.hpp"
 #include "nodes/operators/thresholddatamodel.hpp"
@@ -25,7 +24,6 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
                                           QWidget *parent) : GraphicsView(scene,
                                                                           parent), _dataModel(model),
                                                              _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId) {
-
     auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
@@ -73,10 +71,8 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
 // TODO: check pointer usage
 QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
     auto *inputMenu = new QMenu("Input");
-    inputMenu->addAction(spawnNodeAction(nitro::GreyImageSourceDataModel::nodeCaption(),
-                                         nitro::GreyImageSourceDataModel::nodeName()));
-    inputMenu->addAction(spawnNodeAction(nitro::ColImageSourceDataModel::nodeCaption(),
-                                         nitro::ColImageSourceDataModel::nodeName()));
+    inputMenu->addAction(spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(),
+                                         nitro::ImageSourceDataModel::nodeName()));
     return inputMenu;
 }
 
@@ -201,16 +197,20 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                             .value<QtNodes::NodeDataType>();
                 };
 
+                // Check if connection possible
                 if (getDataType(QtNodes::PortType::Out).id == getDataType(QtNodes::PortType::In).id) {
-
 
                     QtNodes::NodeId const nodeId = getNodeId(QtNodes::PortType::In, connectionId);
                     QtNodes::PortIndex const portIndex = getPortIndex(QtNodes::PortType::In, connectionId);
                     auto const connections = _dataModel->connections(nodeId, QtNodes::PortType::In, portIndex);
+                    // Delete existing connections from viewer node
                     for (auto &con: connections) {
+                        _imViewer->awaitReplacement();
                         _dataModel->deleteConnection(con);
                     }
                     _dataModel->addConnection(connectionId);
+                } else {
+
                 }
             }
         }

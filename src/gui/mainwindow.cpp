@@ -7,6 +7,8 @@
 #include <QStatusBar>
 #include <QMessageBox>
 
+#include <QKeyEvent>
+#include <QEvent>
 #include "util/imgconvert.hpp"
 
 nitro::MainWindow::MainWindow(QWidget *parent)
@@ -49,7 +51,17 @@ nitro::MainWindow::MainWindow(QWidget *parent)
     nodeView->setFeatures(nodeView->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
 
     setCentralWidget(vertLayout);
+    installEventFilter(this);
     centralWidget()->setFocus();
+}
+
+bool nitro::MainWindow::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
+        nodeView->forwardKeyPress(keyEvent);
+    }
+
+    return false;
 }
 
 QStatusBar *nitro::MainWindow::initFooter() {

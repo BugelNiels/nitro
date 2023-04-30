@@ -32,7 +32,6 @@ unsigned int nitro::ImageViewerDataModel::nPorts(QtNodes::PortType portType) con
 }
 
 QtNodes::NodeDataType nitro::ImageViewerDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
-    // TODO: have a setting that switches between col and grayscale
     return ImageData().type();
 }
 
@@ -41,22 +40,20 @@ std::shared_ptr<QtNodes::NodeData> nitro::ImageViewerDataModel::outData(QtNodes:
 }
 
 void nitro::ImageViewerDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-    auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
-
     if (!data) {
         _imViewer->removeImage();
         _sizeLabel->setText("");
         _layersLabel->setText("");
         return;
     }
+    auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
     if (portIndex == 0) {
-        auto img = inputImg->image();
-        _imViewer->setImage(img.getDisplayImg());
+        QImage img = inputImg->isColImg() ? inputImg->colImage() : inputImg->image().getDisplayImg();
+        _imViewer->setImage(img);
         _sizeLabel->setText(QString("%1 x %2").arg(img.width()).arg(img.height()));
-        _layersLabel->setText(QString("%1 layers").arg(inputImg->image().numLevels()));
+        _layersLabel->setText(QString("%1 layers").arg(1 << img.depth()));
     }
-
 
 }
 

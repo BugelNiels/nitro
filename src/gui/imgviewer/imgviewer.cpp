@@ -44,12 +44,13 @@ nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
     // re-calculation when expanding the all QGraphicsItems common rect.
     int maxSize = 4960;
     setSceneRect(-maxSize, -maxSize, (maxSize * 2), (maxSize * 2));
+//    resetImScale();
     setScene(imScene);
 }
 
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     QGraphicsView::drawBackground(painter, r);
-    if (_oldImg != nullptr) {
+    if (_imgDisplayItem != nullptr) {
         return;
     }
 
@@ -180,7 +181,8 @@ QMenu *nitro::ImageViewer::createContextMenu() {
                 return;
             }
             if (displayImg->save(filePath)) {
-                QMessageBox::information(this, tr("Save Successful"), QString("File canQuitSafely to\n %1").arg(filePath));
+                QMessageBox::information(this, tr("Save Successful"),
+                                         QString("File canQuitSafely to\n %1").arg(filePath));
             } else {
                 QMessageBox::warning(this, tr("Could not save"),
                                      QString("Something went wrong while trying to save to\n %1").arg(filePath));
@@ -206,34 +208,43 @@ void nitro::ImageViewer::setImage(const QImage &img) {
     if (img.sizeInBytes() == 0) {
         return;
     }
-    displayImg = new QImage(img);
-    auto *item = new QGraphicsPixmapItem(QPixmap::fromImage(img));
-    if (_oldImg != nullptr) {
-        scene()->removeItem(_oldImg);
+    if (_imgDisplayItem == nullptr) {
+        _imgDisplayItem = new QGraphicsPixmapItem(QPixmap::fromImage(img));
+        scene()->addItem(_imgDisplayItem);
+        QRectF rect = scene()->itemsBoundingRect();
+        scene()->setSceneRect(rect);
+        resetImScale();
+    } else {
+        _imgDisplayItem->setPixmap(QPixmap::fromImage(img));
+        if (_imgDisplayItem->boundingRect().width() != displayImg->width() ||
+            _imgDisplayItem->boundingRect().height() != displayImg->height()) {
+            QRectF rect = scene()->itemsBoundingRect();
+            scene()->setSceneRect(rect);
+            resetImScale();
+        }
     }
-    scene()->addItem(item);
-
-
-    // set correct scale
-    item->setOffset(-item->boundingRect().width() / 2, -item->boundingRect().height() / 2);
-    auto maxSize = std::max(img.width(), img.height());
-    auto minCurSize = std::min(rect().width(), rect().height());
-    double scale = minCurSize / double(maxSize);
-    _oldImg = item;
-    setupScale(0.8 * scale);
+    displayImg = new QImage(img);
+    _replacementDue = false;
     repaint();
 }
 
 
+void nitro::ImageViewer::awaitReplacement() {
+    _replacementDue = true;
+}
+
 void nitro::ImageViewer::removeImage() {
-    scene()->removeItem(_oldImg);
-    _oldImg = nullptr;
-    displayImg = nullptr;
+    if (_replacementDue) {
+        return;
+    }
+    scene()->removeItem(_imgDisplayItem);
+    _imgDisplayItem = nullptr;
     repaint();
 }
 
 void nitro::ImageViewer::centerScene() {
     if (scene()) {
+        qDebug() << "centering";
         scene()->setSceneRect(QRectF());
 
         QRectF sceneRect = scene()->sceneRect();
@@ -248,10 +259,10 @@ void nitro::ImageViewer::centerScene() {
 
 void nitro::ImageViewer::resetImScale() {
     centerScene();
-    if (_oldImg == nullptr) {
+    if (_imgDisplayItem == nullptr) {
         setupScale(1.0);
     } else {
-        auto maxSize = std::max(_oldImg->boundingRect().width(), _oldImg->boundingRect().height());
+        auto maxSize = std::max(_imgDisplayItem->boundingRect().width(), _imgDisplayItem->boundingRect().height());
         auto minCurSize = std::min(rect().width(), rect().height());
         double scale = minCurSize / maxSize;
         setupScale(0.8 * scale);

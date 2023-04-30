@@ -1,6 +1,5 @@
 #include "thresholddatamodel.hpp"
 
-#include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
 #include <QVBoxLayout>

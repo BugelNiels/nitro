@@ -13,13 +13,19 @@ namespace nitro {
 
         ~MainWindow() override;
 
+    protected:
+
+        bool eventFilter(QObject *obj, QEvent *event) override;
+
     private slots:
 
     private:
-        NodeView* nodeView;
+        NodeView *nodeView;
+
         QMenuBar *initMenuBar();
 
         QStatusBar *initFooter();
+
     };
 
 } // nitro

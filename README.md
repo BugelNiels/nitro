@@ -15,3 +15,7 @@ In case `--recurse-submodules` was not used, you can initialize the submodules u
 git submodule init
 git submodule update
 ```
+
+## Known Bugs
+
+- Viewer node: image position moves when switching between images of different resolutions

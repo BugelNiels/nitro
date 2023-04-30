@@ -1,6 +1,5 @@
 #include "nodeview.hpp"
-#include "src/components/nodes/input/greyimagesourcedatamodel.hpp"
-#include "src/components/nodes/input/colimagesourcedatamodel.hpp"
+#include "src/components/nodes/input/imagesourcedatamodel.hpp"
 #include "src/components/nodes/conversions/tograyscaledatamodel.hpp"
 #include "nodes/operators/thresholddatamodel.hpp"
 #include "nodes/nodegraphicsview.hpp"
@@ -18,8 +17,7 @@
 
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
-    ret->registerModel<nitro::GreyImageSourceDataModel>("Input");
-    ret->registerModel<nitro::ColImageSourceDataModel>("Input");
+    ret->registerModel<nitro::ImageSourceDataModel>("Input");
     ret->registerModel<nitro::ImageViewerDataModel>("Output");
     ret->registerModel<nitro::ToGrayScaleDataModel>("Converter");
     ret->registerModel<nitro::ThresholdDataModel>("Operator");
@@ -33,9 +31,9 @@ nitro::NodeView::NodeView(nitro::ImageViewer *imViewer, QWidget *parent) : QDock
     setWindowTitle("Node Editor");
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
-    dataFlowGraphModel->addNode(nitro::GreyImageSourceDataModel::nodeName());
+    dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
     auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
-    auto *view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
+    view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     prevSave = dataFlowGraphModel->save();
     this->setWidget(view);
@@ -95,6 +93,12 @@ void nitro::NodeView::saveModel(bool askFile) {
         prevSave = saveObject;
     } else {
         QMessageBox::warning(this, "Failed to open file", filePath);
+    }
+}
+
+void nitro::NodeView::forwardKeyPress(QKeyEvent *event) {
+    if (!view->hasFocus()) {
+        view->keyPressEvent(event);
     }
 }
 

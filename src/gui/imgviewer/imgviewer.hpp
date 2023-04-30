@@ -46,6 +46,8 @@ namespace nitro {
 
         void removeImage();
 
+        void awaitReplacement();
+
     public Q_SLOTS:
 
         void scaleUp();
@@ -57,21 +59,19 @@ namespace nitro {
         void scaleChanged(double scale);
 
     private:
+        bool _replacementDue = false;
         const int emptySize = 128;
         ScaleRange _scaleRange;
         QImage *displayImg = nullptr;
-        QGraphicsPixmapItem *_oldImg = nullptr;
+        QGraphicsPixmapItem *_imgDisplayItem = nullptr;
 
         void setScaleRange(double minimum = 0, double maximum = 0);
 
         void setupScale(double scale);
 
-        QPointF _clickPos;
-
         QMenu *createContextMenu();
 
         void centerScene();
-
     };
 
 } // nitro
