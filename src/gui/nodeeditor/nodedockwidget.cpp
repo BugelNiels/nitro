@@ -216,6 +216,9 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     QWidget::keyPressEvent(event);
     switch (event->key()) {
         case Qt::Key_Space:
+            if(!searchBar->hasFocus()) {
+                searchBar->setText("");
+            }
             searchBar->setFocus();
             break;
     }
