@@ -18,6 +18,4 @@ namespace nitro {
 
     void yCbCr2Rgb(int y, int cb, int cr, uchar &red, uchar &green, uchar &blue);
 
-    QImage flipErr(const QImage &a, const QImage &b);
-
 }  // namespace nitro

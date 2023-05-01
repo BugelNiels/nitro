@@ -93,7 +93,7 @@ void nitro::RenderView::updateMatrices() {
 }
 
 void nitro::RenderView::paintGL() {
-    QVector3D bCol = settings.view.cols.background;
+    QVector3D bCol = {1,1,1};
     glClearColor(bCol.x(), bCol.y(), bCol.z(), 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

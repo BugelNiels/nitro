@@ -10,8 +10,6 @@
 #include <QGraphicsView>
 
 #include "cbdimage.hpp"
-#include "settings/imviewsettings.hpp"
-#include "settings/samplesettings.hpp"
 #include "util/matrix.hpp"
 #include "util/progressupdater.hpp"
 

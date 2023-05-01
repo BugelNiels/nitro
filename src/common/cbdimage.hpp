@@ -14,6 +14,7 @@ namespace nitro {
         CbdImage();
 
         CbdImage(const CbdImage &img);
+        CbdImage& operator=(const CbdImage &img) = default;
 
         CbdImage(int width, int height, int dynRange);
 
@@ -27,7 +28,7 @@ namespace nitro {
 
         CbdImage decompress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler);
 
-        QImage getDisplayImg();
+        const QImage& getDisplayImg();
 
         inline int width() const { return matrix.width(); }
 

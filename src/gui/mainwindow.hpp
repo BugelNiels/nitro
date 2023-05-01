@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
-#include "src/gui/nodeeditor/nodeview.hpp"
+#include "src/gui/nodeeditor/nodedockwidget.hpp"
 
 namespace nitro {
 
@@ -21,7 +21,7 @@ namespace nitro {
 
     private:
         QLabel* fileNameLabel = nullptr;
-        NodeView *nodeView;
+        NodeDockWidget *nodeView;
 
         QMenuBar *initMenuBar();
 

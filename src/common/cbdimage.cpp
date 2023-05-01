@@ -18,9 +18,6 @@ nitro::CbdImage::CbdImage(const nitro::CbdImage &img) {
     matrix = nitro::Matrix<int>(img.matrix);
     distanceField = img.distanceField;
 
-    displayImg = img.displayImg;
-    displayCalculated = img.displayCalculated;
-
     indexed = img.indexed;
     vals = img.vals;
 }
@@ -42,6 +39,7 @@ nitro::CbdImage::CbdImage(const QImage &img) {
             matrix.set(x, y, val);
         }
     }
+
 }
 
 nitro::CbdImage nitro::CbdImage::resample(int numDesiredLevels,
@@ -547,11 +545,10 @@ void nitro::CbdImage::calcDistanceField(ProgressUpdater *updater) {
     distanceField = df;
 }
 
-QImage nitro::CbdImage::getDisplayImg() {
+const QImage& nitro::CbdImage::getDisplayImg() {
     if (displayCalculated) {
         return displayImg;
     }
-    displayCalculated = true;
     int width = matrix.width();
     int height = matrix.height();
 
@@ -567,9 +564,11 @@ QImage nitro::CbdImage::getDisplayImg() {
             }
         }
     }
+    displayCalculated = true;
     return displayImg;
 }
 
+// TODO: do this without copying
 void nitro::CbdImage::setIndexed(QVector<int> t_vals) {
     indexed = true;
     this->vals = t_vals;

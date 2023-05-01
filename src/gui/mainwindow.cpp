@@ -1,7 +1,6 @@
 #include "mainwindow.hpp"
-#include "src/gui/nodeeditor/nodeview.hpp"
-#include "imageview.hpp"
-#include "src/gui/imgviewer/imgviewer.hpp"
+#include "nodeeditor/nodedockwidget.hpp"
+#include "imgviewer/imgviewer.hpp"
 #include <QMenuBar>
 #include <QSplitter>
 #include <QStatusBar>
@@ -27,7 +26,7 @@ nitro::MainWindow::MainWindow(QWidget *parent)
     auto *surfDock = new QDockWidget("Surface Visualizer", this);
 
     // Node editor
-    nodeView = new nitro::NodeView(imView, this);
+    nodeView = new nitro::NodeDockWidget(imView, this);
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
