@@ -14,21 +14,22 @@ namespace nitro {
         CbdImage();
 
         CbdImage(const CbdImage &img);
-        CbdImage& operator=(const CbdImage &img) = default;
+
+        CbdImage &operator=(const CbdImage &img) = default;
 
         CbdImage(int width, int height, int dynRange);
 
         explicit CbdImage(const QImage &img);
 
-        void calcDistanceField(ProgressUpdater *updater = nullptr);
+//        void calcDistanceField();
 
-        CbdImage resample(int numLevels, const std::shared_ptr<Resampler> &resampler);
+//        CbdImage resample(int numLevels, const std::shared_ptr<Resampler> &resampler);
 
-        CbdImage compress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler, ProgressUpdater *updater);
+//        CbdImage compress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler, ProgressUpdater *updater);
+//
+//        CbdImage decompress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler);
 
-        CbdImage decompress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler);
-
-        const QImage& getDisplayImg();
+        const QImage &getDisplayImg();
 
         inline int width() const { return matrix.width(); }
 
@@ -40,10 +41,7 @@ namespace nitro {
 
         inline const Matrix<int> &constData() const { return matrix; }
 
-        // TODO: distance field class
-        inline QVector<Matrix<float>> &getDistField() { return distanceField; }
-
-        inline QVector<int> &getColTransform() { return vals; }
+        inline const QVector<int> &getColTransform() const { return vals; }
 
         inline bool isIndexed() const { return indexed; }
 
@@ -51,11 +49,11 @@ namespace nitro {
         void setIndexed(QVector<int> vals);
 
     private:
-        int diff(CbdImage &other);
+//        int diff(CbdImage &other);
 
         int numGreyLevels;
         Matrix<int> matrix;
-        QVector<Matrix<float>> distanceField;
+//        QVector<Matrix<float>> distanceField;
 
         QImage displayImg;
         bool displayCalculated = false;

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <QPushButton>
 #include <QLabel>
+#include <QSpinBox>
+#include <QComboBox>
 
 #include "cbdimage.hpp"
 #include "imopdatamodel.hpp"
@@ -33,6 +35,12 @@ namespace nitro {
 
         QString name() const override { return nodeName(); }
 
+
+    public:
+        QJsonObject save() const override;
+
+        void load(QJsonObject const &p) override;
+
     public Q_SLOTS:
 
         void modeChanged(int mode);
@@ -53,5 +61,7 @@ namespace nitro {
     private:
         int threshold = 128;
 
+        QComboBox *modeCombobox;
+        QSpinBox *thresholdSpinBox;
     };
 }

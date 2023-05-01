@@ -21,3 +21,4 @@ git submodule update
 - Viewer node: image position moves when switching between images of different resolutions
 - Grid lines are not drawn nicely when zooming in/out
 - Keyboard shortcuts in the image viewer don't work
+- Disconnecting the image viewer node does not properly center the empty image again

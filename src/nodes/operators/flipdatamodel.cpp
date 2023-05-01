@@ -38,7 +38,9 @@ void nitro::FlipDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
     if (!data || inputImg == nullptr) {
-        Q_EMIT dataInvalidated(0);
+        clearImage();
+        _result = nullptr;
+        Q_EMIT dataUpdated(0);
         return;
     }
     // TODO: check that dimensions agree and otherwise invalidate and emit warning

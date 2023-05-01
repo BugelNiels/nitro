@@ -7,6 +7,7 @@
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
+#include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 
 #include <QtNodes/internal/ConnectionGraphicsObject.hpp>
 #include <QtNodes/internal/NodeGraphicsObject.hpp>
@@ -86,8 +87,8 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
     return outputMenu;
 }
 
-QMenu *nitro::NodeGraphicsView::initConversionsSubMenu() {
-    auto *convertMenu = new QMenu("Converter");
+QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
+    auto *convertMenu = new QMenu("Color");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
                                            nitro::ToGrayScaleDataModel::nodeName()));
     return convertMenu;
@@ -108,12 +109,31 @@ QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
     return opsMenu;
 }
 
+QMenu *nitro::NodeGraphicsView::initQuantizationSubMenu() {
+    auto *opsMenu = new QMenu("Quantization");
+    opsMenu->addAction(spawnNodeAction(nitro::QuantisizeDataModel::nodeCaption(),
+                                       nitro::QuantisizeDataModel::nodeName()));
+    opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(),
+                                       nitro::KMeansDataModel::nodeName()));
+    return opsMenu;
+}
+
+QMenu *nitro::NodeGraphicsView::initResampleSubMenu() {
+    auto *opsMenu = new QMenu("Resampling");
+    opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(),
+                                       nitro::ResampleDataModel::nodeName()));
+    opsMenu->addSeparator();
+    return opsMenu;
+}
+
 QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
-    auto *convertMenu = initConversionsSubMenu();
     auto *inputMenu = initInputSubMenu();
     auto *outputMenu = initOutputSubMenu();
+    auto *quantMenu = initQuantizationSubMenu();
+    auto *resampleMenu = initResampleSubMenu();
     auto *opsMenu = initOperationsSubMenu();
+    auto *colorMenu = initColorSubMenu();
 
     QAction *sectionTitle = menu->addSection("Add");
     QFont font;
@@ -123,8 +143,10 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     menu->addSeparator();
     menu->addMenu(inputMenu);
     menu->addMenu(outputMenu);
+    menu->addMenu(quantMenu);
+    menu->addMenu(resampleMenu);
     menu->addMenu(opsMenu);
-    menu->addMenu(convertMenu);
+    menu->addMenu(colorMenu);
     menu->setMaximumSize(menu->sizeHint());
     return menu;
 }

@@ -86,3 +86,16 @@ void nitro::ImageDataModel::updateImage(const QPixmap &p) {
 void nitro::ImageDataModel::updateImage(const QImage &img) {
     updateImage(QPixmap::fromImage(img));
 }
+
+void nitro::ImageDataModel::clearImage() {
+
+    // TODO: construct this thing only once (statically)?
+    auto p = createPixmapWithGrid(_embedImgSize, _embedImgSize, _embedImgSize / 6);
+    _imgLabel->setPixmap(p.scaled(_embedImgSize, _embedImgSize, Qt::KeepAspectRatio));
+    _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+
+    _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
+    _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+    _imgLabel->setAlignment(Qt::AlignCenter);
+}
+

@@ -28,18 +28,18 @@ QWidget *nitro::QuantisizeDataModel::initBeforeWidget() {
 
     int rowIdx = 0;
 
-    auto *spinBox = new QSpinBox();
-    spinBox->setMinimum(0);
-    spinBox->setMaximum(255); // TODO: update based on levels of input
-    spinBox->setValue(k);
-    connect(spinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
-    layout->addWidget(new QLabel("K:"), rowIdx, 0);
-    layout->addWidget(spinBox, rowIdx, 1);
+    kSpinBox = new QSpinBox();
+    kSpinBox->setMinimum(0);
+    kSpinBox->setMaximum(255);
+    kSpinBox->setValue(k);
+    connect(kSpinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
+    layout->addWidget(new QLabel("k:"), rowIdx, 0);
+    layout->addWidget(kSpinBox, rowIdx, 1);
     rowIdx++;
 
-    auto *ditherBox = new QCheckBox("Dither");
-    connect(ditherBox, SIGNAL (toggled(bool)), this, SLOT(changeDither(bool)));
-    layout->addWidget(ditherBox, rowIdx, 0, 1, 2);
+    ditherCheckBox = new QCheckBox("Dither");
+    connect(ditherCheckBox, SIGNAL (toggled(bool)), this, SLOT(changeDither(bool)));
+    layout->addWidget(ditherCheckBox, rowIdx, 0, 1, 2);
     rowIdx++;
 
     wrapper->setLayout(layout);
@@ -159,6 +159,45 @@ std::shared_ptr<nitro::ImageData> nitro::QuantisizeDataModel::compute(const nitr
         auto result = quantisize(inputImg, k);
         auto resPtr = std::make_shared<nitro::CbdImage>(result);
         return std::make_shared<nitro::ImageData>(resPtr);
+    }
+}
+
+QJsonObject nitro::QuantisizeDataModel::save() const {
+    QJsonObject modelJson = NodeDelegateModel::save();
+
+    modelJson["dither"] = dither;
+    modelJson["k"] = k;
+
+    return modelJson;
+}
+
+void nitro::QuantisizeDataModel::load(const QJsonObject &p) {
+    QJsonValue jDither = p["dither"];
+    if (!jDither.isUndefined()) {
+        dither = jDither.toBool();
+        if (ditherCheckBox) {
+            ditherCheckBox->setChecked(dither);
+        }
+    }
+    QJsonValue jK = p["k"];
+    if (!jK.isUndefined()) {
+        k = jK.toInt();
+        if (kSpinBox) {
+            kSpinBox->setValue(k);
+        }
+    }
+}
+
+void nitro::QuantisizeDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIdx) {
+    ImOpDataModel::setInData(data, portIdx);
+    auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
+
+    if (!data || !inputImg || !inputImg->isValid()) {
+        Q_EMIT dataInvalidated(0);
+        return;
+    }
+    if(inputImg->isGrayscaleImg()) {
+        kSpinBox->setMaximum(inputImg->image()->numLevels());
     }
 }
 

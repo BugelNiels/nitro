@@ -34,15 +34,15 @@ QtNodes::NodeDataType nitro::ImOpDataModel::dataType(QtNodes::PortType, QtNodes:
 void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
     auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
-    if (!data) {
-        Q_EMIT dataInvalidated(0);
+    if (!data || !inputImg || !inputImg->isValid()) {
+        clearImage();
+        clearData();
+        _result = nullptr;
+        Q_EMIT dataUpdated(0);
+        return;
     }
     _input = inputImg;
     if (portIndex == 0) {
-        if (_input == nullptr|| !_input->isValid()) {
-            Q_EMIT dataInvalidated(0);
-            return;
-        }
         if (_input->isColImg()) {
             _result = compute(*_input->colImage());
         } else {
@@ -72,4 +72,8 @@ void nitro::ImOpDataModel::recompute() {
 
 std::shared_ptr<QtNodes::NodeData> nitro::ImOpDataModel::outData(QtNodes::PortIndex) {
     return _result;
+}
+
+void nitro::ImOpDataModel::clearData() {
+
 }

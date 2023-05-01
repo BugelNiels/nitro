@@ -10,24 +10,22 @@ static inline float mix(float a, float b, float w) {
     return (1.0f - w) * a + w * b + 0.5f;
 }
 
-float nitro::LinearSampler::distFunc(CbdImage &image, int x, int y, float p,
+float nitro::LinearSampler::distFunc(const CbdImage &image, const DistanceField &df, int x, int y, float p,
                                      int numLevelsInput) const {
-    const auto &distanceField = image.getDistField();
     numLevelsInput -= 1;
     int layer0 = p * numLevelsInput;
     int layer1 = MIN(layer0 + 1, numLevelsInput);
 
     float t = p * numLevelsInput - layer0;
 
-    float d1 = distanceField[layer0].get(x, y);
-    float d2 = distanceField[layer1].get(x, y);
+    float d1 = df.getDistField(layer0).get(x, y);
+    float d2 = df.getDistField(layer1).get(x, y);
     return mix(d1, d2, t);
 }
 
-float nitro::LinearSampler::distFuncIndexed(CbdImage &image, int x, int y, float p,
+float nitro::LinearSampler::distFuncIndexed(const CbdImage &image, const DistanceField &df, int x, int y, float p,
                                             int numLevelsInput) const {
     const auto &vals = image.getColTransform();
-    const auto &distanceField = image.getDistField();
 
     // find the index values that sit in between this value
     float oldGray = p * 255.0f;
@@ -74,7 +72,7 @@ float nitro::LinearSampler::distFuncIndexed(CbdImage &image, int x, int y, float
 
     float t = (oldGray - vals[layer0]) / float(vals[layer1] - vals[layer0]);
 
-    float d1 = distanceField[layer0].get(x, y);
-    float d2 = distanceField[layer1].get(x, y);
+    float d1 = df.getDistField(layer0).get(x, y);
+    float d2 = df.getDistField(layer1).get(x, y);
     return mix(d1, d2, t);
 }

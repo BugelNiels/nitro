@@ -9,7 +9,7 @@ namespace nitro {
     template<class T>
     class Matrix {
     public:
-        Matrix() = default;
+        Matrix() : matWidth(0), matHeight(0) {};
 
         Matrix(const Matrix<T> &other) {
             matWidth = other.matWidth;
@@ -23,7 +23,9 @@ namespace nitro {
         Matrix(int width, int height) : matWidth(width), matHeight(height) { data.resize(matWidth * matHeight); }
 
         ~Matrix() = default;
-        Matrix& operator=(const Matrix&) = default;
+
+        Matrix &operator=(const Matrix &) = default;
+
         inline T get(int x, int y) const { return data[y * matWidth + x]; }
 
         inline T get(int idx) const { return data[idx]; }
@@ -40,7 +42,7 @@ namespace nitro {
 
     private:
         QVector<T> data;
-        int matWidth{}, matHeight{};
+        int matWidth, matHeight;
     };
 
 }  // namespace nitro

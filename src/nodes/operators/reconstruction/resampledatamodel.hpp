@@ -7,26 +7,32 @@
 #include <iostream>
 #include <QPushButton>
 #include <QLabel>
-#include <QCheckBox>
 #include <QSpinBox>
+#include <QComboBox>
 
 #include "cbdimage.hpp"
 #include "src/nodes/operators/imopdatamodel.hpp"
 
+#include "src/common/util/distancefield.hpp"
+
 class QLineEdit;
 
 namespace nitro {
-    class QuantisizeDataModel : public ImOpDataModel {
+
+    enum SampleMethod {LINEAR, CUBIC_HERMITE, CUBIC_INTERPOLATORY};
+
+    class ResampleDataModel : public ImOpDataModel {
     Q_OBJECT
 
     public:
-        QuantisizeDataModel();
-        ~QuantisizeDataModel() override = default;
+        ResampleDataModel();
+
+        virtual ~ResampleDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Quantisize"); }
+        static QString nodeCaption() { return QStringLiteral("Resample"); }
 
-        static QString nodeName() { return QStringLiteral("Quantisize"); }
+        static QString nodeName() { return QStringLiteral("Resample"); }
 
         QString caption() const override { return nodeCaption(); }
 
@@ -34,7 +40,6 @@ namespace nitro {
 
         QString name() const override { return nodeName(); }
 
-        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
     public:
         QJsonObject save() const override;
@@ -43,9 +48,9 @@ namespace nitro {
 
     public Q_SLOTS:
 
-        void kValChanged(int val);
+        void modeChanged(int mode);
 
-        void changeDither(bool toggled);
+        void targetValChanged(int val);
 
     protected:
 
@@ -57,11 +62,15 @@ namespace nitro {
 
         QWidget *initAfterWidget() override;
 
-    private:
-        bool dither = false;
-        int k = 8;
+        void clearData() override;
 
-        QSpinBox *kSpinBox;
-        QCheckBox *ditherCheckBox;
+    private:
+        DistanceField field;
+        SampleMethod _mode = SampleMethod::LINEAR;
+        int targetK = 255;
+
+        QComboBox *modeCombobox;
+        QSpinBox *targetSpinBox;
+
     };
 }

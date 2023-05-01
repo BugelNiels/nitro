@@ -23,20 +23,20 @@ QWidget *nitro::ThresholdDataModel::initBeforeWidget() {
     auto *wrapper = new QWidget();
     auto *horLayout = new QHBoxLayout();
 
-    auto *combobox = new QComboBox();
-    combobox->addItem(">");
-    combobox->addItem(">=");
-    combobox->addItem("<");
-    combobox->addItem("<=");
-    connect(combobox, SIGNAL (currentIndexChanged(int)), this, SLOT(modeChanged(int)));
-    horLayout->addWidget(combobox);
+    modeCombobox = new QComboBox();
+    modeCombobox->addItem(">");
+    modeCombobox->addItem(">=");
+    modeCombobox->addItem("<");
+    modeCombobox->addItem("<=");
+    connect(modeCombobox, SIGNAL (currentIndexChanged(int)), this, SLOT(modeChanged(int)));
+    horLayout->addWidget(modeCombobox);
 
-    auto *spinBox = new QSpinBox();
-    spinBox->setMinimum(0);
-    spinBox->setMaximum(255); // TODO: update based on levels of input
-    spinBox->setValue(threshold);
-    connect(spinBox, SIGNAL (valueChanged(int)), this, SLOT(thresholdValChanged(int)));
-    horLayout->addWidget(spinBox);
+    thresholdSpinBox = new QSpinBox();
+    thresholdSpinBox->setMinimum(0);
+    thresholdSpinBox->setMaximum(255); // TODO: update based on levels of input
+    thresholdSpinBox->setValue(threshold);
+    connect(thresholdSpinBox, SIGNAL (valueChanged(int)), this, SLOT(thresholdValChanged(int)));
+    horLayout->addWidget(thresholdSpinBox);
 
     wrapper->setLayout(horLayout);
     return wrapper;
@@ -74,6 +74,32 @@ std::shared_ptr<nitro::ImageData> nitro::ThresholdDataModel::compute(const nitro
     result.setIndexed({0, 255});
     auto ptrRes = std::make_shared<nitro::CbdImage>(result);
     return std::make_shared<nitro::ImageData>(ptrRes);
+}
+
+QJsonObject nitro::ThresholdDataModel::save() const {
+    QJsonObject modelJson = NodeDelegateModel::save();
+
+    modelJson["threshold"] = threshold;
+    modelJson["mode"] = _mode;
+
+    return modelJson;
+}
+
+void nitro::ThresholdDataModel::load(const QJsonObject &p) {
+    QJsonValue jThresh = p["threshold"];
+    if (!jThresh.isUndefined()) {
+        threshold = jThresh.toInt();
+        if (thresholdSpinBox) {
+            thresholdSpinBox->setValue(threshold);
+        }
+    }
+    QJsonValue jMode = p["mode"];
+    if (!jMode.isUndefined()) {
+        _mode = jMode.toInt();
+        if (modeCombobox) {
+            modeCombobox->setCurrentIndex(_mode);
+        }
+    }
 }
 
 

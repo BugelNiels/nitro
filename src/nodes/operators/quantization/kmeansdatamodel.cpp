@@ -33,16 +33,16 @@ QWidget *nitro::KMeansDataModel::initBeforeWidget() {
 
     int rowIdx = 0;
 
-    auto *spinBox = new QSpinBox();
-    spinBox->setMinimum(0);
-    spinBox->setMaximum(255); // TODO: update based on levels of input
-    spinBox->setValue(k);
-    connect(spinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
-    layout->addWidget(new QLabel("K:"), rowIdx, 0);
-    layout->addWidget(spinBox, rowIdx, 1);
+    kSpinBox = new QSpinBox();
+    kSpinBox->setMinimum(0);
+    kSpinBox->setMaximum(255);
+    kSpinBox->setValue(k);
+    connect(kSpinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
+    layout->addWidget(new QLabel("k:"), rowIdx, 0);
+    layout->addWidget(kSpinBox, rowIdx, 1);
     rowIdx++;
 
-    auto *iterSpinBox = new QSpinBox();
+    iterSpinBox = new QSpinBox();
     iterSpinBox->setMinimum(0);
     iterSpinBox->setMaximum(100);
     iterSpinBox->setValue(numIterations);
@@ -51,9 +51,9 @@ QWidget *nitro::KMeansDataModel::initBeforeWidget() {
     layout->addWidget(iterSpinBox, rowIdx, 1);
     rowIdx++;
 
-    auto *ditherBox = new QCheckBox("Dither");
-    connect(ditherBox, SIGNAL (toggled(bool)), this, SLOT(changeDither(bool)));
-    layout->addWidget(ditherBox, rowIdx, 0, 1, 2);
+    ditherCheckBox = new QCheckBox("Dither");
+    connect(ditherCheckBox, SIGNAL (toggled(bool)), this, SLOT(changeDither(bool)));
+    layout->addWidget(ditherCheckBox, rowIdx, 0, 1, 2);
     rowIdx++;
 
     wrapper->setLayout(layout);
@@ -235,6 +235,40 @@ std::shared_ptr<nitro::ImageData> nitro::KMeansDataModel::compute(const nitro::C
         auto result = quantisize(inputImg, k, numIterations);
         auto resPtr = std::make_shared<nitro::CbdImage>(result);
         return std::make_shared<nitro::ImageData>(resPtr);
+    }
+}
+
+QJsonObject nitro::KMeansDataModel::save() const {
+    QJsonObject modelJson = NodeDelegateModel::save();
+
+    modelJson["numIterations"] = numIterations;
+    modelJson["dither"] = dither;
+    modelJson["k"] = k;
+
+    return modelJson;
+}
+
+void nitro::KMeansDataModel::load(const QJsonObject &p) {
+    QJsonValue jIter = p["numIterations"];
+    if (!jIter.isUndefined()) {
+        numIterations = jIter.toInt();
+        if (iterSpinBox) {
+            iterSpinBox->setValue(numIterations);
+        }
+    }
+    QJsonValue jDither = p["dither"];
+    if (!jDither.isUndefined()) {
+        dither = jDither.toBool();
+        if (ditherCheckBox) {
+            ditherCheckBox->setChecked(dither);
+        }
+    }
+    QJsonValue jK = p["k"];
+    if (!jK.isUndefined()) {
+        k = jK.toInt();
+        if (kSpinBox) {
+            kSpinBox->setValue(k);
+        }
     }
 }
 

@@ -47,7 +47,7 @@ namespace nitro {
 
         QMenu *initInputSubMenu();
 
-        QMenu *initConversionsSubMenu();
+        QMenu *initColorSubMenu();
 
         QMenu *initOperationsSubMenu();
 
@@ -59,6 +59,9 @@ namespace nitro {
 
         QAction *spawnViewerNodeAction();
 
+        QMenu *initQuantizationSubMenu();
+
+        QMenu *initResampleSubMenu();
     };
 
 } // nitro

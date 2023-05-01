@@ -35,7 +35,9 @@ void nitro::ToGrayScaleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> d
     auto imageData = std::dynamic_pointer_cast<ImageData>(data);
 
     if (!data || imageData == nullptr || !imageData->isValid()) {
-        Q_EMIT dataInvalidated(0);
+        clearImage();
+        _result = nullptr;
+        Q_EMIT dataUpdated(0);
         return;
     }
 

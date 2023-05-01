@@ -7,6 +7,7 @@
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
+#include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 
 #include <QtGui/QScreen>
 #include <QtNodes/BasicGraphicsScene>
@@ -26,6 +27,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::KMeansDataModel>("Operator");
     ret->registerModel<nitro::QuantisizeDataModel>("Operator");
     ret->registerModel<nitro::FlipDataModel>("Operator");
+    ret->registerModel<nitro::ResampleDataModel>("Operator");
 
     return ret;
 }
@@ -51,6 +53,7 @@ void nitro::NodeDockWidget::clearModel() {
         for (const auto &item: dataFlowGraphModel->allNodeIds()) {
             dataFlowGraphModel->deleteNode(item);
         }
+        // TODO: delete undo history
     }
     prevSave = dataFlowGraphModel->save();
 }
@@ -120,9 +123,13 @@ void nitro::NodeDockWidget::loadModel() {
         return;
     }
     QFile jsonFile(filePath);
+    filename = QFileInfo(filePath).fileName();
+
     jsonFile.open(QFile::ReadOnly);
     auto doc = QJsonDocument::fromJson(jsonFile.readAll());
+    clearModel();
     dataFlowGraphModel->load(doc.object());
+    prevSave = dataFlowGraphModel->save();
     // Ensure we cannot create a second viewer
     for (auto &c: dataFlowGraphModel->allNodeIds()) {
         auto attempt = dataFlowGraphModel->delegateModel<nitro::ImageViewerDataModel>(c);

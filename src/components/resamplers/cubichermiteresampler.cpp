@@ -6,9 +6,8 @@ nitro::CubicHermiteSampler::CubicHermiteSampler() = default;
 
 nitro::CubicHermiteSampler::~CubicHermiteSampler() = default;
 
-float nitro::CubicHermiteSampler::distFunc(CbdImage &image, int x, int y, float p,
+float nitro::CubicHermiteSampler::distFunc(const CbdImage &image, const DistanceField &df, int x, int y, float p,
                                            int numLevelsInput) const {
-    const auto &sdf = image.getDistField();
     numLevelsInput -= 1;
     int layer0 = p * numLevelsInput;
     int layer_1 = MAX(layer0 - 1, 0);
@@ -17,10 +16,10 @@ float nitro::CubicHermiteSampler::distFunc(CbdImage &image, int x, int y, float 
 
     float t = p * numLevelsInput - layer0;
 
-    float p_1 = sdf[layer_1].get(x, y);
-    float p0 = sdf[layer0].get(x, y);
-    float p2 = sdf[layer2].get(x, y);
-    float p1 = sdf[layer1].get(x, y);
+    float p_1 = df.getDistField(layer_1).get(x, y);
+    float p0 = df.getDistField(layer0).get(x, y);
+    float p2 = df.getDistField(layer2).get(x, y);
+    float p1 = df.getDistField(layer1).get(x, y);
 
     float t2 = t * t;
     float t3 = t2 * t;
@@ -43,10 +42,9 @@ float nitro::CubicHermiteSampler::distFunc(CbdImage &image, int x, int y, float 
     return b0 * p0 + b1 * m0 + b2 * p1 + b3 * m1;
 }
 
-float nitro::CubicHermiteSampler::distFuncIndexed(CbdImage &image, int x, int y,
+float nitro::CubicHermiteSampler::distFuncIndexed(const CbdImage &image, const DistanceField &df, int x, int y,
                                                   float p, int numLevelsInput) const {
     const auto &vals = image.getColTransform();
-    const auto &sdf = image.getDistField();
 
     // find the index values that sit in between this value
     float oldGray = p * 255.0f;
@@ -73,10 +71,10 @@ float nitro::CubicHermiteSampler::distFuncIndexed(CbdImage &image, int x, int y,
 
     float t = (oldGray - vals[layer0]) / float(vals[layer1] - vals[layer0]);
 
-    float p_1 = sdf[layer_1].get(x, y);
-    float p0 = sdf[layer0].get(x, y);
-    float p2 = sdf[layer2].get(x, y);
-    float p1 = sdf[layer1].get(x, y);
+    float p_1 = df.getDistField(layer_1).get(x, y);
+    float p0 = df.getDistField(layer0).get(x, y);
+    float p2 = df.getDistField(layer2).get(x, y);
+    float p1 = df.getDistField(layer1).get(x, y);
 
     float t2 = t * t;
     float t3 = t2 * t;

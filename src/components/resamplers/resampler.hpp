@@ -3,6 +3,7 @@
 #include <QImage>
 
 #include "cbdimage.hpp"
+#include "util/distancefield.hpp"
 
 namespace nitro {
 
@@ -12,11 +13,13 @@ namespace nitro {
 
         virtual ~Resampler();
 
-        virtual CbdImage resample(CbdImage &image, int numDesiredLevels);
+        virtual CbdImage resample(const CbdImage &image, const DistanceField &df, int numDesiredLevels);
 
     protected:
-        virtual float distFunc(CbdImage &image, int x, int y, float p, int numLevelsInput) const = 0;
+        virtual float
+        distFunc(const CbdImage &image, const DistanceField &df, int x, int y, float p, int numLevelsInput) const = 0;
 
-        virtual float distFuncIndexed(CbdImage &image, int x, int y, float p, int numLevelsInput) const = 0;
+        virtual float distFuncIndexed(const CbdImage &image, const DistanceField &df, int x, int y, float p,
+                                      int numLevelsInput) const = 0;
     };
 }  // namespace nitro

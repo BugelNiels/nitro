@@ -20,7 +20,7 @@ namespace nitro {
     public:
         ImOpDataModel();
 
-        virtual ~ImOpDataModel() {}
+        ~ImOpDataModel() override = default;
 
     public:
         bool captionVisible() const override { return true; }
@@ -35,9 +35,12 @@ namespace nitro {
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
     protected:
-        void recompute();
+        virtual void recompute();
+
+        virtual void clearData();
 
         virtual std::shared_ptr<ImageData> compute(const QImage &inputImg) = 0;
+
         virtual std::shared_ptr<ImageData> compute(const nitro::CbdImage &inputImg) = 0;
 
     private:

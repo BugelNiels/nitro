@@ -31,6 +31,7 @@ namespace nitro {
 
         void updateImage(const QPixmap &p);
         void updateImage(const QImage &img);
+        void clearImage();
 
     private:
         const int _embedImgSize = 128;

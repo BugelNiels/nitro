@@ -11,9 +11,11 @@ namespace nitro {
         ~LinearSampler() override;
 
     protected:
-        float distFunc(CbdImage &image, int x, int y, float p, int numLevelsInput) const override;
+        float distFunc(const CbdImage &image, const DistanceField &df, int x, int y, float p,
+                       int numLevelsInput) const override;
 
-        float distFuncIndexed(CbdImage &image, int x, int y, float p, int numLevelsInput) const override;
+        float distFuncIndexed(const CbdImage &image, const DistanceField &df, int x, int y, float p,
+                              int numLevelsInput) const override;
     };
 
 }  // namespace nitro

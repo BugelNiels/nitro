@@ -7,6 +7,8 @@
 #include <iostream>
 #include <QPushButton>
 #include <QLabel>
+#include <QSpinBox>
+#include <QCheckBox>
 
 #include "cbdimage.hpp"
 #include "src/nodes/operators/imopdatamodel.hpp"
@@ -20,7 +22,7 @@ namespace nitro {
     public:
         KMeansDataModel();
 
-        virtual ~KMeansDataModel() {}
+        ~KMeansDataModel() override = default;
 
     public:
         static QString nodeCaption() { return QStringLiteral("K-Means"); }
@@ -32,6 +34,12 @@ namespace nitro {
         bool captionVisible() const override { return true; }
 
         QString name() const override { return nodeName(); }
+
+
+    public:
+        QJsonObject save() const override;
+
+        void load(QJsonObject const &p) override;
 
     public Q_SLOTS:
 
@@ -55,5 +63,8 @@ namespace nitro {
         bool dither = false;
         int k = 8;
 
+        QSpinBox *kSpinBox;
+        QSpinBox *iterSpinBox;
+        QCheckBox *ditherCheckBox;
     };
 }
