@@ -10,5 +10,6 @@
         <file>shaders/level.frag</file>
         <file>shaders/level.vert</file>
         <file>DefaultStyle.json</file>
+        <file>icons/light/expand.png</file>
     </qresource>
 </RCC>

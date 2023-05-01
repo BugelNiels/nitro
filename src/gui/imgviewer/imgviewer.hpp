@@ -14,7 +14,6 @@
 #include "settings/samplesettings.hpp"
 #include "util/matrix.hpp"
 #include "util/progressupdater.hpp"
-#include "imgviewerscene.hpp"
 
 namespace nitro {
 
@@ -28,7 +27,7 @@ namespace nitro {
             double maximum = 0;
         };
     public:
-        explicit ImageViewer(ImageViewerScene *imScene, QWidget *parent = nullptr);
+        explicit ImageViewer(QGraphicsScene *imScene, QWidget *parent = nullptr);
 
         ~ImageViewer() override;
 
@@ -56,11 +55,16 @@ namespace nitro {
 
     Q_SIGNALS:
 
-        void scaleChanged(double scale);
+//        void scaleChanged(double scale);
 
     private:
-        bool _replacementDue = false;
+        const QColor bGroundCol = QColor(55, 55, 55);
+        const QColor imgOutlineCol = QColor(128, 128, 128);
+        const QColor imgGridCol = QColor(78, 78, 78);
+        const int gridStepSize = 32;
         const int emptySize = 128;
+
+        bool _replacementDue = false;
         ScaleRange _scaleRange;
         QImage *displayImg = nullptr;
         QGraphicsPixmapItem *_imgDisplayItem = nullptr;
@@ -72,6 +76,11 @@ namespace nitro {
         QMenu *createContextMenu();
 
         void centerScene();
+
+        QAction *saveAction;
+        QAction *resetAction;
+
+        void initActions();
     };
 
 } // nitro

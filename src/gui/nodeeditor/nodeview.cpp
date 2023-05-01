@@ -26,8 +26,8 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
 }
 
 nitro::NodeView::NodeView(nitro::ImageViewer *imViewer, QWidget *parent) : QDockWidget(parent),
-                                                                           dataFlowGraphModel(nullptr),
-                                                                           filename("untitled.json") {
+                                                                           filename("untitled.json"),
+                                                                           dataFlowGraphModel(nullptr) {
     setWindowTitle("Node Editor");
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);

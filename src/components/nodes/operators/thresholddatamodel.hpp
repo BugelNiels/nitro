@@ -36,13 +36,18 @@ namespace nitro {
     public Q_SLOTS:
 
         void modeChanged(int mode);
+
         void thresholdValChanged(int val);
 
     protected:
         int _mode = 0;
-        nitro::CbdImage compute(const nitro::CbdImage &inputImg) override;
+
+        std::shared_ptr<ImageData> compute(const QImage &inputImg) override;
+
+        std::shared_ptr<ImageData> compute(const nitro::CbdImage &inputImg) override;
 
         QWidget *initBeforeWidget() override;
+
         QWidget *initAfterWidget() override;
 
     private:

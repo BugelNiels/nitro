@@ -39,8 +39,11 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     }
     _input = inputImg;
     if (portIndex == 0) {
-        auto img = compute(inputImg->image());
-        _result = std::make_shared<ImageData>(img);
+        if(_input->isColImg()) {
+            _result = compute(_input->colImage());
+        } else {
+            _result = compute(_input->image());
+        }
 
         const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
         updateImage(p);
@@ -53,8 +56,11 @@ void nitro::ImOpDataModel::recompute() {
     if(_input == nullptr) {
         return;
     }
-    auto img = compute(_input->image());
-    _result = std::make_shared<ImageData>(img);
+    if(_input->isColImg()) {
+        _result = compute(_input->colImage());
+    } else {
+        _result = compute(_input->image());
+    }
 
     const QPixmap &p = QPixmap::fromImage(_result->image().getDisplayImg());
     updateImage(p);

@@ -34,6 +34,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
 
     insertAction(actions().front(), spawnMenu);
     _nodeMenu = initNodeMenu();
+    setScaleRange(0.3, 1);
 }
 
 QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType) {
@@ -53,12 +54,11 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
     QString menuName = nitro::ImageViewerDataModel::nodeCaption();
     QString nodeType = nitro::ImageViewerDataModel::nodeName();
     auto *createNodeAction = new QAction(menuName, this);
-    QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType, createNodeAction]() {
+    QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         if (_dataModel->nodeExists(viewerNodeId)) {
-            return;
+            _dataModel->deleteNode(viewerNodeId);
+//            return;
         }
-//        createNodeAction->setEnabled(false);
-        // Mouse position in scene coordinates.
         QPointF posView = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
 
         QtNodes::NodeId const newId = _dataModel->addNode(nodeType);
@@ -108,7 +108,6 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     QAction *sectionTitle = menu->addSection("Add");
     QFont font;
     font.setWeight(QFont::Light);
-    font.setPixelSize(10);
     sectionTitle->setFont(font);
 
     menu->addSeparator();

@@ -19,7 +19,7 @@
 #include <QGraphicsPixmapItem>
 #include <QFileDialog>
 
-nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
+nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
 
 
@@ -32,11 +32,8 @@ nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-    setCacheMode(QGraphicsView::CacheBackground);
-    // TODO: put in stylesheet
-    setBackgroundBrush(QColor(34, 40, 49));
-    setAutoFillBackground(true);
-    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    setBackgroundBrush(bGroundCol);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     setScaleRange(0.3, 20);
 
@@ -44,30 +41,64 @@ nitro::ImageViewer::ImageViewer(ImageViewerScene *imScene, QWidget *parent)
     // re-calculation when expanding the all QGraphicsItems common rect.
     int maxSize = 4960;
     setSceneRect(-maxSize, -maxSize, (maxSize * 2), (maxSize * 2));
-//    resetImScale();
     setScene(imScene);
+
+    initActions();
+
 }
 
+nitro::ImageViewer::~ImageViewer() = default;
+
+void nitro::ImageViewer::initActions() {
+
+    resetAction = new QAction("Reset view", this);
+    connect(resetAction, &QAction::triggered, [this]() {
+        qDebug() << "Pressed";
+        resetImScale();
+    });
+    resetAction->setShortcut(QKeySequence(Qt::Key_R));
+    resetAction->setShortcutContext(Qt::ShortcutContext::ApplicationShortcut);
+
+    saveAction = new QAction("Save image", this);
+    connect(saveAction, &QAction::triggered, [this]() {
+        if (displayImg != nullptr) {
+            QString filePath = QFileDialog::getSaveFileName(
+                    this, "Save Image", "../images/",
+                    tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
+            if (filePath == "") {
+                return;
+            }
+            if (displayImg->save(filePath)) {
+                QMessageBox::information(this, tr("Save Successful"),
+                                         QString("File canQuitSafely to\n %1").arg(filePath));
+            } else {
+                QMessageBox::warning(this, tr("Could not save"),
+                                     QString("Something went wrong while trying to save to\n %1").arg(filePath));
+            }
+        }
+    });
+    saveAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_S));
+}
+
+
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
+    painter->setBrush(QBrush(bGroundCol));
     QGraphicsView::drawBackground(painter, r);
-    painter->setBrush(QBrush(QColor(42, 42, 42)));
-    painter->drawRect(r);
     if (_imgDisplayItem != nullptr) {
         return;
     }
-    QPen pBounds(QColor(128, 128, 128), 2.0);
-    painter->setPen(pBounds);
     QRectF gridRect(-emptySize, -emptySize, emptySize * 2, emptySize * 2);
+    QPen pBounds(imgOutlineCol, 2.0);
+    painter->setPen(pBounds);
     painter->drawRect(gridRect);
 
-    QPen pfine(QColor(66, 66, 66), 1.0);
+    QPen pfine(imgGridCol, 1.0);
 
-    const int gridSize = 32;
     painter->setPen(pfine);
-    for (qreal x = gridRect.x(); x < gridRect.x() + gridRect.width(); x += gridSize) {
+    for (qreal x = gridRect.x() + gridStepSize; x < gridRect.x() + gridRect.width(); x += gridStepSize) {
         painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
     }
-    for (qreal y = gridRect.y(); y < gridRect.y() + gridRect.height(); y += gridSize) {
+    for (qreal y = gridRect.y() + gridStepSize; y < gridRect.y() + gridRect.height(); y += gridStepSize) {
         painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
     }
 }
@@ -97,7 +128,7 @@ void nitro::ImageViewer::scaleUp() {
     }
 
     scale(factor, factor);
-    Q_EMIT scaleChanged(transform().m11());
+//    Q_EMIT scaleChanged(transform().m11());
 }
 
 void nitro::ImageViewer::scaleDown() {
@@ -114,7 +145,7 @@ void nitro::ImageViewer::scaleDown() {
     }
 
     scale(factor, factor);
-    Q_EMIT scaleChanged(transform().m11());
+//    Q_EMIT scaleChanged(transform().m11());
 }
 
 void nitro::ImageViewer::setupScale(double scale) {
@@ -130,10 +161,9 @@ void nitro::ImageViewer::setupScale(double scale) {
     matrix.scale(scale, scale);
     setTransform(matrix, false);
 
-    Q_EMIT scaleChanged(scale);
+//    Q_EMIT scaleChanged(scale);
 }
 
-nitro::ImageViewer::~ImageViewer() = default;
 
 void nitro::ImageViewer::wheelEvent(QWheelEvent *event) {
     QPoint delta = event->angleDelta();
@@ -153,31 +183,11 @@ void nitro::ImageViewer::wheelEvent(QWheelEvent *event) {
 
 QMenu *nitro::ImageViewer::createContextMenu() {
     auto *menu = new QMenu();
-    auto *resetAction = new QAction("Reset view", this);
-    QObject::connect(resetAction, &QAction::triggered, [this]() {
-        resetImScale();
-    });
     menu->addAction(resetAction);
-
-    auto *saveAction = new QAction("Save image", this);
-    QObject::connect(saveAction, &QAction::triggered, [this]() {
-        if (displayImg != nullptr) {
-            QString filePath = QFileDialog::getSaveFileName(
-                    this, "Save Image", "../images/",
-                    tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
-            if (filePath == "") {
-                return;
-            }
-            if (displayImg->save(filePath)) {
-                QMessageBox::information(this, tr("Save Successful"),
-                                         QString("File canQuitSafely to\n %1").arg(filePath));
-            } else {
-                QMessageBox::warning(this, tr("Could not save"),
-                                     QString("Something went wrong while trying to save to\n %1").arg(filePath));
-            }
-        }
-    });
     menu->addAction(saveAction);
+    if (displayImg == nullptr) {
+        saveAction->setEnabled(false);
+    }
     return menu;
 }
 

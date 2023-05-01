@@ -40,11 +40,15 @@ int main(int argc, char *argv[]) {
     QSurfaceFormat::setDefaultFormat(glFormat);
     omp_set_num_threads(8);
 
-    nitro::MainWindow w;
-    w.show();
-
     QPalette palette = getDarkModePalette();
     QApplication::setPalette(palette);
 
+    QFont font("JetBrains Mono");
+    font.setStyleHint(QFont::Monospace);
+    QApplication::setFont(font);
+
+    nitro::MainWindow w;
+    w.setWindowState(Qt::WindowMaximized);
+    w.show();
     return QApplication::exec();
 }

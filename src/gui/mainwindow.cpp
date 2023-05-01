@@ -5,8 +5,8 @@
 #include <QMenuBar>
 #include <QSplitter>
 #include <QStatusBar>
-#include <QMessageBox>
 
+#include <QIcon>
 #include <QKeyEvent>
 #include <QEvent>
 #include "util/imgconvert.hpp"
@@ -20,9 +20,7 @@ nitro::MainWindow::MainWindow(QWidget *parent)
 
     // Image viewer
     auto *imDock = new QDockWidget("Image Viewer", this);
-
-    auto *imScene = new ImageViewerScene();
-    auto *imView = new nitro::ImageViewer(imScene, imDock);
+    auto *imView = new nitro::ImageViewer(new QGraphicsScene(), imDock);
     imDock->setWidget(imView);
 
     // Surface visualizer
@@ -52,21 +50,22 @@ nitro::MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(vertLayout);
     installEventFilter(this);
-    centralWidget()->setFocus();
+//    centralWidget()->setFocus();
 }
 
 bool nitro::MainWindow::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
         auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
         nodeView->forwardKeyPress(keyEvent);
+
     }
 
     return false;
 }
 
 QStatusBar *nitro::MainWindow::initFooter() {
-    auto *versionLabel = new QLabel("version 0.1", this);
-    fileNameLabel = new QLabel("untitled.json", this);
+    auto *versionLabel = new QLabel(" version 0.1 ", this);
+    fileNameLabel = new QLabel(" untitled.json ", this);
 
     auto *statusBar = new QStatusBar(this);
     statusBar->insertPermanentWidget(0, fileNameLabel, 1);
@@ -154,7 +153,6 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     menuBar->addMenu(fileMenu);
 
     // TODO: save dock state somewhere and restore that here
-    // Actions should start disabled
     auto *windowMenu = new QMenu("Window");
     windowMenu->addAction("Node Editor");
     windowMenu->addAction("Image Viewer");

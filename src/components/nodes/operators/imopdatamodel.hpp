@@ -37,7 +37,8 @@ namespace nitro {
     protected:
         void recompute();
 
-        virtual nitro::CbdImage compute(const nitro::CbdImage &inputImg) = 0;
+        virtual std::shared_ptr<ImageData> compute(const QImage &inputImg) = 0;
+        virtual std::shared_ptr<ImageData> compute(const nitro::CbdImage &inputImg) = 0;
 
     private:
         std::shared_ptr<ImageData> _result;

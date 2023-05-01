@@ -19,4 +19,5 @@ git submodule update
 ## Known Bugs
 
 - Viewer node: image position moves when switching between images of different resolutions
-- Zooming out in the image viewer and then moving gives some wonky results
+- Grid lines are not drawn nicely when zooming in/out
+- Keyboard shortcuts in the image viewer don't work
