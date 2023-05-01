@@ -1,4 +1,5 @@
 #include "imagesourcedatamodel.hpp"
+#include "src/nodes/invaliddata.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -47,8 +48,21 @@ unsigned int nitro::ImageSourceDataModel::nPorts(QtNodes::PortType portType) con
     return result;
 }
 
-QtNodes::NodeDataType nitro::ImageSourceDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
-    return ImageData().type();
+QtNodes::NodeDataType
+nitro::ImageSourceDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
+    switch (portType) {
+        case QtNodes::PortType::In:
+            break;
+
+        case QtNodes::PortType::Out:
+            if (index == 0) {
+                return ImageData().type();
+            }
+
+        default:
+            break;
+    }
+    return nitro::InvalidData().type();
 }
 
 std::shared_ptr<QtNodes::NodeData> nitro::ImageSourceDataModel::outData(QtNodes::PortIndex) {

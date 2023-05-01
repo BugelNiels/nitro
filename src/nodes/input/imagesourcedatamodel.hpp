@@ -18,9 +18,10 @@ namespace nitro {
     public:
         ImageSourceDataModel();
 
-        virtual ~ImageSourceDataModel() {}
+        ~ImageSourceDataModel() override = default;
 
     public:
+        // TODO: change caption based on filename;
         static QString nodeCaption() { return QStringLiteral("Image Source"); }
 
         static QString nodeName() { return QStringLiteral("ImageSource"); }

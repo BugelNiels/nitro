@@ -9,7 +9,6 @@ namespace nitro {
 
     class NodeGraphicsView : public QtNodes::GraphicsView {
     public:
-        NodeGraphicsView(QWidget *parent = Q_NULLPTR);
 
         NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
                          QtNodes::DataFlowGraphModel *model,
@@ -20,11 +19,8 @@ namespace nitro {
 
         NodeGraphicsView operator=(const GraphicsView &) = delete;
 
-        void keyPressEvent(QKeyEvent *event) override;
-
-        void keyReleaseEvent(QKeyEvent *event) override;
-
         void mousePressEvent(QMouseEvent *event) override;
+        void mouseDoubleClickEvent(QMouseEvent *event) override;
 
         void setViewerNodeId(QtNodes::NodeId nodeId);
 
@@ -36,8 +32,6 @@ namespace nitro {
         nitro::ImageViewer *_imViewer;
         QAction *spawnViewNodeAction = nullptr;
 
-        bool shiftPressed = false;
-        bool controlPressed = false;
 
         QMenu *initNodeMenu();
 
@@ -62,6 +56,9 @@ namespace nitro {
         QMenu *initQuantizationSubMenu();
 
         QMenu *initResampleSubMenu();
+
+        QtNodes::NodeId nodeIdViewed;
+        QtNodes::PortIndex currentPort;
     };
 
 } // nitro

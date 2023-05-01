@@ -1,4 +1,5 @@
 #include "tograyscaledatamodel.hpp"
+#include "src/nodes/invaliddata.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -27,8 +28,24 @@ unsigned int nitro::ToGrayScaleDataModel::nPorts(QtNodes::PortType portType) con
     return result;
 }
 
-QtNodes::NodeDataType nitro::ToGrayScaleDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex) const {
-    return ImageData().type();
+QtNodes::NodeDataType
+nitro::ToGrayScaleDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
+    switch (portType) {
+        case QtNodes::PortType::In:
+            if (index == 0) {
+                return ImageData().type();
+            }
+            break;
+
+        case QtNodes::PortType::Out:
+            if (index == 0) {
+                return ImageData().type();
+            }
+
+        default:
+            break;
+    }
+    return nitro::InvalidData().type();
 }
 
 void nitro::ToGrayScaleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {

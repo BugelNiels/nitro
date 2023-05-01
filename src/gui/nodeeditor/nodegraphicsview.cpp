@@ -8,6 +8,8 @@
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
+#include "src/nodes/conversions/seperatergbdatamodel.hpp"
+#include "src/nodes/invaliddata.hpp"
 
 #include <QtNodes/internal/ConnectionGraphicsObject.hpp>
 #include <QtNodes/internal/NodeGraphicsObject.hpp>
@@ -17,16 +19,12 @@
 #include <QKeyEvent>
 
 
-nitro::NodeGraphicsView::NodeGraphicsView(QWidget *parent) : GraphicsView(parent),
-                                                             viewerNodeId(QtNodes::InvalidNodeId) {
-
-}
-
 nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
                                           QtNodes::DataFlowGraphModel *model,
                                           QWidget *parent) : GraphicsView(scene,
                                                                           parent), _dataModel(model),
-                                                             _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId) {
+                                                             _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId),
+                                                             nodeIdViewed(QtNodes::InvalidNodeId) {
     auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
@@ -91,19 +89,13 @@ QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     auto *convertMenu = new QMenu("Color");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
                                            nitro::ToGrayScaleDataModel::nodeName()));
+    convertMenu->addAction(spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(),
+                                           nitro::SeperateRgbDataModel::nodeName()));
     return convertMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
-    auto *opsMenu = new QMenu("Operator");
-    opsMenu->addAction(spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(),
-                                       nitro::ThresholdDataModel::nodeName()));
-    opsMenu->addSeparator();
-    opsMenu->addAction(spawnNodeAction(nitro::QuantisizeDataModel::nodeCaption(),
-                                       nitro::QuantisizeDataModel::nodeName()));
-    opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(),
-                                       nitro::KMeansDataModel::nodeName()));
-    opsMenu->addSeparator();
+    auto *opsMenu = new QMenu("Comparison");
     opsMenu->addAction(spawnNodeAction(nitro::FlipDataModel::nodeCaption(),
                                        nitro::FlipDataModel::nodeName()));
     return opsMenu;
@@ -155,37 +147,13 @@ void nitro::NodeGraphicsView::spawnNodeMenu() {
     _nodeMenu->popup(QCursor::pos());
 }
 
-void nitro::NodeGraphicsView::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_Shift:
-            shiftPressed = true;
-            break;
-        case Qt::Key_Control:
-            controlPressed = true;
-            break;
-        default:
-            break;
-    }
-    QtNodes::GraphicsView::keyPressEvent(event);
-}
-
-void nitro::NodeGraphicsView::keyReleaseEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_Shift:
-            shiftPressed = false;
-            break;
-        case Qt::Key_Control:
-            controlPressed = false;
-            break;
-        default:
-            break;
-    }
-    QtNodes::GraphicsView::keyReleaseEvent(event);
-}
 
 void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
-    QtNodes::GraphicsView::mousePressEvent(event);
-    if (shiftPressed && controlPressed && event->button() == Qt::LeftButton) {
+    // TODO: disable control deselecting things
+    // Disable the mouse press event from arriving
+    qDebug() << "Registered click";
+    if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
+        event->button() == Qt::LeftButton) {
         // Spawn and connect to viewer if possible
         QGraphicsItem *item = itemAt(event->pos().x(), event->pos().y());
         // Update position of current selected node?
@@ -210,16 +178,40 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                     _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
                 }
 
+
                 auto const &cid = c->nodeId();
                 if (cid == viewerNodeId) {
+                    // skip being able to view the viewer itself;
                     return;
+                }
+                if (nodeIdViewed == cid) {
+                    while (true) {
+                        currentPort++;
+                        auto pData = _dataModel->portData(nodeIdViewed,
+                                                          QtNodes::PortType::Out,
+                                                          currentPort,
+                                                          QtNodes::PortRole::DataType)
+                                .value<QtNodes::NodeDataType>();
+                        if (pData.id == nitro::ImageData().type().id) {
+                            break;
+                        }
+                        if (pData.id == nitro::InvalidData().type().id) {
+                            currentPort = -1; // will become 0 in the next iteration
+                        }
+                    }
+                    qDebug() << "Incremented" << currentPort;
+                } else {
+                    qDebug() << "Reset";
+                    nodeIdViewed = cid;
+                    currentPort = 0;
                 }
                 QtNodes::ConnectionId connectionId = {
                         .outNodeId = cid,
-                        .outPortIndex = 0,
+                        .outPortIndex = currentPort,
                         .inNodeId = viewerNodeId,
                         .inPortIndex = 0
                 };
+
                 auto getDataType = [&](QtNodes::PortType const portType) {
                     return _dataModel->portData(getNodeId(portType, connectionId),
                                                 portType,
@@ -240,14 +232,24 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                         _dataModel->deleteConnection(con);
                     }
                     _dataModel->addConnection(connectionId);
-                } else {
-
                 }
             }
         }
+    } else {
+        QtNodes::GraphicsView::mousePressEvent(event);
     }
 }
 
 void nitro::NodeGraphicsView::setViewerNodeId(QtNodes::NodeId nodeId) {
     viewerNodeId = nodeId;
+}
+
+void nitro::NodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
+        event->button() == Qt::LeftButton) {
+        // Fix to ensure we can cycle the viewer node quickly between ports
+        mousePressEvent(event);
+        return;
+    }
+    QGraphicsView::mouseDoubleClickEvent(event);
 }

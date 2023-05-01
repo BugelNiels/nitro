@@ -1,4 +1,5 @@
 #include "imopdatamodel.hpp"
+#include "src/nodes/invaliddata.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -27,8 +28,23 @@ unsigned int nitro::ImOpDataModel::nPorts(QtNodes::PortType portType) const {
     return result;
 }
 
-QtNodes::NodeDataType nitro::ImOpDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const {
-    return ImageData().type();
+QtNodes::NodeDataType nitro::ImOpDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
+    switch (portType) {
+        case QtNodes::PortType::In:
+            if (index == 0) {
+                return ImageData().type();
+            }
+            break;
+
+        case QtNodes::PortType::Out:
+            if (index == 0) {
+                return ImageData().type();
+            }
+
+        default:
+            break;
+    }
+    return nitro::InvalidData().type();
 }
 
 void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {

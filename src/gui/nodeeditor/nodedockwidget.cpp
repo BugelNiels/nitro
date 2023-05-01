@@ -1,6 +1,7 @@
 #include "nodedockwidget.hpp"
 #include "src/nodes/input/imagesourcedatamodel.hpp"
 #include "src/nodes/conversions/tograyscaledatamodel.hpp"
+#include "src/nodes/conversions/seperatergbdatamodel.hpp"
 #include "src/nodes/operators/thresholddatamodel.hpp"
 #include "nodegraphicsview.hpp"
 #include "src/nodes/output/imageviewerdatamodel.hpp"
@@ -8,6 +9,7 @@
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
+#include "nodegraphicsscene.hpp"
 
 #include <QtGui/QScreen>
 #include <QtNodes/BasicGraphicsScene>
@@ -28,6 +30,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::QuantisizeDataModel>("Operator");
     ret->registerModel<nitro::FlipDataModel>("Operator");
     ret->registerModel<nitro::ResampleDataModel>("Operator");
+    ret->registerModel<nitro::SeperateRgbDataModel>("Operator");
 
     return ret;
 }
@@ -38,7 +41,7 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
     dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
-    auto scene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
+    auto scene = new nitro::NodeGraphicsScene(*dataFlowGraphModel);
     view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     prevSave = dataFlowGraphModel->save();
@@ -100,12 +103,6 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
         prevSave = saveObject;
     } else {
         QMessageBox::warning(this, "Failed to open file", filePath);
-    }
-}
-
-void nitro::NodeDockWidget::forwardKeyPress(QKeyEvent *event) {
-    if (!view->hasFocus()) {
-        view->keyPressEvent(event);
     }
 }
 

@@ -22,8 +22,6 @@ namespace nitro {
 
         void loadModel();
 
-        void forwardKeyPress(QKeyEvent *event);
-
         const QString &getFileName() const {
             return filename;
         }

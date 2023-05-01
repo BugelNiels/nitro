@@ -13,14 +13,10 @@ namespace nitro {
 
         ~MainWindow() override;
 
-    protected:
-
-        bool eventFilter(QObject *obj, QEvent *event) override;
-
     private slots:
 
     private:
-        QLabel* fileNameLabel = nullptr;
+        QLabel *fileNameLabel = nullptr;
         NodeDockWidget *nodeView;
 
         QMenuBar *initMenuBar();

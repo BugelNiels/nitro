@@ -1,4 +1,5 @@
 #include "flipdatamodel.hpp"
+#include "src/nodes/invaliddata.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
@@ -29,8 +30,23 @@ unsigned int nitro::FlipDataModel::nPorts(QtNodes::PortType portType) const {
     return result;
 }
 
-QtNodes::NodeDataType nitro::FlipDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const {
-    return ImageData().type();
+QtNodes::NodeDataType nitro::FlipDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
+    switch (portType) {
+        case QtNodes::PortType::In:
+            if (index == 0) {
+                return ImageData().type();
+            }
+            break;
+
+        case QtNodes::PortType::Out:
+            if (index == 0) {
+                return ImageData().type();
+            }
+
+        default:
+            break;
+    }
+    return nitro::InvalidData().type();
 }
 
 
