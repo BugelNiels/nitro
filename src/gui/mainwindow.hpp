@@ -17,7 +17,7 @@ namespace nitro {
 
     private:
         QLabel *fileNameLabel = nullptr;
-        NodeDockWidget *nodeView;
+        NodeDockWidget *nodeDock;
 
         QMenuBar *initMenuBar();
 

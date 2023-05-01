@@ -23,6 +23,7 @@ namespace nitro {
         void mouseDoubleClickEvent(QMouseEvent *event) override;
 
         void setViewerNodeId(QtNodes::NodeId nodeId);
+        QMenu *initNodeMenu();
 
     public Q_SLOTS:
 
@@ -33,7 +34,6 @@ namespace nitro {
         QAction *spawnViewNodeAction = nullptr;
 
 
-        QMenu *initNodeMenu();
 
         QMenu *_nodeMenu{};
 

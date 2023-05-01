@@ -20,6 +20,7 @@ QPalette getDarkModePalette() {
     palette.setColor(QPalette::ButtonText, QColor(239, 239, 239));      // Button text color
     palette.setColor(QPalette::Highlight, QColor(75, 110, 175));        // Highlight color
     palette.setColor(QPalette::HighlightedText, QColor(239, 239, 239)); // Highlight text color
+    palette.setColor(QPalette::PlaceholderText, QColor(150, 150, 150)); // PlaceHolder text color
 
     return palette;
 }

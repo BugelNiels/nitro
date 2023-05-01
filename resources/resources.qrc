@@ -10,6 +10,12 @@
         <file>shaders/level.frag</file>
         <file>shaders/level.vert</file>
         <file>DefaultStyle.json</file>
-        <file>icons/light/expand.png</file>
+        <file>icons/expand.png</file>
+        <file>icons/folder_open.png</file>
+        <file>icons/image_viewer.png</file>
+        <file>icons/node_editor.png</file>
+        <file>icons/surface_visualizer.png</file>
+        <file>icons/node.png</file>
+        <file>icons/node_var1.png</file>
     </qresource>
 </RCC>

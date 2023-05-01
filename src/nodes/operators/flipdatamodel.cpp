@@ -33,7 +33,7 @@ unsigned int nitro::FlipDataModel::nPorts(QtNodes::PortType portType) const {
 QtNodes::NodeDataType nitro::FlipDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
     switch (portType) {
         case QtNodes::PortType::In:
-            if (index == 0) {
+            if (index < 2) {
                 return ImageData().type();
             }
             break;

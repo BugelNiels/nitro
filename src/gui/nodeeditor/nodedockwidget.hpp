@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDockWidget>
+#include <QTreeWidget>
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include "QtNodes/DataFlowGraphModel"
 #include "nodegraphicsview.hpp"
@@ -26,6 +27,9 @@ namespace nitro {
             return filename;
         }
 
+    protected:
+        void keyPressEvent(QKeyEvent* event) override;
+
     private:
         NodeGraphicsView *view;
         QJsonObject prevSave;
@@ -33,6 +37,14 @@ namespace nitro {
         QString saveFilePath;
         QtNodes::DataFlowGraphModel *dataFlowGraphModel;
 
+        QTreeWidget *initSideMenu();
+
+        bool searchTreeItem(QTreeWidgetItem *item, const QString &searchText);
+
+        void searchTextChanged(const QString &searchText);
+
+        QTreeWidget *nodeTreeWidget;
+        QLineEdit *searchBar;
     };
 
 } // nitro

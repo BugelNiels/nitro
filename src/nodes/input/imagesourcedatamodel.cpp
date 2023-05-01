@@ -7,6 +7,7 @@
 #include <QImageReader>
 #include <QVBoxLayout>
 #include <QPainter>
+#include "util/imgresourcereader.hpp"
 
 nitro::ImageSourceDataModel::ImageSourceDataModel()
         : _image(std::make_shared<ImageData>()), _path(nullptr), _loadButton{nullptr} {
@@ -71,6 +72,7 @@ std::shared_ptr<QtNodes::NodeData> nitro::ImageSourceDataModel::outData(QtNodes:
 
 QWidget *nitro::ImageSourceDataModel::initBeforeWidget() {
     _loadButton = new QPushButton("Load Image");
+    _loadButton->setIcon(nitro::ImgResourceReader::getPixMap(":/icons/folder_open.png"));
     connect(_loadButton, &QPushButton::pressed, this, &ImageSourceDataModel::onLoadButtonPressed);
     _loadButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     return _loadButton;

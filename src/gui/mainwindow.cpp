@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include "util/imgconvert.hpp"
+#include "util/imgresourcereader.hpp"
 
 nitro::MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
@@ -17,16 +18,27 @@ nitro::MainWindow::MainWindow(QWidget *parent)
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
 
+    const int icSize = 24;
+
     // Image viewer
-    auto *imDock = new QDockWidget("Image Viewer", this);
+    auto *imDock = new QDockWidget(this);
+    auto *imIcon = new QLabel();
+    imIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}));
+    imDock->setTitleBarWidget(imIcon);
     auto *imView = new nitro::ImageViewer(new QGraphicsScene(), imDock);
     imDock->setWidget(imView);
 
     // Surface visualizer
     auto *surfDock = new QDockWidget("Surface Visualizer", this);
+    auto *surfIcon = new QLabel();
+    surfIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}));
+    surfDock->setTitleBarWidget(surfIcon);
 
     // Node editor
-    nodeView = new nitro::NodeDockWidget(imView, this);
+    nodeDock = new nitro::NodeDockWidget(imView, this);
+    auto *nodeIcon = new QLabel();
+    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png", {icSize, icSize}));
+    nodeDock->setTitleBarWidget(nodeIcon);
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
@@ -38,14 +50,14 @@ nitro::MainWindow::MainWindow(QWidget *parent)
     // Node editor, visualizers split
     auto *vertLayout = new QSplitter(Qt::Vertical, this);
     vertLayout->addWidget(horLayout);
-    vertLayout->addWidget(nodeView);
+    vertLayout->addWidget(nodeDock);
     vertLayout->setStretchFactor(0, 1);
     vertLayout->setStretchFactor(1, 1);
 
     // Disable the undocking features
     imDock->setFeatures(imDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
     surfDock->setFeatures(surfDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
-    nodeView->setFeatures(nodeView->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    nodeDock->setFeatures(nodeDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
 
     setCentralWidget(vertLayout);
     installEventFilter(this);
@@ -75,12 +87,12 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     connect(newAction,
             &QAction::triggered,
             [this]() {
-                if (nodeView) {
-                    if (!nodeView->canQuitSafely()) {
+                if (nodeDock) {
+                    if (!nodeDock->canQuitSafely()) {
                         return;
                     }
-                    fileNameLabel->setText(nodeView->getFileName());
-                    nodeView->clearModel();
+                    fileNameLabel->setText(nodeDock->getFileName());
+                    nodeDock->clearModel();
                 }
             });
     fileMenu->addAction(newAction);
@@ -90,9 +102,9 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     connect(openAction,
             &QAction::triggered,
             [this]() {
-                if (nodeView) {
-                    nodeView->loadModel();
-                    fileNameLabel->setText(nodeView->getFileName());
+                if (nodeDock) {
+                    nodeDock->loadModel();
+                    fileNameLabel->setText(nodeDock->getFileName());
                 }
             });
     fileMenu->addAction(openAction);
@@ -103,9 +115,9 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     connect(saveAction,
             &QAction::triggered,
             [this]() {
-                if (nodeView) {
-                    nodeView->saveModel();
-                    fileNameLabel->setText(nodeView->getFileName());
+                if (nodeDock) {
+                    nodeDock->saveModel();
+                    fileNameLabel->setText(nodeDock->getFileName());
                 }
             });
     fileMenu->addAction(saveAction);
@@ -115,9 +127,9 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     connect(saveAsAction,
             &QAction::triggered,
             [this]() {
-                if (nodeView) {
-                    nodeView->saveModel(true);
-                    fileNameLabel->setText(nodeView->getFileName());
+                if (nodeDock) {
+                    nodeDock->saveModel(true);
+                    fileNameLabel->setText(nodeDock->getFileName());
                 }
             });
     fileMenu->addAction(saveAsAction);
@@ -129,8 +141,8 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     connect(quitAction,
             &QAction::triggered,
             [this]() {
-                if (nodeView) {
-                    if (!nodeView->canQuitSafely()) {
+                if (nodeDock) {
+                    if (!nodeDock->canQuitSafely()) {
                         return;
                     }
                 }

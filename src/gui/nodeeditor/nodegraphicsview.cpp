@@ -32,7 +32,6 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
             &QAction::triggered,
             this,
             &NodeGraphicsView::spawnNodeMenu);
-
     insertAction(actions().front(), spawnMenu);
     _nodeMenu = initNodeMenu();
     setScaleRange(0.3, 1);
@@ -114,7 +113,6 @@ QMenu *nitro::NodeGraphicsView::initResampleSubMenu() {
     auto *opsMenu = new QMenu("Resampling");
     opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(),
                                        nitro::ResampleDataModel::nodeName()));
-    opsMenu->addSeparator();
     return opsMenu;
 }
 

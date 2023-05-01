@@ -10,7 +10,10 @@
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "nodegraphicsscene.hpp"
+#include "util/imgresourcereader.hpp"
+#include "draggabletreewidget.hpp"
 
+#include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtNodes/BasicGraphicsScene>
 #include <QtWidgets/QApplication>
@@ -18,7 +21,10 @@
 #include <QtNodes/NodeDelegateModelRegistry>
 #include <QFileDialog>
 #include <QMessageBox>
-
+#include <QSplitter>
+#include <QTreeWidget>
+#include <QVBoxLayout>
+#include <QLineEdit>
 
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
@@ -45,11 +51,80 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
     view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     prevSave = dataFlowGraphModel->save();
-    this->setWidget(view);
+
+
+    auto *horLayout = new QSplitter(Qt::Horizontal, this);
+
+    auto *wrapper = new QWidget(horLayout);
+    auto *menuVertLayout = new QVBoxLayout();
+    searchBar = new QLineEdit(this);
+
+    searchBar->setPlaceholderText("Search");
+    nodeTreeWidget = initSideMenu();
+    connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
+
+    menuVertLayout->addWidget(searchBar);
+    menuVertLayout->addWidget(nodeTreeWidget);
+    wrapper->setLayout(menuVertLayout);
+    horLayout->addWidget(wrapper);
+    horLayout->addWidget(view);
+
+
+    setWidget(horLayout);
 }
 
 
 nitro::NodeDockWidget::~NodeDockWidget() = default;
+
+void nitro::NodeDockWidget::searchTextChanged(const QString &searchText) {
+    // Loop through all items in the tree widget
+    for (int i = 0; i < nodeTreeWidget->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *topLevelItem = nodeTreeWidget->topLevelItem(i);
+        int matchCount = 0;
+        for (int j = 0; j < topLevelItem->childCount(); ++j) {
+            matchCount += searchTreeItem(topLevelItem->child(j), searchText);
+        }
+        topLevelItem->setHidden(matchCount == topLevelItem->childCount());
+    }
+}
+
+inline bool isFuzzyMatch(const QString &str1, const QString &str2) {
+    return str1.toLower().contains(str2.toLower()) ||
+           QString::localeAwareCompare(str1, str2) == 0;
+}
+
+bool nitro::NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString &searchText) {
+    // Hide/show the item based on whether it matches the search text
+    bool matches = isFuzzyMatch(item->text(0), searchText);
+    item->setHidden(!matches);
+    return !matches;
+}
+
+QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
+    auto *treeWidget = new nitro::DraggableTreeWidget(this);
+    treeWidget->setHeaderHidden(true);
+    auto nodeMenu = view->initNodeMenu();
+    for (auto *subMen: nodeMenu->actions()) {
+
+        if (subMen->menu()) {
+            auto *category = new QTreeWidgetItem(treeWidget, QStringList() << subMen->text());
+            for (auto *subAction: subMen->menu()->actions()) {
+                auto *item = new QTreeWidgetItem(category, QStringList() << subAction->text());
+                auto font = category->font(0);
+                font.setWeight(QFont::Light);
+                font.setPixelSize(14); // TODO: more dynamic
+                item->setFont(0, font);
+                item->setIcon(0, QIcon(nitro::ImgResourceReader::getPixMap(":/icons/node_var1.png")));
+
+                category->addChild(item);
+                treeWidget->registerAction(subAction->text(), subAction);
+                // TODO: allow drag and drop
+            }
+        }
+    }
+    treeWidget->expandAll();
+    return treeWidget;
+}
 
 void nitro::NodeDockWidget::clearModel() {
     if (dataFlowGraphModel) {
@@ -137,3 +212,11 @@ void nitro::NodeDockWidget::loadModel() {
     }
 }
 
+void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
+    QWidget::keyPressEvent(event);
+    switch (event->key()) {
+        case Qt::Key_Space:
+            searchBar->setFocus();
+            break;
+    }
+}
