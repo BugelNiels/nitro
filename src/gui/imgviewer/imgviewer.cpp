@@ -89,8 +89,6 @@ void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     }
     QRectF gridRect(-emptySize, -emptySize, emptySize * 2, emptySize * 2);
     QPen pBounds(imgOutlineCol, 2.0);
-    painter->setPen(pBounds);
-    painter->drawRect(gridRect);
 
     QPen pfine(imgGridCol, 1.0);
 
@@ -101,6 +99,12 @@ void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     for (qreal y = gridRect.y() + gridStepSize; y < gridRect.y() + gridRect.height(); y += gridStepSize) {
         painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
     }
+
+
+    painter->setPen(pBounds);
+    QBrush brush(Qt::transparent);
+    painter->setBrush(brush);
+    painter->drawRect(gridRect);
 }
 
 void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {

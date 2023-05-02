@@ -28,6 +28,7 @@ namespace nitro {
 
         static QString nodeName() { return QStringLiteral("Quantisize"); }
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/quantisize.png"); }
+        static QColor nodeColor() { return {95, 120, 83}; }
 
         QString caption() const override { return nodeCaption(); }
 

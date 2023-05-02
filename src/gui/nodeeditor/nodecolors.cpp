@@ -13,20 +13,20 @@
 QMap<QString, QColor> nitro::NodeColors::colors;
 
 void nitro::NodeColors::initColors() {
-    colors[nitro::ImageSourceDataModel::nodeName()] = {161, 74, 74};
-    colors[nitro::ImageViewerDataModel::nodeName()] = {99, 28, 28};
+    colors[nitro::ImageSourceDataModel::nodeName()] = nitro::ImageSourceDataModel::nodeColor();
+    colors[nitro::ImageViewerDataModel::nodeName()] = nitro::ImageViewerDataModel::nodeColor();
 
-    colors[nitro::ToGrayScaleDataModel::nodeName()] = {59, 90, 115};
-    colors[nitro::ThresholdDataModel::nodeName()] = {59, 90, 115};
-    colors[nitro::SeperateRgbDataModel::nodeName()] = {59, 90, 115};
-    colors[nitro::ImgMathDataModel::nodeName()] = {59, 90, 115};
+    colors[nitro::ToGrayScaleDataModel::nodeName()] = nitro::ToGrayScaleDataModel::nodeColor();
+    colors[nitro::ThresholdDataModel::nodeName()] = nitro::ThresholdDataModel::nodeColor();
+    colors[nitro::SeperateRgbDataModel::nodeName()] = nitro::SeperateRgbDataModel::nodeColor();
+    colors[nitro::ImgMathDataModel::nodeName()] = nitro::ImgMathDataModel::nodeColor();
 
-    colors[nitro::KMeansDataModel::nodeName()] = {95, 120, 83};
-    colors[nitro::QuantisizeDataModel::nodeName()] = {95, 120, 83};
+    colors[nitro::KMeansDataModel::nodeName()] = nitro::KMeansDataModel::nodeColor();
+    colors[nitro::QuantisizeDataModel::nodeName()] = nitro::QuantisizeDataModel::nodeColor();
 
-    colors[nitro::FlipDataModel::nodeName()] = {118, 185, 0};
+    colors[nitro::FlipDataModel::nodeName()] = nitro::FlipDataModel::nodeColor();
 
-    colors[nitro::ResampleDataModel::nodeName()] = {201, 94, 6};
+    colors[nitro::ResampleDataModel::nodeName()] = nitro::ResampleDataModel::nodeColor();
 
 
 }

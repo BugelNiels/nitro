@@ -163,8 +163,10 @@ QWidget *nitro::MainWindow::initNodeTitleBar() {
 
     auto *nodeImgCheckBox = new QCheckBox("Node Images");
     nodeImgCheckBox->setChecked(nitro::config::nodeImages);
-    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [nodeImgCheckBox] {
+    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [this, nodeImgCheckBox] {
         nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
+        nodeDock->recalculateNodeSizes();
+
     });
     hLayout->addWidget(nodeImgCheckBox);
 

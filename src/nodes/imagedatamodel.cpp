@@ -16,7 +16,7 @@ nitro::ImageDataModel::ImageDataModel()
 void nitro::ImageDataModel::onNodeImagesChanged() {
     _imgLabel->setHidden(!nitro::config::nodeImages);
     _displayWrapper->adjustSize();
-//    Q_EMIT nodeUpdated();
+    Q_EMIT embeddedWidgetSizeUpdated();
 }
 
 QPixmap createPixmapWithGrid(int width, int height, int gridSize) {

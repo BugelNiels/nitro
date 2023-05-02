@@ -5,7 +5,7 @@
     "CoarseGridColor": [42, 42, 48]
   },
   "NodeStyle": {
-    "NormalBoundaryColor": [28, 28, 28],
+    "NormalBoundaryColor": [52, 52, 52],
     "SelectedBoundaryColor": [255, 255, 255],
     "GradientColor0": [80, 80, 80],
     "GradientColor1": [52, 52, 52],

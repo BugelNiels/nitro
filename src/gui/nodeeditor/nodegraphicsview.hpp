@@ -63,7 +63,7 @@ namespace nitro {
         QtNodes::NodeId nodeIdViewed;
         QtNodes::PortIndex currentPort;
 
-        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName);
+        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName, const QColor& icColor);
 
         QtNodes::AbstractNodeGeometry &nodeGeometry;
     };

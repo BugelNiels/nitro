@@ -28,6 +28,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("To Grayscale"); }
         static QString nodeName() { return QStringLiteral("ToGrayscale"); }
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/greyscale.png"); }
+        static QColor nodeColor() { return {59, 90, 115}; }
 
 
         QString caption() const override { return nodeCaption(); }

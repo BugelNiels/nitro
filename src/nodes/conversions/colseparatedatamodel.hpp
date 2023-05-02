@@ -36,6 +36,7 @@ namespace nitro {
 
 
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/separate.png"); }
+        static QColor nodeColor() { return {59, 90, 115}; }
 
     protected:
 

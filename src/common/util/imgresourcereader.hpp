@@ -14,6 +14,7 @@ namespace nitro {
     private:
 
         static QMap<QString, QPixmap> loadedIcons;
+
     };
 
 } // nitro

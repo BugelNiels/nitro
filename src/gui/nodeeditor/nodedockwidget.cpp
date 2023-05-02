@@ -49,8 +49,8 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
     dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
-    auto scene = new nitro::NodeGraphicsScene(*dataFlowGraphModel);
-    view = new nitro::NodeGraphicsView(imViewer, scene, dataFlowGraphModel, this);
+    nodeScene = new nitro::NodeGraphicsScene(*dataFlowGraphModel);
+    view = new nitro::NodeGraphicsView(imViewer, nodeScene, dataFlowGraphModel, this);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
     prevSave = dataFlowGraphModel->save();
 
@@ -224,5 +224,11 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
             }
             searchBar->setFocus();
             break;
+    }
+}
+
+void nitro::NodeDockWidget::recalculateNodeSizes() {
+    for(auto& o : dataFlowGraphModel->allNodeIds()) {
+        nodeScene->onNodeUpdated(o);
     }
 }

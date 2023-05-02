@@ -5,6 +5,7 @@
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include "QtNodes/DataFlowGraphModel"
 #include "nodegraphicsview.hpp"
+#include "nodegraphicsscene.hpp"
 
 namespace nitro {
 
@@ -27,6 +28,8 @@ namespace nitro {
             return filename;
         }
 
+        void recalculateNodeSizes();
+
     protected:
         void keyPressEvent(QKeyEvent* event) override;
 
@@ -45,6 +48,7 @@ namespace nitro {
 
         QTreeWidget *nodeTreeWidget;
         QLineEdit *searchBar;
+        NodeGraphicsScene *nodeScene;
     };
 
 } // nitro

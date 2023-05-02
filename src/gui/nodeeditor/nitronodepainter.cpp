@@ -25,41 +25,34 @@ void nitro::NitroNodePainter::paint(QPainter *painter, QtNodes::NodeGraphicsObje
     //AbstractNodeGeometry & geometry = ngo.nodeScene()->nodeGeometry();
     //geometry.recomputeSizeIfFontChanged(painter->font());
 
-    drawNodeRect(painter, ngo);
+    drawNodeBackground(painter, ngo);
+    drawNodeCaption(painter, ngo);
+    drawNodeHighlight(painter, ngo);
 
     drawConnectionPoints(painter, ngo);
 
     drawFilledConnectionPoints(painter, ngo);
 
-    drawNodeCaption(painter, ngo);
 
     drawEntryLabels(painter, ngo);
 
     drawResizeRect(painter, ngo);
 }
 
-void nitro::NitroNodePainter::drawNodeRect(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
+void nitro::NitroNodePainter::drawNodeBackground(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
     QtNodes::AbstractGraphModel &model = ngo.graphModel();
 
     QtNodes::NodeId const nodeId = ngo.nodeId();
 
     QtNodes::AbstractNodeGeometry &geometry = ngo.nodeScene()->nodeGeometry();
-
     QSize size = geometry.size(nodeId);
 
     QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, QtNodes::NodeRole::Style));
 
     QtNodes::NodeStyle nodeStyle(json.object());
 
-    auto color = ngo.isSelected() ? nodeStyle.SelectedBoundaryColor : nodeStyle.NormalBoundaryColor;
-
-    if (ngo.nodeState().hovered()) {
-        QPen p(color, nodeStyle.HoveredPenWidth);
-        painter->setPen(p);
-    } else {
-        QPen p(color, nodeStyle.PenWidth);
-        painter->setPen(p);
-    }
+    QPen p(nodeStyle.NormalBoundaryColor, nodeStyle.PenWidth);
+    painter->setPen(p);
 
     QLinearGradient gradient(QPointF(0.0, 0.0), QPointF(0, size.height()));
 
@@ -73,7 +66,30 @@ void nitro::NitroNodePainter::drawNodeRect(QPainter *painter, QtNodes::NodeGraph
     QRectF boundary(0, 0, size.width(), size.height());
 
     double const radius = 3.0;
+    painter->drawRoundedRect(boundary, radius, radius);
+}
 
+void nitro::NitroNodePainter::drawNodeHighlight(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
+    if (!ngo.isSelected()) {
+        return;
+    }
+    QtNodes::AbstractGraphModel &model = ngo.graphModel();
+
+    QtNodes::NodeId const nodeId = ngo.nodeId();
+
+    QtNodes::AbstractNodeGeometry &geometry = ngo.nodeScene()->nodeGeometry();
+
+    QSize size = geometry.size(nodeId);
+
+    QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, QtNodes::NodeRole::Style));
+
+    QtNodes::NodeStyle nodeStyle(json.object());
+
+    QRectF boundary(0, 0, size.width(), size.height());
+
+    double const radius = 3.0;
+    QBrush brush(Qt::transparent);
+    painter->setBrush(brush);
     painter->drawRoundedRect(boundary, radius, radius);
 }
 

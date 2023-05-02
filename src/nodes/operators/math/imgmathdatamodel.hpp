@@ -32,6 +32,7 @@ namespace nitro {
 
         static QString nodeName() { return QStringLiteral("Math"); }
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/math.png"); }
+        static QColor nodeColor() { return {59, 90, 115}; }
 
         QString caption() const override { return nodeCaption(); }
 

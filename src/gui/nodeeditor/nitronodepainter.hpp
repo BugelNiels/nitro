@@ -11,8 +11,8 @@ class NitroNodePainter : public QtNodes::AbstractNodePainter {
         NitroNodePainter();
 
     void paint(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const override;
-
-    void drawNodeRect(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const;
+    void drawNodeBackground(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const;
+    void drawNodeHighlight(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const;
 
     void drawConnectionPoints(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const;
 

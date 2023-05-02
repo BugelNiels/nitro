@@ -26,6 +26,7 @@ namespace nitro {
 
         static QString nodeName() { return QStringLiteral("ImageSource"); }
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/image_source.png"); }
+        static QColor nodeColor() { return {161, 74, 74}; }
 
         QString caption() const override { return nodeCaption(); }
 

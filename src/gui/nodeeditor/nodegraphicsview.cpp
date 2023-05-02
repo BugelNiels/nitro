@@ -24,26 +24,56 @@
 
 
 nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
-                                          QtNodes::DataFlowGraphModel *model,
-                                          QWidget *parent) : GraphicsView(scene,
-                                                                          parent), _dataModel(model),
-                                                             _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId),
-                                                             nodeIdViewed(QtNodes::InvalidNodeId),
-                                                             nodeGeometry(scene->nodeGeometry()) {
+                                          QtNodes::DataFlowGraphModel *model, QWidget *parent) : GraphicsView(scene,
+                                                                                                              parent),
+                                                                                                 _dataModel(model),
+                                                                                                 _imViewer(viewer),
+                                                                                                 viewerNodeId(
+                                                                                                         QtNodes::InvalidNodeId),
+                                                                                                 nodeIdViewed(
+                                                                                                         QtNodes::InvalidNodeId),
+                                                                                                 nodeGeometry(
+                                                                                                         scene->nodeGeometry()) {
     auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
-    connect(spawnMenu,
-            &QAction::triggered,
-            this,
-            &NodeGraphicsView::spawnNodeMenu);
+    connect(spawnMenu, &QAction::triggered, this, &NodeGraphicsView::spawnNodeMenu);
     insertAction(actions().front(), spawnMenu);
     _nodeMenu = initNodeMenu();
     setScaleRange(0.3, 1);
 }
 
+// TODO: util
+QColor makeReadable(const QColor &color, bool lightMode = false) {
+    // Convert to YIQ color space
+    double y = 0.299 * color.redF() + 0.587 * color.greenF() + 0.114 * color.blueF();
+    double i = 0.596 * color.redF() - 0.274 * color.greenF() - 0.322 * color.blueF();
+    double q = 0.211 * color.redF() - 0.523 * color.greenF() + 0.312 * color.blueF();
+
+    // Adjust Y value to make color more readable on dark background
+    if (lightMode) {
+        y = qMin(0.4, y);
+    } else {
+        y = qMax(0.5, y);
+    }
+
+    // Convert back to RGB color space
+    double r = y + 0.956 * i + 0.621 * q;
+    double g = y - 0.272 * i - 0.647 * q;
+    double b = y - 1.105 * i + 1.702 * q;
+
+    // Clamp values to valid range
+    r = qBound(0.0, r, 1.0);
+    g = qBound(0.0, g, 1.0);
+    b = qBound(0.0, b, 1.0);
+
+    // Return adjusted color
+    return QColor::fromRgbF(r, g, b, color.alphaF());
+}
+
 QAction *
-nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconPath) {
+nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconPath,
+                                         const QColor &icColor) {
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
@@ -56,7 +86,7 @@ nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString 
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
     QIcon icon;
-    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath));
+    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
     createNodeAction->setIcon(icon);
     return createNodeAction;
 }
@@ -65,6 +95,7 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
     QString menuName = nitro::ImageViewerDataModel::nodeCaption();
     QString nodeType = nitro::ImageViewerDataModel::nodeName();
     QString iconPath = nitro::ImageViewerDataModel::nodeIcon();
+    QColor icColor = nitro::ImageViewerDataModel::nodeColor();
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         if (_dataModel->nodeExists(viewerNodeId)) {
@@ -80,7 +111,7 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
     QIcon icon;
-    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath));
+    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
     createNodeAction->setIcon(icon);
     return createNodeAction;
 }
@@ -88,9 +119,9 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
 // TODO: check pointer usage
 QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
     auto *inputMenu = new QMenu("Input");
-    inputMenu->addAction(spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(),
-                                         nitro::ImageSourceDataModel::nodeName(),
-                                         nitro::ImageSourceDataModel::nodeIcon()));
+    inputMenu->addAction(
+            spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(), nitro::ImageSourceDataModel::nodeName(),
+                            nitro::ImageSourceDataModel::nodeIcon(), nitro::ImageSourceDataModel::nodeColor()));
     return inputMenu;
 }
 
@@ -104,45 +135,46 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
 
 QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     auto *convertMenu = new QMenu("Color");
-    convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
-                                           nitro::ToGrayScaleDataModel::nodeName(),
-                                           nitro::ToGrayScaleDataModel::nodeIcon()));
-    convertMenu->addAction(spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(),
-                                           nitro::SeperateRgbDataModel::nodeName(),
-                                           nitro::SeperateRgbDataModel::nodeIcon()));
-    convertMenu->addAction(spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(),
-                                           nitro::ThresholdDataModel::nodeName(),
-                                           nitro::ThresholdDataModel::nodeIcon()));
+    convertMenu->addAction(
+            spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(), nitro::ToGrayScaleDataModel::nodeName(),
+                            nitro::ToGrayScaleDataModel::nodeIcon(), nitro::ToGrayScaleDataModel::nodeColor()));
+    convertMenu->addAction(
+            spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(), nitro::SeperateRgbDataModel::nodeName(),
+                            nitro::SeperateRgbDataModel::nodeIcon(), nitro::SeperateRgbDataModel::nodeColor()));
+    convertMenu->addAction(
+            spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(), nitro::ThresholdDataModel::nodeName(),
+                            nitro::ThresholdDataModel::nodeIcon(), nitro::ThresholdDataModel::nodeColor()));
     return convertMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initComparisonSubMenu() {
     auto *opsMenu = new QMenu("Comparison");
-    opsMenu->addAction(spawnNodeAction(nitro::FlipDataModel::nodeCaption(),
-                                       nitro::FlipDataModel::nodeName(), nitro::FlipDataModel::nodeIcon()));
+    opsMenu->addAction(spawnNodeAction(nitro::FlipDataModel::nodeCaption(), nitro::FlipDataModel::nodeName(),
+                                       nitro::FlipDataModel::nodeIcon(), nitro::FlipDataModel::nodeColor()));
     return opsMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initMathSubMenu() {
     auto *opsMenu = new QMenu("Math");
-    opsMenu->addAction(spawnNodeAction(nitro::ImgMathDataModel::nodeCaption(),
-                                       nitro::ImgMathDataModel::nodeName(), nitro::ImgMathDataModel::nodeIcon()));
+    opsMenu->addAction(spawnNodeAction(nitro::ImgMathDataModel::nodeCaption(), nitro::ImgMathDataModel::nodeName(),
+                                       nitro::ImgMathDataModel::nodeIcon(), nitro::ImgMathDataModel::nodeColor()));
     return opsMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initQuantizationSubMenu() {
     auto *opsMenu = new QMenu("Quantization");
-    opsMenu->addAction(spawnNodeAction(nitro::QuantisizeDataModel::nodeCaption(),
-                                       nitro::QuantisizeDataModel::nodeName(), nitro::QuantisizeDataModel::nodeIcon()));
-    opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(),
-                                       nitro::KMeansDataModel::nodeName(), nitro::KMeansDataModel::nodeIcon()));
+    opsMenu->addAction(
+            spawnNodeAction(nitro::QuantisizeDataModel::nodeCaption(), nitro::QuantisizeDataModel::nodeName(),
+                            nitro::QuantisizeDataModel::nodeIcon(), nitro::QuantisizeDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(), nitro::KMeansDataModel::nodeName(),
+                                       nitro::KMeansDataModel::nodeIcon(), nitro::KMeansDataModel::nodeColor()));
     return opsMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initResampleSubMenu() {
     auto *opsMenu = new QMenu("Resampling");
-    opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(),
-                                       nitro::ResampleDataModel::nodeName(), nitro::ResampleDataModel::nodeIcon()));
+    opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(), nitro::ResampleDataModel::nodeName(),
+                                       nitro::ResampleDataModel::nodeIcon(), nitro::ResampleDataModel::nodeColor()));
     return opsMenu;
 }
 
@@ -214,11 +246,8 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                 if (nodeIdViewed == cid) {
                     while (true) {
                         currentPort++;
-                        auto pData = _dataModel->portData(nodeIdViewed,
-                                                          QtNodes::PortType::Out,
-                                                          currentPort,
-                                                          QtNodes::PortRole::DataType)
-                                .value<QtNodes::NodeDataType>();
+                        auto pData = _dataModel->portData(nodeIdViewed, QtNodes::PortType::Out, currentPort,
+                                                          QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
                         if (pData.id == nitro::ImageData().type().id) {
                             break;
                         }
@@ -230,19 +259,12 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                     nodeIdViewed = cid;
                     currentPort = 0;
                 }
-                QtNodes::ConnectionId connectionId = {
-                        .outNodeId = cid,
-                        .outPortIndex = currentPort,
-                        .inNodeId = viewerNodeId,
-                        .inPortIndex = 0
-                };
+                QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort, .inNodeId = viewerNodeId, .inPortIndex = 0};
 
                 auto getDataType = [&](QtNodes::PortType const portType) {
-                    return _dataModel->portData(getNodeId(portType, connectionId),
-                                                portType,
+                    return _dataModel->portData(getNodeId(portType, connectionId), portType,
                                                 getPortIndex(portType, connectionId),
-                                                QtNodes::PortRole::DataType)
-                            .value<QtNodes::NodeDataType>();
+                                                QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
                 };
 
                 // Check if connection possible
