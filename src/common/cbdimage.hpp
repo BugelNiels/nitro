@@ -3,7 +3,6 @@
 #include <QImage>
 
 #include "util/matrix.hpp"
-#include "util/progressupdater.hpp"
 
 namespace nitro {
 
@@ -20,14 +19,6 @@ namespace nitro {
         CbdImage(int width, int height, int dynRange);
 
         explicit CbdImage(const QImage &img);
-
-//        void calcDistanceField();
-
-//        CbdImage resample(int numLevels, const std::shared_ptr<Resampler> &resampler);
-
-//        CbdImage compress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler, ProgressUpdater *updater);
-//
-//        CbdImage decompress(int targetBitDepth, const std::shared_ptr<Resampler> &resampler);
 
         const QImage &getDisplayImg();
 
@@ -49,11 +40,8 @@ namespace nitro {
         void setIndexed(QVector<int> vals);
 
     private:
-//        int diff(CbdImage &other);
-
         int numGreyLevels;
         Matrix<int> matrix;
-//        QVector<Matrix<float>> distanceField;
 
         QImage displayImg;
         bool displayCalculated = false;

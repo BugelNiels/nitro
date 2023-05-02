@@ -4,7 +4,6 @@
 #include <QSurfaceFormat>
 
 #include "gui/mainwindow.hpp"
-#include "util/imgconvert.hpp"
 #include <QStyle>
 #include <QFontDatabase>
 

@@ -1,10 +1,10 @@
-#include "seperatergbdatamodel.hpp"
+#include "separatergbdatamodel.hpp"
 
-nitro::SeperateRgbDataModel::SeperateRgbDataModel() : ColorSeparateDataModel(3) {
+nitro::SeparateRgbDataModel::SeparateRgbDataModel() : ColorSeparateDataModel(3) {
 
 }
 
-void nitro::SeperateRgbDataModel::separate(const QImage &img) {
+void nitro::SeparateRgbDataModel::separate(const QImage &img) {
     int width = img.width();
     int height = img.height();
     QImage red(width, height, QImage::Format_Grayscale8);

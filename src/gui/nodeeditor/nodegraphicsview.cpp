@@ -9,7 +9,10 @@
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/math/imgmathdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
-#include "src/nodes/conversions/seperatergbdatamodel.hpp"
+#include "src/nodes/conversions/rgb/separatergbdatamodel.hpp"
+#include "src/nodes/conversions/rgb/combinergbdatamodel.hpp"
+#include "src/nodes/conversions/ycbcr/combineycbcrdatamodel.hpp"
+#include "src/nodes/conversions/ycbcr/separateycbcrdatamodel.hpp"
 #include "src/nodes/invaliddata.hpp"
 #include "util/imgresourcereader.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
@@ -141,9 +144,20 @@ QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     convertMenu->addAction(
             spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(), nitro::ToGrayScaleDataModel::nodeName(),
                             nitro::ToGrayScaleDataModel::nodeIcon(), nitro::ToGrayScaleDataModel::nodeColor()));
+    convertMenu->addSeparator();
     convertMenu->addAction(
-            spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(), nitro::SeperateRgbDataModel::nodeName(),
-                            nitro::SeperateRgbDataModel::nodeIcon(), nitro::SeperateRgbDataModel::nodeColor()));
+            spawnNodeAction(nitro::SeparateRgbDataModel::nodeCaption(), nitro::SeparateRgbDataModel::nodeName(),
+                            nitro::SeparateRgbDataModel::nodeIcon(), nitro::SeparateRgbDataModel::nodeColor()));
+    convertMenu->addAction(
+            spawnNodeAction(nitro::CombineRgbDataModel::nodeCaption(), nitro::CombineRgbDataModel::nodeName(),
+                            nitro::CombineRgbDataModel::nodeIcon(), nitro::CombineRgbDataModel::nodeColor()));
+    convertMenu->addSeparator();
+    convertMenu->addAction(
+            spawnNodeAction(nitro::SeparateYCbCrDataModel::nodeCaption(), nitro::SeparateYCbCrDataModel::nodeName(),
+                            nitro::SeparateYCbCrDataModel::nodeIcon(), nitro::SeparateYCbCrDataModel::nodeColor()));
+    convertMenu->addAction(
+            spawnNodeAction(nitro::CombineYCbrCrDataModel::nodeCaption(), nitro::CombineYCbrCrDataModel::nodeName(),
+                            nitro::CombineYCbrCrDataModel::nodeIcon(), nitro::CombineYCbrCrDataModel::nodeColor()));
     return convertMenu;
 }
 
@@ -207,6 +221,7 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
 
 void nitro::NodeGraphicsView::spawnNodeMenu() {
     _nodeMenu->popup(QCursor::pos());
+    setDragMode(QGraphicsView::ScrollHandDrag);
 }
 
 

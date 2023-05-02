@@ -20,8 +20,6 @@ namespace nitro {
 
     private:
         QMap<QString, QAction*> actions;
-        bool m_pressed = false;
-        QPoint m_startPos;
         QTreeWidgetItem *m_draggedItem{};
     };
 

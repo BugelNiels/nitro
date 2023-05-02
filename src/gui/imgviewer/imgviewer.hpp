@@ -11,11 +11,10 @@
 
 #include "cbdimage.hpp"
 #include "util/matrix.hpp"
-#include "util/progressupdater.hpp"
 
 namespace nitro {
 
-    class ImageViewer : public QGraphicsView, public nitro::ProgressUpdater {
+    class ImageViewer : public QGraphicsView {
     Q_OBJECT
 
 

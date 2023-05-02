@@ -1,19 +1,19 @@
 #pragma once
 
-#include "colseparatedatamodel.hpp"
+#include "src/nodes/conversions/colseparatedatamodel.hpp"
 
 namespace nitro {
 
-    class SeperateRgbDataModel : public ColorSeparateDataModel {
+    class SeparateYCbCrDataModel : public ColorSeparateDataModel {
     public:
-        explicit SeperateRgbDataModel();
+        explicit SeparateYCbCrDataModel();
 
-        ~SeperateRgbDataModel() override = default;
+        ~SeparateYCbCrDataModel() override = default;
 
 
-        static QString nodeCaption() { return QStringLiteral("Separate RGB"); }
+        static QString nodeCaption() { return QStringLiteral("Separate YCbCr"); }
 
-        static QString nodeName() { return QStringLiteral("SeperateRgb"); }
+        static QString nodeName() { return QStringLiteral("SeparateYCbCr"); }
 
         QString caption() const override { return nodeCaption(); }
 

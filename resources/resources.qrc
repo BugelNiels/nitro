@@ -28,5 +28,6 @@
         <file>icons/nodes/quantisize.png</file>
         <file>icons/nodes/threshold.png</file>
         <file>icons/nodes/math.png</file>
+        <file>icons/nodes/combine.png</file>
     </qresource>
 </RCC>

@@ -20,7 +20,6 @@ void nitro::DraggableTreeWidget::mouseReleaseEvent(QMouseEvent *event) {
         if(actions.contains(m_draggedItem->text(0))) {
             actions[m_draggedItem->text(0)]->trigger();
         }
-        unsetCursor();
         m_draggedItem = nullptr;
     }
 }

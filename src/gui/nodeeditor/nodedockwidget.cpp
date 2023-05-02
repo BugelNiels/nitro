@@ -1,7 +1,7 @@
 #include "nodedockwidget.hpp"
 #include "src/nodes/input/imagesourcedatamodel.hpp"
 #include "src/nodes/conversions/tograyscaledatamodel.hpp"
-#include "src/nodes/conversions/seperatergbdatamodel.hpp"
+#include "src/nodes/conversions/rgb/separatergbdatamodel.hpp"
 #include "src/nodes/operators/thresholddatamodel.hpp"
 #include "nodegraphicsview.hpp"
 #include "src/nodes/output/imageviewerdatamodel.hpp"
@@ -13,6 +13,9 @@
 #include "nodegraphicsscene.hpp"
 #include "util/imgresourcereader.hpp"
 #include "draggabletreewidget.hpp"
+#include "src/nodes/conversions/rgb/combinergbdatamodel.hpp"
+#include "src/nodes/conversions/ycbcr/combineycbcrdatamodel.hpp"
+#include "src/nodes/conversions/ycbcr/separateycbcrdatamodel.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
@@ -27,6 +30,7 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 
+// TODO: do this in the view while creating the action?
 static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
     ret->registerModel<nitro::ImageSourceDataModel>("Input");
@@ -37,7 +41,10 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::QuantisizeDataModel>("Operator");
     ret->registerModel<nitro::FlipDataModel>("Operator");
     ret->registerModel<nitro::ResampleDataModel>("Operator");
-    ret->registerModel<nitro::SeperateRgbDataModel>("Operator");
+    ret->registerModel<nitro::SeparateRgbDataModel>("Operator");
+    ret->registerModel<nitro::CombineRgbDataModel>("Operator");
+    ret->registerModel<nitro::SeparateYCbCrDataModel>("Operator");
+    ret->registerModel<nitro::CombineYCbrCrDataModel>("Operator");
     ret->registerModel<nitro::ImgMathDataModel>("Operator");
 
     return ret;
@@ -111,6 +118,9 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
         if (subMen->menu()) {
             auto *category = new QTreeWidgetItem(treeWidget, QStringList() << subMen->text());
             for (auto *subAction: subMen->menu()->actions()) {
+                if(subAction->isSeparator()) {
+                    continue;
+                }
                 auto *item = new QTreeWidgetItem(category, QStringList() << subAction->text());
                 auto font = category->font(0);
                 font.setWeight(QFont::Light);

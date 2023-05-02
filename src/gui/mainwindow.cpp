@@ -11,7 +11,6 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QProgressBar>
-#include "util/imgconvert.hpp"
 #include "util/imgresourcereader.hpp"
 #include "config.hpp"
 #include "ZoomBar.h"

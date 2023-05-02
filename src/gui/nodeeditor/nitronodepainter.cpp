@@ -13,7 +13,7 @@
 #include <QtNodes/internal/NodeState.hpp>
 #include <QtNodes/internal/StyleCollection.hpp>
 
-#include "src/gui/nodeeditor/nodecolors.h"
+#include "src/gui/nodeeditor/nodecolors.hpp"
 
 
 nitro::NitroNodePainter::NitroNodePainter() : QtNodes::AbstractNodePainter() {
