@@ -38,7 +38,8 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
     setScaleRange(0.3, 1);
 }
 
-QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconPath) {
+QAction *
+nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconPath) {
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
@@ -80,7 +81,8 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
 QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
     auto *inputMenu = new QMenu("Input");
     inputMenu->addAction(spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(),
-                                         nitro::ImageSourceDataModel::nodeName(), nitro::ImageSourceDataModel::nodeIcon()));
+                                         nitro::ImageSourceDataModel::nodeName(),
+                                         nitro::ImageSourceDataModel::nodeIcon()));
     return inputMenu;
 }
 
@@ -95,9 +97,14 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
 QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     auto *convertMenu = new QMenu("Color");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
-                                           nitro::ToGrayScaleDataModel::nodeName(), nitro::ToGrayScaleDataModel::nodeIcon()));
+                                           nitro::ToGrayScaleDataModel::nodeName(),
+                                           nitro::ToGrayScaleDataModel::nodeIcon()));
     convertMenu->addAction(spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(),
-                                           nitro::SeperateRgbDataModel::nodeName(), nitro::SeperateRgbDataModel::nodeIcon()));
+                                           nitro::SeperateRgbDataModel::nodeName(),
+                                           nitro::SeperateRgbDataModel::nodeIcon()));
+    convertMenu->addAction(spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(),
+                                           nitro::ThresholdDataModel::nodeName(),
+                                           nitro::ThresholdDataModel::nodeIcon()));
     return convertMenu;
 }
 
@@ -155,9 +162,6 @@ void nitro::NodeGraphicsView::spawnNodeMenu() {
 
 
 void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
-    // TODO: disable control deselecting things
-    // Disable the mouse press event from arriving
-    qDebug() << "Registered click";
     if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
         event->button() == Qt::LeftButton) {
         // Spawn and connect to viewer if possible
@@ -205,9 +209,7 @@ void nitro::NodeGraphicsView::mousePressEvent(QMouseEvent *event) {
                             currentPort = -1; // will become 0 in the next iteration
                         }
                     }
-                    qDebug() << "Incremented" << currentPort;
                 } else {
-                    qDebug() << "Reset";
                     nodeIdViewed = cid;
                     currentPort = 0;
                 }

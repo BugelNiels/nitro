@@ -11,19 +11,21 @@
 #include "util/imgconvert.hpp"
 #include "util/imgresourcereader.hpp"
 
-nitro::MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent) {
+nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
 
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
 
-    const int icSize = 24;
+    const int icSize = 16;
+    const int icMargin = 5;
+    QColor icColor = {180, 180, 180};
 
     // Image viewer
     auto *imDock = new QDockWidget(this);
     auto *imIcon = new QLabel();
-    imIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}));
+    imIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}, icColor));
+    imIcon->setMargin(icMargin);
     imDock->setTitleBarWidget(imIcon);
     auto *imView = new nitro::ImageViewer(new QGraphicsScene(), imDock);
     imDock->setWidget(imView);
@@ -31,13 +33,15 @@ nitro::MainWindow::MainWindow(QWidget *parent)
     // Surface visualizer
     auto *surfDock = new QDockWidget("Surface Visualizer", this);
     auto *surfIcon = new QLabel();
-    surfIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}));
+    surfIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}, icColor));
+    surfIcon->setMargin(icMargin);
     surfDock->setTitleBarWidget(surfIcon);
 
     // Node editor
     nodeDock = new nitro::NodeDockWidget(imView, this);
     auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png", {icSize, icSize}));
+    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png", {icSize, icSize}, icColor));
+    nodeIcon->setMargin(icMargin);
     nodeDock->setTitleBarWidget(nodeIcon);
 
     // Image viewer, surface visualizer split
@@ -84,70 +88,60 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
 
     auto *newAction = new QAction(QStringLiteral("New"), this);
     newAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
-    connect(newAction,
-            &QAction::triggered,
-            [this]() {
-                if (nodeDock) {
-                    if (!nodeDock->canQuitSafely()) {
-                        return;
-                    }
-                    fileNameLabel->setText(nodeDock->getFileName());
-                    nodeDock->clearModel();
-                }
-            });
+    connect(newAction, &QAction::triggered, [this]() {
+        if (nodeDock) {
+            if (!nodeDock->canQuitSafely()) {
+                return;
+            }
+            fileNameLabel->setText(nodeDock->getFileName());
+            nodeDock->clearModel();
+        }
+    });
     fileMenu->addAction(newAction);
 
     auto *openAction = new QAction(QStringLiteral("Open"), this);
     openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
-    connect(openAction,
-            &QAction::triggered,
-            [this]() {
-                if (nodeDock) {
-                    nodeDock->loadModel();
-                    fileNameLabel->setText(nodeDock->getFileName());
-                }
-            });
+    connect(openAction, &QAction::triggered, [this]() {
+        if (nodeDock) {
+            nodeDock->loadModel();
+            fileNameLabel->setText(nodeDock->getFileName());
+        }
+    });
     fileMenu->addAction(openAction);
     fileMenu->addSeparator();
 
     auto *saveAction = new QAction(QStringLiteral("Save"), this);
     saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
-    connect(saveAction,
-            &QAction::triggered,
-            [this]() {
-                if (nodeDock) {
-                    nodeDock->saveModel();
-                    fileNameLabel->setText(nodeDock->getFileName());
-                }
-            });
+    connect(saveAction, &QAction::triggered, [this]() {
+        if (nodeDock) {
+            nodeDock->saveModel();
+            fileNameLabel->setText(nodeDock->getFileName());
+        }
+    });
     fileMenu->addAction(saveAction);
 
     auto *saveAsAction = new QAction(QStringLiteral("Save As..."), this);
     saveAsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
-    connect(saveAsAction,
-            &QAction::triggered,
-            [this]() {
-                if (nodeDock) {
-                    nodeDock->saveModel(true);
-                    fileNameLabel->setText(nodeDock->getFileName());
-                }
-            });
+    connect(saveAsAction, &QAction::triggered, [this]() {
+        if (nodeDock) {
+            nodeDock->saveModel(true);
+            fileNameLabel->setText(nodeDock->getFileName());
+        }
+    });
     fileMenu->addAction(saveAsAction);
     fileMenu->addSeparator();
 
     auto *quitAction = new QAction(QStringLiteral("Quit"), this);
     quitAction->setShortcutContext(Qt::ShortcutContext::ApplicationShortcut);
     quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
-    connect(quitAction,
-            &QAction::triggered,
-            [this]() {
-                if (nodeDock) {
-                    if (!nodeDock->canQuitSafely()) {
-                        return;
-                    }
-                }
-                exit(EXIT_SUCCESS);
-            });
+    connect(quitAction, &QAction::triggered, [this]() {
+        if (nodeDock) {
+            if (!nodeDock->canQuitSafely()) {
+                return;
+            }
+        }
+        exit(EXIT_SUCCESS);
+    });
     fileMenu->addAction(quitAction);
 
     menuBar->addMenu(fileMenu);

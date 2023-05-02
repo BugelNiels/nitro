@@ -16,7 +16,8 @@ nitro::CubicInterpolatorySampler::~CubicInterpolatorySampler() {}
  * @param n The number of data points to calculate tangents for.
  */
 void nitro::CubicInterpolatorySampler::computeMonotonicTangents(const CbdImage &image, const DistanceField &df, int x,
-                                                                int y) {
+                                                                int y, QVector<float> &tangents,
+                                                                QVector<float> &secants) {
     int n = image.numLevels();
     const auto &vals = image.getColTransform();
     // This performs the first step of averaging the tangents
@@ -61,7 +62,7 @@ void nitro::CubicInterpolatorySampler::computeMonotonicTangents(const CbdImage &
 }
 
 float nitro::CubicInterpolatorySampler::distFunc(const CbdImage &image, const DistanceField &df, int x, int y,
-                                                 float p, int numLevelsInput) const {
+                                                 float p, int numLevelsInput, const QVector<float> &tangents) const {
     numLevelsInput -= 1;
     int layer0 = p * numLevelsInput;
     int layer1 = MIN(layer0 + 1, numLevelsInput);
@@ -87,7 +88,7 @@ float nitro::CubicInterpolatorySampler::distFunc(const CbdImage &image, const Di
 
 float nitro::CubicInterpolatorySampler::distFuncIndexed(const CbdImage &image, const DistanceField &df, int x, int y,
                                                         float p,
-                                                        int numLevelsInput) const {
+                                                        int numLevelsInput, const QVector<float> &tangents) const {
     const auto &vals = image.getColTransform();
 
     // find the index values that sit in between this value
@@ -141,25 +142,28 @@ nitro::CbdImage nitro::CubicInterpolatorySampler::resample(const CbdImage &image
     auto &resampledData = resampled.data();
 
     int numLevelsInput = image.numLevels();
-    tangents.resize(numLevelsInput);
-    secants.resize(numLevelsInput);
-#pragma omp parallel for default(none) shared(image, df, resampledData) firstprivate(tangents, width, height, numDesiredLevels, numLevelsInput)
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            // Compute interpolation tangents
-            computeMonotonicTangents(image, df, x, y);
+#pragma omp parallel default(none) shared(image, df, resampledData) firstprivate(width, height, numDesiredLevels, numLevelsInput)
+    {
+        QVector<float> tangents(numLevelsInput);
+        QVector<float> secants(numLevelsInput);
+#pragma omp for
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Compute interpolation tangents
+                computeMonotonicTangents(image, df, x, y, tangents, secants);
 
-            for (int d = numDesiredLevels - 1; d >= 0; d--) {
-                float p = d / (numDesiredLevels - 1.0f);
-                float dist;
-                if (image.isIndexed()) {
-                    dist = distFuncIndexed(image, df, x, y, p, numLevelsInput);
-                } else {
-                    dist = distFunc(image, df, x, y, p, numLevelsInput);
-                }
-                if (dist <= 0.0f) {
-                    resampledData.set(x, y, d);
-                    break;
+                for (int d = numDesiredLevels - 1; d >= 0; d--) {
+                    float p = d / (numDesiredLevels - 1.0f);
+                    float dist;
+                    if (image.isIndexed()) {
+                        dist = distFuncIndexed(image, df, x, y, p, numLevelsInput, tangents);
+                    } else {
+                        dist = distFunc(image, df, x, y, p, numLevelsInput, tangents);
+                    }
+                    if (dist <= 0.0f) {
+                        resampledData.set(x, y, d);
+                        break;
+                    }
                 }
             }
         }

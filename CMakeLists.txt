@@ -31,7 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/nodes/invaliddata.hpp src/gui/nodeeditor/nodegraphicsscene.hpp src/common/util/imgresourcereader.cpp src/common/util/imgresourcereader.hpp src/gui/nodeeditor/draggabletreewidget.cpp src/gui/nodeeditor/draggabletreewidget.hpp)
+        resources/resources.qrc src/gui/nodeeditor/nodecolors.cpp src/gui/nodeeditor/nodecolors.h)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

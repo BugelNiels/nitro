@@ -9,7 +9,7 @@ namespace nitro {
 
     public:
         static QPixmap
-        getPixMap(const QString &path, const QSize &size = QSize(16, 16), const QColor &color = QColor(239, 239, 239));
+        getPixMap(const QString &path, const QSize &size = QSize(32, 32), const QColor &color = QColor(180, 180, 180));
 
     private:
 

@@ -19,6 +19,7 @@ namespace nitro {
 
         NodeGraphicsView operator=(const GraphicsView &) = delete;
 
+
         void mousePressEvent(QMouseEvent *event) override;
         void mouseDoubleClickEvent(QMouseEvent *event) override;
 

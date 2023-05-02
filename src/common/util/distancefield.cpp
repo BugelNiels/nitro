@@ -22,10 +22,15 @@ void nitro::DistanceField::calcDistanceField(const nitro::CbdImage &img) {
         df[d] = calcDistanceFieldFast(matrix, d);
     }
 
-    for (int y = 0; y < dfHeight; y++) {
-        for (int x = 0; x < dfWidth; x++) {
-            l0.set(x, y, df[1].get(x, y) - 10);
+    if(numDfLevels > 1) {
+        for (int y = 0; y < dfHeight; y++) {
+            for (int x = 0; x < dfWidth; x++) {
+                l0.set(x, y, df[1].get(x, y) - 10);
+            }
         }
+    } else {
+
+        df[0] = calcDistanceFieldFast(matrix, 1);
     }
     // TOOD: barrier here
     df[0] = l0;

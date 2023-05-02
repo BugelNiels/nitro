@@ -59,6 +59,7 @@ void nitro::ImOpDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, Qt
     }
     _input = inputImg;
     if (portIndex == 0) {
+        clearData();
         if (_input->isColImg()) {
             _result = compute(*_input->colImage());
         } else {

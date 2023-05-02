@@ -32,6 +32,7 @@ QPixmap createPixmapWithGrid(int width, int height, int gridSize) {
 QWidget *nitro::ImageDataModel::embeddedWidget() {
     if (!_displayWrapper) {
         _displayWrapper = new QWidget();
+        _displayWrapper->setAttribute(Qt::WA_TranslucentBackground);
         auto *layout = new QVBoxLayout(_displayWrapper);
         layout->setAlignment(Qt::AlignLeft | Qt::AlignRight);
 
