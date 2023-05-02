@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
     font.setPixelSize(14);
     QApplication::setFont(font);
 
+
     nitro::MainWindow w;
     w.setWindowState(Qt::WindowMaximized);
     w.show();

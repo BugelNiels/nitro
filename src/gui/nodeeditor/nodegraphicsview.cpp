@@ -136,14 +136,14 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
 QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     auto *convertMenu = new QMenu("Color");
     convertMenu->addAction(
+            spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(), nitro::ThresholdDataModel::nodeName(),
+                            nitro::ThresholdDataModel::nodeIcon(), nitro::ThresholdDataModel::nodeColor()));
+    convertMenu->addAction(
             spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(), nitro::ToGrayScaleDataModel::nodeName(),
                             nitro::ToGrayScaleDataModel::nodeIcon(), nitro::ToGrayScaleDataModel::nodeColor()));
     convertMenu->addAction(
             spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(), nitro::SeperateRgbDataModel::nodeName(),
                             nitro::SeperateRgbDataModel::nodeIcon(), nitro::SeperateRgbDataModel::nodeColor()));
-    convertMenu->addAction(
-            spawnNodeAction(nitro::ThresholdDataModel::nodeCaption(), nitro::ThresholdDataModel::nodeName(),
-                            nitro::ThresholdDataModel::nodeIcon(), nitro::ThresholdDataModel::nodeColor()));
     return convertMenu;
 }
 

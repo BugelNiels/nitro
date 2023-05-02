@@ -7,7 +7,6 @@ namespace nitro::config {
     class ConfigManager : public QObject {
     Q_OBJECT
     signals:
-
         void nodeImagesChanged();
     };
 

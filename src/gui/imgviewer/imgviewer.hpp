@@ -30,6 +30,7 @@ namespace nitro {
         ~ImageViewer() override;
 
         void wheelEvent(QWheelEvent *event) override;
+
         void keyPressEvent(QKeyEvent *event) override;
 
         void resetImScale();
@@ -46,6 +47,9 @@ namespace nitro {
 
         void awaitReplacement();
 
+
+        const double minScaleFactor = 0.2;
+        const double maxScaleFactor = 20;
     protected:
 
         void saveImage();
@@ -58,9 +62,15 @@ namespace nitro {
 
     Q_SIGNALS:
 
-//        void scaleChanged(double scale);
+        void scaleChanged(double scale);
 
     private:
+
+        const int dotSize = 3;
+        const int gridStep = 64;
+
+        const QColor dotColor = QColor(80, 80, 80);
+        const QColor gridBackgroundColor = QColor(57, 57, 57);
         const QColor bGroundCol = QColor(55, 55, 55);
         const QColor imgOutlineCol = QColor(128, 128, 128);
         const QColor imgGridCol = QColor(78, 78, 78);

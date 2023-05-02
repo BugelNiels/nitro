@@ -31,7 +31,7 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
     setBackgroundBrush(bGroundCol);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    setScaleRange(0.3, 20);
+    setScaleRange(minScaleFactor, maxScaleFactor);
 
     // Sets the scene rect to its maximum possible ranges to avoid auto scene range
     // re-calculation when expanding the all QGraphicsItems common rect.
@@ -76,14 +76,36 @@ void nitro::ImageViewer::saveImage() {
 }
 
 
+
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     painter->setBrush(QBrush(bGroundCol));
     QGraphicsView::drawBackground(painter, r);
+    painter->setBrush(QBrush(dotColor));
+    painter->setPen(dotColor);
+
+    QRect windowRect = rect();
+    QPointF tl = mapToScene(windowRect.topLeft());
+    QPointF br = mapToScene(windowRect.bottomRight());
+
+    double left = std::floor(tl.x() / gridStep - 0.5);
+    double right = std::floor(br.x() / gridStep + 1.0);
+    double bottom = std::floor(tl.y() / gridStep - 0.5);
+    double top = std::floor(br.y() / gridStep + 1.0);
+
+    for (int xi = int(left); xi <= int(right); ++xi) {
+        for (int yi = int(bottom); yi <= int(top); ++yi) {
+            painter->drawEllipse(xi * gridStep, yi * gridStep, dotSize, dotSize);
+        }
+    }
+
     if (_imgDisplayItem != nullptr) {
         return;
     }
+
     QRectF gridRect(-emptySize, -emptySize, emptySize * 2, emptySize * 2);
     QPen pBounds(imgOutlineCol, 2.0);
+    painter->setBrush(QBrush(gridBackgroundColor));
+    painter->drawRect(gridRect);
 
     QPen pfine(imgGridCol, 1.0);
 
@@ -127,7 +149,7 @@ void nitro::ImageViewer::scaleUp() {
     }
 
     scale(factor, factor);
-//    Q_EMIT scaleChanged(transform().m11());
+    Q_EMIT scaleChanged(transform().m11());
 }
 
 void nitro::ImageViewer::scaleDown() {
@@ -144,7 +166,7 @@ void nitro::ImageViewer::scaleDown() {
     }
 
     scale(factor, factor);
-//    Q_EMIT scaleChanged(transform().m11());
+    Q_EMIT scaleChanged(transform().m11());
 }
 
 void nitro::ImageViewer::setupScale(double scale) {
@@ -160,7 +182,7 @@ void nitro::ImageViewer::setupScale(double scale) {
     matrix.scale(scale, scale);
     setTransform(matrix, false);
 
-//    Q_EMIT scaleChanged(scale);
+    Q_EMIT scaleChanged(scale);
 }
 
 
@@ -264,6 +286,7 @@ void nitro::ImageViewer::resetImScale() {
         double scale = minCurSize / maxSize;
         setupScale(0.8 * scale);
     }
+    centerScene();
 }
 
 void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {

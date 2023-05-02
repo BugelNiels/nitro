@@ -14,6 +14,7 @@
 #include "util/imgconvert.hpp"
 #include "util/imgresourcereader.hpp"
 #include "config.hpp"
+#include "ZoomBar.h"
 
 nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
@@ -21,13 +22,32 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
 
+
+    // TODO: extract
     // Image viewer
     auto *imDock = new QDockWidget(this);
-    auto *imIcon = new QLabel();
-    imIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}, icColor));
-    imIcon->setMargin(icMargin);
-    imDock->setTitleBarWidget(imIcon);
-    auto *imView = new nitro::ImageViewer(new QGraphicsScene(), imDock);
+    nitro::ImageViewer *imView;
+    imView = new ImageViewer(new QGraphicsScene(), imDock);
+
+    auto *imViewTitleWrapper = new QWidget();
+    auto *imHLayout = new QHBoxLayout();
+
+    auto *nodeIcon = new QLabel();
+    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}, icColor));
+    imHLayout->addWidget(nodeIcon);
+
+    auto *zoomBar = new nitro::ZoomBar(imView->minScaleFactor * 100.0, imView->maxScaleFactor * 100.0);
+    QPalette palette = zoomBar->palette();
+    palette.setColor(QPalette::Highlight, QColor(60, 60, 60)); // set the color to red
+    zoomBar->setPalette(palette);
+    zoomBar->setMaximumWidth(200);
+    imHLayout->addWidget(zoomBar);
+    connect(imView, &nitro::ImageViewer::scaleChanged, this, [=](double scale) {
+        zoomBar->setZoom(scale);
+    });
+
+    imViewTitleWrapper->setLayout(imHLayout);
+    imDock->setTitleBarWidget(imViewTitleWrapper);
     imDock->setWidget(imView);
 
     // Surface visualizer
@@ -63,6 +83,7 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setCentralWidget(vertLayout);
     installEventFilter(this);
 }
+
 
 QStatusBar *nitro::MainWindow::initFooter() {
     auto *versionLabel = new QLabel(" version 0.1 ", this);

@@ -28,7 +28,7 @@ namespace nitro {
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/image_source.png"); }
         static QColor nodeColor() { return {161, 74, 74}; }
 
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return curNodeName; }
 
         bool captionVisible() const override { return true; }
 
@@ -57,6 +57,7 @@ namespace nitro {
         void onLoadButtonPressed();
 
     private:
+        QString curNodeName = nodeCaption();
         std::shared_ptr<ImageData> _image;
 
         QString *_path;
