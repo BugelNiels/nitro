@@ -10,7 +10,8 @@
 nitro::ImageDataModel::ImageDataModel()
         : _displayWrapper(nullptr),
           _imgLabel(nullptr) {
-    connect(&nitro::config::configManager, &nitro::config::ConfigManager::nodeImagesChanged, this, &ImageDataModel::onNodeImagesChanged);
+    connect(&nitro::config::configManager, &nitro::config::ConfigManager::nodeImagesChanged, this,
+            &ImageDataModel::onNodeImagesChanged);
 }
 
 void nitro::ImageDataModel::onNodeImagesChanged() {

@@ -30,6 +30,7 @@ namespace nitro {
         ~ImageViewer() override;
 
         void wheelEvent(QWheelEvent *event) override;
+        void keyPressEvent(QKeyEvent *event) override;
 
         void resetImScale();
 
@@ -44,6 +45,10 @@ namespace nitro {
         void removeImage();
 
         void awaitReplacement();
+
+    protected:
+
+        void saveImage();
 
     public Q_SLOTS:
 
@@ -79,6 +84,7 @@ namespace nitro {
         QAction *resetAction;
 
         void initActions();
+
     };
 
 } // nitro

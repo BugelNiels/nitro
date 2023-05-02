@@ -1,14 +1,10 @@
 #include "imgviewer.hpp"
 #include <QtNodes/internal/StyleCollection.hpp>
 
-#include <omp.h>
-
 #include <QColorSpace>
-#include <QDir>
 #include <QGuiApplication>
 #include <QImage>
 #include <QImageReader>
-#include <QKeyEvent>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QScrollBar>
@@ -39,9 +35,10 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
     // Sets the scene rect to its maximum possible ranges to avoid auto scene range
     // re-calculation when expanding the all QGraphicsItems common rect.
-    int maxSize = 4960;
+    int maxSize = 14960;
     setSceneRect(-maxSize, -maxSize, (maxSize * 2), (maxSize * 2));
     setScene(imScene);
+    resetImScale();
 
     initActions();
 
@@ -52,15 +49,14 @@ nitro::ImageViewer::~ImageViewer() = default;
 void nitro::ImageViewer::initActions() {
 
     resetAction = new QAction("Reset view", this);
-    connect(resetAction, &QAction::triggered, [this]() {
-        qDebug() << "Pressed";
-        resetImScale();
-    });
-    resetAction->setShortcut(QKeySequence(Qt::Key_R));
-    resetAction->setShortcutContext(Qt::ShortcutContext::ApplicationShortcut);
+    connect(resetAction, &QAction::triggered, this, &nitro::ImageViewer::resetImScale);
 
     saveAction = new QAction("Save image", this);
-    connect(saveAction, &QAction::triggered, [this]() {
+    connect(saveAction, &QAction::triggered, this, &nitro::ImageViewer::saveImage);
+}
+
+void nitro::ImageViewer::saveImage() {
+    {
         if (displayImg != nullptr) {
             QString filePath = QFileDialog::getSaveFileName(
                     this, "Save Image", "../images/",
@@ -76,8 +72,7 @@ void nitro::ImageViewer::initActions() {
                                      QString("Something went wrong while trying to save to\n %1").arg(filePath));
             }
         }
-    });
-    saveAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_S));
+    }
 }
 
 
@@ -241,21 +236,21 @@ void nitro::ImageViewer::removeImage() {
     }
     scene()->removeItem(_imgDisplayItem);
     _imgDisplayItem = nullptr;
+    resetImScale();
     repaint();
 }
 
 void nitro::ImageViewer::centerScene() {
     if (scene()) {
-        qDebug() << "centering";
         scene()->setSceneRect(QRectF());
 
         QRectF sceneRect = scene()->sceneRect();
+        if (_imgDisplayItem) {
+            centerOn(_imgDisplayItem->boundingRect().width() / 2, _imgDisplayItem->boundingRect().height() / 2);
+        } else {
+            centerOn(0, 0);
 
-        if (sceneRect.width() > this->rect().width() || sceneRect.height() > this->rect().height()) {
-            fitInView(sceneRect, Qt::KeepAspectRatio);
         }
-
-        centerOn(sceneRect.center());
     }
 }
 
@@ -269,4 +264,14 @@ void nitro::ImageViewer::resetImScale() {
         double scale = minCurSize / maxSize;
         setupScale(0.8 * scale);
     }
+}
+
+void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
+    QGraphicsView::keyPressEvent(event);
+    if (event->key() == Qt::Key_R) {
+        resetImScale();
+    } else if (event->key() == Qt::Key_S && event->modifiers().testFlag(Qt::AltModifier)) {
+        saveImage();
+    }
+
 }

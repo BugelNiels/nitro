@@ -144,6 +144,13 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     menuBar->addMenu(fileMenu);
 
     // TODO: save dock state somewhere and restore that here
+
+    auto *editMenu = new QMenu("Edit");
+    menuBar->addMenu(editMenu);
+    auto *viewMenu = new QMenu("View");
+    menuBar->addMenu(viewMenu);
+
+
     auto *windowMenu = new QMenu("Window");
     windowMenu->addAction("Node Editor");
     windowMenu->addAction("Image Viewer");
