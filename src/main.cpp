@@ -45,10 +45,9 @@ int main(int argc, char *argv[]) {
     QPalette palette = getDarkModePalette();
     QApplication::setPalette(palette);
 
-//    QFont font("JetBrains Mono");
-//    font.setStyleHint(QFont::Monospace);
-//
-//    QApplication::setFont(font);
+    QFont font("Lato");
+    font.setPixelSize(14);
+    QApplication::setFont(font);
 
     nitro::MainWindow w;
     w.setWindowState(Qt::WindowMaximized);

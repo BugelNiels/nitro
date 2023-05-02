@@ -44,10 +44,10 @@ namespace nitro {
 
     public Q_SLOTS:
 
-        void kValChanged(int val);
+        void kValChanged();
 
         void changeDither(bool toggled);
-        void iterValChanged(int val);
+        void iterValChanged();
 
     protected:
 

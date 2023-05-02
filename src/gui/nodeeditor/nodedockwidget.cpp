@@ -8,6 +8,7 @@
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
+#include "src/nodes/operators/math/imgmathdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "nodegraphicsscene.hpp"
 #include "util/imgresourcereader.hpp"
@@ -37,6 +38,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::FlipDataModel>("Operator");
     ret->registerModel<nitro::ResampleDataModel>("Operator");
     ret->registerModel<nitro::SeperateRgbDataModel>("Operator");
+    ret->registerModel<nitro::ImgMathDataModel>("Operator");
 
     return ret;
 }

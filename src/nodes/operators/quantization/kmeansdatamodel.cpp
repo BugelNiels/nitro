@@ -11,8 +11,8 @@
 nitro::KMeansDataModel::KMeansDataModel() = default;
 
 
-void nitro::KMeansDataModel::kValChanged(int val) {
-    k = val;
+void nitro::KMeansDataModel::kValChanged() {
+    k = kSpinBox->value();
     recompute();
 }
 
@@ -21,8 +21,8 @@ void nitro::KMeansDataModel::changeDither(bool toggled) {
     recompute();
 }
 
-void nitro::KMeansDataModel::iterValChanged(int val) {
-    numIterations = val;
+void nitro::KMeansDataModel::iterValChanged() {
+    numIterations = iterSpinBox->value();
     recompute();
 }
 
@@ -37,7 +37,7 @@ QWidget *nitro::KMeansDataModel::initBeforeWidget() {
     kSpinBox->setMinimum(0);
     kSpinBox->setMaximum(255);
     kSpinBox->setValue(k);
-    connect(kSpinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
+    connect(kSpinBox, SIGNAL (editingFinished()), this, SLOT(kValChanged()));
     layout->addWidget(new QLabel("k:"), rowIdx, 0);
     layout->addWidget(kSpinBox, rowIdx, 1);
     rowIdx++;
@@ -46,7 +46,7 @@ QWidget *nitro::KMeansDataModel::initBeforeWidget() {
     iterSpinBox->setMinimum(0);
     iterSpinBox->setMaximum(100);
     iterSpinBox->setValue(numIterations);
-    connect(iterSpinBox, SIGNAL (valueChanged(int)), this, SLOT(iterValChanged(int)));
+    connect(iterSpinBox, SIGNAL (editingFinished()), this, SLOT(iterValChanged()));
     layout->addWidget(new QLabel("Iter:"), rowIdx, 0);
     layout->addWidget(iterSpinBox, rowIdx, 1);
     rowIdx++;

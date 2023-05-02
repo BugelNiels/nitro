@@ -8,6 +8,7 @@
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "src/nodes/conversions/seperatergbdatamodel.hpp"
+#include "src/nodes/operators/math/imgmathdatamodel.hpp"
 
 QMap<QString, QColor> nitro::NodeColors::colors;
 
@@ -18,6 +19,7 @@ void nitro::NodeColors::initColors() {
     colors[nitro::ToGrayScaleDataModel::nodeName()] = {59, 90, 115};
     colors[nitro::ThresholdDataModel::nodeName()] = {59, 90, 115};
     colors[nitro::SeperateRgbDataModel::nodeName()] = {59, 90, 115};
+    colors[nitro::ImgMathDataModel::nodeName()] = {59, 90, 115};
 
     colors[nitro::KMeansDataModel::nodeName()] = {95, 120, 83};
     colors[nitro::QuantisizeDataModel::nodeName()] = {95, 120, 83};

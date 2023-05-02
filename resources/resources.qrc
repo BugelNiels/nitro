@@ -27,5 +27,6 @@
         <file>icons/nodes/kmeans.png</file>
         <file>icons/nodes/quantisize.png</file>
         <file>icons/nodes/threshold.png</file>
+        <file>icons/nodes/math.png</file>
     </qresource>
 </RCC>

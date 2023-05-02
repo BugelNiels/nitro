@@ -46,7 +46,7 @@ namespace nitro {
 
         void modeChanged(int mode);
 
-        void thresholdValChanged(int val);
+        void thresholdValChanged();
 
     protected:
         int _mode = 0;

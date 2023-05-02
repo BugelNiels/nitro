@@ -37,8 +37,6 @@
     "ConstructionLineWidth": 2.0,
     "PointDiameter": 10.0,
 
-    "UseDataDefinedColors": true,
-
-    "cbd_image": "#ffffff"
+    "UseDataDefinedColors": true
   }
 }

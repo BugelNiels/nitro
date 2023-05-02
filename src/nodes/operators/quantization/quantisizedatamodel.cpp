@@ -11,8 +11,8 @@
 nitro::QuantisizeDataModel::QuantisizeDataModel() = default;
 
 
-void nitro::QuantisizeDataModel::kValChanged(int val) {
-    k = val;
+void nitro::QuantisizeDataModel::kValChanged() {
+    k = kSpinBox->value();
     recompute();
 }
 
@@ -32,7 +32,7 @@ QWidget *nitro::QuantisizeDataModel::initBeforeWidget() {
     kSpinBox->setMinimum(0);
     kSpinBox->setMaximum(255);
     kSpinBox->setValue(k);
-    connect(kSpinBox, SIGNAL (valueChanged(int)), this, SLOT(kValChanged(int)));
+    connect(kSpinBox, SIGNAL (editingFinished()), this, SLOT(kValChanged()));
     layout->addWidget(new QLabel("k:"), rowIdx, 0);
     layout->addWidget(kSpinBox, rowIdx, 1);
     rowIdx++;

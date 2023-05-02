@@ -7,14 +7,17 @@
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
+#include "src/nodes/operators/math/imgmathdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "src/nodes/conversions/seperatergbdatamodel.hpp"
 #include "src/nodes/invaliddata.hpp"
 #include "util/imgresourcereader.hpp"
+#include "QtNodes/internal/AbstractNodeGeometry.hpp"
 
 #include <QtNodes/internal/ConnectionGraphicsObject.hpp>
 #include <QtNodes/internal/NodeGraphicsObject.hpp>
 #include <QAction>
+#include <QtNodes/BasicGraphicsScene>
 #include <QMenu>
 
 #include <QKeyEvent>
@@ -25,7 +28,8 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
                                           QWidget *parent) : GraphicsView(scene,
                                                                           parent), _dataModel(model),
                                                              _imViewer(viewer), viewerNodeId(QtNodes::InvalidNodeId),
-                                                             nodeIdViewed(QtNodes::InvalidNodeId) {
+                                                             nodeIdViewed(QtNodes::InvalidNodeId),
+                                                             nodeGeometry(scene->nodeGeometry()) {
     auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
@@ -44,9 +48,11 @@ nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString 
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
         QPointF posView = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
-        // TODO: get node size and offset
 
         QtNodes::NodeId const newId = _dataModel->addNode(nodeType);
+        auto rect = nodeGeometry.size(newId);
+        posView.setX(posView.x() - rect.width() / 2);
+        posView.setY(posView.y() - rect.height() / 2);
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
     QIcon icon;
@@ -63,11 +69,13 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         if (_dataModel->nodeExists(viewerNodeId)) {
             _dataModel->deleteNode(viewerNodeId);
-//            return;
         }
         QPointF posView = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
 
         QtNodes::NodeId const newId = _dataModel->addNode(nodeType);
+        auto rect = nodeGeometry.size(newId);
+        posView.setX(posView.x() - rect.width() / 2);
+        posView.setY(posView.y() - rect.height() / 2);
         viewerNodeId = newId;
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
@@ -108,10 +116,17 @@ QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     return convertMenu;
 }
 
-QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
+QMenu *nitro::NodeGraphicsView::initComparisonSubMenu() {
     auto *opsMenu = new QMenu("Comparison");
     opsMenu->addAction(spawnNodeAction(nitro::FlipDataModel::nodeCaption(),
                                        nitro::FlipDataModel::nodeName(), nitro::FlipDataModel::nodeIcon()));
+    return opsMenu;
+}
+
+QMenu *nitro::NodeGraphicsView::initMathSubMenu() {
+    auto *opsMenu = new QMenu("Math");
+    opsMenu->addAction(spawnNodeAction(nitro::ImgMathDataModel::nodeCaption(),
+                                       nitro::ImgMathDataModel::nodeName(), nitro::ImgMathDataModel::nodeIcon()));
     return opsMenu;
 }
 
@@ -137,7 +152,8 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     auto *outputMenu = initOutputSubMenu();
     auto *quantMenu = initQuantizationSubMenu();
     auto *resampleMenu = initResampleSubMenu();
-    auto *opsMenu = initOperationsSubMenu();
+    auto *compMenu = initComparisonSubMenu();
+    auto *mathMenu = initMathSubMenu();
     auto *colorMenu = initColorSubMenu();
 
     QAction *sectionTitle = menu->addSection("Add");
@@ -150,7 +166,8 @@ QMenu *nitro::NodeGraphicsView::initNodeMenu() {
     menu->addMenu(outputMenu);
     menu->addMenu(quantMenu);
     menu->addMenu(resampleMenu);
-    menu->addMenu(opsMenu);
+    menu->addMenu(compMenu);
+    menu->addMenu(mathMenu);
     menu->addMenu(colorMenu);
     menu->setMaximumSize(menu->sizeHint());
     return menu;

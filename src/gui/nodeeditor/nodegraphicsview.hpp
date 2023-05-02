@@ -1,9 +1,10 @@
 #pragma once
 
-#include "3rdparty/nodeeditor/include/QtNodes/GraphicsView"
+#include <QtNodes/GraphicsView>
 #include <QMenu>
 #include "QtNodes/DataFlowGraphModel"
 #include "src/gui/imgviewer/imgviewer.hpp"
+#include "QtNodes/internal/AbstractNodeGeometry.hpp"
 
 namespace nitro {
 
@@ -21,9 +22,11 @@ namespace nitro {
 
 
         void mousePressEvent(QMouseEvent *event) override;
+
         void mouseDoubleClickEvent(QMouseEvent *event) override;
 
         void setViewerNodeId(QtNodes::NodeId nodeId);
+
         QMenu *initNodeMenu();
 
     public Q_SLOTS:
@@ -35,7 +38,6 @@ namespace nitro {
         QAction *spawnViewNodeAction = nullptr;
 
 
-
         QMenu *_nodeMenu{};
 
         void spawnNodeMenu();
@@ -44,7 +46,9 @@ namespace nitro {
 
         QMenu *initColorSubMenu();
 
-        QMenu *initOperationsSubMenu();
+        QMenu *initComparisonSubMenu();
+
+        QMenu *initMathSubMenu();
 
         QMenu *initOutputSubMenu();
 
@@ -60,6 +64,8 @@ namespace nitro {
         QtNodes::PortIndex currentPort;
 
         QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName);
+
+        QtNodes::AbstractNodeGeometry &nodeGeometry;
     };
 
 } // nitro

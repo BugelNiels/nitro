@@ -31,7 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/gui/nodeeditor/nodecolors.cpp src/gui/nodeeditor/nodecolors.h)
+        resources/resources.qrc src/gui/nodeeditor/nodecolors.cpp src/gui/nodeeditor/nodecolors.h src/nodes/operators/math/imgmathdatamodel.hpp src/common/config.cpp src/common/config.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

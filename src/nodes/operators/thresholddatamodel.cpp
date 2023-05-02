@@ -14,8 +14,8 @@ void nitro::ThresholdDataModel::modeChanged(int mode) {
     recompute();
 }
 
-void nitro::ThresholdDataModel::thresholdValChanged(int val) {
-    threshold = val;
+void nitro::ThresholdDataModel::thresholdValChanged() {
+    threshold = thresholdSpinBox->value();
     recompute();
 }
 
@@ -35,7 +35,7 @@ QWidget *nitro::ThresholdDataModel::initBeforeWidget() {
     thresholdSpinBox->setMinimum(0);
     thresholdSpinBox->setMaximum(255); // TODO: update based on levels of input
     thresholdSpinBox->setValue(threshold);
-    connect(thresholdSpinBox, SIGNAL (valueChanged(int)), this, SLOT(thresholdValChanged(int)));
+    connect(thresholdSpinBox, SIGNAL (editingFinished()), this, SLOT(thresholdValChanged()));
     horLayout->addWidget(thresholdSpinBox);
 
     wrapper->setLayout(horLayout);

@@ -43,5 +43,6 @@ namespace nitro {
         QWidget *_displayWrapper;
         QLabel *_imgLabel;
 
+        void onNodeImagesChanged();
     };
 }

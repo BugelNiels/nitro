@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
+#include <QtNodes/NodeDelegateModel>
 
 #include <QtCore/QObject>
 
@@ -13,27 +13,25 @@
 #include "cbdimage.hpp"
 #include "src/nodes/operators/imopdatamodel.hpp"
 
-#include "src/common/util/distancefield.hpp"
-
 class QLineEdit;
 
 namespace nitro {
 
-    enum SampleMethod {LINEAR, CUBIC_HERMITE, CUBIC_INTERPOLATORY};
+    enum ImgMathMode {MULTIPLY, DIVIDE, ADD, SUBTRACT};
 
-    class ResampleDataModel : public ImOpDataModel {
+    class ImgMathDataModel : public ImOpDataModel {
     Q_OBJECT
 
     public:
-        ResampleDataModel();
+        ImgMathDataModel();
 
-        virtual ~ResampleDataModel() {}
+        virtual ~ImgMathDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Resample"); }
+        static QString nodeCaption() { return QStringLiteral("Math"); }
 
-        static QString nodeName() { return QStringLiteral("Resample"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/resample.png"); }
+        static QString nodeName() { return QStringLiteral("Math"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/math.png"); }
 
         QString caption() const override { return nodeCaption(); }
 
@@ -51,9 +49,10 @@ namespace nitro {
 
         void modeChanged(int mode);
 
-        void targetValChanged();
+        void mathValChanged();
 
     protected:
+        ImgMathMode _mode = ImgMathMode::MULTIPLY;
 
         std::shared_ptr<ImageData> compute(const QImage &inputImg) override;
 
@@ -63,15 +62,10 @@ namespace nitro {
 
         QWidget *initAfterWidget() override;
 
-        void clearData() override;
-
     private:
-        DistanceField field;
-        SampleMethod _mode = SampleMethod::LINEAR;
-        int targetK = 255;
+        double mathVal = 1.0;
 
         QComboBox *modeCombobox;
-        QSpinBox *targetSpinBox;
-
+        QDoubleSpinBox *valSpinBox;
     };
 }

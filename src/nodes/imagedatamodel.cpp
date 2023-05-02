@@ -5,10 +5,18 @@
 #include <QImageReader>
 #include <QVBoxLayout>
 #include <QPainter>
+#include "config.hpp"
 
 nitro::ImageDataModel::ImageDataModel()
         : _displayWrapper(nullptr),
           _imgLabel(nullptr) {
+    connect(&nitro::config::configManager, &nitro::config::ConfigManager::nodeImagesChanged, this, &ImageDataModel::onNodeImagesChanged);
+}
+
+void nitro::ImageDataModel::onNodeImagesChanged() {
+    _imgLabel->setHidden(!nitro::config::nodeImages);
+    _displayWrapper->adjustSize();
+//    Q_EMIT nodeUpdated();
 }
 
 QPixmap createPixmapWithGrid(int width, int height, int gridSize) {
@@ -45,6 +53,7 @@ QWidget *nitro::ImageDataModel::embeddedWidget() {
         _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
         _imgLabel->setMaximumSize(_imgLabel->sizeHint());
         _imgLabel->setAlignment(Qt::AlignCenter);
+        _imgLabel->setHidden(!nitro::config::nodeImages);
 
         QWidget *before = initBeforeWidget();
         QWidget *after = initAfterWidget();
@@ -65,14 +74,7 @@ QWidget *nitro::ImageDataModel::embeddedWidget() {
             after->setFixedWidth(_imgLabel->width());
             layout->setAlignment(after, widgetAlign);
         }
-
-        QtNodes::NodeStyle nodeStyle;
-        QPalette palette;
-        palette.setColor(QPalette::Window, nodeStyle.GradientColor1);
-        _displayWrapper->setPalette(palette);
-
     }
-
     return _displayWrapper;
 }
 

@@ -16,6 +16,10 @@ namespace nitro {
     private slots:
 
     private:
+        const int icSize = 16;
+        const int icMargin = 5;
+        const QColor icColor = {180, 180, 180};
+
         QLabel *fileNameLabel = nullptr;
         NodeDockWidget *nodeDock;
 
@@ -23,6 +27,7 @@ namespace nitro {
 
         QStatusBar *initFooter();
 
+        QWidget *initNodeTitleBar();
     };
 
 } // nitro

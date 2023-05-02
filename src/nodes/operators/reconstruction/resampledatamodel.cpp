@@ -17,8 +17,8 @@ void nitro::ResampleDataModel::modeChanged(int mode) {
     recompute();
 }
 
-void nitro::ResampleDataModel::targetValChanged(int val) {
-    targetK = val;
+void nitro::ResampleDataModel::targetValChanged() {
+    targetK = targetSpinBox->value();
     recompute();
 }
 
@@ -40,7 +40,7 @@ QWidget *nitro::ResampleDataModel::initBeforeWidget() {
     targetSpinBox->setMinimum(1);
     targetSpinBox->setMaximum(255);
     targetSpinBox->setValue(targetK);
-    connect(targetSpinBox, SIGNAL (valueChanged(int)), this, SLOT(targetValChanged(int)));
+    connect(targetSpinBox, SIGNAL (editingFinished()), this, SLOT(targetValChanged()));
     layout->addWidget(new QLabel("k:"), rowIdx, 0);
     layout->addWidget(targetSpinBox, rowIdx, 1);
     rowIdx++;

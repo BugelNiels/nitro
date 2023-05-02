@@ -8,18 +8,18 @@
 #include <QIcon>
 #include <QKeyEvent>
 #include <QEvent>
+#include <QHBoxLayout>
+#include <QCheckBox>
+#include <QProgressBar>
 #include "util/imgconvert.hpp"
 #include "util/imgresourcereader.hpp"
+#include "config.hpp"
 
 nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
 
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
-
-    const int icSize = 16;
-    const int icMargin = 5;
-    QColor icColor = {180, 180, 180};
 
     // Image viewer
     auto *imDock = new QDockWidget(this);
@@ -39,10 +39,7 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // Node editor
     nodeDock = new nitro::NodeDockWidget(imView, this);
-    auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png", {icSize, icSize}, icColor));
-    nodeIcon->setMargin(icMargin);
-    nodeDock->setTitleBarWidget(nodeIcon);
+    nodeDock->setTitleBarWidget(initNodeTitleBar());
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
@@ -154,4 +151,29 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     menuBar->addMenu(windowMenu);
     menuBar->setStyleSheet("QMenuBar { background-color: rgb(28, 28, 28); }");
     return menuBar;
+}
+
+QWidget *nitro::MainWindow::initNodeTitleBar() {
+    auto *wrapper = new QWidget();
+    auto *hLayout = new QHBoxLayout();
+
+    auto *nodeIcon = new QLabel();
+    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png", {icSize, icSize}, icColor));
+    hLayout->addWidget(nodeIcon);
+
+    auto *nodeImgCheckBox = new QCheckBox("Node Images");
+    nodeImgCheckBox->setChecked(nitro::config::nodeImages);
+    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [nodeImgCheckBox] {
+        nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
+    });
+    hLayout->addWidget(nodeImgCheckBox);
+
+    auto *calcProgressBar = new QProgressBar();
+    calcProgressBar->setMinimum(0);
+    calcProgressBar->setMaximum(100);
+    calcProgressBar->setMaximumWidth(200);
+    hLayout->addWidget(calcProgressBar);
+
+    wrapper->setLayout(hLayout);
+    return wrapper;
 }
