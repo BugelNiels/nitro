@@ -40,7 +40,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
     connect(spawnMenu, &QAction::triggered, this, &NodeGraphicsView::spawnNodeMenu);
     insertAction(actions().front(), spawnMenu);
     _nodeMenu = initNodeMenu();
-    setScaleRange(0.3, 1);
+    setScaleRange(0.3, 1.5);
 }
 
 // TODO: util

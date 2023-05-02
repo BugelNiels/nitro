@@ -31,8 +31,10 @@ QPixmap createPixmapWithGrid(int width, int height, int gridSize) {
     for (int y = 0; y < height; y += gridSize) {
         painter.drawLine(0, y, width, y);
     }
-    painter.setPen(QColor(128, 128, 128));
-    painter.drawRect(0, 0, width - 1, height - 1);
+    QPen p(QColor(90, 90, 90));
+    p.setWidth(1);
+    painter.setPen(p);
+    painter.drawRect(1, 1, width - 2, height - 2);
     painter.end();
     return pixmap;
 }
