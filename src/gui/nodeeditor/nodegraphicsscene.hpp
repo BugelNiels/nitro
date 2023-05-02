@@ -15,6 +15,9 @@ namespace nitro {
         ~NodeGraphicsScene() override = default;
 
     protected:
+
+        void keyPressEvent(QKeyEvent *event) override;
+
         bool event(QEvent *event) override {
             // Hackiest code ever; disables deselecting of nodes when ctrl and shift are pressed
             auto *check = dynamic_cast<QGraphicsSceneMouseEvent *>(event);
@@ -23,6 +26,8 @@ namespace nitro {
             }
             return QGraphicsScene::event(event); // dispatch event to parent implementation
         }
+    private:
+        QtNodes::AbstractGraphModel& m_graphModel;
     };
 
 } // nitro

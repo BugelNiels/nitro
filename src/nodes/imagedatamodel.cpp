@@ -54,7 +54,7 @@ QWidget *nitro::ImageDataModel::embeddedWidget() {
         _imgLabel->setMaximumSize(_imgLabel->sizeHint());
 
         _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
-        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
+//        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
         _imgLabel->setAlignment(Qt::AlignCenter);
         _imgLabel->setHidden(!nitro::config::nodeImages);
 

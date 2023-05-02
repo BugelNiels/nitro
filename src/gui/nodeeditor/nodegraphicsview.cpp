@@ -2,6 +2,7 @@
 #include "QtNodes/DataFlowGraphModel"
 #include "src/nodes/input/imagesourcedatamodel.hpp"
 #include "src/nodes/output/imageviewerdatamodel.hpp"
+#include "src/nodes/output/surfaceviewerdatamodel.hpp"
 #include "src/nodes/conversions/tograyscaledatamodel.hpp"
 #include "src/nodes/operators/thresholddatamodel.hpp"
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
@@ -133,6 +134,10 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
     nitro::ImageViewerDataModel::setViewer(_imViewer);
     spawnViewNodeAction = spawnViewerNodeAction();
     outputMenu->addAction(spawnViewNodeAction);
+    // TODO: ensure only 1 can be spawned
+    outputMenu->addAction(
+            spawnNodeAction(nitro::SurfaceViewerDataModel::nodeCaption(), nitro::SurfaceViewerDataModel::nodeName(),
+                            nitro::SurfaceViewerDataModel::nodeIcon(), nitro::SurfaceViewerDataModel::nodeColor()));
     return outputMenu;
 }
 

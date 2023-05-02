@@ -30,5 +30,7 @@
         <file>icons/nodes/threshold.png</file>
         <file>icons/nodes/threshold.png</file>
         <file>icons/nodes/combine.png</file>
+        <file>icons/nodes/surface.png</file>
+        <file>icons/nodes/math.png</file>
     </qresource>
 </RCC>

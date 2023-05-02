@@ -272,6 +272,7 @@ void nitro::NitroNodePainter::drawEntryLabels(QPainter *painter, QtNodes::NodeGr
 
             QString s;
 
+            // TODO: draw custom names here
             if (model.portData<bool>(nodeId, portType, portIndex, QtNodes::PortRole::CaptionVisible)) {
                 s = model.portData<QString>(nodeId, portType, portIndex, QtNodes::PortRole::Caption);
             } else {

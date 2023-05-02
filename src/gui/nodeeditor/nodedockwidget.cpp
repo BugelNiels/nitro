@@ -5,6 +5,7 @@
 #include "src/nodes/operators/thresholddatamodel.hpp"
 #include "nodegraphicsview.hpp"
 #include "src/nodes/output/imageviewerdatamodel.hpp"
+#include "src/nodes/output/surfaceviewerdatamodel.hpp"
 #include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
 #include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
 #include "src/nodes/operators/flipdatamodel.hpp"
@@ -35,6 +36,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
     ret->registerModel<nitro::ImageSourceDataModel>("Input");
     ret->registerModel<nitro::ImageViewerDataModel>("Output");
+    ret->registerModel<nitro::SurfaceViewerDataModel>("Output");
     ret->registerModel<nitro::ToGrayScaleDataModel>("Converter");
     ret->registerModel<nitro::ThresholdDataModel>("Operator");
     ret->registerModel<nitro::KMeansDataModel>("Operator");
