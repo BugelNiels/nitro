@@ -45,8 +45,6 @@ namespace nitro {
 
         QMenu *initOperationsSubMenu();
 
-        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType);
-
         QMenu *initOutputSubMenu();
 
         QtNodes::NodeId viewerNodeId;
@@ -59,6 +57,8 @@ namespace nitro {
 
         QtNodes::NodeId nodeIdViewed;
         QtNodes::PortIndex currentPort;
+
+        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName);
     };
 
 } // nitro

@@ -158,6 +158,6 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     windowMenu->addAction("Image Viewer");
     windowMenu->addAction("Surface Visualizer");
     menuBar->addMenu(windowMenu);
-
+    menuBar->setStyleSheet("QMenuBar { background-color: rgb(28, 28, 28); }");
     return menuBar;
 }

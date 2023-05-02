@@ -28,6 +28,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("Threshold"); }
 
         static QString nodeName() { return QStringLiteral("Threshold"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/threshold.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

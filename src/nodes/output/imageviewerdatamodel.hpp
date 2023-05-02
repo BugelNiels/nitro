@@ -28,6 +28,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("Image Viewer"); }
 
         static QString nodeName() { return QStringLiteral("ImageViewer"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/viewer.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

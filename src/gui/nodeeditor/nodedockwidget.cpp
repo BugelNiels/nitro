@@ -113,8 +113,9 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
                 auto font = category->font(0);
                 font.setWeight(QFont::Light);
                 font.setPixelSize(14); // TODO: more dynamic
+                item->setForeground(0, QBrush({180, 180, 180}));
                 item->setFont(0, font);
-                item->setIcon(0, QIcon(nitro::ImgResourceReader::getPixMap(":/icons/node_var1.png")));
+                item->setIcon(0, subAction->icon());
 
                 category->addChild(item);
                 treeWidget->registerAction(subAction->text(), subAction);

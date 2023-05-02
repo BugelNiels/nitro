@@ -10,6 +10,7 @@
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "src/nodes/conversions/seperatergbdatamodel.hpp"
 #include "src/nodes/invaliddata.hpp"
+#include "util/imgresourcereader.hpp"
 
 #include <QtNodes/internal/ConnectionGraphicsObject.hpp>
 #include <QtNodes/internal/NodeGraphicsObject.hpp>
@@ -37,7 +38,7 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
     setScaleRange(0.3, 1);
 }
 
-QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType) {
+QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconPath) {
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
@@ -47,12 +48,16 @@ QAction *nitro::NodeGraphicsView::spawnNodeAction(const QString &menuName, const
         QtNodes::NodeId const newId = _dataModel->addNode(nodeType);
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
+    QIcon icon;
+    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath));
+    createNodeAction->setIcon(icon);
     return createNodeAction;
 }
 
 QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
     QString menuName = nitro::ImageViewerDataModel::nodeCaption();
     QString nodeType = nitro::ImageViewerDataModel::nodeName();
+    QString iconPath = nitro::ImageViewerDataModel::nodeIcon();
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         if (_dataModel->nodeExists(viewerNodeId)) {
@@ -65,6 +70,9 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
         viewerNodeId = newId;
         _dataModel->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
+    QIcon icon;
+    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath));
+    createNodeAction->setIcon(icon);
     return createNodeAction;
 }
 
@@ -72,7 +80,7 @@ QAction *nitro::NodeGraphicsView::spawnViewerNodeAction() {
 QMenu *nitro::NodeGraphicsView::initInputSubMenu() {
     auto *inputMenu = new QMenu("Input");
     inputMenu->addAction(spawnNodeAction(nitro::ImageSourceDataModel::nodeCaption(),
-                                         nitro::ImageSourceDataModel::nodeName()));
+                                         nitro::ImageSourceDataModel::nodeName(), nitro::ImageSourceDataModel::nodeIcon()));
     return inputMenu;
 }
 
@@ -87,32 +95,32 @@ QMenu *nitro::NodeGraphicsView::initOutputSubMenu() {
 QMenu *nitro::NodeGraphicsView::initColorSubMenu() {
     auto *convertMenu = new QMenu("Color");
     convertMenu->addAction(spawnNodeAction(nitro::ToGrayScaleDataModel::nodeCaption(),
-                                           nitro::ToGrayScaleDataModel::nodeName()));
+                                           nitro::ToGrayScaleDataModel::nodeName(), nitro::ToGrayScaleDataModel::nodeIcon()));
     convertMenu->addAction(spawnNodeAction(nitro::SeperateRgbDataModel::nodeCaption(),
-                                           nitro::SeperateRgbDataModel::nodeName()));
+                                           nitro::SeperateRgbDataModel::nodeName(), nitro::SeperateRgbDataModel::nodeIcon()));
     return convertMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initOperationsSubMenu() {
     auto *opsMenu = new QMenu("Comparison");
     opsMenu->addAction(spawnNodeAction(nitro::FlipDataModel::nodeCaption(),
-                                       nitro::FlipDataModel::nodeName()));
+                                       nitro::FlipDataModel::nodeName(), nitro::FlipDataModel::nodeIcon()));
     return opsMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initQuantizationSubMenu() {
     auto *opsMenu = new QMenu("Quantization");
     opsMenu->addAction(spawnNodeAction(nitro::QuantisizeDataModel::nodeCaption(),
-                                       nitro::QuantisizeDataModel::nodeName()));
+                                       nitro::QuantisizeDataModel::nodeName(), nitro::QuantisizeDataModel::nodeIcon()));
     opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(),
-                                       nitro::KMeansDataModel::nodeName()));
+                                       nitro::KMeansDataModel::nodeName(), nitro::KMeansDataModel::nodeIcon()));
     return opsMenu;
 }
 
 QMenu *nitro::NodeGraphicsView::initResampleSubMenu() {
     auto *opsMenu = new QMenu("Resampling");
     opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(),
-                                       nitro::ResampleDataModel::nodeName()));
+                                       nitro::ResampleDataModel::nodeName(), nitro::ResampleDataModel::nodeIcon()));
     return opsMenu;
 }
 

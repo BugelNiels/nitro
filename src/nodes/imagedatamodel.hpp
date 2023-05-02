@@ -23,6 +23,8 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/node_var1.png"); }
+
     protected:
 
         virtual QWidget *initBeforeWidget() { return nullptr; }
@@ -30,7 +32,9 @@ namespace nitro {
         virtual QWidget *initAfterWidget() { return nullptr; }
 
         void updateImage(const QPixmap &p);
+
         void updateImage(const QImage &img);
+
         void clearImage();
 
     private:

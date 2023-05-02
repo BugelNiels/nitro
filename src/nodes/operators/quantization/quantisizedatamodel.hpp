@@ -27,6 +27,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("Quantisize"); }
 
         static QString nodeName() { return QStringLiteral("Quantisize"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/quantisize.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

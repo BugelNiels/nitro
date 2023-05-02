@@ -21,9 +21,10 @@ namespace nitro {
 
         QString name() const override { return nodeName(); }
 
+
     protected:
 
-        QWidget *embeddedWidget() override {return nullptr;}
+        QWidget *embeddedWidget() override { return nullptr; }
 
         void separate(const QImage &inputImg) override;
 

@@ -6,6 +6,7 @@
 #include "gui/mainwindow.hpp"
 #include "util/imgconvert.hpp"
 #include <QStyle>
+#include <QFontDatabase>
 
 QPalette getDarkModePalette() {
     QPalette palette;
@@ -44,9 +45,10 @@ int main(int argc, char *argv[]) {
     QPalette palette = getDarkModePalette();
     QApplication::setPalette(palette);
 
-    QFont font("JetBrains Mono");
-    font.setStyleHint(QFont::Monospace);
-    QApplication::setFont(font);
+//    QFont font("JetBrains Mono");
+//    font.setStyleHint(QFont::Monospace);
+//
+//    QApplication::setFont(font);
 
     nitro::MainWindow w;
     w.setWindowState(Qt::WindowMaximized);

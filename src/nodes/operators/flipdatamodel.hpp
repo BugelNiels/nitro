@@ -26,6 +26,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("FLIP"); }
 
         static QString nodeName() { return QStringLiteral("Flip"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/compare.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

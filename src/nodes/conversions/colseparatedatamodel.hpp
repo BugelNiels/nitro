@@ -34,6 +34,9 @@ namespace nitro {
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
+
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/separate.png"); }
+
     protected:
 
         virtual void separate(const QImage &inputImg) = 0;

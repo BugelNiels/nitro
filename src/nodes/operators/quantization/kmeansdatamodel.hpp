@@ -28,6 +28,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("K-Means"); }
 
         static QString nodeName() { return QStringLiteral("KMeans"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/kmeans.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

@@ -33,6 +33,7 @@ namespace nitro {
         static QString nodeCaption() { return QStringLiteral("Resample"); }
 
         static QString nodeName() { return QStringLiteral("Resample"); }
+        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/resample.png"); }
 
         QString caption() const override { return nodeCaption(); }
 

@@ -15,7 +15,17 @@
         <file>icons/image_viewer.png</file>
         <file>icons/node_editor.png</file>
         <file>icons/surface_visualizer.png</file>
-        <file>icons/node.png</file>
-        <file>icons/node_var1.png</file>
+        <file>icons/nodes/node.png</file>
+        <file>icons/nodes/node_var1.png</file>
+        <file>icons/nodes/viewer.png</file>
+        <file>icons/nodes/resample.png</file>
+        <file>icons/nodes/compare.png</file>
+        <file>icons/nodes/separate.png</file>
+        <file>icons/nodes/filter.png</file>
+        <file>icons/nodes/greyscale.png</file>
+        <file>icons/nodes/image_source.png</file>
+        <file>icons/nodes/kmeans.png</file>
+        <file>icons/nodes/quantisize.png</file>
+        <file>icons/nodes/threshold.png</file>
     </qresource>
 </RCC>
