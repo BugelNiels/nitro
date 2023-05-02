@@ -18,9 +18,8 @@ QPixmap nitro::ImgResourceReader::getPixMap(const QString &path, const QSize &si
 
     for (int x = 0; x < size2.width(); x++) {
         for (int y = 0; y < size2.height(); y++) {
-            if (myImage.pixelColor(x, y).alpha() != 0) {
-                myImage.setPixelColor(x, y, color);
-            }
+            int alpha = myImage.pixelColor(x, y).alpha();
+            myImage.setPixelColor(x, y, QColor(color.red(), color.green(), color.blue(), alpha));
         }
     }
 

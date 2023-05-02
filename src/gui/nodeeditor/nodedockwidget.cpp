@@ -66,13 +66,23 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
 
     auto *wrapper = new QWidget(horLayout);
     auto *menuVertLayout = new QVBoxLayout();
+
+
     searchBar = new QLineEdit(this);
-
     searchBar->setPlaceholderText("Search");
-    nodeTreeWidget = initSideMenu();
+    searchBar->adjustSize();
     connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
+    QSize size(searchBar->height(), searchBar->height());
+    auto* searchLabel = new QLabel();
+    searchLabel->setPixmap(nitro::ImgResourceReader::getPixMap(":/icons/search.png", size));
 
-    menuVertLayout->addWidget(searchBar);
+    auto *searchHorLayout = new QHBoxLayout();
+    searchHorLayout->addWidget(searchLabel);
+    searchHorLayout->addWidget(searchBar);
+    menuVertLayout->addLayout(searchHorLayout);
+
+
+    nodeTreeWidget = initSideMenu();
     menuVertLayout->addWidget(nodeTreeWidget);
     wrapper->setLayout(menuVertLayout);
     horLayout->addWidget(wrapper);

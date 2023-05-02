@@ -35,6 +35,11 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/image_viewer.png", {icSize, icSize}, icColor));
     imHLayout->addWidget(nodeIcon);
 
+    imHLayout->addStretch();
+
+    auto *zoomLabel = new QLabel("zoom:");
+    imHLayout->addWidget(zoomLabel);
+
     auto *zoomBar = new nitro::ZoomBar(imView->minScaleFactor * 100.0, imView->maxScaleFactor * 100.0);
     QPalette palette = zoomBar->palette();
     palette.setColor(QPalette::Highlight, QColor(60, 60, 60)); // set the color to red
@@ -44,6 +49,7 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     connect(imView, &nitro::ImageViewer::scaleChanged, this, [=](double scale) {
         zoomBar->setZoom(scale);
     });
+
 
     imViewTitleWrapper->setLayout(imHLayout);
     imDock->setTitleBarWidget(imViewTitleWrapper);
@@ -85,7 +91,8 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 
 QStatusBar *nitro::MainWindow::initFooter() {
-    auto *versionLabel = new QLabel(" version 0.1 ", this);
+    // TODO: extract
+    auto *versionLabel = new QLabel(" version 0.2 ", this);
     fileNameLabel = new QLabel(" untitled.json ", this);
 
     auto *statusBar = new QStatusBar(this);
@@ -195,7 +202,9 @@ QWidget *nitro::MainWindow::initNodeTitleBar() {
         nodeDock->recalculateNodeSizes();
 
     });
+    hLayout->addSpacing(15);
     hLayout->addWidget(nodeImgCheckBox);
+    hLayout->addStretch();
 
     auto *calcProgressBar = new QProgressBar();
     calcProgressBar->setMinimum(0);

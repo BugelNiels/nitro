@@ -18,4 +18,4 @@ git submodule update
 
 ## Known Bugs
 
-None for the moment :)
+- Zooming in a lot can cause the embedded widget to float outside of the node
