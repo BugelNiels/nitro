@@ -16,6 +16,7 @@ nitro::ShaderRenderer::~ShaderRenderer() {
 }
 
 void nitro::ShaderRenderer::initShaders() {
+    shaders.insert(ShaderType::SURFACE, constructDefaultShader("raycast"));
     shaders.insert(ShaderType::SDF, constructDefaultShader("sdf"));
 }
 
@@ -59,33 +60,41 @@ void nitro::ShaderRenderer::initBuffers() {
 
 QVector<quint8> nitro::ShaderRenderer::imageToBytes(const QImage &image) const {
     // needed since (0,0) is bottom left in OpenGL
-    QImage im = image.mirrored();
-    QVector<quint8> pixelData;
-    pixelData.reserve(im.width() * im.height() * 4);
-
-    for (int i = 0; i != im.height(); ++i) {
-        for (int j = 0; j != im.width(); ++j) {
-            QRgb pixel = im.pixel(j, i);
-
-            // pixel is of format #AARRGGBB (in hexadecimal notation)
-            // so with bitshifting and binary AND you can get
-            // the values of the different components
-            quint8 r = (quint8) ((pixel >> 16) & 0xFF);  // Red component
-            quint8 g = (quint8) ((pixel >> 8) & 0xFF);   // Green component
-            quint8 b = (quint8) (pixel & 0xFF);          // Blue component
-            quint8 a = (quint8) ((pixel >> 24) & 0xFF);  // Alpha component
-
-            // Add them to the Vector
-            pixelData.append(r);
-            pixelData.append(g);
-            pixelData.append(b);
-            pixelData.append(a);
+    QImage img = image.mirrored();
+    QVector<quint8> pixelData(img.width() * img.height() * 4);
+    int idx = 0;
+    if (img.isGrayscale()) {
+        for (int y = 0; y < img.height(); y++) {
+            auto *row = img.scanLine(y);
+            for (int x = 0; x < img.width(); x++) {
+                pixelData[idx++] = row[x];
+                pixelData[idx++] = row[x];
+                pixelData[idx++] = row[x];
+                pixelData[idx++] = 1;
+            }
+        }
+    } else {
+        for (int y = 0; y < img.height(); y++) {
+            for (int x = 0; x < img.width(); x++) {
+                QRgb pixel = img.pixel(x, y);
+                // pixel is of format #AARRGGBB (in hexadecimal notation)
+                // so with bitshifting and binary AND you can get
+                // the values of the different components
+                pixelData[idx++] = (quint8) ((pixel >> 16) & 0xFF);  // Red component
+                pixelData[idx++] = (quint8) ((pixel >> 8) & 0xFF);   // Green component
+                pixelData[idx++] = (quint8) (pixel & 0xFF);          // Blue component
+                pixelData[idx++] = (quint8) ((pixel >> 24) & 0xFF);  // Alpha component
+            }
         }
     }
+
+
     return pixelData;
 }
 
 void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
+    m_imWidth = image.width();
+    m_imHeight = image.height();
     QVector<quint8> bytes = imageToBytes(image);
     gl->glBindTexture(GL_TEXTURE_2D, textureBO);
     gl->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.width(), image.height(), 0,
@@ -122,6 +131,9 @@ void nitro::ShaderRenderer::updateUniforms() {
     gl->glBindTexture(GL_TEXTURE_2D, textureBO);
     gl->glUniform1i(imageUniform, 0);
 
+
+    intUniform(shader, "imwidth", m_imWidth);
+    intUniform(shader, "imheight", m_imHeight);
     intUniform(shader, "level", 0);
     intUniform(shader, "depth", 0);  // TODO
 }

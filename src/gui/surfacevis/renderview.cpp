@@ -34,6 +34,16 @@ void nitro::RenderView::initializeGL() {
     renderer.init(functions, &settings);
 
     updateMatrices();
+    int w = 256;
+    int h = 256;
+    QImage img(w, h, QImage::Format_Grayscale8);
+    for (int y = 0; y < h; y++) {
+        auto *row = img.scanLine(y);
+        for (int x = 0; x < w; x++) {
+            row[x] = x;
+        }
+    }
+    updateBuffers(img);
 }
 
 void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
@@ -44,7 +54,11 @@ void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
     updateMatrices();
 }
 
-void nitro::RenderView::updateBuffers(const QImage &image) { renderer.updateBuffers(image); }
+void nitro::RenderView::updateBuffers(const QImage &image) {
+    qDebug() << image.width();
+    renderer.updateBuffers(image);
+    repaint();
+}
 
 void nitro::RenderView::updateProjectionMatrix() {
     settings.projectionMatrix.setToIdentity();
@@ -206,7 +220,8 @@ void nitro::RenderView::mousePressEvent(QMouseEvent *event) {
 void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
     QOpenGLWidget::mouseReleaseEvent(event);
     dragging = false;
-    setFocus(); }
+    setFocus();
+}
 
 /**
  * @brief MainView::wheelEvent Event that is called when the user scrolls.

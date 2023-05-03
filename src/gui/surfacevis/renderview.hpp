@@ -21,8 +21,6 @@ namespace nitro {
 
         void updateMatrices();
 
-        void updateUniforms();
-
         void updateProjectionMatrix();
 
         void updateBuffers(const QImage &image);

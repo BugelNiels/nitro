@@ -31,5 +31,7 @@ class ShaderRenderer : public Renderer {
   int meshIBOSize;
 
   GLint imageUniform;
+    int m_imWidth;
+    int m_imHeight;
 };
 }  // namespace nitro
