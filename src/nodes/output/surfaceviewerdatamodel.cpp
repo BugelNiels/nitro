@@ -8,7 +8,7 @@
 #include <QVBoxLayout>
 
 
-//nitro::ImageViewer *nitro::SurfaceViewerDataModel::_imViewer = nullptr;
+nitro::RenderView *nitro::SurfaceViewerDataModel::_surfViewer = nullptr;
 
 nitro::SurfaceViewerDataModel::SurfaceViewerDataModel()
         : _image(std::make_shared<ImageData>()), _displayWrapper(nullptr) {
@@ -65,6 +65,8 @@ void nitro::SurfaceViewerDataModel::setInData(std::shared_ptr<QtNodes::NodeData>
 
     if (portIndex == 0) {
         const QImage &img = inputImg->getDisplayImg();
+        _surfViewer->updateBuffers(img);
+        // TODO: unify input of both the image viewer and the surface viewer
 //        _imViewer->setImage(img);
         _sizeLabel->setText(QString("%1 x %2").arg(img.width()).arg(img.height()));
         _layersLabel->setText(QString("%1 layers").arg(1 << img.depth()));
@@ -91,6 +93,6 @@ QWidget *nitro::SurfaceViewerDataModel::embeddedWidget() {
 }
 
 
-//void nitro::ImageViewerDataModel::setViewer(nitro::ImageViewer *viewer) {
-//    ImageViewerDataModel::_imViewer = viewer;
-//}
+void nitro::SurfaceViewerDataModel::setSurfaceViewer(nitro::RenderView *viewer) {
+    SurfaceViewerDataModel::_surfViewer = viewer;
+}

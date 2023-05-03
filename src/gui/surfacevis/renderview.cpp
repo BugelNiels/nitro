@@ -13,18 +13,6 @@ nitro::RenderView::~RenderView() { makeCurrent(); }
 void nitro::RenderView::initializeGL() {
     initializeOpenGLFunctions();
 
-    connect(&debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this, SLOT(onMessageLogged(QOpenGLDebugMessage)),
-            Qt::DirectConnection);
-
-    if (debugLogger.initialize()) {
-        QLoggingCategory::setFilterRules(
-                "qt.*=false\n"
-                "qt.text.font.*=false");
-
-        debugLogger.startLogging(QOpenGLDebugLogger::SynchronousLogging);
-        debugLogger.enableMessages();
-    }
-
     QString glVersion;
     glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
     qDebug() << ":: Using OpenGL" << qPrintable(glVersion);
@@ -49,43 +37,44 @@ void nitro::RenderView::initializeGL() {
 }
 
 void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
-    settings.view.dispRatio = float(newWidth) / float(newHeight);
+    settings.dispRatio = float(newWidth) / float(newHeight);
 
-    settings.view.projectionMatrix.setToIdentity();
-    settings.view.projectionMatrix.perspective(settings.view.fov, settings.view.dispRatio, 0.5f, 10.0f);
+    settings.projectionMatrix.setToIdentity();
+    settings.projectionMatrix.perspective(settings.fov, settings.dispRatio, 0.5f, 10.0f);
     updateMatrices();
 }
 
 void nitro::RenderView::updateBuffers(const QImage &image) { renderer.updateBuffers(image); }
 
 void nitro::RenderView::updateProjectionMatrix() {
-    settings.view.projectionMatrix.setToIdentity();
-    settings.view.projectionMatrix.perspective(settings.view.fov, settings.view.dispRatio, 0.5f, 10.0f);
+    settings.projectionMatrix.setToIdentity();
+    settings.projectionMatrix.perspective(settings.fov, settings.dispRatio, 0.5f, 10.0f);
 }
 
 void nitro::RenderView::resetModelViewMatrix() {
-    settings.view.modelViewMatrix.setToIdentity();
-    settings.view.modelViewMatrix.translate(translation);
+    settings.modelViewMatrix.setToIdentity();
+    settings.modelViewMatrix.translate(translation);
 }
 
 void nitro::RenderView::resetOrientation() {
     scale = 1.0f;
-    translation = QVector3D(0.0, 0.0, -settings.view.distFromCamera);
+    translation = QVector3D(0.0, 0.0, -settings.distFromCamera);
     rotationQuaternion = QQuaternion();
 }
 
 void nitro::RenderView::updateMatrices() {
     resetModelViewMatrix();
-    settings.view.modelViewMatrix.scale(scale);
-    settings.view.modelViewMatrix.rotate(rotationQuaternion);
+    settings.modelViewMatrix.scale(scale);
+    settings.modelViewMatrix.rotate(rotationQuaternion);
 
-    settings.view.normalMatrix = settings.view.modelViewMatrix.normalMatrix();
+    settings.normalMatrix = settings.modelViewMatrix.normalMatrix();
     // create the matrix to map clipping space coordinates to world space
     // coordinates. Do this calculation here to prevent redoing this calculating
     // everytime the mouse is pressed. Only needs to be updated whenever the
     // projection or the modelview matrix is being updated
     bool inverted = false;
-    toWorldCoordsMatrix = (settings.view.projectionMatrix * settings.view.modelViewMatrix).inverted(&inverted);
+    settings.toWorldCoordsMatrix = (settings.modelViewMatrix).inverted(&inverted);
+//    settings.toWorldCoordsMatrix = (settings.projectionMatrix * settings.modelViewMatrix).inverted(&inverted);
 
     settings.uniformUpdateRequired = true;
 
@@ -93,15 +82,12 @@ void nitro::RenderView::updateMatrices() {
 }
 
 void nitro::RenderView::paintGL() {
-    QVector3D bCol = {1,1,1};
+    QVector3D bCol = {1, 1, 1};
     glClearColor(bCol.x(), bCol.y(), bCol.z(), 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (settings.view.wireframeMode) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
     renderer.draw();
 }
@@ -147,15 +133,15 @@ void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
     // reset if we are starting a drag
     if (!dragging) {
         dragging = true;
-        oldRotationVec = newVec;
+        oldRotationVec = v2;
         return;
     }
 
     // calculate axis and angle
-    QVector3D v1 = oldRotationVec.normalized();
+    QVector3D v1 = oldRotationVec;
     QVector3D N = QVector3D::crossProduct(v1, v2).normalized();
     if (N.length() == 0.0f) {
-        oldRotationVec = newVec;
+        oldRotationVec = v2;
         return;
     }
     float angle = 180.0f / M_PI * acos(QVector3D::dotProduct(v1, v2));
@@ -163,7 +149,7 @@ void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
     updateMatrices();
 
     // for next iteration
-    oldRotationVec = newVec;
+    oldRotationVec = v2;
 }
 
 /**
@@ -179,7 +165,7 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
         return;
     }
     QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(), sPos.y() - oldMouseCoords.y(), 0.0);
-    translationUpdate *= settings.view.dragSensitivity;
+    translationUpdate *= settings.dragSensitivity;
     translation += translationUpdate;
     updateMatrices();
     oldMouseCoords = sPos;
@@ -192,14 +178,12 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
 void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() == Qt::LeftButton) {
         if (shiftPressed) {
-            oldRotationVec = QVector3D();
             mouseMoveTranslate(event);
         } else {
             mouseMoveRotate(event);
         }
     } else {
         dragging = false;
-        oldRotationVec = QVector3D();
     }
 }
 
@@ -208,7 +192,21 @@ void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
  * pressed.
  * @param event The mouse event.
  */
-void nitro::RenderView::mousePressEvent(QMouseEvent *event) { setFocus(); }
+void nitro::RenderView::mousePressEvent(QMouseEvent *event) {
+    QOpenGLWidget::mousePressEvent(event);
+    setFocus();
+}
+
+
+/**
+ * @brief RenderView::mousePressEvent Event that is called when the mouse is
+ * pressed.
+ * @param event The mouse event.
+ */
+void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
+    QOpenGLWidget::mouseReleaseEvent(event);
+    dragging = false;
+    setFocus(); }
 
 /**
  * @brief MainView::wheelEvent Event that is called when the user scrolls.
@@ -226,10 +224,6 @@ void nitro::RenderView::wheelEvent(QWheelEvent *event) {
  */
 void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-        case 'Z':
-            settings.view.wireframeMode = !settings.view.wireframeMode;
-            update();
-            break;
         case 'R':
             resetOrientation();
             updateMatrices();
@@ -250,9 +244,3 @@ void nitro::RenderView::keyReleaseEvent(QKeyEvent *event) {
             shiftPressed = false;
     }
 }
-
-/**
- * @brief MainView::onMessageLogged Helper function for logging messages.
- * @param Message The message to log.
- */
-void nitro::RenderView::onMessageLogged(QOpenGLDebugMessage Message) { qDebug() << " → Log:" << Message; }

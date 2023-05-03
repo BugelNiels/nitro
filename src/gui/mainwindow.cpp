@@ -14,6 +14,8 @@
 #include "util/imgresourcereader.hpp"
 #include "config.hpp"
 #include "ZoomBar.h"
+#include "surfacevis/renderview.hpp"
+#include "output/surfaceviewerdatamodel.hpp"
 
 nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
@@ -59,10 +61,18 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     surfIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}, icColor));
     surfIcon->setMargin(icMargin);
     surfViewDock->setTitleBarWidget(surfIcon);
+    auto* _renderView = new nitro::RenderView();
+    surfViewDock->setWidget(_renderView);
+
+    // TODO: do this elsewhere?
+    nitro::SurfaceViewerDataModel::setSurfaceViewer(_renderView);
 
     // Node editor
     nodeDock = new nitro::NodeDockWidget(imView, this);
     nodeDock->setTitleBarWidget(initNodeTitleBar());
+
+    imViewDock->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    surfViewDock->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
@@ -77,6 +87,8 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     vertLayout->addWidget(nodeDock);
     vertLayout->setStretchFactor(0, 1);
     vertLayout->setStretchFactor(1, 1);
+
+    horLayout->setSizes({width() / 2, width() / 2}); // Temp fix for equal sizes
 
     // Disable the undocking features
     imViewDock->setFeatures(imViewDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));

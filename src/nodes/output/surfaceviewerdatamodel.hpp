@@ -13,6 +13,7 @@
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include "src/nodes/imagedatamodel.hpp"
+#include "surfacevis/renderview.hpp"
 
 
 namespace nitro {
@@ -49,10 +50,11 @@ namespace nitro {
         QWidget *embeddedWidget() override;
 
     public:
-//        static void setSurfaceViewer(nitro::RenderView *viewer);
+        static void setSurfaceViewer(RenderView *viewer);
 
 
     private:
+        static RenderView *_surfViewer;
         std::shared_ptr<ImageData> _image;
 
         QWidget *_displayWrapper;

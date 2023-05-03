@@ -45,7 +45,12 @@ namespace nitro {
         void keyReleaseEvent(QKeyEvent *event) override;
 
     private:
-        QOpenGLDebugLogger debugLogger;
+
+        // TODO: this will be passed by reference in the constructor
+        Settings settings;
+
+        float rotAngle = 0.0f;
+
         // for zoom
         float scale;
         // for handling rotation
@@ -57,13 +62,6 @@ namespace nitro {
         bool shiftPressed;
 
         ShaderRenderer renderer;
-        Settings settings;
-        // save this matrix here to prevent recalculating this every time the mouse is
-        // pressed.
-        QMatrix4x4 toWorldCoordsMatrix;
-
-        // we make mainwindow a friend so it can access settings
-        friend class MainWindow;
 
         void resetModelViewMatrix();
 
@@ -75,9 +73,7 @@ namespace nitro {
 
         void mouseMoveTranslate(QMouseEvent *Event);
 
-    private slots:
-
-        void onMessageLogged(QOpenGLDebugMessage Message);
+        void mouseReleaseEvent(QMouseEvent *event) override;
     };
 
 }  // namespace nitro
