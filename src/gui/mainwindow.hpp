@@ -28,6 +28,13 @@ namespace nitro {
         QStatusBar *initFooter();
 
         QWidget *initNodeTitleBar();
+
+        QMenu *getFileMenu();
+
+        QMenu *getWindowMenu();
+
+        QDockWidget *imViewDock;
+        QDockWidget *surfViewDock;
     };
 
 } // nitro

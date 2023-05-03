@@ -1,22 +1,12 @@
 #include "nodegraphicsview.hpp"
-#include "QtNodes/DataFlowGraphModel"
-#include "src/nodes/input/imagesourcedatamodel.hpp"
-#include "src/nodes/output/imageviewerdatamodel.hpp"
-#include "src/nodes/output/surfaceviewerdatamodel.hpp"
-#include "src/nodes/conversions/tograyscaledatamodel.hpp"
-#include "src/nodes/operators/thresholddatamodel.hpp"
-#include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
-#include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
-#include "src/nodes/operators/flipdatamodel.hpp"
-#include "src/nodes/operators/math/imgmathdatamodel.hpp"
-#include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
-#include "src/nodes/conversions/rgb/separatergbdatamodel.hpp"
-#include "src/nodes/conversions/rgb/combinergbdatamodel.hpp"
-#include "src/nodes/conversions/ycbcr/combineycbcrdatamodel.hpp"
-#include "src/nodes/conversions/ycbcr/separateycbcrdatamodel.hpp"
-#include "src/nodes/invaliddata.hpp"
+#include <QtNodes/DataFlowGraphModel>
+
+#include "nitronodes.hpp"
+
 #include "util/imgresourcereader.hpp"
-#include "QtNodes/internal/AbstractNodeGeometry.hpp"
+#include <QtNodes/internal/AbstractNodeGeometry.hpp>
+
+#include "util/util.hpp"
 
 #include <QtNodes/internal/ConnectionGraphicsObject.hpp>
 #include <QtNodes/internal/NodeGraphicsObject.hpp>
@@ -45,34 +35,6 @@ nitro::NodeGraphicsView::NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::B
     insertAction(actions().front(), spawnMenu);
     _nodeMenu = initNodeMenu();
     setScaleRange(0.3, 1.5);
-}
-
-// TODO: util
-QColor makeReadable(const QColor &color, bool lightMode = false) {
-    // Convert to YIQ color space
-    double y = 0.299 * color.redF() + 0.587 * color.greenF() + 0.114 * color.blueF();
-    double i = 0.596 * color.redF() - 0.274 * color.greenF() - 0.322 * color.blueF();
-    double q = 0.211 * color.redF() - 0.523 * color.greenF() + 0.312 * color.blueF();
-
-    // Adjust Y value to make color more readable on dark background
-    if (lightMode) {
-        y = qMin(0.4, y);
-    } else {
-        y = qMax(0.5, y);
-    }
-
-    // Convert back to RGB color space
-    double r = y + 0.956 * i + 0.621 * q;
-    double g = y - 0.272 * i - 0.647 * q;
-    double b = y - 1.105 * i + 1.702 * q;
-
-    // Clamp values to valid range
-    r = qBound(0.0, r, 1.0);
-    g = qBound(0.0, g, 1.0);
-    b = qBound(0.0, b, 1.0);
-
-    // Return adjusted color
-    return QColor::fromRgbF(r, g, b, color.alphaF());
 }
 
 QAction *
@@ -194,6 +156,8 @@ QMenu *nitro::NodeGraphicsView::initResampleSubMenu() {
     auto *opsMenu = new QMenu("Resampling");
     opsMenu->addAction(spawnNodeAction(nitro::ResampleDataModel::nodeCaption(), nitro::ResampleDataModel::nodeName(),
                                        nitro::ResampleDataModel::nodeIcon(), nitro::ResampleDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::LuminanceCorrectionDataModel::nodeCaption(), nitro::LuminanceCorrectionDataModel::nodeName(),
+                                       nitro::LuminanceCorrectionDataModel::nodeIcon(), nitro::LuminanceCorrectionDataModel::nodeColor()));
     return opsMenu;
 }
 

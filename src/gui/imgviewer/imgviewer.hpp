@@ -44,6 +44,7 @@ namespace nitro {
         void removeImage();
 
         void awaitReplacement();
+        void abortReplacement();
 
 
         const double minScaleFactor = 0.2;

@@ -224,7 +224,9 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
 }
 
 void nitro::ImageViewer::setImage(const QImage &img) {
+    _replacementDue = false;
     if (img.sizeInBytes() == 0) {
+        removeImage();
         return;
     }
     if (_imgDisplayItem == nullptr) {
@@ -243,13 +245,16 @@ void nitro::ImageViewer::setImage(const QImage &img) {
         }
     }
     displayImg = new QImage(img);
-    _replacementDue = false;
     repaint();
 }
 
 
 void nitro::ImageViewer::awaitReplacement() {
     _replacementDue = true;
+}
+
+void nitro::ImageViewer::abortReplacement() {
+    _replacementDue = false;
 }
 
 void nitro::ImageViewer::removeImage() {

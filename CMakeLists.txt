@@ -31,15 +31,14 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc
-        src/nodes/operators/reconstruction/lumcorrectdatamodel.hpp src/core/operations/threshold.cpp src/core/operations/threshold.hpp src/core/operations/conversions/rgbconvert.cpp src/core/operations/conversions/rgbconvert.hpp src/core/operations/conversions/ycbcrconvert.cpp src/core/operations/conversions/ycbcrconvert.hpp src/core/util/util.cpp src/core/util/util.hpp src/core/operations/flipcompare.cpp src/core/operations/flipcompare.hpp src/core/operations/imgmath.cpp src/core/operations/imgmath.hpp src/core/operations/quantization/kmeans.cpp src/core/operations/quantization/kmeans.hpp src/core/operations/quantization/uniformquantization.cpp src/core/operations/quantization/uniformquantization.hpp src/core/operations/conversions/grayscaleconvert.cpp src/core/operations/conversions/grayscaleconvert.hpp)
+        resources/resources.qrc src/core/operations/imginfo.cpp src/core/operations/imginfo.hpp src/core/operations/corrections.cpp src/core/operations/corrections.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/src/core
-        ${CMAKE_CURRENT_LIST_DIR}/src/components
         ${CMAKE_CURRENT_LIST_DIR}/src/gui
+        ${CMAKE_CURRENT_LIST_DIR}/src/nodes
         )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)

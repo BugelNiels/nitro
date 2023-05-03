@@ -1,5 +1,9 @@
 #include "lumcorrectdatamodel.hpp"
-#include "src/nodes/invaliddata.hpp"
+
+#include "invaliddata.hpp"
+
+#include "operations/conversions/ycbcrconvert.hpp"
+#include "operations/corrections.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
@@ -18,7 +22,7 @@ unsigned int nitro::LuminanceCorrectionDataModel::nPorts(QtNodes::PortType portT
 
     switch (portType) {
         case QtNodes::PortType::In:
-            result = 1;
+            result = 2;
             break;
 
         case QtNodes::PortType::Out:
@@ -78,13 +82,14 @@ void nitro::LuminanceCorrectionDataModel::setInData(std::shared_ptr<QtNodes::Nod
     }
     if(portIndex == 1) {
         if(inputImg->isColImg()) {
-
-            // TODO: extract luminance channel
+            auto channels = nitro::operations::separateYCbCr(*inputImg->colImage());
+            auto yChannel = CbdImage(channels[0]);
+            _inputRef = std::make_shared<ImageData>(std::make_shared<CbdImage>(yChannel));
         } else {
             _inputRef = inputImg;
         }
     }
-    if(_input->isValid() && _inputRef->isValid()) {
+    if(_input != nullptr && _inputRef != nullptr && _input->isValid() && _inputRef->isValid()) {
 
         if (_input->isColImg()) {
             _result = colorBrightnessCorrect(*_input->colImage(), *_inputRef->image());
@@ -137,32 +142,17 @@ void nitro::LuminanceCorrectionDataModel::load(const QJsonObject &p) {
     }
 }
 
-float meanBrightness(const nitro::CbdImage &image) {
-    int width = image.width();
-    int height = image.width();
-    int sum = 0;
-    const auto& data = image.constData();
-    for(int y = 0; y < height; y++) {
-        for(int x = 0; x < width; x++) {
-            sum += data.get(x, y);
-        }
-    }
-    return float(sum) / float(width * height);
-}
-
 // TODO: use mode
 std::shared_ptr<nitro::ImageData>
 nitro::LuminanceCorrectionDataModel::colorBrightnessCorrect(QImage &image, nitro::CbdImage &image1) {
-
-
-
-
-    return std::shared_ptr<ImageData>();
+    auto result = nitro::operations::brightnessCorrect(image, image1);
+    return std::make_shared<ImageData>(std::make_shared<QImage>(result));
 }
 
 std::shared_ptr<nitro::ImageData>
 nitro::LuminanceCorrectionDataModel::brightnessCorrect(nitro::CbdImage &image, nitro::CbdImage &image1) {
-    return std::shared_ptr<ImageData>();
+    auto result = nitro::operations::brightnessCorrect(image, image1);
+    return std::make_shared<ImageData>(std::make_shared<nitro::CbdImage>(result));
 }
 
 

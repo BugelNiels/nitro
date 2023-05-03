@@ -28,6 +28,7 @@ namespace nitro {
 
         inline int numLevels() const { return numGreyLevels; }
 
+
         inline Matrix<int> &data() { return matrix; }
 
         inline const Matrix<int> &constData() const { return matrix; }

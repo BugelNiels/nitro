@@ -18,15 +18,13 @@
 nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
 
-    setMenuBar(initMenuBar());
-    setStatusBar(initFooter());
 
 
     // TODO: extract
     // Image viewer
-    auto *imDock = new QDockWidget(this);
+    imViewDock = new QDockWidget(this);
     nitro::ImageViewer *imView;
-    imView = new ImageViewer(new QGraphicsScene(), imDock);
+    imView = new ImageViewer(new QGraphicsScene(), imViewDock);
 
     auto *imViewTitleWrapper = new QWidget();
     auto *imHLayout = new QHBoxLayout();
@@ -52,15 +50,15 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 
     imViewTitleWrapper->setLayout(imHLayout);
-    imDock->setTitleBarWidget(imViewTitleWrapper);
-    imDock->setWidget(imView);
+    imViewDock->setTitleBarWidget(imViewTitleWrapper);
+    imViewDock->setWidget(imView);
 
     // Surface visualizer
-    auto *surfDock = new QDockWidget("Surface Visualizer", this);
+    surfViewDock = new QDockWidget("Surface Visualizer", this);
     auto *surfIcon = new QLabel();
     surfIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}, icColor));
     surfIcon->setMargin(icMargin);
-    surfDock->setTitleBarWidget(surfIcon);
+    surfViewDock->setTitleBarWidget(surfIcon);
 
     // Node editor
     nodeDock = new nitro::NodeDockWidget(imView, this);
@@ -68,8 +66,8 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
-    horLayout->addWidget(imDock);
-    horLayout->addWidget(surfDock);
+    horLayout->addWidget(imViewDock);
+    horLayout->addWidget(surfViewDock);
     horLayout->setStretchFactor(0, 1);
     horLayout->setStretchFactor(1, 1);
 
@@ -81,12 +79,16 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     vertLayout->setStretchFactor(1, 1);
 
     // Disable the undocking features
-    imDock->setFeatures(imDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
-    surfDock->setFeatures(surfDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    imViewDock->setFeatures(imViewDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    surfViewDock->setFeatures(surfViewDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
     nodeDock->setFeatures(nodeDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
 
     setCentralWidget(vertLayout);
     installEventFilter(this);
+
+
+    setMenuBar(initMenuBar());
+    setStatusBar(initFooter());
 }
 
 
@@ -108,6 +110,54 @@ nitro::MainWindow::~MainWindow() {}
 QMenuBar *nitro::MainWindow::initMenuBar() {
     auto *menuBar = new QMenuBar();
 
+    QMenu *fileMenu = getFileMenu();
+
+    menuBar->addMenu(fileMenu);
+
+    // TODO: save dock state somewhere and restore that here
+
+    auto *editMenu = new QMenu("Edit");
+    menuBar->addMenu(editMenu);
+    auto *viewMenu = new QMenu("View");
+    menuBar->addMenu(viewMenu);
+
+
+    QMenu *windowMenu = getWindowMenu();
+    menuBar->addMenu(windowMenu);
+    menuBar->setStyleSheet("QMenuBar { background-color: rgb(28, 28, 28); }");
+    return menuBar;
+}
+
+QMenu *nitro::MainWindow::getWindowMenu() {
+    auto *windowMenu = new QMenu("Window");
+
+    auto *nodeEditorAction = new QAction("Node Editor", this);
+    nodeEditorAction->setCheckable(true);
+    nodeEditorAction->setChecked(!nodeDock->isHidden());
+    connect(nodeEditorAction, &QAction::triggered, [this]() {
+        nodeDock->setHidden(!nodeDock->isHidden());
+    });
+    windowMenu->addAction(nodeEditorAction);
+
+    auto *imageViewerAction = new QAction("Image Viewer", this);
+    imageViewerAction->setCheckable(true);
+    imageViewerAction->setChecked(!imViewDock->isHidden());
+    connect(imageViewerAction, &QAction::triggered, [this]() {
+        imViewDock->setHidden(!imViewDock->isHidden());
+    });
+    windowMenu->addAction(imageViewerAction);
+
+    auto *surfViewerAction = new QAction("Surface Visualizer", this);
+    surfViewerAction->setCheckable(true);
+    surfViewerAction->setChecked(!surfViewDock->isHidden());
+    connect(surfViewerAction, &QAction::triggered, [this]() {
+        surfViewDock->setHidden(!surfViewDock->isHidden());
+    });
+    windowMenu->addAction(surfViewerAction);
+    return windowMenu;
+}
+
+QMenu *nitro::MainWindow::getFileMenu() {
     auto *fileMenu = new QMenu("File");
 
     auto *newAction = new QAction(QStringLiteral("New"), this);
@@ -156,7 +206,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     fileMenu->addSeparator();
 
     auto *quitAction = new QAction(QStringLiteral("Quit"), this);
-    quitAction->setShortcutContext(Qt::ShortcutContext::ApplicationShortcut);
+    quitAction->setShortcutContext(Qt::ApplicationShortcut);
     quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     connect(quitAction, &QAction::triggered, [this]() {
         if (nodeDock) {
@@ -167,24 +217,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
         exit(EXIT_SUCCESS);
     });
     fileMenu->addAction(quitAction);
-
-    menuBar->addMenu(fileMenu);
-
-    // TODO: save dock state somewhere and restore that here
-
-    auto *editMenu = new QMenu("Edit");
-    menuBar->addMenu(editMenu);
-    auto *viewMenu = new QMenu("View");
-    menuBar->addMenu(viewMenu);
-
-
-    auto *windowMenu = new QMenu("Window");
-    windowMenu->addAction("Node Editor");
-    windowMenu->addAction("Image Viewer");
-    windowMenu->addAction("Surface Visualizer");
-    menuBar->addMenu(windowMenu);
-    menuBar->setStyleSheet("QMenuBar { background-color: rgb(28, 28, 28); }");
-    return menuBar;
+    return fileMenu;
 }
 
 QWidget *nitro::MainWindow::initNodeTitleBar() {

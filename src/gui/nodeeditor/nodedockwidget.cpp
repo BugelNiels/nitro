@@ -1,26 +1,14 @@
 #include "nodedockwidget.hpp"
-#include "src/nodes/input/imagesourcedatamodel.hpp"
-#include "src/nodes/conversions/tograyscaledatamodel.hpp"
-#include "src/nodes/conversions/rgb/separatergbdatamodel.hpp"
-#include "src/nodes/operators/thresholddatamodel.hpp"
+
+#include "nitronodes.hpp"
 #include "nodegraphicsview.hpp"
-#include "src/nodes/output/imageviewerdatamodel.hpp"
-#include "src/nodes/output/surfaceviewerdatamodel.hpp"
-#include "src/nodes/operators/quantization/kmeansdatamodel.hpp"
-#include "src/nodes/operators/quantization/quantisizedatamodel.hpp"
-#include "src/nodes/operators/flipdatamodel.hpp"
-#include "src/nodes/operators/math/imgmathdatamodel.hpp"
-#include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
+
 #include "nodegraphicsscene.hpp"
 #include "util/imgresourcereader.hpp"
 #include "draggabletreewidget.hpp"
-#include "src/nodes/conversions/rgb/combinergbdatamodel.hpp"
-#include "src/nodes/conversions/ycbcr/combineycbcrdatamodel.hpp"
-#include "src/nodes/conversions/ycbcr/separateycbcrdatamodel.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
-#include <QtNodes/BasicGraphicsScene>
 #include <QtWidgets/QApplication>
 #include <QtNodes/DataFlowGraphModel>
 #include <QtNodes/NodeDelegateModelRegistry>
@@ -48,6 +36,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::SeparateYCbCrDataModel>("Operator");
     ret->registerModel<nitro::CombineYCbrCrDataModel>("Operator");
     ret->registerModel<nitro::ImgMathDataModel>("Operator");
+    ret->registerModel<nitro::LuminanceCorrectionDataModel>("Operator");
 
     return ret;
 }

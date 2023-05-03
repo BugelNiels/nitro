@@ -18,5 +18,7 @@ namespace nitro {
         return uchar(a);
     }
 
+    QColor makeReadable(const QColor &color, bool lightMode = false);
+
 
 } // nitro
