@@ -1,7 +1,9 @@
 #include "resampledatamodel.hpp"
-#include "resamplers/cubichermiteresampler.hpp"
-#include "resamplers/linearresampler.hpp"
-#include "resamplers/cubicinterpolatoryresampler.hpp"
+#include "src/core/operations/resampling/cubichermiteresampler.hpp"
+#include "src/core/operations/resampling/linearresampler.hpp"
+#include "src/core/operations/resampling/cubicinterpolatoryresampler.hpp"
+
+#include "src/core/operations/distancefield.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
@@ -11,6 +13,8 @@
 
 
 nitro::ResampleDataModel::ResampleDataModel() = default;
+
+
 
 void nitro::ResampleDataModel::modeChanged(int mode) {
     _mode = static_cast<SampleMethod>(mode);
@@ -71,10 +75,10 @@ std::shared_ptr<nitro::ImageData> nitro::ResampleDataModel::compute(const nitro:
             r = new nitro::CubicInterpolatorySampler();
             break;
     }
-    if (!field.valid()) {
-        field = DistanceField(inputImg);
+    if (field == nullptr) {
+        field = new nitro::DistanceField(inputImg);
     }
-    auto result = r->resample(inputImg, field, targetK);
+    auto result = r->resample(inputImg, *field, targetK);
     delete r;
     auto ptrRes = std::make_shared<nitro::CbdImage>(result);
     return std::make_shared<nitro::ImageData>(ptrRes);
@@ -107,5 +111,5 @@ void nitro::ResampleDataModel::load(const QJsonObject &p) {
 }
 
 void nitro::ResampleDataModel::clearData() {
-    field = nitro::DistanceField();
+    field = nullptr;
 }

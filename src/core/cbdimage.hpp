@@ -2,7 +2,7 @@
 
 #include <QImage>
 
-#include "util/matrix.hpp"
+#include "matrix.hpp"
 
 namespace nitro {
 

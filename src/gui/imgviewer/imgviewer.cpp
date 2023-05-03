@@ -34,7 +34,7 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
     setScaleRange(minScaleFactor, maxScaleFactor);
 
     // Sets the scene rect to its maximum possible ranges to avoid auto scene range
-    // re-calculation when expanding the all QGraphicsItems common rect.
+    // re-calculation when expanding the all QGraphicsItems core rect.
     int maxSize = 14960;
     setSceneRect(-maxSize, -maxSize, (maxSize * 2), (maxSize * 2));
     setScene(imScene);
@@ -265,8 +265,6 @@ void nitro::ImageViewer::removeImage() {
 void nitro::ImageViewer::centerScene() {
     if (scene()) {
         scene()->setSceneRect(QRectF());
-
-        QRectF sceneRect = scene()->sceneRect();
         if (_imgDisplayItem) {
             centerOn(_imgDisplayItem->boundingRect().width() / 2, _imgDisplayItem->boundingRect().height() / 2);
         } else {

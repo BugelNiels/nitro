@@ -13,13 +13,15 @@
 #include "cbdimage.hpp"
 #include "src/nodes/operators/imopdatamodel.hpp"
 
-#include "src/common/util/distancefield.hpp"
+#include "src/core/operations/distancefield.hpp"
 
 class QLineEdit;
 
 namespace nitro {
 
-    enum SampleMethod {LINEAR, CUBIC_HERMITE, CUBIC_INTERPOLATORY};
+    enum SampleMethod {
+        LINEAR, CUBIC_HERMITE, CUBIC_INTERPOLATORY
+    };
 
     class ResampleDataModel : public ImOpDataModel {
     Q_OBJECT
@@ -27,13 +29,15 @@ namespace nitro {
     public:
         ResampleDataModel();
 
-        virtual ~ResampleDataModel() {}
+        ~ResampleDataModel() override {}
 
     public:
         static QString nodeCaption() { return QStringLiteral("Resample"); }
 
         static QString nodeName() { return QStringLiteral("Resample"); }
+
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/resample.png"); }
+
         static QColor nodeColor() { return {201, 94, 6}; }
 
         QString caption() const override { return nodeCaption(); }
@@ -67,7 +71,7 @@ namespace nitro {
         void clearData() override;
 
     private:
-        DistanceField field;
+        DistanceField *field;
         SampleMethod _mode = SampleMethod::LINEAR;
         int targetK = 255;
 

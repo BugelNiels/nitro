@@ -5,12 +5,11 @@
 #include <QOpenGLWidget>
 #include <QScrollArea>
 #include <QVector3D>
-#include "src/components/resamplers/resampler.hpp"
 #include <QMenu>
 #include <QGraphicsView>
 
 #include "cbdimage.hpp"
-#include "util/matrix.hpp"
+#include "src/core/matrix.hpp"
 
 namespace nitro {
 

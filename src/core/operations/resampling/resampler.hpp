@@ -3,7 +3,7 @@
 #include <QImage>
 
 #include "cbdimage.hpp"
-#include "util/distancefield.hpp"
+#include "src/core/operations/distancefield.hpp"
 
 namespace nitro {
 

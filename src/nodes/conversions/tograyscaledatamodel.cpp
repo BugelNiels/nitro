@@ -6,6 +6,7 @@
 #include <QImageReader>
 #include <QVBoxLayout>
 
+#include <src/core/operations/conversions/grayscaleconvert.hpp>
 
 nitro::ToGrayScaleDataModel::ToGrayScaleDataModel()
         : ImageDataModel(), _displayWrapper(nullptr), _imgLabel(nullptr) {}
@@ -64,8 +65,7 @@ void nitro::ToGrayScaleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> d
         if (_in->isGrayscaleImg()) {
             _result = _in;
         } else {
-            // TODO: add options?
-            auto img = std::make_shared<nitro::CbdImage>(_in->colImage()->convertToFormat(QImage::Format_Grayscale8));
+            auto img = std::make_shared<nitro::CbdImage>(nitro::operations::toGrayScale(*_in->colImage()));
             _result = std::make_shared<ImageData>(img);
         }
         updateImage(_result->getDisplayImg());

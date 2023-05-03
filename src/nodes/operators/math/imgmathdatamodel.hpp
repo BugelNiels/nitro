@@ -61,8 +61,6 @@ namespace nitro {
 
         QWidget *initBeforeWidget() override;
 
-        QWidget *initAfterWidget() override;
-
     private:
         double mathVal = 1.0;
 

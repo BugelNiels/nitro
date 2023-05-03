@@ -2,8 +2,8 @@
 
 #include <QImage>
 
-#include "util/matrix.hpp"
-#include "src/common/cbdimage.hpp"
+#include "matrix.hpp"
+#include "cbdimage.hpp"
 
 namespace nitro {
 

@@ -6,6 +6,8 @@
 #include <QSpinBox>
 #include <QComboBox>
 
+#include "src/core/operations/threshold.hpp"
+
 
 nitro::ThresholdDataModel::ThresholdDataModel() = default;
 
@@ -51,27 +53,14 @@ std::shared_ptr<nitro::ImageData> nitro::ThresholdDataModel::compute(const QImag
 }
 
 std::shared_ptr<nitro::ImageData> nitro::ThresholdDataModel::compute(const nitro::CbdImage &inputImg) {
-    int width = inputImg.width();
-    int height = inputImg.height();
-    nitro::CbdImage result(width, height, 2);
-
-    bool lessThan = (_mode > 1);
+    bool greater = (_mode <= 1);
     if (_mode == 1) {
         threshold -= 1;
     } else if (_mode == 3) {
         threshold += 1;
     }
 
-    auto &inData = inputImg.constData();
-    auto &outData = result.data();
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            int val = inData.get(x, y);
-            bool satisfies = lessThan ? val < threshold : val > threshold;
-            outData.set(x, y, satisfies ? 1 : 0);
-        }
-    }
-    result.setIndexed({0, 255});
+    auto result = nitro::operations::threshold(inputImg, threshold, greater);
     auto ptrRes = std::make_shared<nitro::CbdImage>(result);
     return std::make_shared<nitro::ImageData>(ptrRes);
 }

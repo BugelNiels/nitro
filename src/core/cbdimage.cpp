@@ -1,22 +1,15 @@
 #include "cbdimage.hpp"
 
 #include <QDebug>
-#include <iostream>
 #include <QImageReader>
 #include <QMessageBox>
 #include <QGuiApplication>
-#include <QDir>
-
-#include "resamplers/resampler.hpp"
-
-#define USE_DIST
 
 nitro::CbdImage::CbdImage() = default;
 
 nitro::CbdImage::CbdImage(const nitro::CbdImage &img) {
     numGreyLevels = img.numGreyLevels;
     matrix = nitro::Matrix<int>(img.matrix);
-//    distanceField = img.distanceField;
 
     indexed = img.indexed;
     vals = img.vals;

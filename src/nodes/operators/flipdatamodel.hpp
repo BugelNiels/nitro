@@ -50,7 +50,6 @@ namespace nitro {
         std::shared_ptr<ImageData> _inputImgA;
         std::shared_ptr<ImageData> _inputImgB;
 
-
         std::shared_ptr<ImageData> _result;
 
 
