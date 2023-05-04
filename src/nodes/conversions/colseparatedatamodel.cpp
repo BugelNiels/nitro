@@ -63,7 +63,7 @@ void nitro::ColorSeparateDataModel::setInData(std::shared_ptr<QtNodes::NodeData>
         if (_input->isColImg()) {
             separate(*_input->colImage());
         } else {
-            for (auto &i: _result) {
+            for(auto & i : _result) {
                 i = _input;
             }
         }

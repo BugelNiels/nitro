@@ -29,7 +29,7 @@ namespace nitro {
         float dispRatio = 16.0f / 9.0f;
         float rotAngle = 0.0f;
         float dragSensitivity = 100.0f;
-        float distFromCamera = 12.0f;
+        float distFromCamera = 256.0f;
 
     } Settings;
 }  // namespace nitro

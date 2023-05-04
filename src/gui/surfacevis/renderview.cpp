@@ -55,7 +55,6 @@ void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
 }
 
 void nitro::RenderView::updateBuffers(const QImage &image) {
-    qDebug() << image.width();
     renderer.updateBuffers(image);
     repaint();
 }
