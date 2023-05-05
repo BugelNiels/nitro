@@ -37,6 +37,7 @@ static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() 
     ret->registerModel<nitro::CombineYCbrCrDataModel>("Operator");
     ret->registerModel<nitro::ImgMathDataModel>("Operator");
     ret->registerModel<nitro::LuminanceCorrectionDataModel>("Operator");
+    ret->registerModel<nitro::ToggleDataModel>("Operator");
 
     return ret;
 }

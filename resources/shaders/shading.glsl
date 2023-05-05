@@ -1,6 +1,6 @@
 #version 410
 
-const vec3 lightPos = vec3(3.0, 0.0, 2.0);
+const vec3 lightPos = vec3(0, 0.0, 1024.0);
 const vec3 lightCol = vec3(1.0);
 const vec3 matSpecCol = vec3(1.0);
 const vec3 camerapos = vec3(0.0);
@@ -10,6 +10,7 @@ const float matDiffuseCoeff = 0.6;
 const float matSpecularCoeff = 0.5;
 
 // Basic phong shading
+
 vec3 phongShading(vec3 matCol, vec3 coords, vec3 normal) {
   vec3 surfToLight = normalize(lightPos - coords);
   vec3 surfToCamera = normalize(camerapos - coords);

@@ -31,7 +31,8 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/core/operations/imginfo.cpp src/core/operations/imginfo.hpp src/core/operations/corrections.cpp src/core/operations/corrections.hpp)
+        resources/resources.qrc
+        )
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

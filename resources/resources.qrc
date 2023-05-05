@@ -1,14 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>shaders/phong.frag</file>
-        <file>shaders/phong.vert</file>
         <file>shaders/shading.glsl</file>
         <file>shaders/raycast.frag</file>
         <file>shaders/raycast.vert</file>
-        <file>shaders/sdf.frag</file>
-        <file>shaders/sdf.vert</file>
-        <file>shaders/level.frag</file>
-        <file>shaders/level.vert</file>
         <file>DefaultStyle.json</file>
         <file>icons/expand.png</file>
         <file>icons/search.png</file>
@@ -32,5 +26,6 @@
         <file>icons/nodes/combine.png</file>
         <file>icons/nodes/surface.png</file>
         <file>icons/nodes/math.png</file>
+        <file>icons/nodes/toggle.png</file>
     </qresource>
 </RCC>

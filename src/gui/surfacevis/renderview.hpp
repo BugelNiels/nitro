@@ -5,6 +5,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLWidget>
 #include <QVector3D>
+#include <QMenu>
 
 #include "src/gui/surfacevis/renderers/renderer.hpp"
 #include "src/gui/surfacevis/renderers/shaderrenderer.hpp"
@@ -23,6 +24,10 @@ namespace nitro {
 
         void updateBuffers(const QImage &image);
 
+        void toggleOrthographic();
+
+        void toggleImageColors();
+
     protected:
         void initializeGL() override;
 
@@ -40,9 +45,35 @@ namespace nitro {
 
         void keyReleaseEvent(QKeyEvent *event) override;
 
+        void mouseReleaseEvent(QMouseEvent *event) override;
+
+        void timerEvent(QTimerEvent *event) override;
+
+        void contextMenuEvent(QContextMenuEvent *event) override;
+
     private:
 
         QMap<int, bool> keys;
+
+
+        int frameTimer = -1;
+        float baseMovementSpeed = 3;
+        float movementSpeedModifier = 1;
+        float sprintModifier = 2;
+
+        float movementSpeed = 1;
+        QPoint widgetMidPoint;
+        QVector3D translation;
+        float camYaw = 0;
+        float camPitch = 0;
+
+        float mouseSensitivity = 0.4;
+
+        float scale = 1.0f;
+
+        QVector3D initialCamPos;
+        QVector3D initialCamRotVec;
+        float initialCamAngle;
 
         // TODO: this will be passed by reference in the constructor
         Settings settings;
@@ -58,8 +89,6 @@ namespace nitro {
 
         ShaderRenderer renderer;
 
-        void resetModelViewMatrix();
-
         void resetOrientation();
 
         QVector2D toNormalizedScreenCoordinates(float x, float y) const;
@@ -68,7 +97,6 @@ namespace nitro {
 
         void mouseMoveTranslate(QMouseEvent *Event);
 
-        void mouseReleaseEvent(QMouseEvent *event) override;
 
         void toggleFirstPerson();
 
@@ -76,14 +104,12 @@ namespace nitro {
 
         void enableFirstPerson();
 
-        void timerEvent(QTimerEvent *event) override;
+        QMenu *createContextMenu();
 
-        int frameTimer = -1;
-        float movementSpeed = 1;
-        QPoint widgetMidPoint;
-        QVector3D translation;
-        float camYaw = 0;
-        float camPitch =  0;
+
+        void alignCam(QVector3D axis, float angle = 90);
+
+        void recalcCamMatrix();
     };
 
 }  // namespace nitro

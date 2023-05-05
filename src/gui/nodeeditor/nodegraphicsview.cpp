@@ -136,9 +136,11 @@ QMenu *nitro::NodeGraphicsView::initComparisonSubMenu() {
 }
 
 QMenu *nitro::NodeGraphicsView::initMathSubMenu() {
-    auto *opsMenu = new QMenu("Math");
+    auto *opsMenu = new QMenu("Util");
     opsMenu->addAction(spawnNodeAction(nitro::ImgMathDataModel::nodeCaption(), nitro::ImgMathDataModel::nodeName(),
                                        nitro::ImgMathDataModel::nodeIcon(), nitro::ImgMathDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::ToggleDataModel::nodeCaption(), nitro::ToggleDataModel::nodeName(),
+                                       nitro::ToggleDataModel::nodeIcon(), nitro::ToggleDataModel::nodeColor()));
     return opsMenu;
 }
 

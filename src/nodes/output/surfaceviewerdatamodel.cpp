@@ -19,7 +19,7 @@ unsigned int nitro::SurfaceViewerDataModel::nPorts(QtNodes::PortType portType) c
 
     switch (portType) {
         case QtNodes::PortType::In:
-            result = 2;
+            result = 1;
             break;
 
         case QtNodes::PortType::Out:

@@ -5,6 +5,7 @@
 #include <QLoggingCategory>
 #include <QMouseEvent>
 #include <QOpenGLVersionFunctionsFactory>
+#include <QMenu>
 
 nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setMouseTracking(true);
@@ -64,25 +65,20 @@ void nitro::RenderView::updateBuffers(const QImage &image) {
     repaint();
 }
 
-void nitro::RenderView::resetModelViewMatrix() {
-    settings.cameraMatrix.setToIdentity();
-}
-
 void nitro::RenderView::resetOrientation() {
-    resetModelViewMatrix();
+    initialCamPos = QVector3D(0.0, 0.0, settings.distFromCamera);
+    initialCamRotVec = {1, 0, 0};
+    initialCamAngle = 90;
+    settings.cameraMatrix.setToIdentity();
+
     settings.uniformUpdateRequired = true;
-    translation = QVector3D(0.0, 0.0, settings.distFromCamera);
+    translation = {0, 0, 0};
     camPitch = 0;
     camYaw = 0;
 }
 
 void nitro::RenderView::updateMatrices() {
-    settings.cameraMatrix.setToIdentity();
-    settings.cameraMatrix.translate(translation);
-    settings.cameraMatrix.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
-
-    settings.uniformUpdateRequired = true;
-
+    recalcCamMatrix();
     repaint();
 }
 
@@ -95,43 +91,49 @@ void nitro::RenderView::paintGL() {
 
     if (firstPersonMode) {
         QPointF diff = QCursor::pos() - widgetMidPoint;
-        float sensitivity = 0.4f;
-        diff *= sensitivity;
+        diff *= mouseSensitivity;
+
         camYaw -= diff.x();
         camPitch -= diff.y();
-        camPitch = std::clamp(camPitch, -45.0f, 45.0f);
+        camPitch = std::clamp(camPitch, -90.0f, 90.0f);
         QCursor::setPos(widgetMidPoint);
         QMatrix4x4 rot;
         rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
 
         QVector4D movDif = QVector4D(0, 0, 0, 0);
-        if (keys[Qt::Key_W]) {
+        if (keys[Qt::Key_W]) { // Forward
             movDif.setZ(movementSpeed);
         }
-        if (keys[Qt::Key_A]) {
+        if (keys[Qt::Key_A]) { // Left
             movDif.setX(movementSpeed);
         }
-        if (keys[Qt::Key_S]) {
-            movDif.setZ(movDif.z() - movementSpeed);
-        }
-        if (keys[Qt::Key_D]) {
-            movDif.setX(movDif.x() - movementSpeed);
-        }
-        if (keys[Qt::Key_Q]) {
+        if (keys[Qt::Key_Q]) { // Down
             movDif.setY(movementSpeed);
         }
-        if (keys[Qt::Key_E]) {
+        if (keys[Qt::Key_S]) { // Backward
+            movDif.setZ(movDif.z() - movementSpeed);
+        }
+        if (keys[Qt::Key_D]) { // Right
+            movDif.setX(movDif.x() - movementSpeed);
+        }
+        if (keys[Qt::Key_E]) { // Up
             movDif.setY(movDif.y() - movementSpeed);
         }
         translation -= (rot * movDif).toVector3D();
 
-        settings.cameraMatrix.setToIdentity();
-        settings.cameraMatrix.translate(translation);
-        settings.cameraMatrix *= rot;
-        settings.uniformUpdateRequired = true;
+        recalcCamMatrix();
     }
 
     renderer.draw();
+}
+
+void nitro::RenderView::recalcCamMatrix() {
+    settings.cameraMatrix.setToIdentity();
+    settings.cameraMatrix.rotate(initialCamAngle, initialCamRotVec);
+    settings.cameraMatrix.translate(initialCamPos);
+    settings.cameraMatrix.translate(translation);
+    settings.cameraMatrix.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
+    settings.uniformUpdateRequired = true;
 }
 
 /**
@@ -190,6 +192,7 @@ void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
     auto quat = QQuaternion::fromAxisAndAngle(N, -angle);
     QMatrix4x4 rot;
     rot.rotate(quat);
+    // TODO: better orbit controls
     translation = (rot * QVector4D(oldTranslation, 0)).toVector3D();
     auto angles = (QQuaternion::fromEulerAngles(camPitch, camYaw, 0) * quat).toEulerAngles();
     camPitch = angles.x();
@@ -212,7 +215,6 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
 
     QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(), sPos.y() - oldMouseCoords.y(), 0.0);
     translationUpdate *= settings.dragSensitivity;
-
 
     QMatrix4x4 rot;
     rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
@@ -271,8 +273,18 @@ void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
  * @param event The mouse event.
  */
 void nitro::RenderView::wheelEvent(QWheelEvent *event) {
+    if(firstPersonMode) {
+        float speedModStrength = event->angleDelta().y() > 0 ? 1.2 : 0.8;
+        movementSpeedModifier *= speedModStrength;
+        if(movementSpeedModifier < 0) {
+            movementSpeedModifier = 0;
+        }
+        movementSpeed = baseMovementSpeed * sprintModifier * movementSpeedModifier;
+        return;
+    }
     float zoomFactor = 15.0;
     float zoom = event->angleDelta().y() > 0 ? zoomFactor : -zoomFactor;
+    scale += zoom;
 
     QMatrix4x4 rot;
     rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
@@ -292,7 +304,7 @@ void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
             toggleFirstPerson();
             return;
         }
-        movementSpeed = 4;
+        movementSpeed = baseMovementSpeed * sprintModifier * movementSpeedModifier;
     }
     keys[event->key()] = true;
     switch (event->key()) {
@@ -316,8 +328,7 @@ void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
  */
 void nitro::RenderView::keyReleaseEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Shift) {
-        qDebug() << "Triggered";
-        movementSpeed = 1;
+        movementSpeed = baseMovementSpeed * movementSpeedModifier;
     }
     keys[event->key()] = false;
 }
@@ -351,4 +362,60 @@ void nitro::RenderView::enableFirstPerson() {
 
 void nitro::RenderView::timerEvent(QTimerEvent *event) {
     repaint();
+}
+
+QMenu *nitro::RenderView::createContextMenu() {
+    // TODO: different class
+    auto *menu = new QMenu();
+    menu->addAction("Align Top", [this] {
+        alignCam(QVector3D(), 0);
+    });
+    menu->addAction("Align Front", [this] {
+        alignCam({1, 0, 0});
+    });
+    menu->addSeparator();
+
+    menu->addAction("First Person Mode", [this] {
+        toggleFirstPerson();
+    }, QKeySequence(Qt::SHIFT | Qt::Key_F));
+
+    menu->addAction("Reset", [this] {
+        disableFirstPerson();
+        resetOrientation();
+        updateMatrices();
+    }, QKeySequence(Qt::Key_R));
+    // These shortcut actions don't seem to work, but they are handled elsewhere. This just ensures they are displayed
+    // in the context menu
+    return menu;
+}
+
+void nitro::RenderView::alignCam(QVector3D axis, float angle) {
+    resetOrientation();
+    // TODO: reset orthographic
+    initialCamRotVec = axis;
+    initialCamAngle = angle;
+    updateMatrices();
+}
+
+void nitro::RenderView::contextMenuEvent(QContextMenuEvent *event) {
+    if (firstPersonMode) {
+        return;
+    }
+    QMenu *menu = createContextMenu();
+    if (menu) {
+        menu->exec(event->globalPos());
+    }
+}
+
+void nitro::RenderView::toggleOrthographic() {
+    settings.orthographic = !settings.orthographic;
+    settings.uniformUpdateRequired = true;
+    update();
+
+}
+
+void nitro::RenderView::toggleImageColors() {
+    settings.imageColors = !settings.imageColors;
+    settings.uniformUpdateRequired = true;
+    update();
 }

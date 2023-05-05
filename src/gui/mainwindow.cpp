@@ -71,14 +71,20 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     auto *surfNodeIcon = new QLabel();
     surfNodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}, icColor));
     surfHLayout->addWidget(surfNodeIcon);
-
-    auto* surfPerspectiveCheckBox = new QCheckBox("Orthographic");
-    surfHLayout->addWidget(surfPerspectiveCheckBox);
-
     surfHLayout->addStretch();
 
-    auto *surfPosLabel = new QLabel("x: 0.0, y: 0.0, z: 0.0");
-    surfHLayout->addWidget(surfPosLabel);
+    auto* surfPerspectiveCheckBox = new QCheckBox("Orthographic");
+    connect(surfPerspectiveCheckBox, &QCheckBox::toggled, this, [_renderView] {
+        _renderView->toggleOrthographic();
+    });
+    surfHLayout->addWidget(surfPerspectiveCheckBox);
+
+    auto* imageColorsCheckBox = new QCheckBox("Image Colors");
+    imageColorsCheckBox->setChecked(true); // TODO: don't hardcode
+    connect(imageColorsCheckBox, &QCheckBox::toggled, this, [_renderView] {
+        _renderView->toggleImageColors();
+    });
+    surfHLayout->addWidget(imageColorsCheckBox);
 
 
     surfViewTitleWrapper->setLayout(surfHLayout);

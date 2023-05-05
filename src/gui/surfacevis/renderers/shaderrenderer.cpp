@@ -17,7 +17,6 @@ nitro::ShaderRenderer::~ShaderRenderer() {
 
 void nitro::ShaderRenderer::initShaders() {
     shaders.insert(ShaderType::SURFACE, constructDefaultShader("raycast"));
-    shaders.insert(ShaderType::SDF, constructDefaultShader("sdf"));
 }
 
 void nitro::ShaderRenderer::initBuffers() {
@@ -105,16 +104,20 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
 void nitro::ShaderRenderer::updateUniforms() {
     QOpenGLShaderProgram *shader = shaders[settings->activeShader];
 
-    mat4Uniform(shader, "projectionmatrix", settings->projectionMatrix);
-    mat4Uniform(shader, "toworldmatrix", settings->cameraMatrix);
+    mat4Uniform(shader, "projectionMatrix", settings->projectionMatrix);
+    mat4Uniform(shader, "toWorldMatrix", settings->cameraMatrix);
 
     imageUniform = shaders[settings->activeShader]->uniformLocation("image");
     gl->glActiveTexture(GL_TEXTURE0);
     gl->glBindTexture(GL_TEXTURE_2D, textureBO);
     gl->glUniform1i(imageUniform, 0);
 
-    intUniform(shader, "imwidth", m_imWidth);
-    intUniform(shader, "imheight", m_imHeight);
+    intUniform(shader, "imWidth", m_imWidth);
+    intUniform(shader, "imHeight", m_imHeight);
+
+
+    intUniform(shader, "enableImageColors", settings->imageColors);
+    intUniform(shader, "enableOrthographic", settings->orthographic);
 }
 
 void nitro::ShaderRenderer::draw() {

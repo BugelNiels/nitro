@@ -18,3 +18,4 @@
 #include "conversions/ycbcr/combineycbcrdatamodel.hpp"
 #include "conversions/ycbcr/separateycbcrdatamodel.hpp"
 #include "operators/reconstruction/lumcorrectdatamodel.hpp"
+#include "operators/toggledatamodel.hpp"

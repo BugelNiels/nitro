@@ -9,12 +9,15 @@ layout(location = 0) in vec3 vertcoords_vs;
 
 out vec4 fColor;
 
-uniform mat4 toworldmatrix;
-uniform mat4 projectionmatrix;
+uniform mat4 toWorldMatrix;
+uniform mat4 projectionMatrix;
 uniform sampler2D image;
 
-uniform int imwidth;
-uniform int imheight;
+uniform int imWidth;
+uniform int imHeight;
+
+uniform bool enableImageColors;
+uniform bool enableOrthographic;
 
 const vec3 backgroundCol = vec3(0.2);
 const vec3 matCol = vec3(0.7, 0.8, 1);
@@ -38,33 +41,53 @@ float sdBox(vec3 p, vec3 b)
 
 bool getVoxel(ivec3 c) {
 
-    c += ivec3(imwidth / 2, imheight / 2, 128);
+    c += ivec3(imWidth / 2, imHeight / 2, 128);
 
     //    vec3 pos = c - vec3(imwidth / 2.0, imheight / 2.0, 255 / 2);
-    if (c.x < 0 || c.x >= imwidth || c.y < 0 || c.y >= imheight || c.z < 0 || c.z > 255) {
+    if (c.x < 0 || c.x >= imWidth || c.y < 0 || c.y >= imHeight || c.z < 0 || c.z > 255) {
         return false;
     }
-    vec2 texUv = vec2(float(c.x) / float(imwidth), float(c.y) / float(imheight));
+    vec2 texUv = vec2(float(c.x) / float(imWidth), float(c.y) / float(imHeight));
     float z = vec3(texture(image, texUv)).r * 255 + 1;
-    vec3 boxDims = vec3(imwidth, imheight, z);
+    vec3 boxDims = vec3(imWidth, imHeight, z);
     //    vec3 boxDims = vec3(2);
     return sdBox(c, boxDims) < 0.0;
     //    return sdBox(c, vec3(6.0)) < 0.0;
 }
 
+vec3 normals(vec3 pos) {
+    vec3 fdx = dFdx(pos);
+    vec3 fdy = dFdy(pos);
+    return normalize(cross(fdx, fdy));
+}
+vec2 matcap(vec3 eye, vec3 normal) {
+    vec3 reflected = reflect(eye, normal);
+    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
+    return reflected.xy / m + 0.5;
+}
+
 // TODO: get aspect ratio of image
 // Render image as blocks
 void main() {
-    // Generate ray
-    float aspectRatio = projectionmatrix[1][1] / projectionmatrix[0][0];
-    vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionmatrix[1][1];
-    vec4 rayOrigin = toworldmatrix * vec4(0.0, 0.0, 0.0, 1.0); // perspective
-    vec4 rayDirection = toworldmatrix * vec4(uv, -1.0, 0.0);// perspective
 
-//    vec4 rayOrigin = toworldmatrix * vec4(vertcoords_vs.xy * vec2(aspectRatio, 1.0), 0.0, 1.0) ; // orthographic
-//    vec4 rayDirection = toworldmatrix * vec4(0, 0, -1.0, 0.0); // orthographic
-    vec3 ro = vec3(rayOrigin);
-    vec3 rd = normalize(vec3(rayDirection));
+    vec3 ro, rd;
+    if (enableOrthographic) {
+        // Generate ray
+        float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
+        vec4 rayOrigin = toWorldMatrix * vec4(vertcoords_vs.xy * vec2(aspectRatio, 1.0) * 255, 0.0, 1.0);// orthographic
+        vec4 rayDirection = toWorldMatrix * vec4(0, 0, -1.0, 0.0);// orthographic
+        ro = vec3(rayOrigin);
+        rd = normalize(vec3(rayDirection));
+    } else {
+        // Generate ray
+        float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
+        vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionMatrix[1][1];
+        vec4 rayOrigin = toWorldMatrix * vec4(0.0, 0.0, 0.0, 1.0);// perspective
+        vec4 rayDirection = toWorldMatrix * vec4(uv, -1.0, 0.0);// perspective
+        ro = vec3(rayOrigin);
+        rd = normalize(vec3(rayDirection));
+    }
+
 
     // Starts at ray origin
     ivec3 mapPos = ivec3(floor(ro + 0.));
@@ -111,8 +134,9 @@ void main() {
     if (background) {
         color = vec3(0.2);
     } else {
-
-        color *= (mapPos.z + 128) / 255.0f;
+        if (enableImageColors) {
+            color *= (mapPos.z + 128) / 255.0f;
+        }
     }
     fColor = vec4(color, 1.0);
 }

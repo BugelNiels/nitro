@@ -26,9 +26,9 @@ namespace nitro {
         virtual ~SurfaceViewerDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Surface Viewer"); }
+        static QString nodeCaption() { return QStringLiteral("3D Image Viewer"); }
 
-        static QString nodeName() { return QStringLiteral("SurfaceViewer"); }
+        static QString nodeName() { return QStringLiteral("ImageViewer3D"); }
         static QString nodeIcon() { return QStringLiteral(":/icons/nodes/surface.png"); }
         static QColor nodeColor() { return {99, 28, 28}; }
 
