@@ -64,6 +64,27 @@ nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     auto* _renderView = new nitro::RenderView();
     surfViewDock->setWidget(_renderView);
 
+    // Surface view title TODO: clean
+    auto *surfViewTitleWrapper = new QWidget();
+    auto *surfHLayout = new QHBoxLayout();
+
+    auto *surfNodeIcon = new QLabel();
+    surfNodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/surface_visualizer.png", {icSize, icSize}, icColor));
+    surfHLayout->addWidget(surfNodeIcon);
+
+    auto* surfPerspectiveCheckBox = new QCheckBox("Orthographic");
+    surfHLayout->addWidget(surfPerspectiveCheckBox);
+
+    surfHLayout->addStretch();
+
+    auto *surfPosLabel = new QLabel("x: 0.0, y: 0.0, z: 0.0");
+    surfHLayout->addWidget(surfPosLabel);
+
+
+    surfViewTitleWrapper->setLayout(surfHLayout);
+    surfViewDock->setTitleBarWidget(surfViewTitleWrapper);
+
+
     // TODO: do this elsewhere?
     nitro::SurfaceViewerDataModel::setSurfaceViewer(_renderView);
 
