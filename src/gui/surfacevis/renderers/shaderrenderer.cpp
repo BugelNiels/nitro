@@ -103,40 +103,18 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
 }
 
 void nitro::ShaderRenderer::updateUniforms() {
-    QMatrix4x4 modelViewMatrix = settings->viewMatrix * settings->modelMatrix;
-    const QVector3D &dims = settings->boundingBoxDims;
-    QVector3D p1 = QVector3D(modelViewMatrix *
-                             QVector4D(-dims.x(), -dims.y(), -dims.z(), 1));
-    QVector3D p2 = QVector3D(modelViewMatrix *
-                             QVector4D(-dims.x(), -dims.y(), dims.z(), 1));
-    QVector3D p3 = QVector3D(modelViewMatrix *
-                             QVector4D(-dims.x(), dims.y(), -dims.z(), 1));
-    QVector3D p4 = QVector3D(modelViewMatrix *
-                             QVector4D(dims.x(), -dims.y(), -dims.z(), 1));
-
     QOpenGLShaderProgram *shader = shaders[settings->activeShader];
 
-    mat4Uniform(shader, "modelviewmatrix", modelViewMatrix);
     mat4Uniform(shader, "projectionmatrix", settings->projectionMatrix);
-    mat4Uniform(shader, "toworldmatrix", settings->toWorldCoordsMatrix);
-
-    vec3Uniform(shader, "boundp1", p1);
-    vec3Uniform(shader, "boundp2", p2);
-    vec3Uniform(shader, "boundp3", p3);
-    vec3Uniform(shader, "boundp4", p4);
-
-    floatUniform(shader, "boxheight", dims.y() * 2);
+    mat4Uniform(shader, "toworldmatrix", settings->cameraMatrix);
 
     imageUniform = shaders[settings->activeShader]->uniformLocation("image");
     gl->glActiveTexture(GL_TEXTURE0);
     gl->glBindTexture(GL_TEXTURE_2D, textureBO);
     gl->glUniform1i(imageUniform, 0);
 
-
     intUniform(shader, "imwidth", m_imWidth);
     intUniform(shader, "imheight", m_imHeight);
-    intUniform(shader, "level", 0);
-    intUniform(shader, "depth", 0);  // TODO
 }
 
 void nitro::ShaderRenderer::draw() {

@@ -21,8 +21,6 @@ namespace nitro {
 
         void updateMatrices();
 
-        void updateProjectionMatrix();
-
         void updateBuffers(const QImage &image);
 
     protected:
@@ -51,15 +49,11 @@ namespace nitro {
 
         bool firstPersonMode = false;
 
+        QVector3D oldTranslation;
 
-
-        // for zoom
-        float scale;
         // for handling rotation
         QVector3D oldRotationVec;
         QVector2D oldMouseCoords;
-        QPointF oldMouseCoordsf;
-        QQuaternion rotationQuaternion;
         bool dragging;
 
         ShaderRenderer renderer;

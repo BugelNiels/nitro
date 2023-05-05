@@ -10,7 +10,6 @@ layout(location = 0) in vec3 vertcoords_vs;
 out vec4 fColor;
 
 uniform mat4 toworldmatrix;
-uniform mat4 modelviewmatrix;
 uniform mat4 projectionmatrix;
 uniform sampler2D image;
 
