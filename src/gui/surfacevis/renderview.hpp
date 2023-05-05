@@ -44,20 +44,23 @@ namespace nitro {
 
     private:
 
+        QMap<int, bool> keys;
+
         // TODO: this will be passed by reference in the constructor
         Settings settings;
 
-        float rotAngle = 0.0f;
+        bool firstPersonMode = false;
+
+
 
         // for zoom
         float scale;
         // for handling rotation
         QVector3D oldRotationVec;
         QVector2D oldMouseCoords;
+        QPointF oldMouseCoordsf;
         QQuaternion rotationQuaternion;
-        QVector3D translation;
         bool dragging;
-        bool shiftPressed;
 
         ShaderRenderer renderer;
 
@@ -72,6 +75,21 @@ namespace nitro {
         void mouseMoveTranslate(QMouseEvent *Event);
 
         void mouseReleaseEvent(QMouseEvent *event) override;
+
+        void toggleFirstPerson();
+
+        void disableFirstPerson();
+
+        void enableFirstPerson();
+
+        void timerEvent(QTimerEvent *event) override;
+
+        int frameTimer = -1;
+        float movementSpeed = 1;
+        QPoint widgetMidPoint;
+        QVector3D translation;
+        float camYaw = 0;
+        float camPitch =  0;
     };
 
 }  // namespace nitro

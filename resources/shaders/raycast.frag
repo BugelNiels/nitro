@@ -58,14 +58,12 @@ bool getVoxel(ivec3 c) {
 void main() {
     // Generate ray
     float aspectRatio = projectionmatrix[1][1] / projectionmatrix[0][0];
-        vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionmatrix[1][1];
-//    vec2 uv = vertcoords_vs.xy* vec2(aspectRatio, 1.0);
-    //    vec3 ro = vec3(0.0);
-    //    vec3 rd = normalize(vec3(uv, -1.0));
-
-    vec4 rayOrigin = toworldmatrix * vec4(0.0, 0.0, 0.0, 1.0);
+    vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionmatrix[1][1];
+    vec4 rayOrigin = toworldmatrix * vec4(0.0, 0.0, 0.0, 1.0); // perspective
     vec4 rayDirection = toworldmatrix * vec4(uv, -1.0, 0.0);// perspective
-//        vec4 rayDirection = toworldmatrix * vec4(0, 0, -1.0, 0.0); // orthographic
+
+//    vec4 rayOrigin = toworldmatrix * vec4(vertcoords_vs.xy * vec2(aspectRatio, 1.0), 0.0, 1.0) ; // orthographic
+//    vec4 rayDirection = toworldmatrix * vec4(0, 0, -1.0, 0.0); // orthographic
     vec3 ro = vec3(rayOrigin);
     vec3 rd = normalize(vec3(rayDirection));
 

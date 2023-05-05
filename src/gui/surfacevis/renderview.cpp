@@ -6,7 +6,11 @@
 #include <QMouseEvent>
 #include <QOpenGLVersionFunctionsFactory>
 
-nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent), shiftPressed(false) { resetOrientation(); }
+nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
+    setMouseTracking(true);
+    resetOrientation();
+    setFocusPolicy(Qt::StrongFocus);
+}
 
 nitro::RenderView::~RenderView() { makeCurrent(); }
 
@@ -43,10 +47,12 @@ void nitro::RenderView::initializeGL() {
             row[x] = x;
         }
     }
+    resetOrientation();
     updateBuffers(img);
 }
 
 void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
+    widgetMidPoint = mapToGlobal(QPoint(width() / 2, height() / 2));
     settings.dispRatio = float(newWidth) / float(newHeight);
 
     settings.projectionMatrix.setToIdentity();
@@ -65,28 +71,37 @@ void nitro::RenderView::updateProjectionMatrix() {
 }
 
 void nitro::RenderView::resetModelViewMatrix() {
-    settings.modelViewMatrix.setToIdentity();
-    settings.modelViewMatrix.translate(translation);
+    settings.modelMatrix.setToIdentity();
+    settings.viewMatrix.setToIdentity();
+//    settings.modelMatrix.translate(translation);
+    settings.camMatrix.setToIdentity();
 }
 
 void nitro::RenderView::resetOrientation() {
+    resetModelViewMatrix();
     scale = 1.0f;
-    translation = QVector3D(0.0, 0.0, -settings.distFromCamera);
     rotationQuaternion = QQuaternion();
+    settings.viewMatrix.scale(scale);
+    settings.viewMatrix.translate(QVector3D(0.0, 0.0, -settings.distFromCamera));
+    settings.uniformUpdateRequired = true;
+    camPitch = 0;
+    camYaw = 0;
 }
 
 void nitro::RenderView::updateMatrices() {
-    resetModelViewMatrix();
-    settings.modelViewMatrix.scale(scale);
-    settings.modelViewMatrix.rotate(rotationQuaternion);
+//    resetModelViewMatrix();
+//    settings.viewMatrix.scale(scale);
+//    settings.viewMatrix.translate(QVector3D(0.0, 0.0, -settings.distFromCamera));
+//    settings.viewMatrix.translate(translation);
+//    settings.viewMatrix.rotate(rotationQuaternion);
 
-    settings.normalMatrix = settings.modelViewMatrix.normalMatrix();
+    settings.normalMatrix = settings.modelMatrix.normalMatrix();
     // create the matrix to map clipping space coordinates to world space
     // coordinates. Do this calculation here to prevent redoing this calculating
     // everytime the mouse is pressed. Only needs to be updated whenever the
     // projection or the modelview matrix is being updated
     bool inverted = false;
-    settings.toWorldCoordsMatrix = (settings.modelViewMatrix).inverted(&inverted);
+    settings.toWorldCoordsMatrix = (settings.viewMatrix * settings.modelMatrix).inverted(&inverted);
 //    settings.toWorldCoordsMatrix = (settings.projectionMatrix * settings.modelViewMatrix).inverted(&inverted);
 
     settings.uniformUpdateRequired = true;
@@ -101,6 +116,49 @@ void nitro::RenderView::paintGL() {
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    if (firstPersonMode) {
+        auto diff = QCursor::pos() - widgetMidPoint;
+        float sensitivity = 0.4f;
+        diff *= sensitivity;
+        camYaw -= diff.x();
+        camPitch -= diff.y();
+        camPitch = std::clamp(camPitch, -45.0f, 45.0f);
+        QCursor::setPos(widgetMidPoint);
+        QMatrix4x4 rot;
+        rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
+
+        QVector4D movDif = QVector4D(0,0,0,0);
+        if (keys[Qt::Key_W]) {
+            movDif.setZ(movementSpeed);
+        }
+        if (keys[Qt::Key_A]) {
+            movDif.setX(movementSpeed);
+        }
+        if (keys[Qt::Key_S]) {
+            movDif.setZ(movDif.z() - movementSpeed);
+        }
+        if (keys[Qt::Key_D]) {
+            movDif.setX(movDif.x() - movementSpeed);
+        }
+        if (keys[Qt::Key_Q]) {
+            movDif.setY(movementSpeed);
+        }
+        if (keys[Qt::Key_E]) {
+            movDif.setY(movDif.y() - movementSpeed);
+        }
+        translation -= (rot * movDif).toVector3D();
+
+        settings.camMatrix.setToIdentity();
+        settings.camMatrix.translate(QVector3D(0.0, 0.0, settings.distFromCamera));
+        settings.camMatrix.translate(translation);
+        settings.camMatrix *= rot;
+
+        bool inverted = false;
+        settings.toWorldCoordsMatrix = (settings.camMatrix.inverted() * settings.modelMatrix).inverted(
+                &inverted);
+        settings.uniformUpdateRequired = true;
+
+    }
 
     renderer.draw();
 }
@@ -158,9 +216,10 @@ void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
         return;
     }
     float angle = 180.0f / M_PI * acos(QVector3D::dotProduct(v1, v2));
-    rotationQuaternion = QQuaternion::fromAxisAndAngle(N, angle) * rotationQuaternion;
+//    rotationQuaternion = QQuaternion::fromAxisAndAngle(N, angle);
     updateMatrices();
 
+    settings.viewMatrix.rotate(QQuaternion::fromAxisAndAngle(N, angle));
     // for next iteration
     oldRotationVec = v2;
 }
@@ -179,7 +238,7 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
     }
     QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(), sPos.y() - oldMouseCoords.y(), 0.0);
     translationUpdate *= settings.dragSensitivity;
-    translation += translationUpdate;
+//    translation += translationUpdate;
     updateMatrices();
     oldMouseCoords = sPos;
 }
@@ -189,14 +248,26 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
  * @param Event The mouse event.
  */
 void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
+
+    if (firstPersonMode) {
+        return;
+        QVector2D sPos = toNormalizedScreenCoordinates(event->position().x(), event->position().y());
+        auto diff = sPos - oldMouseCoords;
+//        camYaw = diff.x() * -500;
+//        camPitch = diff.y() * 200;
+        oldMouseCoords = sPos;
+        QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
+        return;
+    }
     if (event->buttons() == Qt::LeftButton) {
-        if (shiftPressed) {
+        setCursor(Qt::ClosedHandCursor);
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
             mouseMoveTranslate(event);
         } else {
             mouseMoveRotate(event);
         }
     } else {
-        dragging = false;
+        setCursor(Qt::OpenHandCursor);
     }
 }
 
@@ -207,6 +278,7 @@ void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
  */
 void nitro::RenderView::mousePressEvent(QMouseEvent *event) {
     QOpenGLWidget::mousePressEvent(event);
+    disableFirstPerson();
     setFocus();
 }
 
@@ -237,24 +309,70 @@ void nitro::RenderView::wheelEvent(QWheelEvent *event) {
  * @param event The key event.
  */
 void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
+    if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (event->key() == Qt::Key_F) {
+            toggleFirstPerson();
+            return;
+        }
+        movementSpeed = 4;
+    }
+    keys[event->key()] = true;
     switch (event->key()) {
-        case 'R':
-            resetOrientation();
-            updateMatrices();
-            update();
+        case Qt::Key_Escape:
+            disableFirstPerson();
             break;
-        case Qt::Key_Shift:
-            shiftPressed = true;
+        case Qt::Key_R:
+            disableFirstPerson();
+            resetOrientation();
+            break;
+    }
+    if (!firstPersonMode) {
+        updateMatrices();
+        update();
     }
 }
+
 
 /**
  * @brief MainView::keyReleaseEvent Event that is called when a key is released.
  * @param event The key event.
  */
 void nitro::RenderView::keyReleaseEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_Shift:
-            shiftPressed = false;
+    if (event->key() == Qt::Key_Shift) {
+        qDebug() << "Triggered";
+        movementSpeed = 1;
     }
+    keys[event->key()] = false;
+}
+
+void nitro::RenderView::toggleFirstPerson() {
+    if (firstPersonMode) {
+        disableFirstPerson();
+    } else {
+        enableFirstPerson();
+    }
+}
+
+void nitro::RenderView::disableFirstPerson() {
+    if (frameTimer != -1) {
+        killTimer(frameTimer);
+        frameTimer = -1;
+    }
+    firstPersonMode = false;
+    unsetCursor();
+
+}
+
+void nitro::RenderView::enableFirstPerson() {
+    setCursor(Qt::BlankCursor);
+    QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
+    oldMouseCoords = toNormalizedScreenCoordinates(width() / 2, height() / 2);
+    frameTimer = startTimer(1000 / 60);
+    firstPersonMode = true;
+    // TODO: draw crosshair
+}
+
+
+void nitro::RenderView::timerEvent(QTimerEvent *event) {
+    repaint();
 }

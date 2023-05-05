@@ -208,8 +208,11 @@ void nitro::NodeDockWidget::loadModel() {
     if (filePath == "") {
         return;
     }
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    update();
     QFile jsonFile(filePath);
     filename = QFileInfo(filePath).fileName();
+    saveFilePath = filePath;
 
     jsonFile.open(QFile::ReadOnly);
     auto doc = QJsonDocument::fromJson(jsonFile.readAll());
@@ -224,6 +227,7 @@ void nitro::NodeDockWidget::loadModel() {
             break;
         }
     }
+    QApplication::restoreOverrideCursor();
 }
 
 void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {

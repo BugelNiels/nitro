@@ -14,8 +14,12 @@ namespace nitro {
 
         // save this matrix here to prevent recalculating this every time the mouse is
         // pressed.
+
         QMatrix4x4 toWorldCoordsMatrix;
-        QMatrix4x4 modelViewMatrix, projectionMatrix;
+        QMatrix4x4 modelMatrix;
+        QMatrix4x4 viewMatrix;
+        QMatrix4x4 camMatrix;
+        QMatrix4x4 projectionMatrix;
         QMatrix3x3 normalMatrix;
         ShaderType activeShader = ShaderType::SURFACE;
         bool uniformUpdateRequired = true;

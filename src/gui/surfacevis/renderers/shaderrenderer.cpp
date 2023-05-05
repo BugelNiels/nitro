@@ -103,19 +103,20 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
 }
 
 void nitro::ShaderRenderer::updateUniforms() {
+    QMatrix4x4 modelViewMatrix = settings->viewMatrix * settings->modelMatrix;
     const QVector3D &dims = settings->boundingBoxDims;
-    QVector3D p1 = QVector3D(settings->modelViewMatrix *
+    QVector3D p1 = QVector3D(modelViewMatrix *
                              QVector4D(-dims.x(), -dims.y(), -dims.z(), 1));
-    QVector3D p2 = QVector3D(settings->modelViewMatrix *
+    QVector3D p2 = QVector3D(modelViewMatrix *
                              QVector4D(-dims.x(), -dims.y(), dims.z(), 1));
-    QVector3D p3 = QVector3D(settings->modelViewMatrix *
+    QVector3D p3 = QVector3D(modelViewMatrix *
                              QVector4D(-dims.x(), dims.y(), -dims.z(), 1));
-    QVector3D p4 = QVector3D(settings->modelViewMatrix *
+    QVector3D p4 = QVector3D(modelViewMatrix *
                              QVector4D(dims.x(), -dims.y(), -dims.z(), 1));
 
     QOpenGLShaderProgram *shader = shaders[settings->activeShader];
 
-    mat4Uniform(shader, "modelviewmatrix", settings->modelViewMatrix);
+    mat4Uniform(shader, "modelviewmatrix", modelViewMatrix);
     mat4Uniform(shader, "projectionmatrix", settings->projectionMatrix);
     mat4Uniform(shader, "toworldmatrix", settings->toWorldCoordsMatrix);
 
