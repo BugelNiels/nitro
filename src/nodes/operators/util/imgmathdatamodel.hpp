@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 

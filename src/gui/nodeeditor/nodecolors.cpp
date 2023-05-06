@@ -8,7 +8,7 @@
 #include "src/nodes/operators/flipdatamodel.hpp"
 #include "src/nodes/operators/reconstruction/resampledatamodel.hpp"
 #include "src/nodes/conversions/rgb/separatergbdatamodel.hpp"
-#include "src/nodes/operators/math/imgmathdatamodel.hpp"
+#include "src/nodes/operators/util/imgmathdatamodel.hpp"
 #include "src/nodes/conversions/rgb/combinergbdatamodel.hpp"
 
 QMap<QString, QColor> nitro::NodeColors::colors;

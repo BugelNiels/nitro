@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QCheckBox>
-#include "imopdatamodel.hpp"
+#include "src/nodes/operators/imopdatamodel.hpp"
 
 namespace nitro {
 
@@ -54,6 +54,8 @@ namespace nitro {
         std::shared_ptr<ImageData> _result;
 
         QCheckBox *toggleCheckBox;
+
+        void compute();
     };
 
 } // nitro

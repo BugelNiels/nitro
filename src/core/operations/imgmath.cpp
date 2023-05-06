@@ -1,3 +1,4 @@
+#include <QPainter>
 #include "imgmath.hpp"
 
 #include "util/util.hpp"
@@ -116,3 +117,18 @@ nitro::CbdImage nitro::operations::divideImage(const nitro::CbdImage &inputImg, 
     return result;
 }
 
+QImage nitro::operations::mixImage(const QImage& imgA, const QImage& imgB, float factor) {
+
+    QImage result(imgA.width(), imgA.height(), QImage::Format_ARGB32);
+    QPainter painter(&result);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(imgA.rect(), Qt::transparent);
+    painter.setOpacity(1.0 - factor);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(0, 0, imgA);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setOpacity(factor);
+    painter.drawImage(0, 0, imgB);
+    painter.end();
+    return result.convertToFormat(QImage::Format_RGB32);
+}

@@ -141,6 +141,8 @@ QMenu *nitro::NodeGraphicsView::initMathSubMenu() {
                                        nitro::ImgMathDataModel::nodeIcon(), nitro::ImgMathDataModel::nodeColor()));
     opsMenu->addAction(spawnNodeAction(nitro::ToggleDataModel::nodeCaption(), nitro::ToggleDataModel::nodeName(),
                                        nitro::ToggleDataModel::nodeIcon(), nitro::ToggleDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::BlendDataModel::nodeCaption(), nitro::BlendDataModel::nodeName(),
+                                       nitro::BlendDataModel::nodeIcon(), nitro::BlendDataModel::nodeColor()));
     return opsMenu;
 }
 

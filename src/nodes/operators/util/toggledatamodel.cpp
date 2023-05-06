@@ -17,6 +17,7 @@ void nitro::ToggleDataModel::load(const QJsonObject &p) {
     QJsonValue jChecked = p["checked"];
     if (!jChecked.isUndefined()) {
         toggleCheckBox->setChecked(jChecked.toBool());
+        compute();
     }
 }
 
@@ -24,17 +25,21 @@ QWidget *nitro::ToggleDataModel::initBeforeWidget() {
     toggleCheckBox = new QCheckBox("Toggle");
     toggleCheckBox->setChecked(true);
     connect(toggleCheckBox, &QCheckBox::toggled, this, [this] {
-        if (toggleCheckBox->isChecked()) {
-            _result = _inputImgA;
-        } else {
-            _result = _inputImgB;
-        }
-        if(_result != nullptr) {
-            updateImage(_result->getDisplayImg());
-        }
-        Q_EMIT dataUpdated(0);
+        compute();
     });
     return toggleCheckBox;
+}
+
+void nitro::ToggleDataModel::compute() {
+    if (toggleCheckBox->isChecked()) {
+        _result = _inputImgA;
+    } else {
+        _result = _inputImgB;
+    }
+    if(_result != nullptr) {
+        updateImage(_result->getDisplayImg());
+    }Q_EMIT
+    dataUpdated(0);
 }
 
 
@@ -92,15 +97,7 @@ void nitro::ToggleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, 
     if (portIndex == 1) {
         _inputImgB = inputImg;
     }
-    if (toggleCheckBox->isChecked()) {
-        _result = _inputImgA;
-    } else {
-        _result = _inputImgB;
-    }
-    if(_result != nullptr) {
-        updateImage(_result->getDisplayImg());
-    }
-    Q_EMIT dataUpdated(0);
+    compute();
 }
 
 
