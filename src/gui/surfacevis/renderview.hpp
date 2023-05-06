@@ -6,6 +6,7 @@
 #include <QOpenGLWidget>
 #include <QVector3D>
 #include <QMenu>
+#include <QPainterPath>
 
 #include "src/gui/surfacevis/renderers/renderer.hpp"
 #include "src/gui/surfacevis/renderers/shaderrenderer.hpp"
@@ -51,8 +52,13 @@ namespace nitro {
 
         void contextMenuEvent(QContextMenuEvent *event) override;
 
+
+    private slots:
+        void onMessageLogged(QOpenGLDebugMessage Message);
+
     private:
 
+        QOpenGLDebugLogger debugLogger;
         QMap<int, bool> keys;
 
 
@@ -110,6 +116,16 @@ namespace nitro {
         void alignCam(QVector3D axis, float angle = 90);
 
         void recalcCamMatrix();
+
+        qint64 currentTime;
+        int frameCount = 0;
+        float renderTime = 0;
+        QPainterPath crossHair;
+        QVector4D viewerPos;
+
+        void drawHud(QPainter &painter);
+
+        void moveFirstPersonCamera();
     };
 
 }  // namespace nitro

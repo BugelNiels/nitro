@@ -6,130 +6,83 @@
 #include <QScreen>
 #include <iostream>
 
-nitro::ShaderRenderer::ShaderRenderer() : meshIBOSize(0) {}
+// 6 for rendering a quad
+nitro::ShaderRenderer::ShaderRenderer() : meshIBOSize(6), texture(nullptr) {}
 
 nitro::ShaderRenderer::~ShaderRenderer() {
-    gl->glDeleteVertexArrays(1, &vao);
-    gl->glDeleteBuffers(1, &coordsBO);
-    gl->glDeleteBuffers(1, &indexBO);
-    gl->glDeleteTextures(1, &textureBO);
+    vao->destroy();
+    coordsBO->destroy();
+    indexBO->destroy();
+    texture->destroy();
+    delete coordsBO;
+    delete indexBO;
+    delete texture;
+    delete shader;
 }
 
 void nitro::ShaderRenderer::initShaders() {
-    shaders.insert(ShaderType::SURFACE, constructDefaultShader("raycast"));
+    shader = constructDefaultShader("raycast");
 }
 
 void nitro::ShaderRenderer::initBuffers() {
-    gl->glGenVertexArrays(1, &vao);
-    gl->glBindVertexArray(vao);
+    vao = new QOpenGLVertexArrayObject();
+    vao->create();
+    vao->bind();
 
-    gl->glGenBuffers(1, &coordsBO);
-    gl->glBindBuffer(GL_ARRAY_BUFFER, coordsBO);
-    gl->glEnableVertexAttribArray(0);
-    gl->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    coordsBO = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    coordsBO->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    coordsBO->create();
+    coordsBO->bind();
+    indexBO = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    indexBO->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    indexBO->create();
+    indexBO->bind();
 
-    gl->glGenBuffers(1, &indexBO);
-    gl->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBO);
-
-    gl->glGenTextures(1, &textureBO);
-    gl->glBindTexture(GL_TEXTURE_2D, textureBO);
-    gl->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    gl->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    gl->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    gl->glBindVertexArray(0);
+    shader->enableAttributeArray(0);
+    shader->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
 
     QVector<QVector3D> quad = {
             {-1.0, -1.0, 0.0},
             {1.0,  -1.0, 0.0},
             {-1.0, 1.0,  0.0},
             {1.0,  1.0,  0.0}};
-
-    gl->glBindBuffer(GL_ARRAY_BUFFER, coordsBO);
-    gl->glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * quad.size(),
-                     quad.data(), GL_STATIC_DRAW);
+    coordsBO->allocate(quad.data(), sizeof(QVector3D) * quad.size());
 
     QVector<unsigned int> meshIndices = {0, 1, 2, 1, 3, 2};
-
-    gl->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBO);
-    gl->glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * meshIndices.size(),
-                     meshIndices.data(), GL_STATIC_DRAW);
-    meshIBOSize = meshIndices.size();
-}
-
-QVector<quint8> nitro::ShaderRenderer::imageToBytes(const QImage &image) const {
-    // needed since (0,0) is bottom left in OpenGL
-    QImage img = image.mirrored();
-    QVector<quint8> pixelData(img.width() * img.height() * 4);
-    int idx = 0;
-    if (img.isGrayscale()) {
-        for (int y = 0; y < img.height(); y++) {
-            auto *row = img.scanLine(y);
-            for (int x = 0; x < img.width(); x++) {
-                pixelData[idx++] = row[x];
-                pixelData[idx++] = row[x];
-                pixelData[idx++] = row[x];
-                pixelData[idx++] = 1;
-            }
-        }
-    } else {
-        for (int y = 0; y < img.height(); y++) {
-            for (int x = 0; x < img.width(); x++) {
-                QRgb pixel = img.pixel(x, y);
-                // pixel is of format #AARRGGBB (in hexadecimal notation)
-                // so with bitshifting and binary AND you can get
-                // the values of the different components
-                pixelData[idx++] = (quint8) ((pixel >> 16) & 0xFF);  // Red component
-                pixelData[idx++] = (quint8) ((pixel >> 8) & 0xFF);   // Green component
-                pixelData[idx++] = (quint8) (pixel & 0xFF);          // Blue component
-                pixelData[idx++] = (quint8) ((pixel >> 24) & 0xFF);  // Alpha component
-            }
-        }
-    }
-
-
-    return pixelData;
+    indexBO->allocate(meshIndices.data(), sizeof(int) * meshIndices.size());
 }
 
 void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
     m_imWidth = image.width();
     m_imHeight = image.height();
-    QVector<quint8> bytes = imageToBytes(image);
-    gl->glBindTexture(GL_TEXTURE_2D, textureBO);
-    gl->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.width(), image.height(), 0,
-                     GL_RGBA, GL_UNSIGNED_BYTE, bytes.data());
+
+    texture = new QOpenGLTexture(image.mirrored());
+    texture->setWrapMode(QOpenGLTexture::ClampToEdge);
+    texture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+    texture->bind();
+
+    shader->bind();
+    shader->setUniformValue("image", 0);
+    shader->setUniformValue("imWidth", m_imWidth);
+    shader->setUniformValue("imHeight", m_imHeight);
     settings->uniformUpdateRequired = true;
 }
 
 void nitro::ShaderRenderer::updateUniforms() {
-    QOpenGLShaderProgram *shader = shaders[settings->activeShader];
-
-    mat4Uniform(shader, "projectionMatrix", settings->projectionMatrix);
-    mat4Uniform(shader, "toWorldMatrix", settings->cameraMatrix);
-
-    imageUniform = shaders[settings->activeShader]->uniformLocation("image");
-    gl->glActiveTexture(GL_TEXTURE0);
-    gl->glBindTexture(GL_TEXTURE_2D, textureBO);
-    gl->glUniform1i(imageUniform, 0);
-
-    intUniform(shader, "imWidth", m_imWidth);
-    intUniform(shader, "imHeight", m_imHeight);
-
-
-    intUniform(shader, "enableImageColors", settings->imageColors);
-    intUniform(shader, "enableOrthographic", settings->orthographic);
+    shader->bind();
+    if(texture) {
+        texture->bind();
+    }
+    shader->setUniformValue("projectionMatrix", settings->projectionMatrix);
+    shader->setUniformValue("toWorldMatrix", settings->cameraMatrix);
+    shader->setUniformValue("enableImageColors", settings->imageColors);
+    shader->setUniformValue("enableOrthographic", settings->orthographic);
 }
 
 void nitro::ShaderRenderer::draw() {
-    QOpenGLShaderProgram *shader = shaders[settings->activeShader];
-    gl->glBindVertexArray(vao);
-    shader->bind();
+    vao->bind();
     if (settings->uniformUpdateRequired) {
         updateUniforms();
     }
-
     gl->glDrawElements(GL_TRIANGLES, meshIBOSize, GL_UNSIGNED_INT, nullptr);
-
-    shader->release();
-    gl->glBindVertexArray(0);
 }

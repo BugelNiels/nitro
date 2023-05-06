@@ -3,15 +3,16 @@
 #include <QAction>
 
 void nitro::DraggableTreeWidget::mousePressEvent(QMouseEvent *event) {
+
     QTreeWidget::mousePressEvent(event);
     auto item = itemAt(event->pos());
     if (item && event->button() == Qt::LeftButton) {
+
         if(actions.contains(item->text(0))) {
             m_draggedItem = item;
             setCursor(Qt::OpenHandCursor);
         }
     }
-
 }
 
 void nitro::DraggableTreeWidget::mouseReleaseEvent(QMouseEvent *event) {
@@ -26,4 +27,10 @@ void nitro::DraggableTreeWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 void nitro::DraggableTreeWidget::registerAction(const QString &key, QAction *action) {
     actions[key] = action;
+}
+
+void nitro::DraggableTreeWidget::mouseMoveEvent(QMouseEvent *event) {
+    if(!m_draggedItem) {
+        QTreeWidget::mouseMoveEvent(event);
+    }
 }

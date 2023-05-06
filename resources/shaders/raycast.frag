@@ -20,107 +20,48 @@ uniform bool enableImageColors;
 uniform bool enableOrthographic;
 
 const vec3 backgroundCol = vec3(0.2);
-const vec3 matCol = vec3(0.7, 0.8, 1);
-const int numSteps = 4096;
 
-float sdSphere(vec3 p, float d) { return length(p) - d; }
-
-float sdBox(vec3 p, vec3 b)
-{
-    vec3 d = abs(p) - b;
-    return min(max(d.x, max(d.y, d.z)), 0.0) +
-    length(max(d, 0.0));
+float sdBox(vec3 p, vec3 b) {
+    vec3 q = abs(p) - b;
+    return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
-
-// TODO: replace with image
-//bool getVoxel(ivec3 c) {
-//    vec3 p = vec3(c) + vec3(0.5);
-//    float d = min(max(-sdSphere(p, 7.5), sdBox(p, vec3(6.0))), -sdSphere(p, 25.0));
-//    return d < 0.0;
-//}
 
 bool getVoxel(ivec3 c) {
-
-    c += ivec3(imWidth / 2, imHeight / 2, 128);
-
-    //    vec3 pos = c - vec3(imwidth / 2.0, imheight / 2.0, 255 / 2);
-    if (c.x < 0 || c.x >= imWidth || c.y < 0 || c.y >= imHeight || c.z < 0 || c.z > 255) {
-        return false;
-    }
-    vec2 texUv = vec2(float(c.x) / float(imWidth), float(c.y) / float(imHeight));
+    vec2 texUv =  c.xy / vec2(imWidth, imHeight);
     float z = vec3(texture(image, texUv)).r * 255 + 1;
-    vec3 boxDims = vec3(imWidth, imHeight, z);
-    //    vec3 boxDims = vec3(2);
-    return sdBox(c, boxDims) < 0.0;
-    //    return sdBox(c, vec3(6.0)) < 0.0;
+    return sdBox(c, vec3(imWidth, imHeight, z)) < 0.0;
 }
 
-vec3 normals(vec3 pos) {
-    vec3 fdx = dFdx(pos);
-    vec3 fdy = dFdy(pos);
-    return normalize(cross(fdx, fdy));
-}
-vec2 matcap(vec3 eye, vec3 normal) {
-    vec3 reflected = reflect(eye, normal);
-    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
-    return reflected.xy / m + 0.5;
+float insideBox3D(vec3 v, vec3 bottomLeft, vec3 topRight) {
+    vec3 s = step(bottomLeft, v) - step(topRight, v);
+    return s.x * s.y * s.z;
 }
 
-// TODO: get aspect ratio of image
-// Render image as blocks
-void main() {
+// source: https://gamedev.stackexchange.com/questions/18436/most-efficient-aabb-vs-ray-collision-algorithms
+bool rayboxintersect(vec3 raypos, vec3 raydir, vec3 boxmin, vec3 boxmax, out float t)
+{
+    float t1 = (boxmin.x - raypos.x) / raydir.x;
+    float t2 = (boxmax.x - raypos.x) / raydir.x;
+    float t3 = (boxmin.y - raypos.y) / raydir.y;
+    float t4 = (boxmax.y - raypos.y) / raydir.y;
+    float t5 = (boxmin.z - raypos.z) / raydir.z;
+    float t6 = (boxmax.z - raypos.z) / raydir.z;
 
-    vec3 ro, rd;
-    if (enableOrthographic) {
-        // Generate ray
-        float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
-        vec4 rayOrigin = toWorldMatrix * vec4(vertcoords_vs.xy * vec2(aspectRatio, 1.0) * 255, 0.0, 1.0);// orthographic
-        vec4 rayDirection = toWorldMatrix * vec4(0, 0, -1.0, 0.0);// orthographic
-        ro = vec3(rayOrigin);
-        rd = normalize(vec3(rayDirection));
-    } else {
-        // Generate ray
-        float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
-        vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionMatrix[1][1];
-        vec4 rayOrigin = toWorldMatrix * vec4(0.0, 0.0, 0.0, 1.0);// perspective
-        vec4 rayDirection = toWorldMatrix * vec4(uv, -1.0, 0.0);// perspective
-        ro = vec3(rayOrigin);
-        rd = normalize(vec3(rayDirection));
+    // Max with 0; in case we are inside the box we want a t of 0
+    t = max(max(max(min(t1, t2), min(t3, t4)), min(t5, t6)), 0);
+    float tmax = min(min(max(t1, t2), max(t3, t4)), max(t5, t6));
+
+    if (tmax < 0.0) {
+        return false; // box on ray but behind ray origin
     }
 
-
-    // Starts at ray origin
-    ivec3 mapPos = ivec3(floor(ro + 0.));
-
-    // abs(1 / rd)
-    vec3 deltaDist = abs(vec3(length(rd)) / rd);
-
-    ivec3 rayStep = ivec3(sign(rd));
-
-    vec3 sideDist = (sign(rd) * (vec3(mapPos) - ro) + (sign(rd) * 0.5) + 0.5) * deltaDist;
-
-    bvec3 mask;
-
-    bool background = true;
-
-    // Set proper start position
-    //    ;
-
-    //    mapPos += ivec3((sdBox(mapPos, vec3(imwidth / 2, imheight / 2, 128))-5) * rd);
-
-    // TODO: efficient
-    for (int i = 0; i < 2048; i++) {
-        if (getVoxel(mapPos)) {
-            // TODO cleaner
-            background = false;
-            break;
-        }
-        mask = lessThanEqual(sideDist.xyz, min(sideDist.yzx, sideDist.zxy));
-        sideDist += vec3(mask) * deltaDist;
-        mapPos += ivec3(vec3(mask)) * rayStep;
+    if (t > tmax) {
+        return false; // ray doesn't intersect box
     }
+    return true;
+}
 
-    // shading/lighting
+vec3 getVoxelCol(bvec3 mask, ivec3 pos) {
     vec3 color;
     if (mask.x) {
         color = vec3(0.5);
@@ -131,12 +72,55 @@ void main() {
     if (mask.z) {
         color = vec3(0.75);
     }
-    if (background) {
-        color = vec3(0.2);
+    if (enableImageColors) {
+        color *= pos.z / 255.0f;
+    }
+    return color;
+}
+
+// Render image as blocks
+void main() {
+    float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
+    vec3 ro, rd;
+    if (enableOrthographic) {
+        // Generate ray
+        vec4 rayOrigin = toWorldMatrix * vec4(vertcoords_vs.xy * vec2(aspectRatio, 1.0) * 255, 0.0, 1.0);// orthographic
+        vec4 rayDirection = toWorldMatrix * vec4(0, 0, -1.0, 0.0);// orthographic
+        ro = vec3(rayOrigin);
+        rd = normalize(vec3(rayDirection));
     } else {
-        if (enableImageColors) {
-            color *= (mapPos.z + 128) / 255.0f;
+        // Generate ray
+        vec2 uv = vertcoords_vs.xy * vec2(aspectRatio, 1.0) / projectionMatrix[1][1];
+        vec4 rayOrigin = toWorldMatrix * vec4(0.0, 0.0, 0.0, 1.0);// perspective
+        vec4 rayDirection = toWorldMatrix * vec4(uv, -1.0, 0.0);// perspective
+        ro = vec3(rayOrigin);
+        rd = normalize(vec3(rayDirection));
+    }
+    vec3 boxSize = vec3(imWidth, imHeight, 256);
+    vec3 offset = boxSize / 2.0;
+    float t;
+    if (rayboxintersect(ro, rd, -offset, offset, t)) {
+        ro += offset;
+        ro += t * rd; // TODO: ensure we start outside the box
+        ivec3 mapPos = ivec3(floor(ro + 0.));
+        vec3 deltaDist = abs(vec3(length(rd)) / rd);
+        ivec3 rayStep = ivec3(sign(rd));
+        vec3 sideDist = (sign(rd) * (vec3(mapPos) - ro) + (sign(rd) * 0.5) + 0.5) * deltaDist;
+        bvec3 mask;
+        int maxSteps = imWidth + imHeight + 256;
+        for (int i = 0; i < maxSteps; i++) {
+
+            if (getVoxel(mapPos) && (mask.x || mask.y || mask.z)) {
+                fColor = vec4(getVoxelCol(mask, mapPos), 1.0);
+                return;
+            }
+            mask = lessThanEqual(sideDist.xyz, min(sideDist.yzx, sideDist.zxy));
+            sideDist += vec3(mask) * deltaDist;
+            mapPos += ivec3(vec3(mask)) * rayStep;
+            if (mapPos.x < 0 || mapPos.x > imWidth || mapPos.y < 0 || mapPos.y > imHeight || mapPos.z < 0 || mapPos.z > 256) {
+                break;
+            }
         }
     }
-    fColor = vec4(color, 1.0);
+    fColor = vec4(backgroundCol, 1.0);
 }

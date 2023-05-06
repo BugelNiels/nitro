@@ -6,17 +6,33 @@
 #include <QMouseEvent>
 #include <QOpenGLVersionFunctionsFactory>
 #include <QMenu>
+#include <QPainter>
+#include <QElapsedTimer>
+#include <QPainterPath>
 
 nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setMouseTracking(true);
     resetOrientation();
     setFocusPolicy(Qt::StrongFocus);
+
 }
 
 nitro::RenderView::~RenderView() { makeCurrent(); }
 
 void nitro::RenderView::initializeGL() {
     initializeOpenGLFunctions();
+
+    connect(&debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this,
+            SLOT(onMessageLogged(QOpenGLDebugMessage)), Qt::DirectConnection);
+
+    if (debugLogger.initialize()) {
+        QLoggingCategory::setFilterRules(
+                "qt.*=false\n"
+                "qt.text.font.*=false");
+
+        debugLogger.startLogging(QOpenGLDebugLogger::SynchronousLogging);
+        debugLogger.enableMessages();
+    }
 
     QString glVersion;
     glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
@@ -38,21 +54,32 @@ void nitro::RenderView::initializeGL() {
     renderer.init(functions, &settings);
 
     updateMatrices();
-    int w = 256;
-    int h = 256;
-    QImage img(w, h, QImage::Format_Grayscale8);
-    for (int y = 0; y < h; y++) {
-        auto *row = img.scanLine(y);
-        for (int x = 0; x < w; x++) {
-            row[x] = x;
-        }
-    }
+
     resetOrientation();
-    updateBuffers(img);
+//    int w = 256;
+//    int h = 256;
+//    QImage img(w, h, QImage::Format_Grayscale8);
+//    for (int y = 0; y < h; y++) {
+//        auto *row = img.scanLine(y);
+//        for (int x = 0; x < w; x++) {
+//            row[x] = x;
+//        }
+//    }
+//    updateBuffers(img);
 }
+
 
 void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
     widgetMidPoint = mapToGlobal(QPoint(width() / 2, height() / 2));
+
+
+    int crossHairSize = 15;
+    crossHair.clear();
+    crossHair.moveTo(width() / 2, height() / 2 + crossHairSize);
+    crossHair.lineTo(width() / 2, height() / 2 - crossHairSize);
+    crossHair.moveTo(width() / 2 + crossHairSize, height() / 2);
+    crossHair.lineTo(width() / 2 - crossHairSize, height() / 2);
+
     settings.dispRatio = float(newWidth) / float(newHeight);
 
     settings.projectionMatrix.setToIdentity();
@@ -62,7 +89,7 @@ void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
 
 void nitro::RenderView::updateBuffers(const QImage &image) {
     renderer.updateBuffers(image);
-    repaint();
+    update();
 }
 
 void nitro::RenderView::resetOrientation() {
@@ -70,7 +97,6 @@ void nitro::RenderView::resetOrientation() {
     initialCamRotVec = {1, 0, 0};
     initialCamAngle = 90;
     settings.cameraMatrix.setToIdentity();
-
     settings.uniformUpdateRequired = true;
     translation = {0, 0, 0};
     camPitch = 0;
@@ -79,52 +105,90 @@ void nitro::RenderView::resetOrientation() {
 
 void nitro::RenderView::updateMatrices() {
     recalcCamMatrix();
-    repaint();
+    update();
 }
 
 void nitro::RenderView::paintGL() {
-    QVector3D bCol = {1, 1, 1};
-    glClearColor(bCol.x(), bCol.y(), bCol.z(), 1.0);
+    glClearColor(1,1,1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     if (firstPersonMode) {
-        QPointF diff = QCursor::pos() - widgetMidPoint;
-        diff *= mouseSensitivity;
-
-        camYaw -= diff.x();
-        camPitch -= diff.y();
-        camPitch = std::clamp(camPitch, -90.0f, 90.0f);
-        QCursor::setPos(widgetMidPoint);
-        QMatrix4x4 rot;
-        rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
-
-        QVector4D movDif = QVector4D(0, 0, 0, 0);
-        if (keys[Qt::Key_W]) { // Forward
-            movDif.setZ(movementSpeed);
-        }
-        if (keys[Qt::Key_A]) { // Left
-            movDif.setX(movementSpeed);
-        }
-        if (keys[Qt::Key_Q]) { // Down
-            movDif.setY(movementSpeed);
-        }
-        if (keys[Qt::Key_S]) { // Backward
-            movDif.setZ(movDif.z() - movementSpeed);
-        }
-        if (keys[Qt::Key_D]) { // Right
-            movDif.setX(movDif.x() - movementSpeed);
-        }
-        if (keys[Qt::Key_E]) { // Up
-            movDif.setY(movDif.y() - movementSpeed);
-        }
-        translation -= (rot * movDif).toVector3D();
-
-        recalcCamMatrix();
+        moveFirstPersonCamera();
     }
-
+    QPainter painter(this);
+    QElapsedTimer timer;
+    painter.beginNativePainting();
+    timer.start();
     renderer.draw();
+    currentTime += timer.nsecsElapsed();
+    painter.endNativePainting();
+    frameCount++;
+
+    drawHud(painter);
+
+    painter.end();
+}
+
+void nitro::RenderView::moveFirstPersonCamera() {
+    QPointF diff = QCursor::pos() - widgetMidPoint;
+    diff *= mouseSensitivity;
+
+    camYaw -= diff.x();
+    camPitch -= diff.y();
+    camPitch = std::clamp(camPitch, -90.0f, 90.0f);
+    QCursor::setPos(widgetMidPoint);
+    QMatrix4x4 rot;
+    rot.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
+
+    QVector4D movDif = QVector4D(0, 0, 0, 0);
+    if (keys[Qt::Key_W]) { // Forward
+        movDif.setZ(movementSpeed);
+    }
+    if (keys[Qt::Key_A]) { // Left
+        movDif.setX(movementSpeed);
+    }
+    if (keys[Qt::Key_Q]) { // Down
+        movDif.setY(movementSpeed);
+    }
+    if (keys[Qt::Key_S]) { // Backward
+        movDif.setZ(movDif.z() - movementSpeed);
+    }
+    if (keys[Qt::Key_D]) { // Right
+        movDif.setX(movDif.x() - movementSpeed);
+    }
+    if (keys[Qt::Key_E]) { // Up
+        movDif.setY(movDif.y() - movementSpeed);
+    }
+    translation -= (rot * movDif).toVector3D();
+
+    recalcCamMatrix();
+}
+
+void nitro::RenderView::drawHud(QPainter &painter) {
+    QPen chPen;
+    chPen.setColor({150, 150, 150});
+    painter.setPen(chPen);
+    painter.drawText(20, 20, QString("x: %1 y: %2 z: %3").arg(viewerPos.x()).arg(viewerPos.y()).arg(viewerPos.z()));
+
+    if (firstPersonMode) {
+        if (frameCount >= 30) {
+            renderTime = currentTime / float(frameCount) / 1000.0;
+            currentTime = 0;
+            frameCount = 0;
+        }
+        float fps = 1000.0 / renderTime;
+        painter.drawText(width() - 140, 20, QString("%1").arg(renderTime));
+        painter.drawText(width() - 140, 50, QString("fps: %1").arg(fps));
+        chPen.setColor({20, 20, 20});
+        chPen.setWidth(2);
+        painter.setPen(chPen);
+        painter.drawPath(crossHair);
+        chPen.setColor({220, 220, 220});
+        chPen.setWidth(1);
+        painter.setPen(chPen);
+        painter.drawPath(crossHair);
+    }
 }
 
 void nitro::RenderView::recalcCamMatrix() {
@@ -133,6 +197,9 @@ void nitro::RenderView::recalcCamMatrix() {
     settings.cameraMatrix.translate(initialCamPos);
     settings.cameraMatrix.translate(translation);
     settings.cameraMatrix.rotate(QQuaternion::fromEulerAngles(camPitch, camYaw, 0));
+
+    viewerPos = {0, 0, 0, 1};
+    viewerPos = settings.cameraMatrix * viewerPos;
     settings.uniformUpdateRequired = true;
 }
 
@@ -273,10 +340,10 @@ void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
  * @param event The mouse event.
  */
 void nitro::RenderView::wheelEvent(QWheelEvent *event) {
-    if(firstPersonMode) {
+    if (firstPersonMode) {
         float speedModStrength = event->angleDelta().y() > 0 ? 1.2 : 0.8;
         movementSpeedModifier *= speedModStrength;
-        if(movementSpeedModifier < 0) {
+        if (movementSpeedModifier < 0) {
             movementSpeedModifier = 0;
         }
         movementSpeed = baseMovementSpeed * sprintModifier * movementSpeedModifier;
@@ -300,7 +367,7 @@ void nitro::RenderView::wheelEvent(QWheelEvent *event) {
  */
 void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
     if (event->modifiers().testFlag(Qt::ShiftModifier)) {
-        if (event->key() == Qt::Key_F) {
+        if (event->key() == Qt::Key_F || event->key() == Qt::Key_AsciiTilde) {
             toggleFirstPerson();
             return;
         }
@@ -348,6 +415,7 @@ void nitro::RenderView::disableFirstPerson() {
     }
     firstPersonMode = false;
     setCursor(Qt::OpenHandCursor);
+    update();
 
 }
 
@@ -361,14 +429,14 @@ void nitro::RenderView::enableFirstPerson() {
 
 
 void nitro::RenderView::timerEvent(QTimerEvent *event) {
-    repaint();
+    update();
 }
 
 QMenu *nitro::RenderView::createContextMenu() {
     // TODO: different class
     auto *menu = new QMenu();
     menu->addAction("Align Top", [this] {
-        alignCam(QVector3D(), 0);
+        alignCam({0, 0, 0}, 90);
     });
     menu->addAction("Align Front", [this] {
         alignCam({1, 0, 0});
@@ -418,4 +486,11 @@ void nitro::RenderView::toggleImageColors() {
     settings.imageColors = !settings.imageColors;
     settings.uniformUpdateRequired = true;
     update();
+}
+
+void nitro::RenderView::onMessageLogged(QOpenGLDebugMessage message) {
+    if(message.severity() == QOpenGLDebugMessage::LowSeverity || message.severity() == QOpenGLDebugMessage::NotificationSeverity) {
+        return;
+    }
+    qDebug() << " → Log:" << message;
 }

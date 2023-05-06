@@ -26,15 +26,7 @@ class Renderer {
   virtual void draw() = 0;
 
  protected:
-  QMap<ShaderType, QOpenGLShaderProgram *> shaders;
   QOpenGLFunctions_4_1_Core *gl;
   Settings *settings;
-
-  void intUniform(QOpenGLShaderProgram *shader, const char *shaderUniName, int val);
-  void floatUniform(QOpenGLShaderProgram *shader, const char *shaderUniName, float val);
-  void vec3Uniform(QOpenGLShaderProgram *shader, const char *shaderUniName, const QVector3D &vec);
-  void mat3Uniform(QOpenGLShaderProgram *shader, const char *shaderUniName, const QMatrix3x3 &mat);
-  void mat4Uniform(QOpenGLShaderProgram *shader, const char *shaderUniName, const QMatrix4x4 &mat);
-  void textureUniform(QOpenGLShaderProgram *shader, const char *shaderUniName, int index);
 };
 }  // namespace nitro

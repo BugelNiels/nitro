@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
 
 #include "renderer.hpp"
 
@@ -10,28 +13,31 @@ namespace nitro {
  * @brief The MeshRenderer class is responsible for rendering a mesh. Can render
  * any arbitrary mesh.
  */
-class ShaderRenderer : public Renderer {
- public:
-  ShaderRenderer();
-  ~ShaderRenderer() override;
+    class ShaderRenderer : public Renderer {
+    public:
+        ShaderRenderer();
 
-  void updateUniforms();
-  void updateBuffers(const QImage &image);
-  void draw() override;
+        ~ShaderRenderer() override;
 
- protected:
-  void initShaders() override;
-  void initBuffers() override;
+        void updateUniforms();
 
- private:
-  QVector<quint8> imageToBytes(const QImage &image) const;
-  GLuint vao;
-  GLuint coordsBO, indexBO;
-  GLuint textureBO;
-  int meshIBOSize;
+        void updateBuffers(const QImage &image);
 
-  GLint imageUniform;
-    int m_imWidth;
-    int m_imHeight;
-};
+        void draw() override;
+
+    protected:
+        void initShaders() override;
+
+        void initBuffers() override;
+
+    private:
+        QOpenGLShaderProgram *shader;
+        QOpenGLVertexArrayObject* vao;
+        QOpenGLBuffer *coordsBO;
+        QOpenGLBuffer *indexBO;
+        QOpenGLTexture *texture;
+        const int meshIBOSize;
+        int m_imWidth;
+        int m_imHeight;
+    };
 }  // namespace nitro
