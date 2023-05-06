@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/shading.glsl</file>
+        <file>shaders/raycast.frag</file>
+        <file>shaders/raycast.vert</file>
+        <file>DefaultStyle.json</file>
+        <file>icons/expand.png</file>
+        <file>icons/search.png</file>
+        <file>icons/folder_open.png</file>
+        <file>icons/image_viewer.png</file>
+        <file>icons/node_editor.png</file>
+        <file>icons/surface_visualizer.png</file>
+        <file>icons/nodes/node.png</file>
+        <file>icons/nodes/node_var1.png</file>
+        <file>icons/nodes/viewer.png</file>
+        <file>icons/nodes/resample.png</file>
+        <file>icons/nodes/compare.png</file>
+        <file>icons/nodes/separate.png</file>
+        <file>icons/nodes/filter.png</file>
+        <file>icons/nodes/greyscale.png</file>
+        <file>icons/nodes/image_source.png</file>
+        <file>icons/nodes/kmeans.png</file>
+        <file>icons/nodes/quantisize.png</file>
+        <file>icons/nodes/threshold.png</file>
+        <file>icons/nodes/threshold.png</file>
+        <file>icons/nodes/combine.png</file>
+        <file>icons/nodes/surface.png</file>
+        <file>icons/nodes/math.png</file>
+        <file>icons/nodes/toggle.png</file>
+        <file>icons/nodes/blend.png</file>
+    </qresource>
+</RCC>
