@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include <QtCore/QMargins>
-
 #include <QtNodes/internal/AbstractGraphModel.hpp>
 #include <QtNodes/internal/AbstractNodeGeometry.hpp>
 #include <QtNodes/internal/BasicGraphicsScene.hpp>
@@ -21,9 +19,6 @@ nitro::NitroNodePainter::NitroNodePainter() : QtNodes::AbstractNodePainter() {
 }
 
 void nitro::NitroNodePainter::paint(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
-    // TODO?
-    //AbstractNodeGeometry & geometry = ngo.nodeScene()->nodeGeometry();
-    //geometry.recomputeSizeIfFontChanged(painter->font());
 
     drawNodeBackground(painter, ngo);
     drawNodeCaption(painter, ngo);

@@ -2,7 +2,7 @@
 
 #include <QTreeWidgetItem>
 #include <QMap>
-#include "QtNodes/internal/DefaultNodePainter.hpp"
+#include <QtNodes/internal/DefaultNodePainter.hpp>
 
 namespace nitro {
 

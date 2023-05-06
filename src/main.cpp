@@ -4,6 +4,7 @@
 #include <QSurfaceFormat>
 
 #include "gui/mainwindow.hpp"
+#include "improcbuilder.hpp"
 #include <QStyle>
 #include <QFontDatabase>
 
@@ -48,9 +49,12 @@ int main(int argc, char *argv[]) {
     font.setPixelSize(14);
     QApplication::setFont(font);
 
+    nitro::ImprocBuilder builder;
 
-    nitro::MainWindow w;
-    w.setWindowState(Qt::WindowMaximized);
-    w.show();
+
+    nitro::MainWindow *w = builder.build();
+
+
+    w->show();
     return QApplication::exec();
 }

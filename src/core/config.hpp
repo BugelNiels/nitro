@@ -15,4 +15,6 @@ namespace nitro::config {
 
     void setNodeImages(bool newValue);
 
+    const QString version = "0.3";
+
 } // nitro

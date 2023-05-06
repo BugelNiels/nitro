@@ -31,15 +31,14 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc
-        )
+        resources/resources.qrc src/gui/nodeeditor/nodegraphicsview.hpp src/improc/improcbuilder.cpp src/improc/improcbuilder.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/src/core
         ${CMAKE_CURRENT_LIST_DIR}/src/gui
-        ${CMAKE_CURRENT_LIST_DIR}/src/nodes
+        ${CMAKE_CURRENT_LIST_DIR}/src/improc
         )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)

@@ -1,59 +1,35 @@
 #include "nodedockwidget.hpp"
 
-#include "nitronodes.hpp"
-#include "nodegraphicsview.hpp"
+#include <QLabel>
+#include <QCheckBox>
+#include "src/improc/ui/imgnodegraphicsview.hpp"
 
-#include "nodegraphicsscene.hpp"
 #include "util/imgresourcereader.hpp"
-#include "draggabletreewidget.hpp"
+#include "src/gui/components/draggabletreewidget.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
-#include <QtNodes/DataFlowGraphModel>
-#include <QtNodes/NodeDelegateModelRegistry>
+#include "3rdparty/nodeeditor/include/QtNodes/DataFlowGraphModel"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
+#include "config.hpp"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSplitter>
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QProgressBar>
 
-// TODO: do this in the view while creating the action?
-static std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registerDataModels() {
-    auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
-    ret->registerModel<nitro::ImageSourceDataModel>("Input");
-    ret->registerModel<nitro::ImageViewerDataModel>("Output");
-    ret->registerModel<nitro::SurfaceViewerDataModel>("Output");
-    ret->registerModel<nitro::ToGrayScaleDataModel>("Converter");
-    ret->registerModel<nitro::ThresholdDataModel>("Operator");
-    ret->registerModel<nitro::KMeansDataModel>("Operator");
-    ret->registerModel<nitro::QuantisizeDataModel>("Operator");
-    ret->registerModel<nitro::FlipDataModel>("Operator");
-    ret->registerModel<nitro::ResampleDataModel>("Operator");
-    ret->registerModel<nitro::SeparateRgbDataModel>("Operator");
-    ret->registerModel<nitro::CombineRgbDataModel>("Operator");
-    ret->registerModel<nitro::SeparateYCbCrDataModel>("Operator");
-    ret->registerModel<nitro::CombineYCbrCrDataModel>("Operator");
-    ret->registerModel<nitro::ImgMathDataModel>("Operator");
-    ret->registerModel<nitro::LuminanceCorrectionDataModel>("Operator");
-    ret->registerModel<nitro::ToggleDataModel>("Operator");
-    ret->registerModel<nitro::BlendDataModel>("Operator");
 
-    return ret;
-}
-
-nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *parent) : QDockWidget(parent),
-                                                                                       filename("untitled.json") {
+nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent) : QDockWidget(parent),
+                                                                                 filename("untitled.json") {
     setWindowTitle("Node Editor");
-    std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
-    dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
-    dataFlowGraphModel->addNode(nitro::ImageSourceDataModel::nodeName());
-    nodeScene = new nitro::NodeGraphicsScene(*dataFlowGraphModel);
-    view = new nitro::NodeGraphicsView(imViewer, nodeScene, dataFlowGraphModel, this);
-    view->setContextMenuPolicy(Qt::ActionsContextMenu);
-    prevSave = dataFlowGraphModel->save();
+    this->view = view;
+    dataFlowGraphModel = view->getDataModel();
+    prevSave_ = dataFlowGraphModel->save();
 
+    view->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
 
@@ -66,7 +42,7 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
     searchBar->adjustSize();
     connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
     QSize size(searchBar->height(), searchBar->height());
-    auto* searchLabel = new QLabel();
+    auto *searchLabel = new QLabel();
     searchLabel->setPixmap(nitro::ImgResourceReader::getPixMap(":/icons/search.png", size));
 
     auto *searchHorLayout = new QHBoxLayout();
@@ -83,6 +59,36 @@ nitro::NodeDockWidget::NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *par
 
 
     setWidget(horLayout);
+    setTitleBarWidget(initNodeTitleBar());
+}
+
+QWidget *nitro::NodeDockWidget::initNodeTitleBar() {
+    auto *wrapper = new QWidget();
+    auto *hLayout = new QHBoxLayout();
+
+    auto *nodeIcon = new QLabel();
+    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png"));
+    hLayout->addWidget(nodeIcon);
+
+    auto *nodeImgCheckBox = new QCheckBox("Node Images");
+    nodeImgCheckBox->setChecked(nitro::config::nodeImages);
+    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [this, nodeImgCheckBox] {
+        nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
+        recalculateNodeSizes();
+
+    });
+    hLayout->addSpacing(15);
+    hLayout->addWidget(nodeImgCheckBox);
+    hLayout->addStretch();
+
+    auto *calcProgressBar = new QProgressBar();
+    calcProgressBar->setMinimum(0);
+    calcProgressBar->setMaximum(100);
+    calcProgressBar->setMaximumWidth(200);
+    hLayout->addWidget(calcProgressBar);
+
+    wrapper->setLayout(hLayout);
+    return wrapper;
 }
 
 
@@ -121,7 +127,7 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
         if (subMen->menu()) {
             auto *category = new QTreeWidgetItem(treeWidget, QStringList() << subMen->text());
             for (auto *subAction: subMen->menu()->actions()) {
-                if(subAction->isSeparator()) {
+                if (subAction->isSeparator()) {
                     continue;
                 }
                 auto *item = new QTreeWidgetItem(category, QStringList() << subAction->text());
@@ -149,11 +155,11 @@ void nitro::NodeDockWidget::clearModel() {
         }
         // TODO: delete undo history
     }
-    prevSave = dataFlowGraphModel->save();
+    prevSave_ = dataFlowGraphModel->save();
 }
 
 bool nitro::NodeDockWidget::canQuitSafely() {
-    if (prevSave == dataFlowGraphModel->save()) {
+    if (prevSave_ == dataFlowGraphModel->save()) {
         return true;
     }
     QMessageBox::StandardButton reply;
@@ -191,7 +197,7 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
         QJsonDocument document;
         document.setObject(saveObject);
         jsonFile.write(document.toJson());
-        prevSave = saveObject;
+        prevSave_ = saveObject;
     } else {
         QMessageBox::warning(this, "Failed to open file", filePath);
     }
@@ -220,15 +226,17 @@ void nitro::NodeDockWidget::loadModel() {
     auto doc = QJsonDocument::fromJson(jsonFile.readAll());
     clearModel();
     dataFlowGraphModel->load(doc.object());
-    prevSave = dataFlowGraphModel->save();
+    prevSave_ = dataFlowGraphModel->save();
     // Ensure we cannot create a second viewer
-    for (auto &c: dataFlowGraphModel->allNodeIds()) {
-        auto attempt = dataFlowGraphModel->delegateModel<nitro::ImageViewerDataModel>(c);
-        if (attempt) {
-            view->setViewerNodeId(c);
-            break;
-        }
-    }
+    // TODO: handle this elsewhere, e.g. when a model is loaded or smth
+//    for (auto &c: dataFlowGraphModel->allNodeIds()) {
+//        auto attempt = dataFlowGraphModel->delegateModel<nitro::ImageViewerDataModel>(c);
+//        if (attempt) {
+//            // TODO: just disable the action or smth
+////            view->setViewerNodeId(c);
+//            break;
+//        }
+//    }
     QApplication::restoreOverrideCursor();
 }
 
@@ -236,7 +244,7 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     QWidget::keyPressEvent(event);
     switch (event->key()) {
         case Qt::Key_Space:
-            if(!searchBar->hasFocus()) {
+            if (!searchBar->hasFocus()) {
                 searchBar->setText("");
             }
             searchBar->setFocus();
@@ -245,7 +253,11 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void nitro::NodeDockWidget::recalculateNodeSizes() {
-    for(auto& o : dataFlowGraphModel->allNodeIds()) {
-        nodeScene->onNodeUpdated(o);
+    for (auto &o: dataFlowGraphModel->allNodeIds()) {
+        view->getScene()->onNodeUpdated(o);
     }
+}
+
+const QString &nitro::NodeDockWidget::getFileName() {
+    return filename;
 }

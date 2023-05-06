@@ -2,70 +2,35 @@
 
 #include <QtNodes/GraphicsView>
 #include <QMenu>
-#include "QtNodes/DataFlowGraphModel"
-#include "src/gui/imgviewer/imgviewer.hpp"
-#include "QtNodes/internal/AbstractNodeGeometry.hpp"
+#include <QtNodes/DataFlowGraphModel>
 
 namespace nitro {
 
     class NodeGraphicsView : public QtNodes::GraphicsView {
     public:
 
-        NodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
+        NodeGraphicsView(QtNodes::BasicGraphicsScene *scene,
                          QtNodes::DataFlowGraphModel *model,
                          QWidget *parent);
 
-        NodeGraphicsView(const GraphicsView &) = delete;
 
+        virtual QMenu *initNodeMenu() = 0;
 
-        NodeGraphicsView operator=(const GraphicsView &) = delete;
+    public:
+        QtNodes::DataFlowGraphModel *getDataModel() const;
 
+        QtNodes::BasicGraphicsScene *getScene() const;
 
-        void mousePressEvent(QMouseEvent *event) override;
+        QMenu *getNodeMenu();
 
-        void mouseDoubleClickEvent(QMouseEvent *event) override;
-
-        void setViewerNodeId(QtNodes::NodeId nodeId);
-
-        QMenu *initNodeMenu();
-
-    public Q_SLOTS:
+    protected:
+        QtNodes::DataFlowGraphModel *dataModel_ = nullptr;
+        QtNodes::BasicGraphicsScene *scene_ = nullptr;
 
 
     private:
-        QtNodes::DataFlowGraphModel *_dataModel;
-        nitro::ImageViewer *_imViewer;
-        QAction *spawnViewNodeAction = nullptr;
-
-
-        QMenu *_nodeMenu{};
-
+        QMenu *nodeMenu_ = nullptr;
         void spawnNodeMenu();
-
-        QMenu *initInputSubMenu();
-
-        QMenu *initColorSubMenu();
-
-        QMenu *initComparisonSubMenu();
-
-        QMenu *initMathSubMenu();
-
-        QMenu *initOutputSubMenu();
-
-        QtNodes::NodeId viewerNodeId;
-
-        QAction *spawnViewerNodeAction();
-
-        QMenu *initQuantizationSubMenu();
-
-        QMenu *initResampleSubMenu();
-
-        QtNodes::NodeId nodeIdViewed;
-        QtNodes::PortIndex currentPort;
-
-        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName, const QColor& icColor);
-
-        QtNodes::AbstractNodeGeometry &nodeGeometry;
     };
 
 } // nitro

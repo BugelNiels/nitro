@@ -1,6 +1,6 @@
 #include "nodegraphicsscene.hpp"
 #include "nitronodepainter.hpp"
-#include "src/nodes/invaliddata.hpp"
+#include "src/core/invaliddata.hpp"
 
 #include <QtNodes/NodeDelegateModel>
 #include <QKeyEvent>
@@ -10,7 +10,7 @@
 #include <QtNodes/ConnectionIdUtils>
 
 nitro::NodeGraphicsScene::NodeGraphicsScene(QtNodes::AbstractGraphModel &graphModel, QObject *parent)
-        : BasicGraphicsScene(graphModel, parent), m_graphModel(graphModel) {
+        : BasicGraphicsScene(graphModel, parent), graphModel_(graphModel) {
     setNodePainter(std::make_unique<NitroNodePainter>(NitroNodePainter()));
 
 }
@@ -36,10 +36,10 @@ void nitro::NodeGraphicsScene::keyPressEvent(QKeyEvent *event) {
 
             auto portVacant = [&](QtNodes::NodeId nodeId, QtNodes::PortIndex const portIndex,
                                   QtNodes::PortType const portType) {
-                auto const connected = m_graphModel.connections(nodeId, portType, portIndex);
+                auto const connected = graphModel_.connections(nodeId, portType, portIndex);
 
-                auto policy = m_graphModel.portData(nodeId, portType, portIndex,
-                                                    QtNodes::PortRole::ConnectionPolicyRole)
+                auto policy = graphModel_.portData(nodeId, portType, portIndex,
+                                                   QtNodes::PortRole::ConnectionPolicyRole)
                         .value<QtNodes::ConnectionPolicy>();
 
                 return connected.empty() || (policy == QtNodes::ConnectionPolicy::Many);
@@ -47,9 +47,9 @@ void nitro::NodeGraphicsScene::keyPressEvent(QKeyEvent *event) {
 
             auto getDataType = [&](QtNodes::NodeId nodeId, QtNodes::PortIndex const portIndex,
                                    QtNodes::PortType const portType) {
-                return m_graphModel.portData(nodeId, portType,
-                                             portIndex,
-                                             QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
+                return graphModel_.portData(nodeId, portType,
+                                            portIndex,
+                                            QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
             };
 
             // Find free port for node 1
@@ -77,9 +77,9 @@ void nitro::NodeGraphicsScene::keyPressEvent(QKeyEvent *event) {
             QtNodes::ConnectionId connectionId = {.outNodeId = id1, .outPortIndex = p1, .inNodeId = id2, .inPortIndex = p1};
 
             auto getDataTypeFromPort = [&](QtNodes::PortType const portType) {
-                return m_graphModel.portData(getNodeId(portType, connectionId), portType,
-                                             getPortIndex(portType, connectionId),
-                                             QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
+                return graphModel_.portData(getNodeId(portType, connectionId), portType,
+                                            getPortIndex(portType, connectionId),
+                                            QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
             };
 
             // Check if connection possible
@@ -87,9 +87,9 @@ void nitro::NodeGraphicsScene::keyPressEvent(QKeyEvent *event) {
 
                 QtNodes::NodeId const nodeId = getNodeId(QtNodes::PortType::In, connectionId);
                 QtNodes::PortIndex const portIndex = getPortIndex(QtNodes::PortType::In, connectionId);
-                auto const connections = m_graphModel.connections(nodeId, QtNodes::PortType::In, portIndex);
+                auto const connections = graphModel_.connections(nodeId, QtNodes::PortType::In, portIndex);
 
-                m_graphModel.addConnection(connectionId);
+                graphModel_.addConnection(connectionId);
             }
 
         }
