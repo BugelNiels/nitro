@@ -110,6 +110,7 @@ void main() {
         int maxSteps = imWidth + imHeight + 256;
         for (int i = 0; i < maxSteps; i++) {
 
+            // TODO: this mask check goes wrong
             if (getVoxel(mapPos) && (mask.x || mask.y || mask.z)) {
                 fColor = vec4(getVoxelCol(mask, mapPos), 1.0);
                 return;
