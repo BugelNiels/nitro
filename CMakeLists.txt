@@ -31,7 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/gui/nodeeditor/nodegraphicsview.hpp src/improc/improcbuilder.cpp src/improc/improcbuilder.hpp)
+        resources/resources.qrc src/improc/core/algorithms/quantization/slr.cpp src/improc/core/algorithms/quantization/slr.hpp src/improc/core/algorithms/util/histogram.cpp src/improc/core/algorithms/util/histogram.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

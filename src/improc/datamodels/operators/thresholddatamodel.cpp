@@ -6,7 +6,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "core/algorithms/threshold.hpp"
+#include "src/improc/core/algorithms/util/threshold.hpp"
 
 
 nitro::ThresholdDataModel::ThresholdDataModel() = default;

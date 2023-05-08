@@ -187,6 +187,7 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::regist
     ret->registerModel<nitro::LuminanceCorrectionDataModel>("Operator");
     ret->registerModel<nitro::ToggleDataModel>("Operator");
     ret->registerModel<nitro::BlendDataModel>("Operator");
+    ret->registerModel<nitro::SlrDataModel>("Operator");
     return ret;
 }
 

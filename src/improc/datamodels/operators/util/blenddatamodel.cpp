@@ -1,6 +1,6 @@
 #include "blenddatamodel.hpp"
 #include "invaliddata.hpp"
-#include "core/algorithms/imgmath.hpp"
+#include "src/improc/core/algorithms/util/imgmath.hpp"
 
 nitro::BlendDataModel::BlendDataModel() : ImageDataModel() {
 

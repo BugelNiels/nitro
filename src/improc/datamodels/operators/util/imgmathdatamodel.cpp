@@ -6,7 +6,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "core/algorithms/imgmath.hpp"
+#include "src/improc/core/algorithms/util/imgmath.hpp"
 
 nitro::ImgMathDataModel::ImgMathDataModel() = default;
 

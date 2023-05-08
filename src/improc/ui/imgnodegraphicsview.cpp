@@ -148,6 +148,8 @@ QMenu *nitro::ImageNodeGraphicsView::initQuantizationSubMenu() {
                             nitro::QuantisizeDataModel::nodeIcon(), nitro::QuantisizeDataModel::nodeColor()));
     opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeCaption(), nitro::KMeansDataModel::nodeName(),
                                        nitro::KMeansDataModel::nodeIcon(), nitro::KMeansDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::SlrDataModel::nodeCaption(), nitro::SlrDataModel::nodeName(),
+                                       nitro::SlrDataModel::nodeIcon(), nitro::SlrDataModel::nodeColor()));
     return opsMenu;
 }
 

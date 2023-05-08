@@ -1,7 +1,7 @@
 #include "corrections.hpp"
 
-#include "imginfo.hpp"
-#include "imgmath.hpp"
+#include "src/improc/core/algorithms/util/imginfo.hpp"
+#include "src/improc/core/algorithms/util/imgmath.hpp"
 #include "src/improc/core/algorithms/conversions/ycbcrconvert.hpp"
 
 QImage nitro::operations::brightnessCorrect(const QImage &image, const nitro::CbdImage &image1) {
