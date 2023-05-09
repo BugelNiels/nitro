@@ -2,6 +2,7 @@
 
 
 #include "datamodels/conversions/colseparatedatamodel.hpp"
+#include "nodeeditor/nodeinfo.hpp"
 
 namespace nitro {
 
@@ -11,17 +12,18 @@ namespace nitro {
 
         ~SeparateRgbDataModel() override = default;
 
+        static NodeInfo nodeInfo() {
+            return {"Separate RGB",
+                    "SeparateRGB",
+                    {36, 98, 131},
+                    ":/icons/nodes/separate.png"};
+        }
 
-        static QString nodeCaption() { return QStringLiteral("Separate RGB"); }
-
-        static QString nodeName() { return QStringLiteral("SeperateRgb"); }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     protected:
 

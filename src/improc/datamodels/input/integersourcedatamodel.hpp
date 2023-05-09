@@ -1,23 +1,29 @@
 #pragma once
 
-#include <QCheckBox>
-#include <QSlider>
-#include "datamodels/imagedatamodel.hpp"
+#include <QtCore/QObject>
+
+#include <QLabel>
+#include <QSpinBox>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
+
+#include "datamodels/integerdata.hpp"
+#include "nodeeditor/nodeinfo.hpp"
 
 namespace nitro {
+    class IntegerSourceDataModel : public QtNodes::NodeDelegateModel {
+    Q_OBJECT
 
-    class BlendDataModel : public ImageDataModel {
     public:
-        BlendDataModel();
+        IntegerSourceDataModel();
 
-        ~BlendDataModel() override = default;
+        ~IntegerSourceDataModel() override = default;
 
     public:
         static NodeInfo nodeInfo() {
-            return {"Blend",
-                    "Blend",
-                    {110, 110, 29},
-                    ":/icons/nodes/blend.png"};
+            return {"Integer",
+                    "Integer",
+                    {131, 49, 74},
+                    ":/icons/nodes/number.png"};
         }
 
         QString caption() const override { return nodeInfo().getNodeName(); }
@@ -25,36 +31,27 @@ namespace nitro {
         bool captionVisible() const override { return true; }
 
         QString name() const override { return nodeInfo().getNodeId(); }
-        
+
     public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;
 
-
-    protected:
+    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
         std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
-        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
+        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
 
     protected:
+        QWidget *embeddedWidget() override;
 
-        QWidget *initBeforeWidget() override;
 
     private:
-
-        std::shared_ptr<ImageData> _inputImgA;
-        std::shared_ptr<ImageData> _inputImgB;
-
-        std::shared_ptr<ImageData> _result;
-
-        QSlider *blendSlider;
-
-        void compute();
+        QSpinBox* spinBox;
+        QWidget *_displayWrapper = nullptr;
     };
-
-} // nitro
+}

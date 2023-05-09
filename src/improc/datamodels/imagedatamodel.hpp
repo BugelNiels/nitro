@@ -9,6 +9,7 @@
 
 #include "src/improc/core/cbdimage.hpp"
 #include "imagedata.hpp"
+#include "src/gui/nodeeditor/nodeinfo.hpp" // TODO: move to core?
 
 namespace nitro {
     class ImageDataModel : public QtNodes::NodeDelegateModel {
@@ -23,7 +24,9 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/node_var1.png"); }
+        static NodeInfo nodeInfo() {
+            return {"Node", "Node", {150, 150, 150}, ":/icons/nodes/node_var1.png"};
+        }
 
     protected:
 

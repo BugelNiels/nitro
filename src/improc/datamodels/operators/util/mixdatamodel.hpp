@@ -13,20 +13,18 @@ namespace nitro {
         ~MixDataModel() override = default;
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Color Mix"); }
+        static NodeInfo nodeInfo() {
+            return {"Color Mix",
+                    "ColorMix",
+                    {110, 110, 29},
+                    ":/icons/nodes/mix.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("ColMix"); }
-
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/blend.png"); }
-
-        static QColor nodeColor() { return {59, 90, 115}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         QJsonObject save() const override;

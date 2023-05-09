@@ -28,18 +28,19 @@ namespace nitro {
         virtual ~ImgMathDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Math"); }
 
-        static QString nodeName() { return QStringLiteral("Math"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/math.png"); }
-        static QColor nodeColor() { return {59, 90, 115}; }
+        static NodeInfo nodeInfo() {
+            return {"Math",
+                    "Math",
+                    {36, 98, 131},
+                    ":/icons/nodes/math.png"};
+        }
 
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         QJsonObject save() const override;

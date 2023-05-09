@@ -12,21 +12,19 @@ namespace nitro {
         ~ToggleDataModel() override = default;
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Toggle"); }
+        static NodeInfo nodeInfo() {
+            return {"Toggle",
+                    "Toggle",
+                    {36, 98, 131},
+                    ":/icons/nodes/toggle.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("Toggle"); }
-
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/toggle.png"); }
-
-        static QColor nodeColor() { return {59, 90, 115}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
-
+        QString name() const override { return nodeInfo().getNodeId(); }
+        
     public:
         QJsonObject save() const override;
 

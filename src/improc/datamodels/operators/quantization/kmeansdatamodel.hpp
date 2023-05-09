@@ -25,18 +25,18 @@ namespace nitro {
         ~KMeansDataModel() override = default;
 
     public:
-        static QString nodeCaption() { return QStringLiteral("K-Means"); }
+        static NodeInfo nodeInfo() {
+            return {"K-Means",
+                    "KMeans",
+                    {43, 101, 43},
+                    ":/icons/nodes/quantisize.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("KMeans"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/kmeans.png"); }
-        static QColor nodeColor() { return {95, 120, 83}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         QJsonObject save() const override;
@@ -48,6 +48,7 @@ namespace nitro {
         void kValChanged();
 
         void changeDither(bool toggled);
+
         void iterValChanged();
 
     protected:

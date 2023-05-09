@@ -109,8 +109,6 @@ void nitro::ImageSourceDataModel::loadImage(const QString &filePath) {
 
     _path = new QString(filePath);
 
-    // TODO: better
-    curNodeName = QFileInfo(filePath).fileName();
     updateImage(img);
     Q_EMIT dataUpdated(0);
 }

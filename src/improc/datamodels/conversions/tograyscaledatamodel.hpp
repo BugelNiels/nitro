@@ -24,17 +24,18 @@ namespace nitro {
 
     public:
 
-        static QString nodeCaption() { return QStringLiteral("To Grayscale"); }
-        static QString nodeName() { return QStringLiteral("ToGrayscale"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/greyscale.png"); }
-        static QColor nodeColor() { return {59, 90, 115}; }
+        static NodeInfo nodeInfo() {
+            return {"To Grayscale",
+                    "ToGrayscale",
+                    {131, 131, 131},
+                    ":/icons/nodes/greyscale.png"};
+        }
 
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         unsigned int nPorts(QtNodes::PortType portType) const override;

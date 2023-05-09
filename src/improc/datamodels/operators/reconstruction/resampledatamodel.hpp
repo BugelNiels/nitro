@@ -32,20 +32,18 @@ namespace nitro {
         ~ResampleDataModel() override {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Resample"); }
+        static NodeInfo nodeInfo() {
+            return {"Resample",
+                    "Resample",
+                    {201, 94, 6},
+                    ":/icons/nodes/resample.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("Resample"); }
-
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/resample.png"); }
-
-        static QColor nodeColor() { return {201, 94, 6}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         QJsonObject save() const override;

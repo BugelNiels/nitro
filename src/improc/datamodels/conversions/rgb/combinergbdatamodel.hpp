@@ -2,6 +2,7 @@
 
 
 #include "datamodels/conversions/colcombinedatamodel.hpp"
+#include "nodeeditor/nodeinfo.hpp"
 
 namespace nitro {
 
@@ -11,17 +12,18 @@ namespace nitro {
 
         ~CombineRgbDataModel() override = default;
 
+        static NodeInfo nodeInfo() {
+            return {"Combine RGB",
+                    "CombineRGB",
+                    {36, 98, 131},
+                    ":/icons/nodes/combine.png"};
+        }
 
-        static QString nodeCaption() { return QStringLiteral("Combine RGB"); }
-
-        static QString nodeName() { return QStringLiteral("CombineRgb"); }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     protected:
 

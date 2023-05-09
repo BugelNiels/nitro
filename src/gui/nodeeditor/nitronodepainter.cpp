@@ -15,7 +15,6 @@
 
 
 nitro::NitroNodePainter::NitroNodePainter() : QtNodes::AbstractNodePainter() {
-    nitro::NodeColors::initColors();
 }
 
 void nitro::NitroNodePainter::paint(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {

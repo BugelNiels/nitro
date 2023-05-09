@@ -7,6 +7,7 @@
 #include "src/gui/nodeeditor/nodegraphicsview.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 #include "ui/imgviewer/imgviewer.hpp"
+#include "nodeeditor/nodeinfo.hpp"
 
 namespace nitro {
 
@@ -41,11 +42,11 @@ namespace nitro {
 
         QMenu *initInputSubMenu();
 
-        QMenu *initColorSubMenu();
+        QMenu *initConverterSubMenu();
 
         QMenu *initComparisonSubMenu();
-
-        QMenu *initMathSubMenu();
+        QMenu *initFilterSubMenu();
+        QMenu *initColorSubMenu();
 
         QMenu *initOutputSubMenu();
 
@@ -60,7 +61,7 @@ namespace nitro {
         QtNodes::NodeId nodeIdViewed;
         QtNodes::PortIndex currentPort;
 
-        QAction *spawnNodeAction(const QString &menuName, const QString &nodeType, const QString &iconName, const QColor& icColor);
+        QAction *spawnNodeAction(const nitro::NodeInfo& info);
 
         QtNodes::AbstractNodeGeometry &nodeGeometry;
     };

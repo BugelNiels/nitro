@@ -8,7 +8,7 @@ typedef std::complex<double> dComplex;
 using namespace std::complex_literals;
 
 // FFT function
-void fft(std::vector<std::complex<double>> &x) {
+static void fft(std::vector<std::complex<double>> &x) {
     int n = x.size();
     if (n <= 1) {
         return;
@@ -31,7 +31,7 @@ void fft(std::vector<std::complex<double>> &x) {
 }
 
 // IFFT function
-void ifft(std::vector<std::complex<double>> &x) {
+static void ifft(std::vector<std::complex<double>> &x) {
     // take the conjugate of the input
     for (auto &element: x) {
         element = std::conj(element);
@@ -47,13 +47,13 @@ void ifft(std::vector<std::complex<double>> &x) {
 }
 
 // 2D FFT
-void fft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
+static void fft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
     int w = data.width();
     int h = data.height();
 
     // perform FFT on rows
+    std::vector<std::complex<double>> row(w);
     for (int y = 0; y < h; y++) {
-        std::vector<std::complex<double>> row(w);
         for (int x = 0; x < w; x++) {
             row[x] = data.get(x, y);
         }
@@ -64,8 +64,8 @@ void fft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
     }
 
     // perform FFT on columns
+    std::vector<std::complex<double>> col(h);
     for (int x = 0; x < w; x++) {
-        std::vector<std::complex<double>> col(h);
         for (int y = 0; y < h; y++) {
             col[y] = data.get(x, y);
         }
@@ -77,13 +77,13 @@ void fft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
 }
 
 // 2D IFFT
-void ifft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
+static void ifft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
     int w = data.width();
     int h = data.height();
 
     // perform IFFT on rows
+    std::vector<std::complex<double>> row(w);
     for (int y = 0; y < h; y++) {
-        std::vector<std::complex<double>> row(w);
         for (int x = 0; x < w; x++) {
             row[x] = data.get(x, y);
         }
@@ -94,8 +94,8 @@ void ifft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
     }
 
     // perform IFFT on columns
+    std::vector<std::complex<double>> col(h);
     for (int x = 0; x < w; x++) {
-        std::vector<std::complex<double>> col(h);
         for (int y = 0; y < h; y++) {
             col[y] = data.get(x, y);
         }
@@ -107,20 +107,20 @@ void ifft2DInPlace(nitro::Matrix<std::complex<double>> &data) {
 }
 
 // function to compute the magnitude of a complex number
-double magnitude(std::complex<double> z) {
+static inline double magnitude(const std::complex<double>& z) {
     return std::sqrt(std::pow(z.real(), 2) + std::pow(z.imag(), 2));
 }
 
 // function to compute the logarithmic magnitude of a complex number
-double logMagnitude(std::complex<double> z) {
+static inline double logMagnitude(const std::complex<double>& z) {
     return std::log10(1 + magnitude(z));
 }
 
 // 2D F
 
-int nextPower2(int n) {
+static inline int nextPower2(int n) {
     int i = 1 << int(std::log(n));
-    while(i < n) {
+    while (i < n) {
         i <<= 1;
     }
     return i;
@@ -151,8 +151,8 @@ nitro::Matrix<std::complex<double>> nitro::fft2D(const nitro::CbdImage &image) {
 
 // 2D IFFT implementation with normalization
 nitro::CbdImage nitro::ifft2D(const nitro::Matrix<std::complex<double>> &image, int refWidth, int refHeight) {
-    int width =image.width();
-    int height =image.height();
+    int width = image.width();
+    int height = image.height();
 
     nitro::Matrix<std::complex<double>> complexImage(width, height);
 
@@ -166,7 +166,7 @@ nitro::CbdImage nitro::ifft2D(const nitro::Matrix<std::complex<double>> &image, 
 // Compute IFFT
     ifft2DInPlace(complexImage);
 
-    int outWidth = refWidth > 0 ? refWidth :  image.width();
+    int outWidth = refWidth > 0 ? refWidth : image.width();
     int outHeight = refHeight > 0 ? refHeight : image.height();
     nitro::CbdImage outputImage(outWidth, outHeight, 256);
 // Compute magnitude and convert to logarithmic scale

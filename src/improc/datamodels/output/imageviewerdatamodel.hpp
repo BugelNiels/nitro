@@ -25,17 +25,18 @@ namespace nitro {
         virtual ~ImageViewerDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Image Viewer"); }
+        static NodeInfo nodeInfo() {
+            return {"Image Viewer",
+                    "ImageViewer",
+                    {60, 29, 38},
+                    ":/icons/nodes/viewer.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("ImageViewer"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/viewer.png"); }
-        static QColor nodeColor() { return {99, 28, 28}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     public:
         unsigned int nPorts(QtNodes::PortType portType) const override;

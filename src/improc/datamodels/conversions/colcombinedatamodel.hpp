@@ -21,9 +21,6 @@ namespace nitro {
         ~ColorCombineDataModel() override = default;
 
     public:
-        bool captionVisible() const override { return true; }
-
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -32,10 +29,6 @@ namespace nitro {
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
-
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/combine.png"); }
-
-        static QColor nodeColor() { return {59, 90, 115}; }
 
     protected:
 

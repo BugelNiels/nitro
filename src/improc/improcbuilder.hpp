@@ -21,6 +21,8 @@ namespace nitro {
         NodeDockWidget *initNodeDock(MainWindow *window, ImageViewer *imView);
 
         QDockWidget *initViewDock(nitro::MainWindow *window, nitro::ImageViewer *&imView);
+
+        void registerNodeColors();
     };
 
 } // nitro

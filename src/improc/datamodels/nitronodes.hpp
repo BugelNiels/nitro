@@ -7,6 +7,8 @@
 
 // Input
 #include "input/imagesourcedatamodel.hpp"
+#include "input/integersourcedatamodel.hpp"
+#include "input/decimalsourcedatamodel.hpp"
 
 // Output
 #include "output/imageviewerdatamodel.hpp"
@@ -30,7 +32,6 @@
 
 // Reconstruction
 #include "operators/reconstruction/resampledatamodel.hpp"
-#include "operators/reconstruction/lumcorrectdatamodel.hpp"
 
 // Util
 #include "operators/util/toggledatamodel.hpp"

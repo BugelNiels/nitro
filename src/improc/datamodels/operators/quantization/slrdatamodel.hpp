@@ -21,20 +21,22 @@ namespace nitro {
 
     public:
         SlrDataModel();
+
         ~SlrDataModel() override = default;
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Smart Layer Removal"); }
+        static NodeInfo nodeInfo() {
+            return {"Smart Layer Removal",
+                    "SLR",
+                    {43, 101, 43},
+                    ":/icons/nodes/quantisize.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("SLR"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/quantisize.png"); }
-        static QColor nodeColor() { return {95, 120, 83}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
+        QString name() const override { return nodeInfo().getNodeId(); }
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 

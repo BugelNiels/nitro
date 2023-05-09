@@ -9,6 +9,8 @@
 #include <QVBoxLayout>
 
 #include "core/algorithms/filters/lowpassfilter.hpp"
+#include "datamodels/decimaldata.hpp"
+#include "datamodels/integerdata.hpp"
 
 nitro::LowPassFilterDataModel::LowPassFilterDataModel() = default;
 
@@ -17,7 +19,7 @@ unsigned int nitro::LowPassFilterDataModel::nPorts(QtNodes::PortType portType) c
 
     switch (portType) {
         case QtNodes::PortType::In:
-            result = 1;
+            result = 3;
             break;
 
         case QtNodes::PortType::Out:
@@ -34,8 +36,14 @@ QtNodes::NodeDataType
 nitro::LowPassFilterDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex index) const {
     switch (portType) {
         case QtNodes::PortType::In:
-            if (index < 1) {
+            if (index == 0) {
                 return ImageData().type();
+            }
+            if (index == 1) {
+                return DecimalData().type();
+            }
+            if (index == 2) {
+                return IntegerData().type();
             }
             break;
 
@@ -55,7 +63,8 @@ QWidget *nitro::LowPassFilterDataModel::initBeforeWidget() {
     auto *horLayout = new QGridLayout();
 
     int rowIdx = 0;
-    horLayout->addWidget(new QLabel("Cut-off"), rowIdx, 0);
+    cutOffLabel = new QLabel("Cut-off");
+    horLayout->addWidget(cutOffLabel, rowIdx, 0);
     cutoffSpinBox = new QDoubleSpinBox();
     cutoffSpinBox->setValue(cutoff);
     connect(cutoffSpinBox, &QDoubleSpinBox::valueChanged, this, [this](double value) {
@@ -65,7 +74,8 @@ QWidget *nitro::LowPassFilterDataModel::initBeforeWidget() {
     horLayout->addWidget(cutoffSpinBox, rowIdx, 1);
     rowIdx++;
 
-    horLayout->addWidget(new QLabel("Order"), rowIdx, 0);
+    orderLabel = new QLabel("Order");
+    horLayout->addWidget(orderLabel, rowIdx, 0);
     orderSpinBox = new QSpinBox();
     orderSpinBox->setValue(order);
     connect(orderSpinBox, &QSpinBox::valueChanged, this, [this](int value) {
@@ -80,21 +90,37 @@ QWidget *nitro::LowPassFilterDataModel::initBeforeWidget() {
 
 
 void nitro::LowPassFilterDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-    auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
-    if (!data || !inputImg || !inputImg->isValid()) {
-        clearImage();
-        _result = nullptr;
-        Q_EMIT dataUpdated(0);
-        return;
-    }
     if (portIndex == 0) {
+        auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
+
+        if (!data || !inputImg || !inputImg->isValid()) {
+            clearImage();
+            _result = nullptr;
+            Q_EMIT dataUpdated(0);
+            return;
+        }
         if (inputImg->isColImg()) {
             auto channels = nitro::operations::separateYCbCr(*inputImg->colImage());
             auto yChannel = CbdImage(channels[0]);
             _input = std::make_shared<ImageData>(std::make_shared<CbdImage>(yChannel));
         } else {
             _input = inputImg;
+        }
+    }
+
+    if (portIndex == 1) {
+        auto inputVal = std::dynamic_pointer_cast<DecimalData>(data);
+        cutoffSpinBox->setDisabled(inputVal != nullptr);
+        if(inputVal != nullptr) {
+            cutoffSpinBox->setValue(inputVal->value());
+        }
+    }
+    if (portIndex == 2) {
+        auto inputVal = std::dynamic_pointer_cast<IntegerData>(data);
+        orderSpinBox->setDisabled(inputVal != nullptr);
+        if(inputVal != nullptr) {
+            orderSpinBox->setValue(inputVal->value());
         }
     }
     if (_input != nullptr && _input->isValid() ) {

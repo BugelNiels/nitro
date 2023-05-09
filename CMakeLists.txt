@@ -31,7 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/improc/core/algorithms/quantization/slr.cpp src/improc/core/algorithms/quantization/slr.hpp src/improc/core/algorithms/util/histogram.cpp src/improc/core/algorithms/util/histogram.hpp src/improc/core/algorithms/fourier.cpp src/improc/core/algorithms/fourier.hpp src/improc/core/algorithms/filters/lowpassfilter.cpp src/improc/core/algorithms/filters/lowpassfilter.hpp src/improc/datamodels/operators/filters/lowpassdatamodel.cpp src/improc/datamodels/operators/util/mixdatamodel.hpp)
+        resources/resources.qrc src/improc/core/algorithms/quantization/slr.cpp src/improc/core/algorithms/quantization/slr.hpp src/improc/core/algorithms/util/histogram.cpp src/improc/core/algorithms/util/histogram.hpp src/improc/core/algorithms/fourier.cpp src/improc/core/algorithms/fourier.hpp src/improc/core/algorithms/filters/lowpassfilter.cpp src/improc/core/algorithms/filters/lowpassfilter.hpp src/improc/datamodels/operators/filters/lowpassdatamodel.cpp src/improc/datamodels/operators/util/mixdatamodel.hpp src/improc/datamodels/decimaldata.hpp src/improc/datamodels/input/integersourcedatamodel.hpp src/improc/datamodels/input/decimalsourcedatamodel.cpp src/gui/nodeeditor/nodeinfo.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

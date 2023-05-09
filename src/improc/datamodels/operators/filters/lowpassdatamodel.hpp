@@ -25,19 +25,21 @@ namespace nitro {
         virtual ~LowPassFilterDataModel() {}
 
     public:
-        static QString nodeCaption() { return QStringLiteral("Low Pass Filter"); }
 
-        static QString nodeName() { return QStringLiteral("LowPassFilter"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/threshold.png"); }
-        static QColor nodeColor() { return {59, 90, 115}; }
+        static NodeInfo nodeInfo() {
+            return {"Low-Pass Filter",
+                    "LowPassfilter",
+                    {43, 101, 43},
+                    ":/icons/nodes/blur.png"};
+        }
 
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
+        QString name() const override { return nodeInfo().getNodeId(); }
 
-
+    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -56,6 +58,7 @@ namespace nitro {
 
     protected:
         QWidget *initBeforeWidget() override;
+
         float cutoff = 20;
         int order = 5;
 
@@ -70,5 +73,7 @@ namespace nitro {
 
         QDoubleSpinBox *cutoffSpinBox;
         QSpinBox *orderSpinBox;
+        QLabel *cutOffLabel;
+        QLabel *orderLabel;
     };
 }

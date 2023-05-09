@@ -23,18 +23,18 @@ namespace nitro {
         ~FlipDataModel() override = default;
 
     public:
-        static QString nodeCaption() { return QStringLiteral("FLIP"); }
+        static NodeInfo nodeInfo() {
+            return {"FLIP",
+                    "Flip",
+                    {118, 185, 0},
+                    ":/icons/nodes/compare.png"};
+        }
 
-        static QString nodeName() { return QStringLiteral("Flip"); }
-        static QString nodeIcon() { return QStringLiteral(":/icons/nodes/compare.png"); }
-        static QColor nodeColor() { return {118, 185, 0}; }
-
-        QString caption() const override { return nodeCaption(); }
+        QString caption() const override { return nodeInfo().getNodeName(); }
 
         bool captionVisible() const override { return true; }
 
-        QString name() const override { return nodeName(); }
-
+        QString name() const override { return nodeInfo().getNodeId(); }
 
     protected:
         unsigned int nPorts(QtNodes::PortType portType) const override;

@@ -19,7 +19,9 @@
         <file>icons/nodes/filter.png</file>
         <file>icons/nodes/greyscale.png</file>
         <file>icons/nodes/image_source.png</file>
-        <file>icons/nodes/kmeans.png</file>
+        <file>icons/nodes/blur.png</file>
+        <file>icons/nodes/number.png</file>
+        <file>icons/nodes/mix.png</file>
         <file>icons/nodes/quantisize.png</file>
         <file>icons/nodes/threshold.png</file>
         <file>icons/nodes/threshold.png</file>

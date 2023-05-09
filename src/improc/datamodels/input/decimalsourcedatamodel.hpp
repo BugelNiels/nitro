@@ -2,29 +2,28 @@
 
 #include <QtCore/QObject>
 
-#include <iostream>
-#include <QPushButton>
 #include <QLabel>
-#include <QtNodes/NodeDelegateModel>
+#include <QSpinBox>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
-#include "src/improc/core/cbdimage.hpp"
-#include "datamodels/imagedatamodel.hpp"
+#include "datamodels/integerdata.hpp"
+#include "nodeeditor/nodeinfo.hpp"
 
 namespace nitro {
-    class ImageSourceDataModel : public ImageDataModel {
+    class DecimalSourceDataModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
 
     public:
-        ImageSourceDataModel();
+        DecimalSourceDataModel();
 
-        ~ImageSourceDataModel() override = default;
+        ~DecimalSourceDataModel() override = default;
 
     public:
         static NodeInfo nodeInfo() {
-            return {"Image Source",
-                    "ImageSource",
-                    {121, 70, 29},
-                    ":/icons/nodes/image_source.png"};
+            return {"Value",
+                    "Value",
+                    {131, 49, 74},
+                    ":/icons/nodes/number.png"};
         }
 
         QString caption() const override { return nodeInfo().getNodeName(); }
@@ -48,21 +47,11 @@ namespace nitro {
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
 
     protected:
-        QWidget *initBeforeWidget() override;
+        QWidget *embeddedWidget() override;
 
-        QWidget *initAfterWidget() override;
-
-    private Q_SLOTS:
-
-        void onLoadButtonPressed();
 
     private:
-        std::shared_ptr<ImageData> _image;
-
-        QString *_path;
-        QPushButton *_loadButton;
-
-        void loadImage(const QString &filePath);
-
+        QDoubleSpinBox* spinBox;
+        QWidget *_displayWrapper = nullptr;
     };
 }

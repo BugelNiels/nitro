@@ -23,9 +23,6 @@ namespace nitro {
         ~ImOpDataModel() override = default;
 
     public:
-        bool captionVisible() const override { return true; }
-
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
