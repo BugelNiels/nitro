@@ -138,6 +138,11 @@ QMenu *nitro::ImageNodeGraphicsView::initMathSubMenu() {
                                        nitro::ToggleDataModel::nodeIcon(), nitro::ToggleDataModel::nodeColor()));
     opsMenu->addAction(spawnNodeAction(nitro::BlendDataModel::nodeCaption(), nitro::BlendDataModel::nodeName(),
                                        nitro::BlendDataModel::nodeIcon(), nitro::BlendDataModel::nodeColor()));
+    opsMenu->addAction(spawnNodeAction(nitro::MixDataModel::nodeCaption(), nitro::MixDataModel::nodeName(),
+                                       nitro::MixDataModel::nodeIcon(), nitro::MixDataModel::nodeColor()));
+    // TODO: filter menu
+    opsMenu->addAction(spawnNodeAction(nitro::LowPassFilterDataModel::nodeCaption(), nitro::LowPassFilterDataModel::nodeName(),
+                                       nitro::LowPassFilterDataModel::nodeIcon(), nitro::LowPassFilterDataModel::nodeColor()));
     return opsMenu;
 }
 

@@ -141,16 +141,16 @@ void nitro::LuminanceCorrectionDataModel::load(const QJsonObject &p) {
     }
 }
 
-// TODO: use mode
 std::shared_ptr<nitro::ImageData>
 nitro::LuminanceCorrectionDataModel::colorBrightnessCorrect(QImage &image, nitro::CbdImage &image1) {
-    auto result = nitro::operations::brightnessCorrect(image, image1);
+    // TODO: bit of a dangerous way of using mode
+    auto result = nitro::operations::brightnessCorrect(image, image1, modeCombobox->currentIndex());
     return std::make_shared<ImageData>(std::make_shared<QImage>(result));
 }
 
 std::shared_ptr<nitro::ImageData>
 nitro::LuminanceCorrectionDataModel::brightnessCorrect(nitro::CbdImage &image, nitro::CbdImage &image1) {
-    auto result = nitro::operations::brightnessCorrect(image, image1);
+    auto result = nitro::operations::brightnessCorrect(image, image1, modeCombobox->currentIndex());
     return std::make_shared<ImageData>(std::make_shared<nitro::CbdImage>(result));
 }
 

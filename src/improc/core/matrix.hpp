@@ -26,6 +26,8 @@ namespace nitro {
 
         Matrix &operator=(const Matrix &) = default;
 
+        inline void fill(T val) { data.fill(val); }
+
         inline T get(int x, int y) const { return data[y * matWidth + x]; }
 
         inline T get(int idx) const { return data[idx]; }
@@ -39,6 +41,8 @@ namespace nitro {
         inline int height() const { return matHeight; }
 
         inline int numElems() const { return width() * height(); }
+
+        inline T *rawData() { return data.data(); }
 
     private:
         QVector<T> data;

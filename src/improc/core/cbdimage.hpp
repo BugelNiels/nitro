@@ -28,6 +28,7 @@ namespace nitro {
 
         inline int numLevels() const { return numGreyLevels; }
 
+        int get(int x, int y) const;
 
         inline Matrix<int> &data() { return matrix; }
 
@@ -36,6 +37,7 @@ namespace nitro {
         inline const QVector<int> &getColTransform() const { return vals; }
 
         inline bool isIndexed() const { return indexed; }
+
 
         // pass by value on purpose
         void setIndexed(QVector<int> vals);
@@ -49,6 +51,7 @@ namespace nitro {
 
         bool indexed = false;
         QVector<int> vals;
+
     };
 
 }  // namespace nitro

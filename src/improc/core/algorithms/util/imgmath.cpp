@@ -11,20 +11,20 @@ nitro::CbdImage nitro::operations::addImage(const nitro::CbdImage &inputImg, int
     auto &outData = result.data();
     if (inputImg.isIndexed()) {
         QVector<int> outCols(inputImg.numLevels());
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                outData.set(x, y, inData.get(x, y));
+            }
+        }
         const auto &inCols = inputImg.getColTransform();
         for (int i = 0; i < inputImg.numLevels(); i++) {
             outCols[i] = nitro::clamp(inCols[i] + addVal);
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    outData.set(x, y, inData.get(x, y));
-                }
-            }
         }
         result.setIndexed(outCols);
     } else {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                outData.set(x, y, nitro::clamp(inData.get(x, y) + addVal));
+                outData.set(x, y, nitro::clamp(inputImg.get(x, y) + addVal));
             }
         }
     }
@@ -56,6 +56,20 @@ nitro::CbdImage nitro::operations::subtractImage(const nitro::CbdImage &inputImg
             }
         }
     }
+    return result;
+}
+
+nitro::CbdImage nitro::operations::subtractImage(const nitro::CbdImage &inputImg, const nitro::CbdImage &other) {
+    int width = inputImg.width();
+    int height = inputImg.height();
+    nitro::CbdImage result(width, height, 255);
+    auto &outData = result.data();
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            outData.set(x, y, nitro::clamp(inputImg.get(x, y) - other.get(x, y)));
+        }
+    }
+
     return result;
 }
 
@@ -117,7 +131,7 @@ nitro::CbdImage nitro::operations::divideImage(const nitro::CbdImage &inputImg, 
     return result;
 }
 
-QImage nitro::operations::mixImage(const QImage& imgA, const QImage& imgB, float factor) {
+QImage nitro::operations::mixImage(const QImage &imgA, const QImage &imgB, float factor) {
 
     QImage result(imgA.width(), imgA.height(), QImage::Format_ARGB32);
     QPainter painter(&result);
@@ -131,4 +145,20 @@ QImage nitro::operations::mixImage(const QImage& imgA, const QImage& imgB, float
     painter.drawImage(0, 0, imgB);
     painter.end();
     return result.convertToFormat(QImage::Format_RGB32);
+}
+
+QImage nitro::operations::mixImage(const QImage &imgA, const QImage &imgB, QPainter::CompositionMode mode) {
+
+    QImage result(imgA.width(), imgA.height(), QImage::Format_RGB32);
+    QPainter painter(&result);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(imgA.rect(), Qt::transparent);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(0, 0, imgA);
+    painter.setCompositionMode(mode);
+    painter.drawImage(0, 0, imgB);
+    painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
+    painter.fillRect(imgA.rect(), Qt::white);
+    painter.end();
+    return result;
 }

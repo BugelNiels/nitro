@@ -46,9 +46,9 @@ static QVector<int> constructColorTable(const nitro::CbdImage &img,
             }
         }
 
-        for (int i = 0; i < k; i++) {
-            means[i] /= float(meanCounts[i]);
-            meanCounts[i] = 0;
+        for (int j = 0; j < k; j++) {
+            means[j] /= float(meanCounts[j]);
+            meanCounts[j] = 0;
         }
     }
 

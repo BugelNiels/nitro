@@ -188,6 +188,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::regist
     ret->registerModel<nitro::ToggleDataModel>("Operator");
     ret->registerModel<nitro::BlendDataModel>("Operator");
     ret->registerModel<nitro::SlrDataModel>("Operator");
+    ret->registerModel<nitro::LowPassFilterDataModel>("Operator");
+    ret->registerModel<nitro::MixDataModel>("Operator");
     return ret;
 }
 
