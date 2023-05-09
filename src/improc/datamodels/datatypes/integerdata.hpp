@@ -6,6 +6,7 @@
 
 
 #include "src/improc/core/cbdimage.hpp"
+#include "nodes/datainfo.hpp"
 
 namespace nitro {
     class IntegerData : public QtNodes::NodeData {
@@ -17,7 +18,13 @@ namespace nitro {
             val_ = val;
         }
 
-        QtNodes::NodeDataType type() const override { return QtNodes::NodeDataType{"decimal", "Value"}; }
+        static DataInfo dataInfo() {
+            return {"Value", "integer", {89, 140, 92}};
+        }
+
+        QtNodes::NodeDataType type() const override {
+            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
+        }
 
         int value() const { return val_; }
 

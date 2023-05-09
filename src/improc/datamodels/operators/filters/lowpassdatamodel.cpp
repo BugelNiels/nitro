@@ -9,8 +9,8 @@
 #include <QVBoxLayout>
 
 #include "core/algorithms/filters/lowpassfilter.hpp"
-#include "datamodels/decimaldata.hpp"
-#include "datamodels/integerdata.hpp"
+#include "src/improc/datamodels/datatypes/decimaldata.hpp"
+#include "src/improc/datamodels/datatypes/integerdata.hpp"
 
 nitro::LowPassFilterDataModel::LowPassFilterDataModel() = default;
 

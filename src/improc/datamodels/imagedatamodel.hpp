@@ -8,8 +8,8 @@
 #include <QtNodes/NodeDelegateModel>
 
 #include "src/improc/core/cbdimage.hpp"
-#include "imagedata.hpp"
-#include "src/gui/nodeeditor/nodeinfo.hpp" // TODO: move to core?
+#include "src/improc/datamodels/datatypes/imagedata.hpp"
+#include "src/core/nodes/nodeinfo.hpp" // TODO: move to core?
 
 namespace nitro {
     class ImageDataModel : public QtNodes::NodeDelegateModel {

@@ -1,5 +1,4 @@
 #include "nodecolors.hpp"
-#include "nodeinfo.hpp"
 
 QMap<QString, QColor> nitro::NodeColors::colors;
 

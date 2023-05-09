@@ -9,7 +9,7 @@
 
 
 #include "src/improc/core/cbdimage.hpp"
-#include "datamodels/imagedata.hpp"
+#include "src/improc/datamodels/datatypes/imagedata.hpp"
 
 namespace nitro {
     class ColorSeparateDataModel : public QtNodes::NodeDelegateModel {

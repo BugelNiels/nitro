@@ -3,7 +3,7 @@
 #include <QString>
 #include <QColor>
 #include <QMap>
-#include "nodeinfo.hpp"
+#include "src/core/nodes/nodeinfo.hpp"
 
 namespace nitro {
     class NodeColors {

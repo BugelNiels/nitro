@@ -7,7 +7,7 @@
 #include "src/gui/nodeeditor/nodegraphicsview.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 #include "ui/imgviewer/imgviewer.hpp"
-#include "nodeeditor/nodeinfo.hpp"
+#include "src/core/nodes/nodeinfo.hpp"
 
 namespace nitro {
 

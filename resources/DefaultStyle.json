@@ -5,7 +5,7 @@
     "CoarseGridColor": [42, 42, 48]
   },
   "NodeStyle": {
-    "NormalBoundaryColor": [52, 52, 52],
+    "NormalBoundaryColor": [0, 0, 0],
     "SelectedBoundaryColor": [255, 255, 255],
     "GradientColor0": [80, 80, 80],
     "GradientColor1": [52, 52, 52],
@@ -13,7 +13,7 @@
     "GradientColor3": [45, 45, 45],
     "ShadowColor": [13, 13, 13],
     "FontColor" : [239, 239, 239],
-    "FontColorFaded" : [160, 160, 160],
+    "FontColorFaded" : [230, 230, 230],
     "ConnectionPointColor": [169, 169, 169],
     "FilledConnectionPointColor": [68, 140, 194],
     "ErrorColor": "red",

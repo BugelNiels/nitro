@@ -19,6 +19,7 @@ git submodule update
 ## Known Bugs
 
 - Zooming in a lot can cause the embedded widget to float outside of the node
+- You can create an infinite loop by creating a cycle in the node graph
 
 ## TODO
 
@@ -34,3 +35,4 @@ git submodule update
 - Matrix data type
 - Group node
 - Improved spinbox (slider combo)
+- Remove infite loop possibility

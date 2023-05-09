@@ -9,7 +9,7 @@
 #include <QLabel>
 
 #include "src/improc/core/cbdimage.hpp"
-#include "src/improc/datamodels/imagedata.hpp"
+#include "src/improc/datamodels/datatypes/imagedata.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "src/improc/ui/imgviewer/imgviewer.hpp"
 #include "src/improc/datamodels/imagedatamodel.hpp"

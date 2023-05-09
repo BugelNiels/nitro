@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QPainter>
 #include "util/imgresourcereader.hpp"
-#include "datamodels/decimaldata.hpp"
+#include "src/improc/datamodels/datatypes/decimaldata.hpp"
 
 nitro::DecimalSourceDataModel::DecimalSourceDataModel() {
 }

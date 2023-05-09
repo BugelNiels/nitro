@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 
@@ -11,7 +11,7 @@
 #include <QComboBox>
 
 #include "src/improc/core/cbdimage.hpp"
-#include "imopdatamodel.hpp"
+#include "src/improc/datamodels/operators/imopdatamodel.hpp"
 
 class QLineEdit;
 
@@ -29,7 +29,7 @@ namespace nitro {
         static NodeInfo nodeInfo() {
             return {"Threshold",
                     "Threshold",
-                    {36, 98, 131},
+                    {43, 101, 43},
                     ":/icons/nodes/threshold.png"};
         }
 

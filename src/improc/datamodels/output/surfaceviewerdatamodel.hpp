@@ -11,8 +11,8 @@
 #include "src/improc/core/cbdimage.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "ui/surfacevis/renderview.hpp"
-#include "datamodels/imagedata.hpp"
-#include "nodeeditor/nodeinfo.hpp"
+#include "src/improc/datamodels/datatypes/imagedata.hpp"
+#include "src/core/nodes/nodeinfo.hpp"
 
 
 namespace nitro {

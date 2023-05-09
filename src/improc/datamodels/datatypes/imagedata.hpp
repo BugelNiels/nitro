@@ -6,6 +6,7 @@
 
 
 #include "src/improc/core/cbdimage.hpp"
+#include "nodes/datainfo.hpp"
 
 namespace nitro {
     enum Mode {
@@ -15,6 +16,12 @@ namespace nitro {
     class ImageData : public QtNodes::NodeData {
     public:
         ImageData() = default;
+
+
+        static DataInfo dataInfo() {
+            return {"Image", "cbd_image", {199, 199, 41}};
+        }
+
 
         // TODO: check efficiency here?
         explicit ImageData(std::shared_ptr<CbdImage> img) {
@@ -27,13 +34,13 @@ namespace nitro {
             mode = COLOR;
         }
 
-        bool isValid () {
-            return isColImg() ?  _colImage != nullptr : _greyImage != nullptr;
+        bool isValid() {
+            return isColImg() ? _colImage != nullptr : _greyImage != nullptr;
         }
 
         const QImage &getDisplayImg() {
             // TODO: check the ref
-            return isColImg() ? *_colImage :  _greyImage->getDisplayImg() ;
+            return isColImg() ? *_colImage : _greyImage->getDisplayImg();
         }
 
         bool isGrayscaleImg() const {
@@ -44,7 +51,9 @@ namespace nitro {
             return mode == COLOR;
         }
 
-        QtNodes::NodeDataType type() const override { return QtNodes::NodeDataType{"cbd_image", "Image"}; }
+        QtNodes::NodeDataType type() const override {
+            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
+        }
 
         std::shared_ptr<CbdImage> image() { return _greyImage; }
 

@@ -11,7 +11,9 @@
 #include <QCheckBox>
 #include <QSplitter>
 #include "datamodels/nitronodes.hpp"
-#include "src/gui/nodeeditor/nodecolors.hpp"
+#include "src/gui/nodeeditor/style/nodecolors.hpp"
+#include "nodeeditor/style/datacolors.hpp"
+#include "datamodels/datatypes/decimaldata.hpp"
 
 nitro::ImprocBuilder::ImprocBuilder() {}
 
@@ -93,7 +95,7 @@ nitro::ImprocBuilder::initViewDock(nitro::MainWindow *window,
 }
 
 nitro::NodeDockWidget *nitro::ImprocBuilder::initNodeDock(nitro::MainWindow *window, nitro::ImageViewer *imView) {
-    registerNodeColors();
+    registerColors();
     std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = registerDataModels();
     auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(registry);
     auto *nodeScene = new NodeGraphicsScene(*dataFlowGraphModel);
@@ -195,7 +197,7 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::regist
     return ret;
 }
 
-void nitro::ImprocBuilder::registerNodeColors() {
+void nitro::ImprocBuilder::registerColors() {
     nitro::NodeColors::registerColor(nitro::ImageSourceDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::IntegerSourceDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::DecimalSourceDataModel::nodeInfo());
@@ -218,5 +220,10 @@ void nitro::ImprocBuilder::registerNodeColors() {
     nitro::NodeColors::registerColor(nitro::SlrDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::LowPassFilterDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::MixDataModel::nodeInfo());
+
+    // Data colors
+    nitro::DataColors::registerColor(nitro::ImageData::dataInfo());
+    nitro::DataColors::registerColor(nitro::IntegerData::dataInfo());
+    nitro::DataColors::registerColor(nitro::DecimalData::dataInfo());
 }
 

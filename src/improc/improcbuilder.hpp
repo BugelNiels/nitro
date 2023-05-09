@@ -22,7 +22,7 @@ namespace nitro {
 
         QDockWidget *initViewDock(nitro::MainWindow *window, nitro::ImageViewer *&imView);
 
-        void registerNodeColors();
+        void registerColors();
     };
 
 } // nitro

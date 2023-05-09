@@ -6,8 +6,8 @@
 #include <QSpinBox>
 #include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
-#include "datamodels/integerdata.hpp"
-#include "nodeeditor/nodeinfo.hpp"
+#include "src/improc/datamodels/datatypes/integerdata.hpp"
+#include "src/core/nodes/nodeinfo.hpp"
 
 namespace nitro {
     class DecimalSourceDataModel : public QtNodes::NodeDelegateModel {
