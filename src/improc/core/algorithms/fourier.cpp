@@ -132,7 +132,7 @@ nitro::Matrix<std::complex<double>> nitro::fft2D(const nitro::CbdImage &image) {
     int height = image.height();
 
     // TODO: pad
-
+    
     nitro::Matrix<std::complex<double>> complexImage(nextPower2(width), nextPower2(height));
     complexImage.fill(0);
 
@@ -173,7 +173,7 @@ nitro::CbdImage nitro::ifft2D(const nitro::Matrix<std::complex<double>> &image, 
     auto &dat = outputImage.data();
     for (int y = 0; y < outHeight; y++) {
         for (int x = 0; x < outWidth; x++) {
-            dat.set(x, y, std::real(complexImage.get(x, y)));
+            dat.set(x, y, std::clamp(std::real(complexImage.get(x, y)), 0.0, 255.0));
         }
     }
 

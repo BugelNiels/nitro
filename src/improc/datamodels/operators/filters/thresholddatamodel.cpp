@@ -35,7 +35,7 @@ QWidget *nitro::ThresholdDataModel::initBeforeWidget() {
 
     thresholdSpinBox = new QSpinBox();
     thresholdSpinBox->setMinimum(0);
-    thresholdSpinBox->setMaximum(255); // TODO: update based on levels of input
+    thresholdSpinBox->setMaximum(256); // TODO: update based on levels of input
     thresholdSpinBox->setValue(threshold);
     connect(thresholdSpinBox, SIGNAL (editingFinished()), this, SLOT(thresholdValChanged()));
     horLayout->addWidget(thresholdSpinBox);

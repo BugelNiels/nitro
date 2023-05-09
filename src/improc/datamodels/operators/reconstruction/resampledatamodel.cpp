@@ -40,7 +40,7 @@ QWidget *nitro::ResampleDataModel::initBeforeWidget() {
 
     targetSpinBox = new QSpinBox();
     targetSpinBox->setMinimum(1);
-    targetSpinBox->setMaximum(255);
+    targetSpinBox->setMaximum(256);
     targetSpinBox->setValue(targetK);
     connect(targetSpinBox, SIGNAL (editingFinished()), this, SLOT(targetValChanged()));
     layout->addWidget(new QLabel("k:"), rowIdx, 0);

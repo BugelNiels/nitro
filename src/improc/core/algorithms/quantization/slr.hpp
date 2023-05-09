@@ -3,5 +3,6 @@
 #include "core/cbdimage.hpp"
 
 namespace nitro::operations {
-    nitro::CbdImage smartLayerRemoval(const nitro::CbdImage &img, int k);
+    nitro::CbdImage histLayerRemoval(const nitro::CbdImage &img, int k);
+    nitro::CbdImage componentLayerRemoval(const nitro::CbdImage &img, int k);
 } // nitro

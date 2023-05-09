@@ -1,42 +1,35 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
 
 #include <QtCore/QObject>
 
 #include <iostream>
 #include <QPushButton>
 #include <QLabel>
+#include <QCheckBox>
 #include <QSpinBox>
-#include <QComboBox>
 
 #include "src/improc/core/cbdimage.hpp"
 #include "datamodels/operators/imopdatamodel.hpp"
 
-#include "core/algorithms/distancefield.hpp"
-
 class QLineEdit;
 
 namespace nitro {
-
-    enum SampleMethod {
-        LINEAR, CUBIC_HERMITE, CUBIC_INTERPOLATORY
-    };
-
-    class ResampleDataModel : public ImOpDataModel {
+    class LayerSelectionDataModel : public ImOpDataModel {
     Q_OBJECT
 
     public:
-        ResampleDataModel();
+        LayerSelectionDataModel();
 
-        ~ResampleDataModel() override {}
+        ~LayerSelectionDataModel() override = default;
 
     public:
         static NodeInfo nodeInfo() {
-            return {"Resample",
-                    "Resample",
-                    {201, 94, 6},
-                    ":/icons/nodes/resample.png"};
+            return {"Layer Selection",
+                    "LayerSelection",
+                    {43, 101, 43},
+                    ":/icons/nodes/quantisize.png"};
         }
 
         QString caption() const override { return nodeInfo().getNodeName(); }
@@ -45,6 +38,8 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
+        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
+
     public:
         QJsonObject save() const override;
 
@@ -52,9 +47,7 @@ namespace nitro {
 
     public Q_SLOTS:
 
-        void modeChanged(int mode);
-
-        void targetValChanged();
+        void kValChanged();
 
     protected:
 
@@ -64,17 +57,9 @@ namespace nitro {
 
         QWidget *initBeforeWidget() override;
 
-        QWidget *initAfterWidget() override;
-
-        void clearData() override;
-
     private:
-        DistanceField *field;
-        SampleMethod _mode = SampleMethod::LINEAR;
-        int targetK = 256;
+        int k = 8;
 
-        QComboBox *modeCombobox;
-        QSpinBox *targetSpinBox;
-
+        QSpinBox *kSpinBox;
     };
 }

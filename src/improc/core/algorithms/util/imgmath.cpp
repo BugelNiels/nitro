@@ -62,7 +62,7 @@ nitro::CbdImage nitro::operations::subtractImage(const nitro::CbdImage &inputImg
 nitro::CbdImage nitro::operations::subtractImage(const nitro::CbdImage &inputImg, const nitro::CbdImage &other) {
     int width = inputImg.width();
     int height = inputImg.height();
-    nitro::CbdImage result(width, height, 255);
+    nitro::CbdImage result(width, height, 256);
     auto &outData = result.data();
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {

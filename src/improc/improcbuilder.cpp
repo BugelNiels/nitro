@@ -192,6 +192,7 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::regist
     ret->registerModel<nitro::ToggleDataModel>("Operator");
     ret->registerModel<nitro::BlendDataModel>("Operator");
     ret->registerModel<nitro::SlrDataModel>("Operator");
+    ret->registerModel<nitro::LayerSelectionDataModel>("Operator");
     ret->registerModel<nitro::LowPassFilterDataModel>("Operator");
     ret->registerModel<nitro::MixDataModel>("Operator");
     return ret;
@@ -201,23 +202,26 @@ void nitro::ImprocBuilder::registerColors() {
     nitro::NodeColors::registerColor(nitro::ImageSourceDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::IntegerSourceDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::DecimalSourceDataModel::nodeInfo());
+
     nitro::NodeColors::registerColor(nitro::ImageViewerDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::SurfaceViewerDataModel::nodeInfo());
+
     nitro::NodeColors::registerColor(nitro::ToGrayScaleDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::ThresholdDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::KMeansDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::QuantisizeDataModel::nodeInfo());
+    nitro::NodeColors::registerColor(nitro::LayerSelectionDataModel::nodeInfo());
+    nitro::NodeColors::registerColor(nitro::SlrDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::FlipDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::ResampleDataModel::nodeInfo());
-    nitro::NodeColors::registerColor(nitro::SeparateRgbDataModel::nodeInfo());
 
     nitro::NodeColors::registerColor(nitro::CombineRgbDataModel::nodeInfo());
-    nitro::NodeColors::registerColor(nitro::SeparateYCbCrDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::CombineYCbrCrDataModel::nodeInfo());
+    nitro::NodeColors::registerColor(nitro::SeparateYCbCrDataModel::nodeInfo());
+    nitro::NodeColors::registerColor(nitro::SeparateRgbDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::ImgMathDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::ToggleDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::BlendDataModel::nodeInfo());
-    nitro::NodeColors::registerColor(nitro::SlrDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::LowPassFilterDataModel::nodeInfo());
     nitro::NodeColors::registerColor(nitro::MixDataModel::nodeInfo());
 

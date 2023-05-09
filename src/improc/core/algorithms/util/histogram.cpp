@@ -1,7 +1,7 @@
 #include "histogram.hpp"
 
 QVector<int> nitro::operations::getHistogram(const nitro::CbdImage &image) {
-    QVector<int> hist(255); // Hardcode to 255 grey levels for now
+    QVector<int> hist(256); // Hardcode to 256 grey levels for now
     hist.fill(0);
     int width = image.width();
     int height = image.width();

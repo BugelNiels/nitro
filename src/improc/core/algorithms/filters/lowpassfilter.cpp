@@ -13,7 +13,7 @@ static nitro::Matrix<std::complex<double>> constructButterworthLowPass(int width
     int center_y = height / 2;
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            double distance = std::sqrt(std::pow(x - center_x, 2) + std::pow(y - center_y, 2));
+            double distance = std::sqrt((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y));
 
             // Calculate Butterworth filter
             double blp = 1.0 / (1.0 + std::pow(distance / cutoff, 2 * order));
@@ -32,7 +32,7 @@ nitro::CbdImage nitro::operations::lowPassFilter(const nitro::CbdImage &image, f
 
     fft2Dshift(ft);
 
-    auto filter = constructButterworthLowPass(width, height, cutoff, order, ft.width(), ft.height());
+    auto filter = constructButterworthLowPass(ft.width(), ft.height(), cutoff, order, ft.width(), ft.height());
     for (int y = 0; y < ft.height(); y++) {
         for (int x = 0; x < ft.width(); x++) {
             auto val = ft.get(x, y) * filter.get(x, y);
@@ -40,5 +40,5 @@ nitro::CbdImage nitro::operations::lowPassFilter(const nitro::CbdImage &image, f
         }
     }
     ifft2Dshift(ft);
-    return ifft2D(ft);
+    return ifft2D(ft, width, height);
 }

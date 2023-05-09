@@ -140,6 +140,7 @@ QMenu *nitro::ImageNodeGraphicsView::initQuantizationSubMenu() {
     opsMenu->addAction(
             spawnNodeAction(nitro::QuantisizeDataModel::nodeInfo()));
     opsMenu->addAction(spawnNodeAction(nitro::KMeansDataModel::nodeInfo()));
+    opsMenu->addAction(spawnNodeAction(nitro::LayerSelectionDataModel::nodeInfo()));
     opsMenu->addAction(spawnNodeAction(nitro::SlrDataModel::nodeInfo()));
     return opsMenu;
 }

@@ -9,7 +9,7 @@
 
 #include "src/improc/core/cbdimage.hpp"
 #include "src/improc/datamodels/datatypes/imagedata.hpp"
-#include "src/core/nodes/nodeinfo.hpp" // TODO: move to core?
+#include "src/core/nodes/nodeinfo.hpp"
 
 namespace nitro {
     class ImageDataModel : public QtNodes::NodeDelegateModel {

@@ -28,6 +28,7 @@
 // Quantization
 #include "operators/quantization/kmeansdatamodel.hpp"
 #include "operators/quantization/quantisizedatamodel.hpp"
+#include "operators/quantization/layerselectiondatamodel.hpp"
 #include "operators/quantization/slrdatamodel.hpp"
 
 // Reconstruction

@@ -36,7 +36,7 @@ QWidget *nitro::KMeansDataModel::initBeforeWidget() {
 
     kSpinBox = new QSpinBox();
     kSpinBox->setMinimum(0);
-    kSpinBox->setMaximum(255);
+    kSpinBox->setMaximum(256);
     kSpinBox->setValue(k);
     connect(kSpinBox, SIGNAL (editingFinished()), this, SLOT(kValChanged()));
     layout->addWidget(new QLabel("k:"), rowIdx, 0);
