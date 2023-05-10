@@ -26,7 +26,7 @@ static nitro::CbdImage removeLayers(const nitro::CbdImage &image, const QVector<
                 }
             }
             if (i == cols.size()) {
-                data.set(x, y, cols[cols.size() - 1]);
+                data.set(x, y, cols.size() - 1);
             }
         }
     }
@@ -90,11 +90,21 @@ nitro::CbdImage nitro::operations::componentLayerRemoval(const nitro::CbdImage &
     // keep the layers that introduce the most pixels
 
     std::vector<int> hist = nitro::operations::componentHistogram(img);
+    qDebug() << hist;
+
+    // TODO: read 1s until this increases, that is where we need to start searching
+    // Read 0s from the end until we start seeing 1s, that is the highest white level
+
+
     for (int i = hist.size() - 1; i > 0; i--) {
         // change in components
         hist[i] = std::abs(hist[i] - hist[i - 1]);
     }
     hist[0] = 1;
+    qDebug() << hist;
+
+    // Alternative TODO: count the sum of the above. Then divide by the desired number of levels, these are the bins
+    // Then, distribute these things into bins; grey value is median value of the bin?
 
     hist = findPeaks(hist, k);
 
@@ -105,6 +115,7 @@ nitro::CbdImage nitro::operations::componentLayerRemoval(const nitro::CbdImage &
     std::sort(newLayers.begin(), newLayers.end(), [](int a, int b) {
         return a < b;
     });
+    qDebug() << newLayers;
 
     return removeLayers(img, newLayers);
 

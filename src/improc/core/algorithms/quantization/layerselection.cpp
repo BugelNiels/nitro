@@ -117,7 +117,7 @@ static void find_layers(int clear_color, double *importance_upper, double width,
     double tail = 0.5;
     int numiters = 0;
     int peaks = 0;
-    while (numiters < 100) {
+    while (numiters < 255) {
         if (impfac < 0.003) break;//The difference is too small
         detect_layers(clear_color, importance_upper, impfac, false, peaks, max_elem);
         if (peaks < width) {//impfac need a smaller one
@@ -231,7 +231,7 @@ nitro::CbdImage removeLayers(const nitro::CbdImage &img, const double *importanc
 nitro::CbdImage nitro::operations::LayerSelection(const nitro::CbdImage &img, int k) {
 
     bool cumulative = true;
-    double *importance = calculateImportance(img, cumulative, k);
+    double *importance = calculateImportance(img, cumulative, k - 1);
     auto res = removeLayers(img, importance);
 
     QVector<int> layers;
@@ -240,6 +240,7 @@ nitro::CbdImage nitro::operations::LayerSelection(const nitro::CbdImage &img, in
             layers.push_back(i);
         }
     }
+    qDebug() << layers.size();
     auto &data = res.data();
     for (int y = 0; y < res.height(); y++) {
         for (int x = 0; x < res.width(); x++) {

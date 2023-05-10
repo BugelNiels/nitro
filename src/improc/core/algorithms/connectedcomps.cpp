@@ -11,7 +11,7 @@ int nitro::operations::numComponents(const nitro::CbdImage& image, int greyVal) 
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            if (!visited[i][j] && image.get(j, i) == greyVal) {
+            if (!visited[i][j] && image.get(j, i) >= greyVal) {
                 numComponents++;
                 stack.emplace(i, j);
                 visited[i][j] = true;
