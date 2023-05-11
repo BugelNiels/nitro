@@ -22,7 +22,7 @@
     "PenWidth": 0.0,
     "HoveredPenWidth": 0.0,
 
-    "ConnectionPointDiameter": 8.0,
+    "ConnectionPointDiameter": 12.0,
 
     "Opacity": 1
   },
@@ -35,7 +35,7 @@
 
     "LineWidth": 3.0,
     "ConstructionLineWidth": 2.0,
-    "PointDiameter": 10.0,
+    "PointDiameter": 14.0,
 
     "UseDataDefinedColors": true
   }
