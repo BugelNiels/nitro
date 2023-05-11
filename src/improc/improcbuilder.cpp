@@ -173,6 +173,7 @@ QWidget *nitro::ImprocBuilder::initNodeTitleBar(nitro::MainWindow *window) {
 
 std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::registerDataModels() {
     auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
+    // TODO: better categories
     ret->registerModel<nitro::ImageSourceDataModel>("Input");
     ret->registerModel<nitro::IntegerSourceDataModel>("Input");
     ret->registerModel<nitro::DecimalSourceDataModel>("Input");
@@ -188,6 +189,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> nitro::ImprocBuilder::regist
     ret->registerModel<nitro::CombineRgbDataModel>("Operator");
     ret->registerModel<nitro::SeparateYCbCrDataModel>("Operator");
     ret->registerModel<nitro::CombineYCbrCrDataModel>("Operator");
+    ret->registerModel<nitro::SeparateICtCpDataModel>("Operator");
+    ret->registerModel<nitro::CombineICtCpDataModel>("Operator");
     ret->registerModel<nitro::ImgMathDataModel>("Operator");
     ret->registerModel<nitro::ToggleDataModel>("Operator");
     ret->registerModel<nitro::BlendDataModel>("Operator");

@@ -17,14 +17,13 @@ class QLineEdit;
 
 namespace nitro {
     class LowPassFilterDataModel : public ImageDataModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         LowPassFilterDataModel();
 
         virtual ~LowPassFilterDataModel() {}
 
-    public:
 
         static NodeInfo nodeInfo() {
             return {"Low-Pass Filter",
@@ -39,7 +38,6 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -48,12 +46,9 @@ namespace nitro {
 
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
-    public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;
-
-    public Q_SLOTS:
 
 
     protected:

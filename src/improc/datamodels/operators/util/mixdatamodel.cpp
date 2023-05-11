@@ -25,7 +25,7 @@ nitro::MixDataModel::MixDataModel() : ImageDataModel() {
 QJsonObject nitro::MixDataModel::save() const {
     QJsonObject modelJson = NodeDelegateModel::save();
 
-    modelJson["mode"] = modeBox->currentText();
+    modelJson["mode"] = modeBox->currentIndex();
 
     return modelJson;
 }
@@ -33,7 +33,7 @@ QJsonObject nitro::MixDataModel::save() const {
 void nitro::MixDataModel::load(const QJsonObject &p) {
     QJsonValue jVal = p["blendVal"];
     if (!jVal.isUndefined()) {
-        modeBox->setCurrentText(jVal.toString());
+        modeBox->setCurrentIndex(jVal.toInt());
         compute();
     }
 }

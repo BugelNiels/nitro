@@ -22,10 +22,7 @@ namespace nitro {
             return {"Image", "cbd_image", {199, 199, 41}};
         }
 
-
-        // TODO: check efficiency here?
-        explicit ImageData(std::shared_ptr<CbdImage> img) {
-            _greyImage = std::move(img);
+        explicit ImageData(const std::shared_ptr<CbdImage>& img) : _greyImage(img) {
             mode = GREYSCALE;
         }
 
@@ -34,12 +31,11 @@ namespace nitro {
             mode = COLOR;
         }
 
-        bool isValid() {
+        bool isValid() const {
             return isColImg() ? _colImage != nullptr : _greyImage != nullptr;
         }
 
-        const QImage &getDisplayImg() {
-            // TODO: check the ref
+        const QImage &getDisplayImg() const {
             return isColImg() ? *_colImage : _greyImage->getDisplayImg();
         }
 
@@ -55,9 +51,9 @@ namespace nitro {
             return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
         }
 
-        std::shared_ptr<CbdImage> image() { return _greyImage; }
+        std::shared_ptr<CbdImage> image() const { return _greyImage; }
 
-        std::shared_ptr<QImage> colImage() { return _colImage; }
+        std::shared_ptr<QImage> colImage() const { return _colImage; }
 
     private:
         Mode mode;

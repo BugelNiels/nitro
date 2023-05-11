@@ -12,14 +12,13 @@
 
 namespace nitro {
     class ImageSourceDataModel : public ImageDataModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         ImageSourceDataModel();
 
         ~ImageSourceDataModel() override = default;
 
-    public:
         static NodeInfo nodeInfo() {
             return {"Image Source",
                     "ImageSource",
@@ -33,12 +32,10 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -52,9 +49,10 @@ namespace nitro {
 
         QWidget *initAfterWidget() override;
 
-    private Q_SLOTS:
+    private
+        Q_SLOTS:
 
-        void onLoadButtonPressed();
+                void onLoadButtonPressed();
 
     private:
         std::shared_ptr<ImageData> _image;

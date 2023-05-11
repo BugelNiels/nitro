@@ -12,10 +12,6 @@ namespace nitro {
     public:
         CbdImage();
 
-        CbdImage(const CbdImage &img);
-
-        CbdImage &operator=(const CbdImage &img) = default;
-
         CbdImage(int width, int height, int dynRange);
 
         explicit CbdImage(const QImage &img);
@@ -43,7 +39,7 @@ namespace nitro {
         void setIndexed(QVector<int> vals);
 
     private:
-        int numGreyLevels;
+        int numGreyLevels = 0;
         Matrix<int> matrix;
 
         QImage displayImg;

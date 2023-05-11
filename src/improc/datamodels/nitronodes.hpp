@@ -16,14 +16,16 @@
 
 // Filters
 #include "operators/filters/lowpassdatamodel.hpp"
+#include "src/improc/datamodels/operators/filters/thresholddatamodel.hpp"
 
 // Conversions
 #include "conversions/tograyscaledatamodel.hpp"
 #include "conversions/rgb/separatergbdatamodel.hpp"
-#include "src/improc/datamodels/operators/filters/thresholddatamodel.hpp"
 #include "conversions/rgb/combinergbdatamodel.hpp"
 #include "conversions/ycbcr/combineycbcrdatamodel.hpp"
 #include "conversions/ycbcr/separateycbcrdatamodel.hpp"
+#include "conversions/ictcp/combineictcpdatamodel.hpp"
+#include "conversions/ictcp/separateictcpdatamodel.hpp"
 
 // Quantization
 #include "operators/quantization/kmeansdatamodel.hpp"

@@ -15,14 +15,12 @@ class QLineEdit;
 
 namespace nitro {
     class ToGrayScaleDataModel : public ImageDataModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         ToGrayScaleDataModel();
 
         ~ToGrayScaleDataModel() override = default;
-
-    public:
 
         static NodeInfo nodeInfo() {
             return {"To Grayscale",
@@ -37,7 +35,6 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -47,12 +44,9 @@ namespace nitro {
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
     private:
-
-        const int _embedImgSize = 128;
         std::shared_ptr<ImageData> _in;
         std::shared_ptr<ImageData> _result;
 
         QWidget *_displayWrapper;
-        QLabel *_imgLabel;
     };
 }

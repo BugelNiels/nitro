@@ -11,20 +11,18 @@ namespace nitro {
     public:
         Matrix() : matWidth(0), matHeight(0) {};
 
-        Matrix(const Matrix<T> &other) {
-            matWidth = other.matWidth;
-            matHeight = other.matHeight;
-            data.resize(matWidth * matHeight);
-            for (int i = 0; i < numElems(); i++) {
-                data[i] = other.data[i];
-            }
-        }
+//        Matrix(const Matrix<T> &other) : matWidth(other.width()), matHeight(other.height()) {
+//            data.resize(matWidth * matHeight);
+//            for (int i = 0; i < numElems(); i++) {
+//                data[i] = other.data[i];
+//            }
+//        }
 
         Matrix(int width, int height) : matWidth(width), matHeight(height) { data.resize(matWidth * matHeight); }
 
         ~Matrix() = default;
 
-        Matrix &operator=(const Matrix &) = default;
+//        Matrix &operator=(const Matrix &) = default;
 
         inline void fill(T val) { data.fill(val); }
 
@@ -46,7 +44,8 @@ namespace nitro {
 
     private:
         QVector<T> data;
-        int matWidth, matHeight;
+        int matWidth;
+        int matHeight;
     };
 
 }  // namespace nitro

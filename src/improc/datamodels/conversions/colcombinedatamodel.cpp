@@ -61,9 +61,10 @@ void nitro::ColorCombineDataModel::setInData(std::shared_ptr<QtNodes::NodeData> 
     }
 
     bool shouldUpdate = true;
-    for (auto &dat: _input) {
+    for (const auto &dat: _input) {
         if (dat == nullptr || !dat->isValid()) {
             shouldUpdate = false;
+            break;
         }
     }
 

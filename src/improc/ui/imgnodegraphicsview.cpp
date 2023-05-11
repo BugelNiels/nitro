@@ -108,9 +108,11 @@ QMenu *nitro::ImageNodeGraphicsView::initConverterSubMenu() {
     convertMenu->addSeparator();
     convertMenu->addAction(spawnNodeAction(nitro::SeparateRgbDataModel::nodeInfo()));
     convertMenu->addAction(spawnNodeAction(nitro::SeparateYCbCrDataModel::nodeInfo()));
+    convertMenu->addAction(spawnNodeAction(nitro::SeparateICtCpDataModel::nodeInfo()));
     convertMenu->addSeparator();
     convertMenu->addAction(spawnNodeAction(nitro::CombineRgbDataModel::nodeInfo()));
     convertMenu->addAction(spawnNodeAction(nitro::CombineYCbrCrDataModel::nodeInfo()));
+    convertMenu->addAction(spawnNodeAction(nitro::CombineICtCpDataModel::nodeInfo()));
     return convertMenu;
 }
 
@@ -154,7 +156,7 @@ QMenu *nitro::ImageNodeGraphicsView::initResampleSubMenu() {
 QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
 
-    QAction *sectionTitle = menu->addSection("Add");
+    QAction * sectionTitle = menu->addSection("Add");
     QFont font;
     font.setWeight(QFont::Light);
     sectionTitle->setFont(font);
@@ -177,7 +179,7 @@ void nitro::ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
     if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
         event->button() == Qt::LeftButton) {
         // Spawn and connect to viewer if possible
-        QGraphicsItem *item = itemAt(event->pos().x(), event->pos().y());
+        QGraphicsItem * item = itemAt(event->pos().x(), event->pos().y());
         // Update position of current selected node?
         if (item != nullptr) {
 

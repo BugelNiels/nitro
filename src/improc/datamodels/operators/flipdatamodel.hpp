@@ -37,6 +37,9 @@ namespace nitro {
         QString name() const override { return nodeInfo().getNodeId(); }
 
     protected:
+
+        QWidget *initBeforeWidget() override;
+
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -54,5 +57,7 @@ namespace nitro {
 
 
         void setFlipResult();
+
+        QLabel* mseLabel;
     };
 }

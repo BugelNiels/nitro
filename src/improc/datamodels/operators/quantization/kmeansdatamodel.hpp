@@ -24,7 +24,6 @@ namespace nitro {
 
         ~KMeansDataModel() override = default;
 
-    public:
         static NodeInfo nodeInfo() {
             return {"K-Means",
                     "KMeans",
@@ -38,7 +37,6 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;

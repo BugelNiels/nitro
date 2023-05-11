@@ -32,7 +32,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
         resources/resources.qrc
-        src/improc/core/algorithms/connectedcomps.cpp src/improc/core/algorithms/connectedcomps.hpp)
+        )
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

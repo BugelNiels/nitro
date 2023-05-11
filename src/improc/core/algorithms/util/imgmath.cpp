@@ -73,7 +73,6 @@ nitro::CbdImage nitro::operations::subtractImage(const nitro::CbdImage &inputImg
     return result;
 }
 
-
 nitro::CbdImage nitro::operations::multiplyImage(const nitro::CbdImage &inputImg, double mul) {
     int width = inputImg.width();
     int height = inputImg.height();
@@ -144,6 +143,9 @@ QImage nitro::operations::mixImage(const QImage &imgA, const QImage &imgB, float
     painter.setOpacity(factor);
     painter.drawImage(0, 0, imgB);
     painter.end();
+    if(imgA.isGrayscale() && imgB.isGrayscale()) {
+        return result.convertToFormat(QImage::Format_Grayscale8);
+    }
     return result.convertToFormat(QImage::Format_RGB32);
 }
 
@@ -160,5 +162,8 @@ QImage nitro::operations::mixImage(const QImage &imgA, const QImage &imgB, QPain
     painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
     painter.fillRect(imgA.rect(), Qt::white);
     painter.end();
+    if(imgA.isGrayscale() && imgB.isGrayscale()) {
+        return result.convertToFormat(QImage::Format_Grayscale8);
+    }
     return result;
 }

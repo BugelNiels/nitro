@@ -11,14 +11,13 @@
 
 namespace nitro {
     class IntegerSourceDataModel : public QtNodes::NodeDelegateModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         IntegerSourceDataModel();
 
         ~IntegerSourceDataModel() override = default;
 
-    public:
         static NodeInfo nodeInfo() {
             return {"Integer",
                     "Integer",
@@ -32,12 +31,10 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -51,7 +48,7 @@ namespace nitro {
 
 
     private:
-        QSpinBox* spinBox;
+        QSpinBox *spinBox;
         QWidget *_displayWrapper = nullptr;
     };
 }

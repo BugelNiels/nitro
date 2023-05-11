@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtNodes/NodeDelegateModel>
 
 #include <QtCore/QObject>
@@ -13,14 +14,13 @@
 
 namespace nitro {
     class ColorSeparateDataModel : public QtNodes::NodeDelegateModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         explicit ColorSeparateDataModel(int numChannels);
 
         ~ColorSeparateDataModel() override = default;
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -33,7 +33,7 @@ namespace nitro {
 
         virtual void separate(const QImage &inputImg) = 0;
 
-        QVector<std::shared_ptr<ImageData>> _result;
+        QVector <std::shared_ptr<ImageData>> _result;
 
     private:
         std::shared_ptr<ImageData> _input;

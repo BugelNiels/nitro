@@ -9,7 +9,7 @@
 
 
 nitro::ToGrayScaleDataModel::ToGrayScaleDataModel()
-        : ImageDataModel(), _displayWrapper(nullptr), _imgLabel(nullptr) {}
+        : ImageDataModel() {}
 
 unsigned int nitro::ToGrayScaleDataModel::nPorts(QtNodes::PortType portType) const {
     unsigned int result = 1;

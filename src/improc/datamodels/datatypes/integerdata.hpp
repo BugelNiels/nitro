@@ -13,9 +13,7 @@ namespace nitro {
     public:
         IntegerData() = default;
 
-        // TODO: check efficiency here?
-        explicit IntegerData(int val) {
-            val_ = val;
+        explicit IntegerData(int val) : val_(val) {
         }
 
         static DataInfo dataInfo() {

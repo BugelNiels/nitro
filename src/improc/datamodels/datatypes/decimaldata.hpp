@@ -13,9 +13,7 @@ namespace nitro {
     public:
         DecimalData() = default;
 
-        // TODO: check efficiency here?
-        explicit DecimalData(double val) {
-            val_ = val;
+        explicit DecimalData(double val) : val_(val) {
         }
 
 

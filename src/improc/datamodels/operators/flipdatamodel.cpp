@@ -76,8 +76,10 @@ void nitro::FlipDataModel::setFlipResult() {
     }
     const QImage &inA = _inputImgA->getDisplayImg();
     const QImage &inB = _inputImgB->getDisplayImg();
-    
-    auto finalRes = nitro::operations::flipCompare(inA, inB);
+
+    float mse;
+    auto finalRes = nitro::operations::flipCompare(inA, inB, mse);
+    mseLabel->setText(QString("MSE: %1").arg(mse));
     updateImage(finalRes);
     // TODO: extract this somewhere?
     auto resPtr = std::make_shared<QImage>(finalRes);
@@ -87,5 +89,10 @@ void nitro::FlipDataModel::setFlipResult() {
 
 std::shared_ptr<QtNodes::NodeData> nitro::FlipDataModel::outData(QtNodes::PortIndex port) {
     return _result;
+}
+
+QWidget *nitro::FlipDataModel::initBeforeWidget() {
+    mseLabel = new QLabel("MSE: 0");
+    return mseLabel;
 }
 

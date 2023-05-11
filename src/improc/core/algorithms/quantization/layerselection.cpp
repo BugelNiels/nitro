@@ -240,7 +240,6 @@ nitro::CbdImage nitro::operations::LayerSelection(const nitro::CbdImage &img, in
             layers.push_back(i);
         }
     }
-    qDebug() << layers.size();
     auto &data = res.data();
     for (int y = 0; y < res.height(); y++) {
         for (int x = 0; x < res.width(); x++) {

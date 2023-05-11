@@ -55,7 +55,9 @@ void nitro::ColorSeparateDataModel::setInData(std::shared_ptr<QtNodes::NodeData>
         auto numChannels = _result.size();
         _result.clear();
         _result.resize(numChannels);
-        Q_EMIT dataUpdated(0);
+        for (int i = 0; i < _result.size(); i++) {
+            Q_EMIT dataUpdated(i);
+        }
         return;
     }
     _input = inputImg;
@@ -63,11 +65,13 @@ void nitro::ColorSeparateDataModel::setInData(std::shared_ptr<QtNodes::NodeData>
         if (_input->isColImg()) {
             separate(*_input->colImage());
         } else {
-            for(auto & i : _result) {
+            for (auto &i: _result) {
                 i = _input;
             }
         }
-        Q_EMIT dataUpdated(0);
+        for (int i = 0; i < _result.size(); i++) {
+            Q_EMIT dataUpdated(i);
+        }
     }
 }
 

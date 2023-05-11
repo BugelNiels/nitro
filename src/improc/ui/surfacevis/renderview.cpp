@@ -56,16 +56,16 @@ void nitro::RenderView::initializeGL() {
     updateMatrices();
 
     resetOrientation();
-    int w = 256;
-    int h = 256;
-    QImage img(w, h, QImage::Format_Grayscale8);
-    for (int y = 0; y < h; y++) {
-        auto *row = img.scanLine(y);
-        for (int x = 0; x < w; x++) {
-            row[x] = 255;
-        }
-    }
-    updateBuffers(img);
+//    int w = 256;
+//    int h = 256;
+//    QImage img(w, h, QImage::Format_Grayscale8);
+//    for (int y = 0; y < h; y++) {
+//        auto *row = img.scanLine(y);
+//        for (int x = 0; x < w; x++) {
+//            row[x] = 255;
+//        }
+//    }
+//    updateBuffers(img);
 }
 
 

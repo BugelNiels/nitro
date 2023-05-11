@@ -17,14 +17,13 @@ class QLineEdit;
 
 namespace nitro {
     class ThresholdDataModel : public ImOpDataModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         ThresholdDataModel();
 
         virtual ~ThresholdDataModel() {}
 
-    public:
 
         static NodeInfo nodeInfo() {
             return {"Threshold",
@@ -39,7 +38,6 @@ namespace nitro {
 
         QString name() const override { return nodeInfo().getNodeId(); }
 
-    public:
         QJsonObject save() const override;
 
         void load(QJsonObject const &p) override;

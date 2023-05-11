@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtNodes/NodeDelegateModel>
 
 #include <QtCore/QObject>
@@ -13,14 +14,13 @@
 
 namespace nitro {
     class ColorCombineDataModel : public QtNodes::NodeDelegateModel {
-    Q_OBJECT
+        Q_OBJECT
 
     public:
         explicit ColorCombineDataModel(int numChannels);
 
         ~ColorCombineDataModel() override = default;
 
-    public:
         unsigned int nPorts(QtNodes::PortType portType) const override;
 
         QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
@@ -32,12 +32,12 @@ namespace nitro {
 
     protected:
 
-        virtual void combine(const QVector<std::shared_ptr<ImageData>> &input) = 0;
+        virtual void combine(const QVector <std::shared_ptr<ImageData>> &input) = 0;
 
         std::shared_ptr<ImageData> _result;
 
     private:
-        QVector<std::shared_ptr<ImageData>> _input;
+        QVector <std::shared_ptr<ImageData>> _input;
 
 
     };

@@ -56,7 +56,7 @@ inline static float calculatePPD(const float dist, const float resolutionX,
     return dist * (resolutionX / monitorWidth) * (float(FLIP::PI) / 180.0f);
 }
 
-QImage nitro::operations::flipCompare(const QImage &imageA, const QImage &imageB) {
+QImage nitro::operations::flipCompare(const QImage &imageA, const QImage &imageB, float& mse) {
     FLIP::image<FLIP::color3> fImgA = qColImgToFlipImg(imageA);
     FLIP::image<FLIP::color3> fImgB = qColImgToFlipImg(imageB);
 
@@ -68,6 +68,14 @@ QImage nitro::operations::flipCompare(const QImage &imageA, const QImage &imageB
     FLIP::image<float> errMap(width, height, 0.0f);
     errMap.FLIP(fImgA, fImgB, ppd);
 
+    mse = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            float err = errMap.get(x, y);
+            mse += err * err;
+        }
+    }
+    mse /= (width * height);
 
     FLIP::image<FLIP::color3> colResult(width, height);
     colResult.copyFloat2Color3(errMap);

@@ -34,7 +34,7 @@ static nitro::CbdImage removeLayers(const nitro::CbdImage &image, const QVector<
     return res;
 }
 
-std::vector<int> findPeaks(const std::vector<int> hist, int k) {
+std::vector<int> findPeaks(const std::vector<int>& hist, int k) {
     std::vector<IndexedVal> peaks;
 
     // Find local maxima

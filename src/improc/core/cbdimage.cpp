@@ -7,17 +7,8 @@
 
 nitro::CbdImage::CbdImage() = default;
 
-nitro::CbdImage::CbdImage(const nitro::CbdImage &img) {
-    numGreyLevels = img.numGreyLevels;
-    matrix = nitro::Matrix<int>(img.matrix);
-
-    indexed = img.indexed;
-    vals = img.vals;
-}
-
 nitro::CbdImage::CbdImage(int width, int height, int dynRange)
-        : numGreyLevels(dynRange) {
-    matrix = nitro::Matrix<int>(width, height);
+        : numGreyLevels(dynRange), matrix(nitro::Matrix<int>(width, height)) {
 }
 
 nitro::CbdImage::CbdImage(const QImage &img) {
