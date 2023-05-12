@@ -70,7 +70,6 @@ void nitro::LayerSelectionDataModel::setInData(std::shared_ptr<QtNodes::NodeData
     auto inputImg = std::dynamic_pointer_cast<ImageData>(data);
 
     if (!data || !inputImg || !inputImg->isValid()) {
-        Q_EMIT dataInvalidated(0);
         return;
     }
     if (inputImg->isGrayscaleImg()) {

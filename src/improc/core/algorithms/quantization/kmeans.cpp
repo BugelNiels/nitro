@@ -1,5 +1,7 @@
 #include "kmeans.hpp"
 
+#include <QDebug>
+
 
 static inline int findClosestMean(const QVector<float> &means, int k, int val) {
     int meanIdx = 0;
@@ -24,7 +26,7 @@ static QVector<int> constructColorTable(const nitro::CbdImage &img,
     QVector<int> meanCounts(k);
     meanCounts.fill(0);
     for (int i = 0; i < k; i++) {
-        means[i] = i * 255.0f / k;
+        means[i] = float(i) * 255.0f / float(k);
     }
 
     nitro::Matrix<int> meanIndices = nitro::Matrix<int>(width, height);
@@ -47,6 +49,9 @@ static QVector<int> constructColorTable(const nitro::CbdImage &img,
         }
 
         for (int j = 0; j < k; j++) {
+            if(meanCounts[j] == 0) {
+                continue;
+            }
             means[j] /= float(meanCounts[j]);
             meanCounts[j] = 0;
         }
@@ -151,6 +156,7 @@ nitro::CbdImage nitro::operations::kMeans(const nitro::CbdImage &img, int k, int
         for (int x = 0; x < width; x++) {
             int oldPixel = matrix.get(x, y);
             int newPixel = findClosestValue(newCols, oldPixel);
+//            qDebug() << oldPixel <<newPixel << newCols[newPixel] ;
             quantMatrix.set(x, y, newPixel);
         }
     }

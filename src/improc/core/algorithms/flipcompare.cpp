@@ -63,7 +63,7 @@ QImage nitro::operations::flipCompare(const QImage &imageA, const QImage &imageB
 
     int width = imageA.width();
     int height = imageA.height();
-    // TODO: extractt these constants
+    // TODO: extract these constants
     int ppd = calculatePPD(0.7f, 1920, 0.7f);
     FLIP::image<float> errMap(width, height, 0.0f);
     errMap.FLIP(fImgA, fImgB, ppd);
@@ -75,7 +75,8 @@ QImage nitro::operations::flipCompare(const QImage &imageA, const QImage &imageB
             mse += err * err;
         }
     }
-    mse /= (width * height);
+    mse /= float(width * height);
+    mse *= 100; // To make the number a bit more meaningful
 
     FLIP::image<FLIP::color3> colResult(width, height);
     colResult.copyFloat2Color3(errMap);

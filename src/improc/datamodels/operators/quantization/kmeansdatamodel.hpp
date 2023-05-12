@@ -58,7 +58,7 @@ namespace nitro {
         QWidget *initBeforeWidget() override;
 
     private:
-        int numIterations = 4;
+        int numIterations = 12;
         bool dither = false;
         int k = 8;
 
