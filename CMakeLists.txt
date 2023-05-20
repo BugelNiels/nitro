@@ -39,7 +39,7 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/src/core
         ${CMAKE_CURRENT_LIST_DIR}/src/gui
-        ${CMAKE_CURRENT_LIST_DIR}/src/nodes
+        ${CMAKE_CURRENT_LIST_DIR}/src/improc
         )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)

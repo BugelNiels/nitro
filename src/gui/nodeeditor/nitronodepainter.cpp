@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include <QtCore/QMargins>
-
 #include <QtNodes/internal/AbstractGraphModel.hpp>
 #include <QtNodes/internal/AbstractNodeGeometry.hpp>
 #include <QtNodes/internal/BasicGraphicsScene.hpp>
@@ -13,26 +11,22 @@
 #include <QtNodes/internal/NodeState.hpp>
 #include <QtNodes/internal/StyleCollection.hpp>
 
-#include "src/gui/nodeeditor/nodecolors.hpp"
+#include "src/gui/nodeeditor/style/nodecolors.hpp"
+#include "nodeeditor/style/datacolors.hpp"
 
 
 nitro::NitroNodePainter::NitroNodePainter() : QtNodes::AbstractNodePainter() {
-    nitro::NodeColors::initColors();
 }
 
 void nitro::NitroNodePainter::paint(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
-    // TODO?
-    //AbstractNodeGeometry & geometry = ngo.nodeScene()->nodeGeometry();
-    //geometry.recomputeSizeIfFontChanged(painter->font());
 
     drawNodeBackground(painter, ngo);
     drawNodeCaption(painter, ngo);
-    drawNodeHighlight(painter, ngo);
+    drawNodeBoundary(painter, ngo);
 
     drawConnectionPoints(painter, ngo);
 
     drawFilledConnectionPoints(painter, ngo);
-
 
     drawEntryLabels(painter, ngo);
 
@@ -51,7 +45,7 @@ void nitro::NitroNodePainter::drawNodeBackground(QPainter *painter, QtNodes::Nod
 
     QtNodes::NodeStyle nodeStyle(json.object());
 
-    QPen p(nodeStyle.NormalBoundaryColor, nodeStyle.PenWidth);
+    QPen p(nodeStyle.NormalBoundaryColor, 0);
     painter->setPen(p);
 
     QLinearGradient gradient(QPointF(0.0, 0.0), QPointF(0, size.height()));
@@ -69,11 +63,9 @@ void nitro::NitroNodePainter::drawNodeBackground(QPainter *painter, QtNodes::Nod
     painter->drawRoundedRect(boundary, radius, radius);
 }
 
-void nitro::NitroNodePainter::drawNodeHighlight(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
-    if (!ngo.isSelected()) {
-        return;
-    }
-    QtNodes::AbstractGraphModel &model = ngo.graphModel();
+void nitro::NitroNodePainter::drawNodeBoundary(QPainter *painter, QtNodes::NodeGraphicsObject &ngo) const {
+    QColor col = ngo.isSelected() ? QColor(255, 255, 255) : QColor(0, 0, 0);
+    int width = ngo.isSelected() ? 2 : 0;
 
     QtNodes::NodeId const nodeId = ngo.nodeId();
 
@@ -81,15 +73,14 @@ void nitro::NitroNodePainter::drawNodeHighlight(QPainter *painter, QtNodes::Node
 
     QSize size = geometry.size(nodeId);
 
-    QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, QtNodes::NodeRole::Style));
-
-    QtNodes::NodeStyle nodeStyle(json.object());
-
     QRectF boundary(0, 0, size.width(), size.height());
 
     double const radius = 3.0;
     QBrush brush(Qt::transparent);
     painter->setBrush(brush);
+    QPen borderPen(col);
+    borderPen.setWidth(width);
+    painter->setPen(borderPen);
     painter->drawRoundedRect(boundary, radius, radius);
 }
 
@@ -100,8 +91,6 @@ void nitro::NitroNodePainter::drawConnectionPoints(QPainter *painter, QtNodes::N
 
     QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, QtNodes::NodeRole::Style));
     QtNodes::NodeStyle nodeStyle(json.object());
-
-    auto const &connectionStyle = QtNodes::StyleCollection::connectionStyle();
 
     float diameter = nodeStyle.ConnectionPointDiameter;
     auto reducedDiameter = diameter * 0.6;
@@ -148,13 +137,8 @@ void nitro::NitroNodePainter::drawConnectionPoints(QPainter *painter, QtNodes::N
                     }
                 }
             }
-
-            if (connectionStyle.useDataDefinedColors()) {
-                // Set color based on data type
-                painter->setBrush(connectionStyle.normalColor(dataType.id));
-            } else {
-                painter->setBrush(nodeStyle.ConnectionPointColor);
-            }
+            painter->setPen({0, 0, 0});
+            painter->setBrush(nitro::DataColors::getColor(dataType.id));
 
             painter->drawEllipse(p, reducedDiameter * r, reducedDiameter * r);
         }
@@ -192,16 +176,8 @@ void nitro::NitroNodePainter::drawFilledConnectionPoints(QPainter *painter, QtNo
                         .portData(nodeId, portType, portIndex, QtNodes::PortRole::DataType)
                         .value<QtNodes::NodeDataType>();
 
-                auto const &connectionStyle = QtNodes::StyleCollection::connectionStyle();
-                if (connectionStyle.useDataDefinedColors()) {
-                    QColor const c = connectionStyle.normalColor(dataType.id);
-                    painter->setPen(c);
-                    painter->setBrush(c);
-                } else {
-                    painter->setPen(nodeStyle.FilledConnectionPointColor);
-                    painter->setBrush(nodeStyle.FilledConnectionPointColor);
-                }
-
+                painter->setPen(nitro::DataColors::getColor(dataType.id));
+                painter->setBrush(nitro::DataColors::getColor(dataType.id));
                 painter->drawEllipse(p, diameter * 0.4, diameter * 0.4);
             }
         }
@@ -223,14 +199,14 @@ void nitro::NitroNodePainter::drawNodeCaption(QPainter *painter, QtNodes::NodeGr
 
     QPointF position = geometry.captionPosition(nodeId);
     position.setX(10);
-    position.setY(15);
+    position.setY(16);
 
     QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, QtNodes::NodeRole::Style));
     QtNodes::NodeStyle nodeStyle(json.object());
 
 
     QSize size = geometry.size(nodeId);
-    QRectF boundary(0, 0, size.width(), 20);
+    QRectF boundary(0, 0, size.width(), 22);
     QColor captionCol = nitro::NodeColors::getColor(model.nodeData(nodeId, QtNodes::NodeRole::Type).value<QString>());
     painter->setPen(captionCol);
     double const radius = 3.0;

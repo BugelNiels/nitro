@@ -2,17 +2,17 @@
 
 #include <QDockWidget>
 #include <QTreeWidget>
-#include "src/gui/imgviewer/imgviewer.hpp"
-#include "QtNodes/DataFlowGraphModel"
 #include "nodegraphicsview.hpp"
-#include "nodegraphicsscene.hpp"
+#include "QtNodes/DataFlowGraphModel"
+#include "src/improc/ui/imgnodegraphicsview.hpp"
+#include "src/gui/nodeeditor/nodegraphicsscene.hpp"
 
 namespace nitro {
 
     class NodeDockWidget : public QDockWidget {
     public:
 
-        NodeDockWidget(nitro::ImageViewer *imViewer, QWidget *parent);
+        NodeDockWidget(NodeGraphicsView *view, QWidget *parent);
 
         ~NodeDockWidget() override;
 
@@ -24,9 +24,7 @@ namespace nitro {
 
         void loadModel();
 
-        const QString &getFileName() const {
-            return filename;
-        }
+        const QString &getFileName();
 
         void recalculateNodeSizes();
 
@@ -34,8 +32,8 @@ namespace nitro {
         void keyPressEvent(QKeyEvent* event) override;
 
     private:
-        NodeGraphicsView *view;
-        QJsonObject prevSave;
+        NodeGraphicsView *view = nullptr;
+        QJsonObject prevSave_;
         QString filename;
         QString saveFilePath;
         QtNodes::DataFlowGraphModel *dataFlowGraphModel;
@@ -48,7 +46,8 @@ namespace nitro {
 
         QTreeWidget *nodeTreeWidget;
         QLineEdit *searchBar;
-        NodeGraphicsScene *nodeScene;
+
+        QWidget *initNodeTitleBar();
     };
 
 } // nitro

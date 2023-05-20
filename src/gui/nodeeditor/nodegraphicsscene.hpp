@@ -27,7 +27,7 @@ namespace nitro {
             return QGraphicsScene::event(event); // dispatch event to parent implementation
         }
     private:
-        QtNodes::AbstractGraphModel& m_graphModel;
+        QtNodes::AbstractGraphModel& graphModel_;
     };
 
 } // nitro
