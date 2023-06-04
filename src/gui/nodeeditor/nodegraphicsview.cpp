@@ -1,18 +1,16 @@
 #include "nodegraphicsview.hpp"
 
 nitro::NodeGraphicsView::NodeGraphicsView(QtNodes::BasicGraphicsScene *scene,
-                                          QtNodes::DataFlowGraphModel *model, QWidget *parent) : QtNodes::GraphicsView(
-        scene, parent), dataModel_(model), scene_(scene) {
+                                          QtNodes::DataFlowGraphModel *model, QWidget *parent)
+        : QtNodes::GraphicsView(scene, parent),
+          dataModel_(model),
+          scene_(scene) {
     auto *spawnMenu = new QAction(QStringLiteral("Add node"), this);
     spawnMenu->setShortcutContext(Qt::ShortcutContext::WidgetShortcut);
     spawnMenu->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
     connect(spawnMenu, &QAction::triggered, this, &NodeGraphicsView::spawnNodeMenu);
     insertAction(actions().front(), spawnMenu);
     setScaleRange(0.3, 1.5);
-}
-
-QtNodes::DataFlowGraphModel *nitro::NodeGraphicsView::getDataModel() const {
-    return dataModel_;
 }
 
 QtNodes::BasicGraphicsScene *nitro::NodeGraphicsView::getScene() const {
@@ -25,8 +23,12 @@ void nitro::NodeGraphicsView::spawnNodeMenu() {
 }
 
 QMenu *nitro::NodeGraphicsView::getNodeMenu() {
-    if(!nodeMenu_) {
+    if (!nodeMenu_) {
         nodeMenu_ = initNodeMenu(); // TODO
     }
     return nodeMenu_;
+}
+
+QtNodes::DataFlowGraphModel *nitro::NodeGraphicsView::getDataModel() const {
+    return dataModel_;
 }

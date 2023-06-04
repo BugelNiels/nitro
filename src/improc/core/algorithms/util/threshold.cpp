@@ -1,4 +1,6 @@
 #include "threshold.hpp"
+#include "datamodels/datatypes/imagedata.hpp"
+#include "datamodels/datatypes/integerdata.hpp"
 
 nitro::CbdImage nitro::operations::threshold(const CbdImage &inputImg, int threshold, bool greater) {
     int width = inputImg.width();
@@ -16,4 +18,24 @@ nitro::CbdImage nitro::operations::threshold(const CbdImage &inputImg, int thres
     }
     result.setIndexed({0, 255});
     return result;
+}
+
+void nitro::operations::ThresholdAlgorithm::compute(const std::map<QString, std::shared_ptr<QtNodes::NodeData>> &input,
+                                                    std::map<QString, std::shared_ptr<QtNodes::NodeData>> &output,
+                                                    const std::map<QString, QString> &options) const {
+
+    auto inputImgDat = std::dynamic_pointer_cast<nitro::ImageData>(input.at("image"));
+    auto thresholdDat = std::dynamic_pointer_cast<nitro::IntegerData>(input.at("threshold"));
+
+    if(inputImgDat == nullptr || thresholdDat == nullptr) {
+        return;
+    }
+
+    if(inputImgDat->isGrayscaleImg()) {
+        auto result = threshold(*inputImgDat->image(), thresholdDat->value(), true);
+        auto ptrRes = std::make_shared<nitro::CbdImage>(result);
+        output["image"] = std::make_shared<nitro::ImageData>(ptrRes);
+    }
+
+
 }

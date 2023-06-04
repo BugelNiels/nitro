@@ -17,14 +17,14 @@ namespace nitro {
         virtual QMenu *initNodeMenu() = 0;
 
     public:
-        QtNodes::DataFlowGraphModel *getDataModel() const;
+        [[nodiscard]] QtNodes::DataFlowGraphModel *getDataModel() const;
 
-        QtNodes::BasicGraphicsScene *getScene() const;
+        [[nodiscard]] QtNodes::BasicGraphicsScene *getScene() const;
 
         QMenu *getNodeMenu();
 
     protected:
-        QtNodes::DataFlowGraphModel *dataModel_ = nullptr;
+        QtNodes::DataFlowGraphModel *dataModel_;
         QtNodes::BasicGraphicsScene *scene_ = nullptr;
 
 

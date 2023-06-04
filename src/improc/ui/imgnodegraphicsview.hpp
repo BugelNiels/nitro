@@ -8,15 +8,17 @@
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 #include "ui/imgviewer/imgviewer.hpp"
 #include "src/core/nodes/nodeinfo.hpp"
+#include "datamodels/nitronodes.hpp"
 
 namespace nitro {
 
     class ImageNodeGraphicsView : public NodeGraphicsView {
     public:
 
-        ImageNodeGraphicsView(nitro::ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
-                         QtNodes::DataFlowGraphModel *model,
-                         QWidget *parent);
+        // TODO: better initialization
+        ImageNodeGraphicsView(NitroNodes *nodes, ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
+                              QtNodes::DataFlowGraphModel *model,
+                              QWidget *parent);
 
         ImageNodeGraphicsView(const GraphicsView &) = delete;
 
@@ -36,34 +38,20 @@ namespace nitro {
 
 
     private:
-        nitro::ImageViewer *_imViewer;
+        ImageViewer *_imViewer;
         QAction *spawnViewNodeAction = nullptr;
+        QtNodes::NodeId nodeIdViewed;
+        QtNodes::PortIndex currentPort = 0;
+        QtNodes::AbstractNodeGeometry &nodeGeometry;
+        NitroNodes *nodes_;
 
-
-        QMenu *initInputSubMenu();
-
-        QMenu *initConverterSubMenu();
-
-        QMenu *initComparisonSubMenu();
-        QMenu *initFilterSubMenu();
-        QMenu *initColorSubMenu();
-
-        QMenu *initOutputSubMenu();
 
         QtNodes::NodeId viewerNodeId;
 
+
+        QAction *spawnNodeAction(const nitro::NodeInfo &info);
+
         QAction *spawnViewerNodeAction();
-
-        QMenu *initQuantizationSubMenu();
-
-        QMenu *initResampleSubMenu();
-
-        QtNodes::NodeId nodeIdViewed;
-        QtNodes::PortIndex currentPort;
-
-        QAction *spawnNodeAction(const nitro::NodeInfo& info);
-
-        QtNodes::AbstractNodeGeometry &nodeGeometry;
     };
 
 } // nitro

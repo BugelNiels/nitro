@@ -22,11 +22,12 @@
 #include <QProgressBar>
 
 
-nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent) : QDockWidget(parent),
-                                                                                 filename("untitled.json") {
+nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent)
+        : QDockWidget(parent),
+          view(view),
+          filename("untitled.json"),
+          dataFlowGraphModel(view->getDataModel()) {
     setWindowTitle("Node Editor");
-    this->view = view;
-    dataFlowGraphModel = view->getDataModel();
     prevSave_ = dataFlowGraphModel->save();
 
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -149,12 +150,11 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
 }
 
 void nitro::NodeDockWidget::clearModel() {
-    if (dataFlowGraphModel) {
-        for (const auto &item: dataFlowGraphModel->allNodeIds()) {
-            dataFlowGraphModel->deleteNode(item);
-        }
-        // TODO: delete undo history
+    for (const auto &item: dataFlowGraphModel->allNodeIds()) {
+        dataFlowGraphModel->deleteNode(item);
     }
+    // TODO: delete undo history
+
     prevSave_ = dataFlowGraphModel->save();
 }
 
@@ -174,10 +174,6 @@ bool nitro::NodeDockWidget::canQuitSafely() {
 }
 
 void nitro::NodeDockWidget::saveModel(bool askFile) {
-
-    if (!dataFlowGraphModel) {
-        return;
-    }
     QString filePath;
     if (askFile || filename == "untitled.json") {
         filePath = QFileDialog::getSaveFileName(
@@ -204,9 +200,6 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
 }
 
 void nitro::NodeDockWidget::loadModel() {
-    if (!dataFlowGraphModel) {
-        return;
-    }
     if (!canQuitSafely()) {
         return;
     }

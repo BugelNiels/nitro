@@ -32,7 +32,7 @@ namespace nitro {
         void keyPressEvent(QKeyEvent* event) override;
 
     private:
-        NodeGraphicsView *view = nullptr;
+        NodeGraphicsView *view;
         QJsonObject prevSave_;
         QString filename;
         QString saveFilePath;

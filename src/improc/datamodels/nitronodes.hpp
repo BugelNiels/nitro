@@ -1,43 +1,40 @@
 #pragma once
 
-// General
-#include "invaliddata.hpp"
+#include "nitronodebuilder.hpp"
+#include "nitronode.hpp"
+#include "QtNodes/NodeDelegateModelRegistry"
 
-#include "operators/flipdatamodel.hpp"
 
-// Input
-#include "input/imagesourcedatamodel.hpp"
-#include "input/integersourcedatamodel.hpp"
-#include "input/decimalsourcedatamodel.hpp"
+// TODO: check usage
+using RegistryItemPtr = std::unique_ptr<QtNodes::NodeDelegateModel>;
+using RegistryItemCreator = std::function<RegistryItemPtr()>;
 
-// Output
-#include "output/imageviewerdatamodel.hpp"
-#include "output/surfaceviewerdatamodel.hpp"
+namespace nitro {
+    class NitroNodes {
 
-// Filters
-#include "operators/filters/lowpassdatamodel.hpp"
-#include "src/improc/datamodels/operators/filters/thresholddatamodel.hpp"
+    public:
+        NitroNodes();
 
-// Conversions
-#include "conversions/tograyscaledatamodel.hpp"
-#include "conversions/rgb/separatergbdatamodel.hpp"
-#include "conversions/rgb/combinergbdatamodel.hpp"
-#include "conversions/ycbcr/combineycbcrdatamodel.hpp"
-#include "conversions/ycbcr/separateycbcrdatamodel.hpp"
-#include "conversions/ictcp/combineictcpdatamodel.hpp"
-#include "conversions/ictcp/separateictcpdatamodel.hpp"
+        [[nodiscard]] const std::shared_ptr<QtNodes::NodeDelegateModelRegistry> &getRegistry() const;
 
-// Quantization
-#include "operators/quantization/kmeansdatamodel.hpp"
-#include "operators/quantization/quantisizedatamodel.hpp"
-#include "operators/quantization/layerselectiondatamodel.hpp"
-#include "operators/quantization/slrdatamodel.hpp"
+        [[nodiscard]] const std::vector<std::pair<QString, std::vector<NodeInfo>>> &getCategories() const;
 
-// Reconstruction
-#include "operators/reconstruction/resampledatamodel.hpp"
+    private:
+        std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry_;
+        std::vector<std::pair<QString, std::vector<NodeInfo>>> categories_;
 
-// Util
-#include "operators/util/toggledatamodel.hpp"
-#include "operators/util/blenddatamodel.hpp"
-#include "operators/util/imgmathdatamodel.hpp"
-#include "operators/util/mixdatamodel.hpp"
+        void createRegistry();
+
+        std::vector<RegistryItemCreator> buildNodes();
+
+        std::pair<QString, std::vector<NodeInfo>> buildInputNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildOutputNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildConverterNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildComparisonNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildFilterNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildColorNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildQuantizationNodes(std::vector<RegistryItemCreator> &creators);
+        std::pair<QString, std::vector<NodeInfo>> buildResampleNodes(std::vector<RegistryItemCreator> &creators);
+    };
+}
+
