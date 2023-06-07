@@ -10,7 +10,6 @@
 
 #include "src/core/cbdimage.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
-#include "ui/surfacevis/renderview.hpp"
 #include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 #include "nodes/datatypes/imagedata.hpp"
 

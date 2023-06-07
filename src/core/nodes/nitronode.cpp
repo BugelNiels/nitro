@@ -63,21 +63,19 @@ namespace nitro {
     }
 
     void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-        if (data == nullptr) {
-            // Do something?
-            // Set result to null?
+        // TODO: extract into function
+        QString key = QString("In %1").arg(portIndex);
+        if(widgets_.count(key) > 0) {
+            widgets_[key]->setEnabled(data == nullptr);
         }
         nodePorts_.setInData(portIndex, data);
-        std::map<QString, QString> options;
-        algo_->execute(nodePorts_, options);
+        algo_->execute(nodePorts_, options_);
 
         for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
-            // For now just emit that everything has been updated
+            // Emit that everything has been updated
             Q_EMIT dataUpdated(i);
         }
     }
-
-    // TODO: save and load functions
 
     QWidget *NitroNode::embeddedWidget() {
         return widget_;
@@ -88,47 +86,136 @@ namespace nitro {
     }
 
     void NitroNode::connectInputWidget(QSpinBox *spinBox, int port) {
-        connect(spinBox, &QSpinBox::valueChanged, this, [this, port](int value) {
+        QString key = QString("In %1").arg(port);
+        widgets_[key] = spinBox;
+        propJson_[key] = spinBox->value();
+        widgetsJson_[key] = [spinBox](const QJsonValue &val) {
+            spinBox->setValue(val.toInt());
+        };
+        connect(spinBox, &QSpinBox::valueChanged, this, [this, key, port](int value) {
             setInData(std::make_shared<IntegerData>(value), port);
+            propJson_[key] = value;
         });
     }
 
     void NitroNode::connectInputWidget(QDoubleSpinBox *spinBox, int port) {
-        connect(spinBox, &QDoubleSpinBox::valueChanged, this, [this, port](double value) {
+        QString key = QString("In %1").arg(port);
+        propJson_[key] = spinBox->value();
+        widgets_[key] = spinBox;
+        widgetsJson_[key] = [spinBox](const QJsonValue &val) {
+            spinBox->setValue(val.toDouble());
+        };
+        connect(spinBox, &QDoubleSpinBox::valueChanged, this, [this, key, port](double value) {
             setInData(std::make_shared<DecimalData>(value), port);
+            propJson_[key] = value;
         });
     }
 
     void NitroNode::connectLoadButton(QPushButton *button, int port) {
+        QString key = QString("Load %1").arg(port);
+        widgets_[key] = button;
+        widgetsJson_[key] = [this, button, port](const QJsonValue &val) {
+            loadImage(button, port, val.toString());
+        };
         connect(button, &QPushButton::pressed, this, [this, port, button]() {
             QString filePath = QFileDialog::getOpenFileName(
                     nullptr, "Load Image", "../images/",
                     tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
 
-            QImageReader reader(filePath);
-            reader.setAutoTransform(true);
-            QImage img = reader.read();
+            loadImage(button, port, filePath);
 
+        });
+    }
+
+    void NitroNode::connectSourceInteger(QSpinBox *spinBox, int port) {
+        QString key = QString("Out %1").arg(port);
+        propJson_[key] = spinBox->value();
+        widgets_[key] = spinBox;
+        widgetsJson_[key] = [spinBox](const QJsonValue &val) {
+            spinBox->setValue(val.toInt());
+        };
+        connect(spinBox, &QSpinBox::valueChanged, this, [this, key, port](int value) {
             QString portName = nodePorts_.outPortName(port);
-
-            if (img.isNull()) {
-                button->setText("Load Image");
-                nodePorts_.setOutputData(portName, nullptr);
-            } else {
-                button->setText(QFileInfo(filePath).fileName());
-                if (img.isGrayscale()) {
-                    auto cbdImg = std::make_shared<nitro::CbdImage>(img);
-                    nodePorts_.setOutputType(port, GreyImageData().type());
-                    nodePorts_.setOutputData(portName, std::make_shared<GreyImageData>(cbdImg));
-                } else {
-                    auto ptrImg = std::make_shared<QImage>(img);
-                    nodePorts_.setOutputType(port, ColorImageData().type());
-                    nodePorts_.setOutputData(portName, std::make_shared<ColorImageData>(ptrImg));
-                }
-            }
-
+            nodePorts_.setOutputData(portName, std::make_shared<IntegerData>(value));
+            propJson_[key] = value;
             Q_EMIT dataUpdated(port);
         });
+    }
+
+    void NitroNode::connectSourceValue(QDoubleSpinBox *spinBox, int port) {
+        QString key = QString("Out %1").arg(port);
+        propJson_[key] = spinBox->value();
+        widgets_[key] = spinBox;
+        widgetsJson_[key] = [spinBox](const QJsonValue &val) {
+            spinBox->setValue(val.toDouble());
+        };
+        connect(spinBox, &QDoubleSpinBox::valueChanged, this, [this, key, port](double value) {
+            QString portName = nodePorts_.outPortName(port);
+            nodePorts_.setOutputData(portName, std::make_shared<DecimalData>(value));
+            propJson_[key] = value;
+            Q_EMIT dataUpdated(port);
+        });
+    }
+
+    void NitroNode::loadImage(QPushButton *button, int port, const QString &filePath) {
+        QImageReader reader(filePath);
+        reader.setAutoTransform(true);
+        QImage img = reader.read();
+
+        QString portName = nodePorts_.outPortName(port);
+        QString key = QString("Load %1").arg(port);
+
+        if (img.isNull()) {
+            button->setText("Load Image");
+            nodePorts_.setOutputData(portName, nullptr);
+            propJson_[key] = "";
+        } else {
+            button->setText(QFileInfo(filePath).fileName());
+            propJson_[key] = filePath;
+            if (img.isGrayscale()) {
+                auto cbdImg = std::make_shared<CbdImage>(img);
+                nodePorts_.setOutputType(port, GreyImageData().type());
+                nodePorts_.setOutputData(portName, std::make_shared<GreyImageData>(cbdImg));
+            } else {
+                auto ptrImg = std::make_shared<QImage>(img);
+                nodePorts_.setOutputType(port, ColorImageData().type());
+                nodePorts_.setOutputData(portName, std::make_shared<ColorImageData>(ptrImg));
+            }
+        }
+        Q_EMIT dataUpdated(port);
+    }
+
+    void NitroNode::load(const QJsonObject &loadJ) {
+        propJson_ = loadJ["properties"].toObject();
+        for (auto &key: propJson_.keys()) {
+            widgetsJson_[key](propJson_[key]);
+        }
+
+    }
+
+    QJsonObject NitroNode::save() const {
+        QJsonObject modelJson = NodeDelegateModel::save();
+        modelJson["properties"] = propJson_;
+        return modelJson;
+    }
+
+    void NitroNode::connectComboBox(const QString &name, QComboBox *comboBox) {
+        propJson_[name] = comboBox->currentIndex();
+        options_[name] = comboBox->currentIndex();
+        widgetsJson_[name] = [comboBox](const QJsonValue &val) {
+            comboBox->setCurrentIndex(val.toInt());
+        };
+        connect(comboBox, &QComboBox::currentIndexChanged, this, [this, name](int idx) {
+            options_[name] = idx;
+            propJson_[name] = idx;
+            algo_->execute(nodePorts_, options_);
+
+            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                // For now just emit that everything has been updated
+                Q_EMIT dataUpdated(i);
+            }
+        });
+
     }
 
 } // nitro

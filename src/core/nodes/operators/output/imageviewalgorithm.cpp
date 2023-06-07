@@ -10,7 +10,7 @@ nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
 }
 
 
-void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const {
+void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
     QString paramName = "image";
     auto inputImgDatGrey = nodePorts.getInDataAsType<nitro::GreyImageData>(paramName);
     if (inputImgDatGrey != nullptr) {

@@ -9,6 +9,6 @@ namespace nitro {
 
     class NodeOperator {
     public:
-        virtual void execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const {};
+        virtual void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {};
     };
 }

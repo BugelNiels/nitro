@@ -3,8 +3,8 @@
 #include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
 
-#include "../settings.hpp"
-#include "../shadertypes.hpp"
+#include "src/gui/surfacevis/settings.hpp"
+#include "src/gui/surfacevis/shadertypes.hpp"
 
 namespace nitro {
 /**

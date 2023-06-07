@@ -21,7 +21,7 @@ nitro::CbdImage nitro::threshold(const CbdImage &inputImg, int threshold, bool g
 }
 
 void
-nitro::ThresholdAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const {
+nitro::ThresholdAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
 
     auto inputImgDat = nodePorts.getInDataAsType<nitro::GreyImageData>("image");
     auto thresholdDat = nodePorts.getInDataAsType<nitro::IntegerData>("threshold");
@@ -30,10 +30,10 @@ nitro::ThresholdAlgorithm::execute(NodePorts &nodePorts, const std::map<QString,
         return;
     }
 
-        auto result = threshold(*inputImgDat->image(), thresholdDat->value(), true);
-        auto ptrRes = std::make_shared<nitro::CbdImage>(result);
-        nodePorts.setOutputData("image", std::make_shared<nitro::GreyImageData>(ptrRes));
-
+    bool greater = options.at("Mode") == 1;
+    auto result = threshold(*inputImgDat->image(), thresholdDat->value(), greater);
+    auto ptrRes = std::make_shared<nitro::CbdImage>(result);
+    nodePorts.setOutputData("image", std::make_shared<nitro::GreyImageData>(ptrRes));
 
 
 }

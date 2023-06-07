@@ -10,15 +10,8 @@
 nitro::ImageDataModel::ImageDataModel()
         : _displayWrapper(nullptr),
           _imgLabel(nullptr) {
-    connect(&nitro::config::configManager, &nitro::config::ConfigManager::nodeImagesChanged, this,
-            &ImageDataModel::onNodeImagesChanged);
 }
 
-void nitro::ImageDataModel::onNodeImagesChanged() {
-    _imgLabel->setHidden(!nitro::config::nodeImages);
-    _displayWrapper->adjustSize();
-    Q_EMIT embeddedWidgetSizeUpdated();
-}
 
 QPixmap createPixmapWithGrid(int width, int height, int gridSize) {
     QPixmap pixmap(width, height);
@@ -56,7 +49,6 @@ QWidget *nitro::ImageDataModel::embeddedWidget() {
         _imgLabel->setFixedSize(_embedImgSize, _embedImgSize);
 //        _imgLabel->setMaximumSize(_imgLabel->sizeHint());
         _imgLabel->setAlignment(Qt::AlignCenter);
-        _imgLabel->setHidden(!nitro::config::nodeImages);
 
         QWidget *before = initBeforeWidget();
         QWidget *after = initAfterWidget();

@@ -2,7 +2,7 @@
 
 #include <QLabel>
 #include <QCheckBox>
-#include "src/improc/ui/imgnodegraphicsview.hpp"
+#include "imgnodegraphicsview.hpp"
 
 #include "util/imgresourcereader.hpp"
 #include "src/gui/components/draggabletreewidget.hpp"
@@ -60,36 +60,6 @@ nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent)
 
 
     setWidget(horLayout);
-    setTitleBarWidget(initNodeTitleBar());
-}
-
-QWidget *nitro::NodeDockWidget::initNodeTitleBar() {
-    auto *wrapper = new QWidget();
-    auto *hLayout = new QHBoxLayout();
-
-    auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png"));
-    hLayout->addWidget(nodeIcon);
-
-    auto *nodeImgCheckBox = new QCheckBox("Node Images");
-    nodeImgCheckBox->setChecked(nitro::config::nodeImages);
-    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [this, nodeImgCheckBox] {
-        nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
-        recalculateNodeSizes();
-
-    });
-    hLayout->addSpacing(15);
-    hLayout->addWidget(nodeImgCheckBox);
-    hLayout->addStretch();
-
-    auto *calcProgressBar = new QProgressBar();
-    calcProgressBar->setMinimum(0);
-    calcProgressBar->setMaximum(100);
-    calcProgressBar->setMaximumWidth(200);
-    hLayout->addWidget(calcProgressBar);
-
-    wrapper->setLayout(hLayout);
-    return wrapper;
 }
 
 
@@ -220,16 +190,6 @@ void nitro::NodeDockWidget::loadModel() {
     clearModel();
     dataFlowGraphModel->load(doc.object());
     prevSave_ = dataFlowGraphModel->save();
-    // Ensure we cannot create a second viewer
-    // TODO: handle this elsewhere, e.g. when a model is loaded or smth
-//    for (auto &c: dataFlowGraphModel->allNodeIds()) {
-//        auto attempt = dataFlowGraphModel->delegateModel<nitro::ImageViewerDataModel>(c);
-//        if (attempt) {
-//            // TODO: just disable the action or smth
-////            view->setViewerNodeId(c);
-//            break;
-//        }
-//    }
     QApplication::restoreOverrideCursor();
 }
 
@@ -242,12 +202,6 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
             }
             searchBar->setFocus();
             break;
-    }
-}
-
-void nitro::NodeDockWidget::recalculateNodeSizes() {
-    for (auto &o: dataFlowGraphModel->allNodeIds()) {
-        view->getScene()->onNodeUpdated(o);
     }
 }
 

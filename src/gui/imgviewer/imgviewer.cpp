@@ -1,5 +1,5 @@
 #include "imgviewer.hpp"
-#include <QtNodes/internal/StyleCollection.hpp>
+#include "3rdparty/nodeeditor/include/QtNodes/internal/StyleCollection.hpp"
 
 #include <QColorSpace>
 #include <QGuiApplication>

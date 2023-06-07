@@ -10,7 +10,6 @@
 
 #include "src/core/cbdimage.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
-#include "src/improc/ui/imgviewer/imgviewer.hpp"
 #include "src/improc/datamodels/imagedatamodel.hpp"
 #include "nodes/datatypes/imagedata.hpp"
 

@@ -11,43 +11,60 @@ namespace nitro {
     class NitroNodeBuilder {
 
     public:
-        NitroNodeBuilder(const QString name, const QString id, const QString category, std::shared_ptr<NodeOperator> algo);
+        NitroNodeBuilder(const QString name, const QString id, const QString category,
+                         std::shared_ptr<NodeOperator> algo);
+
         NitroNodeBuilder(const QString name, const QString id, const QString category);
 
         std::unique_ptr<NitroNode> build();
 
         // Misc
-        NitroNodeBuilder* withNodeColor(const QColor &color);
-        NitroNodeBuilder* withIcon(const QString &path);
+        NitroNodeBuilder *withNodeColor(const QColor &color);
+
+        NitroNodeBuilder *withIcon(const QString &path);
 
         // Input
-        NitroNodeBuilder* withInputImage(const QString &name);
-        NitroNodeBuilder* withInputGreyImage(const QString &name);
-        NitroNodeBuilder* withInputColImage(const QString &name);
+        NitroNodeBuilder *withInputImage(const QString &name);
 
-        NitroNodeBuilder* withInputInteger(const QString &name, int defaultVal);
+        NitroNodeBuilder *withInputGreyImage(const QString &name);
 
-        NitroNodeBuilder* withInputInteger(const QString &name, int defaultVal, int min, int max);
+        NitroNodeBuilder *withInputColImage(const QString &name);
 
-        NitroNodeBuilder* withInputValue(const QString &name, double defaultVal);
+        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal);
 
-        NitroNodeBuilder* withInputValue(const QString &name, double defaultVal, double min, double max);
+        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int min, int max);
+
+        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal);
+
+        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double min, double max);
 
         // Output
 
-        NitroNodeBuilder* withOutputGreyImage(const QString &name);
-        NitroNodeBuilder* withOutputColImage(const QString &name);
-        NitroNodeBuilder* withLoadedOutputImage(const QString &name);
+        NitroNodeBuilder *withOutputGreyImage(const QString &name);
 
-        NitroNodeBuilder* withOutputInteger(const QString &name);
-        NitroNodeBuilder* withOutputInteger(const QString &name, int defaultVal);
+        NitroNodeBuilder *withOutputColImage(const QString &name);
 
-        NitroNodeBuilder* withOutputValue(const QString &name);
+        NitroNodeBuilder *withLoadedOutputImage(const QString &name);
 
-        NitroNodeBuilder* withOutputValue(const QString &name, double defaultVal);
+        NitroNodeBuilder *withOutputInteger(const QString &name);
+
+        NitroNodeBuilder *withOutputInteger(const QString &name, int defaultVal);
+
+        NitroNodeBuilder *withOutputValue(const QString &name);
+
+        NitroNodeBuilder *withOutputValue(const QString &name, double defaultVal);
+
+        NitroNodeBuilder *withSourcedOutputInteger(const QString &name);
+
+        NitroNodeBuilder *withSourcedOutputInteger(const QString &name, int defaultVal);
+
+        NitroNodeBuilder *withSourcedOutputValue(const QString &name);
+
+        NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal);
 
         // Widget
-        NitroNodeBuilder* withDropDown(const QString &name, const QList<QString> &options);
+        NitroNodeBuilder *withDropDown(const QString &name, const QStringList &options);
+
     private:
         std::unique_ptr<NitroNode> node_;
 

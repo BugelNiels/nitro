@@ -3,8 +3,8 @@
 #include "src/core/nodes/nitronodebuilder.hpp"
 #include "src/core/nodes/nitronode.hpp"
 #include "QtNodes/NodeDelegateModelRegistry"
-#include "ui/imgviewer/imgviewer.hpp"
-#include "ui/surfacevis/renderview.hpp"
+#include "imgviewer/imgviewer.hpp"
+#include "surfacevis/renderview.hpp"
 
 
 // TODO: check usage
@@ -15,7 +15,7 @@ namespace nitro {
     class NitroNodes {
 
     public:
-        NitroNodes(nitro::ImageViewer *pViewer, nitro::RenderView *pView);
+        NitroNodes(ImageViewer *pViewer, RenderView *pView);
 
         [[nodiscard]] const std::shared_ptr<QtNodes::NodeDelegateModelRegistry> &getRegistry() const;
 

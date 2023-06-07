@@ -1,7 +1,7 @@
 #pragma once
 
 #include "src/core/nodes/operators/nodeoperator.hpp"
-#include "ui/surfacevis/renderview.hpp"
+#include "surfacevis/renderview.hpp"
 
 namespace nitro {
 
@@ -9,7 +9,7 @@ namespace nitro {
     public:
         explicit SurfaceViewAlgorithm(RenderView *surfViewer);
 
-        void execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
 
     private:
         RenderView *surfViewer_;

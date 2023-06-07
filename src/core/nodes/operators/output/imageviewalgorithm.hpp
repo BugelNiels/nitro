@@ -1,7 +1,7 @@
 #pragma once
 
 #include "src/core/nodes/operators/nodeoperator.hpp"
-#include "ui/imgviewer/imgviewer.hpp"
+#include "imgviewer/imgviewer.hpp"
 
 namespace nitro {
 
@@ -10,7 +10,7 @@ namespace nitro {
         explicit ImageViewAlgorithm(ImageViewer *imViewer);
 
 
-        void execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
 
     private:
         ImageViewer *imViewer_;

@@ -1,7 +1,5 @@
 #include "improcbuilder.hpp"
-#include "ui/imgviewer/imgviewer.hpp"
 #include "components/zoombar.hpp"
-#include "ui/surfacevis/renderview.hpp"
 #include "datamodels/output/surfaceviewerdatamodel.hpp"
 #include "config.hpp"
 #include <QDockWidget>
@@ -11,6 +9,7 @@
 #include "src/core/nodes/initialization/nitronodes.hpp"
 #include "3rdparty/nodeeditor/include/QtNodes/DataColors.hpp"
 #include "3rdparty/nodeeditor/include/QtNodes/internal/WidgetNodePainter.hpp"
+#include "surfacevis/renderview.hpp"
 
 nitro::ImprocBuilder::ImprocBuilder() {}
 
@@ -150,16 +149,7 @@ QWidget *nitro::ImprocBuilder::initNodeTitleBar(nitro::MainWindow *window) {
     auto *hLayout = new QHBoxLayout();
     hLayout->addWidget(window->buildDockIcon(":/icons/node_editor.png"));
 
-    //  TODO: extract
-    auto *nodeImgCheckBox = new QCheckBox("Node Images");
-    nodeImgCheckBox->setChecked(nitro::config::nodeImages);
-    nitro::MainWindow::connect(nodeImgCheckBox, &QCheckBox::toggled, window, [window, nodeImgCheckBox] {
-        nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
-        window->getNodeDock()->recalculateNodeSizes();
-
-    });
     hLayout->addSpacing(15);
-    hLayout->addWidget(nodeImgCheckBox);
     hLayout->addStretch();
 
     auto *calcProgressBar = new QProgressBar();

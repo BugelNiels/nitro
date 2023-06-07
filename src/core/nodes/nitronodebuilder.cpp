@@ -11,6 +11,7 @@
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include <QAction>
+#include <QComboBox>
 
 using namespace nitro;
 
@@ -66,7 +67,7 @@ NitroNodeBuilder *NitroNodeBuilder::withInputGreyImage(const QString &name) {
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     inputList_.emplace_back(item);
     inputMap_[name] = nullptr;
-    _displayWrapper->layout()->addWidget(new QLabel("Image"));
+//    _displayWrapper->layout()->addWidget(new QLabel("Image"));
     return this;
 }
 
@@ -75,7 +76,7 @@ NitroNodeBuilder *NitroNodeBuilder::withInputColImage(const QString &name) {
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     inputList_.emplace_back(item);
     inputMap_[name] = nullptr;
-    _displayWrapper->layout()->addWidget(new QLabel("Image"));
+//    _displayWrapper->layout()->addWidget(new QLabel("Image"));
     return this;
 }
 
@@ -110,7 +111,6 @@ NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double 
     inputList_.emplace_back(item);
     inputMap_[name] = std::make_shared<DecimalData>(defaultVal);
 
-    // TODO
     auto spinBox = new QDoubleSpinBox();
     spinBox->setMinimum(min);
     spinBox->setMaximum(max);
@@ -162,6 +162,7 @@ NitroNodeBuilder *NitroNodeBuilder::withOutputInteger(const QString &name, int d
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
     outputList_.emplace_back(item);
     outputMap_[name] = std::make_shared<IntegerData>(defaultVal);
+
     return this;
 }
 
@@ -175,10 +176,56 @@ NitroNodeBuilder *NitroNodeBuilder::withOutputValue(const QString &name, double 
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
     outputList_.emplace_back(item);
     outputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString &name, const QList<QString> &options) {
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name) {
+    return withSourcedOutputInteger(name, 0);
+}
+
+
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name, int defaultVal) {
+    QtNodes::NodeDataType intDataType = IntegerData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
+    outputList_.emplace_back(item);
+    outputMap_[name] = std::make_shared<IntegerData>(defaultVal);
+
+    auto spinBox = new QSpinBox();
+    spinBox->setMinimum(INT_MIN);
+    spinBox->setMaximum(INT_MAX);
+    spinBox->setValue(defaultVal);
+    node_->connectSourceInteger(spinBox, outputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(spinBox);
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name) {
+    return withSourcedOutputValue(name, 0);
+}
+
+
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name, double defaultVal) {
+    QtNodes::NodeDataType decimalDataType = DecimalData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
+    outputList_.emplace_back(item);
+    outputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+
+    auto spinBox = new QDoubleSpinBox();
+    spinBox->setMinimum(INT_MIN);
+    spinBox->setMaximum(INT_MAX);
+    spinBox->setValue(defaultVal);
+    node_->connectSourceValue(spinBox, outputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(spinBox);
+
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString& name, const QStringList &options) {
+    auto *comboBox = new QComboBox();
+    comboBox->addItems(options);
+    node_->connectComboBox(name, comboBox);
+    _displayWrapper->layout()->addWidget(comboBox);
     return this;
 }
 

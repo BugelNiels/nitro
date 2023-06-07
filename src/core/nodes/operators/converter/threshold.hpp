@@ -9,7 +9,7 @@ namespace nitro {
 
     class ThresholdAlgorithm : public NodeOperator {
 
-        void execute(NodePorts &nodePorts, const std::map<QString, QString> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
 
     };
 

@@ -6,7 +6,7 @@
 
 #include "3rdparty/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
-#include "ui/imgviewer/imgviewer.hpp"
+#include "src/gui/imgviewer/imgviewer.hpp"
 #include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 #include "src/core/nodes/initialization/nitronodes.hpp"
 

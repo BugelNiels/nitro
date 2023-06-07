@@ -11,18 +11,18 @@ nitro::NitroNodes::buildConverterNodes(std::vector<RegistryItemCreator> &creator
         nitro::NitroNodeBuilder builder("Threshold", "threshold", category,
                                         std::make_unique<nitro::ThresholdAlgorithm>());
         auto node = builder.
+                withIcon(":/icons/nodes/threshold.png")->
+                withNodeColor({43, 101, 43})->
+                withDropDown("Mode", {"<=", ">="})->
                 withInputGreyImage("image")->
                 withInputInteger("threshold", 128, 0, 255)->
                 withOutputGreyImage("image")->
-                withIcon(":/icons/nodes/threshold.png")->
-                withNodeColor({43, 101, 43})->
                 build();
 
         return node;
     };
     nodeInfos.emplace_back(thresholdNode()->getInfo());
     creators.emplace_back(std::move(thresholdNode));
-    // --------------------------
 
 
     return {category, nodeInfos};

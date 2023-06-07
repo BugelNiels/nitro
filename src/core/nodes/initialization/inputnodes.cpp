@@ -18,5 +18,31 @@ nitro::NitroNodes::buildInputNodes(std::vector<RegistryItemCreator> &creators) {
     nodeInfos.emplace_back(imSourceNode()->getInfo());
     creators.emplace_back(std::move(imSourceNode));
 
+    // ------ Decimal Source Node ------
+    auto decimalSourceNode = [category]() {
+        nitro::NitroNodeBuilder builder("Value", "ValueSource", category);
+        auto node = builder.
+                withSourcedOutputValue("Value")->
+                withIcon(":/icons/nodes/number.png")->
+                withNodeColor({131, 49, 74})->
+                build();
+        return node;
+    };
+    nodeInfos.emplace_back(decimalSourceNode()->getInfo());
+    creators.emplace_back(std::move(decimalSourceNode));
+
+    // ------ Integer Source Node ------
+    auto intSourceNode = [category]() {
+        nitro::NitroNodeBuilder builder("Integer", "IntegerSource", category);
+        auto node = builder.
+                withSourcedOutputInteger("Integer")->
+                withIcon(":/icons/nodes/number.png")->
+                withNodeColor({131, 49, 74})->
+                build();
+        return node;
+    };
+    nodeInfos.emplace_back(intSourceNode()->getInfo());
+    creators.emplace_back(std::move(intSourceNode));
+
     return {category, nodeInfos};
 }
