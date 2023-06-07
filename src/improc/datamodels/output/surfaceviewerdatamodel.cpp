@@ -1,5 +1,5 @@
 #include "surfaceviewerdatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
@@ -45,7 +45,7 @@ nitro::SurfaceViewerDataModel::dataType(QtNodes::PortType portType, QtNodes::Por
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 std::shared_ptr<QtNodes::NodeData> nitro::SurfaceViewerDataModel::outData(QtNodes::PortIndex) {

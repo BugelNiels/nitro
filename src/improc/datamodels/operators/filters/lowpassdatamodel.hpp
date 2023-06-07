@@ -10,8 +10,9 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 class QLineEdit;
 
@@ -25,7 +26,7 @@ namespace nitro {
         virtual ~LowPassFilterDataModel() {}
 
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Low-Pass Filter",
                     "LowPassfilter",
                     {43, 101, 43},

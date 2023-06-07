@@ -8,11 +8,11 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "src/improc/core/cbdimage.hpp"
-#include "src/improc/datamodels/datatypes/imagedata.hpp"
+#include "src/core/cbdimage.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "src/improc/ui/imgviewer/imgviewer.hpp"
 #include "src/improc/datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 
 namespace nitro {
@@ -25,7 +25,7 @@ namespace nitro {
         virtual ~ImageViewerDataModel() {}
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Image Viewer",
                     "ImageViewer",
                     {60, 29, 38},

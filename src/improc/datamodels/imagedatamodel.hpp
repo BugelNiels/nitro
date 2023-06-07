@@ -7,9 +7,8 @@
 #include <QLabel>
 #include <QtNodes/NodeDelegateModel>
 
-#include "src/improc/core/cbdimage.hpp"
-#include "src/improc/datamodels/datatypes/imagedata.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
+#include "src/core/cbdimage.hpp"
+#include "QtNodes/NodeInfo.hpp"
 
 namespace nitro {
     class ImageDataModel : public QtNodes::NodeDelegateModel {
@@ -24,7 +23,7 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Node", "Node", {150, 150, 150}, ":/icons/nodes/node_var1.png"};
         }
 

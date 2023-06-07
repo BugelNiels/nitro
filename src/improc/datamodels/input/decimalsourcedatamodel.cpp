@@ -1,12 +1,12 @@
 #include "decimalsourcedatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
 #include <QVBoxLayout>
 #include <QPainter>
 #include "util/imgresourcereader.hpp"
-#include "src/improc/datamodels/datatypes/decimaldata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 
 nitro::DecimalSourceDataModel::DecimalSourceDataModel() {
 }
@@ -60,7 +60,7 @@ nitro::DecimalSourceDataModel::dataType(QtNodes::PortType portType, QtNodes::Por
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 std::shared_ptr<QtNodes::NodeData> nitro::DecimalSourceDataModel::outData(QtNodes::PortIndex) {

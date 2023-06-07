@@ -8,8 +8,9 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "src/improc/datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 class QLineEdit;
 
@@ -23,7 +24,7 @@ namespace nitro {
         ~FlipDataModel() override = default;
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"FLIP",
                     "Flip",
                     {118, 185, 0},

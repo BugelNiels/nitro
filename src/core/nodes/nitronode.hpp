@@ -2,9 +2,11 @@
 
 #include <QString>
 #include <QLabel>
+#include <QSpinBox>
+#include <QPushButton>
 #include "QtNodes/NodeDelegateModel"
-#include "src/improc/core/algorithms/nodealgorithm.hpp"
-#include "nodes/nodeinfo.hpp"
+#include "src/core/nodes/operators/nodeoperator.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 
@@ -12,17 +14,15 @@ namespace nitro {
 
     public:
         // TODO: check lifetime of these references
-        NitroNode(NodeInfo info,
-                  const std::vector<std::pair<QString, QtNodes::NodeDataType>> &input,
-                  const std::vector<std::pair<QString, QtNodes::NodeDataType>> &output,
-                  std::map<QString, std::shared_ptr<QtNodes::NodeData>>& inputMap,
-                  std::map<QString, std::shared_ptr<QtNodes::NodeData>>& outputMap,
-                  std::shared_ptr<NodeAlgorithm> algo,
-                  QWidget *widget);
-
 
         NitroNode() = default;
+
         ~NitroNode() override;
+
+        void init(QtNodes::NodeInfo info,
+                  const NodePorts& nodePorts,
+                  std::shared_ptr<NodeOperator> algo,
+                  QWidget *widget);
 
         [[nodiscard]] QString caption() const override;
 
@@ -32,7 +32,7 @@ namespace nitro {
 
         QWidget *embeddedWidget() override;
 
-        [[nodiscard]] const NodeInfo &getInfo() const;
+        [[nodiscard]] const QtNodes::NodeInfo &getInfo() const;
 
     protected:
 
@@ -46,15 +46,24 @@ namespace nitro {
         void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
     private:
-        NodeInfo info_;
-        const std::shared_ptr<NodeAlgorithm> algo_;
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_;
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_;
+
+        void connectSpinBox(QSpinBox * spinBox, int port);
+
+        QtNodes::NodeInfo info_;
+        std::shared_ptr<NodeOperator> algo_;
+        NodePorts nodePorts_;
+
+        // TODO: extract the map part into separate class for safe retrieval of elements
+
         QWidget *widget_;
 
         friend class NitroNodeBuilder;
+
+        void connectInputWidget(QSpinBox *spinBox, int port);
+
+        void connectInputWidget(QDoubleSpinBox *spinBox, int port);
+
+        void connectLoadButton(QPushButton *button, int port);
     };
 
 } // nitro

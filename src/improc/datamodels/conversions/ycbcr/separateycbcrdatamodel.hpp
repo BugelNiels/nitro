@@ -2,7 +2,7 @@
 
 
 #include "datamodels/conversions/colseparatedatamodel.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 
@@ -12,7 +12,7 @@ namespace nitro {
 
         ~SeparateYCbCrDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Separate YCbCr",
                     "SeparateYCbCr",
                     {36, 98, 131},

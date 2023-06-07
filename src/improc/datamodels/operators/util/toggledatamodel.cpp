@@ -1,5 +1,5 @@
 #include "toggledatamodel.hpp"
-#include "invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 nitro::ToggleDataModel::ToggleDataModel() : ImageDataModel() {
 
@@ -77,7 +77,7 @@ QtNodes::NodeDataType nitro::ToggleDataModel::dataType(QtNodes::PortType portTyp
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 

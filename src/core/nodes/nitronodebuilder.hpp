@@ -1,17 +1,18 @@
 #pragma once
 
 #include <QString>
-#include "nitronode.hpp"
-#include "src/improc/core/algorithms/nodealgorithm.hpp"
-#include "nodes/nodeinfo.hpp"
+#include <set>
+#include "src/core/nodes/nitronode.hpp"
+#include "src/core/nodes/operators/nodeoperator.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 
     class NitroNodeBuilder {
 
-
     public:
-        NitroNodeBuilder(const QString name, const QString id, const QString category, std::shared_ptr<NodeAlgorithm> algo);
+        NitroNodeBuilder(const QString name, const QString id, const QString category, std::shared_ptr<NodeOperator> algo);
+        NitroNodeBuilder(const QString name, const QString id, const QString category);
 
         std::unique_ptr<NitroNode> build();
 
@@ -21,6 +22,8 @@ namespace nitro {
 
         // Input
         NitroNodeBuilder* withInputImage(const QString &name);
+        NitroNodeBuilder* withInputGreyImage(const QString &name);
+        NitroNodeBuilder* withInputColImage(const QString &name);
 
         NitroNodeBuilder* withInputInteger(const QString &name, int defaultVal);
 
@@ -32,7 +35,9 @@ namespace nitro {
 
         // Output
 
-        NitroNodeBuilder* withOutputImage(const QString &name);
+        NitroNodeBuilder* withOutputGreyImage(const QString &name);
+        NitroNodeBuilder* withOutputColImage(const QString &name);
+        NitroNodeBuilder* withLoadedOutputImage(const QString &name);
 
         NitroNodeBuilder* withOutputInteger(const QString &name);
         NitroNodeBuilder* withOutputInteger(const QString &name, int defaultVal);
@@ -44,11 +49,12 @@ namespace nitro {
         // Widget
         NitroNodeBuilder* withDropDown(const QString &name, const QList<QString> &options);
     private:
+        std::unique_ptr<NitroNode> node_;
 
         const QString name_;
         const QString id_;
         const QString category_;
-        const std::shared_ptr<NodeAlgorithm> algo_;
+        const std::shared_ptr<NodeOperator> algo_;
 
         // TODO: defaults
         QColor nodeColor_;
@@ -60,6 +66,7 @@ namespace nitro {
         std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_;
 
         QWidget *_displayWrapper;
+
 
     };
 

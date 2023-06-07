@@ -5,8 +5,8 @@
 #include "3rdparty/nodeeditor/include/QtNodes/NodeData"
 
 
-#include "src/improc/core/cbdimage.hpp"
-#include "nodes/datainfo.hpp"
+#include "src/core/cbdimage.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/DataInfo.hpp"
 
 namespace nitro {
     class DecimalData : public QtNodes::NodeData {
@@ -17,7 +17,7 @@ namespace nitro {
         }
 
 
-        static DataInfo dataInfo() {
+        static QtNodes::DataInfo dataInfo() {
             return {"Value", "decimal", {161, 161, 161}};
         }
 

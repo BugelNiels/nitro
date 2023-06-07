@@ -10,7 +10,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/operators/imopdatamodel.hpp"
 
 class QLineEdit;
@@ -29,7 +29,7 @@ namespace nitro {
 
     public:
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Math",
                     "Math",
                     {36, 98, 131},

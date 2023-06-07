@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include <QImage>
 
 namespace nitro::operations {

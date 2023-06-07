@@ -2,7 +2,7 @@
 
 
 #include "datamodels/conversions/colcombinedatamodel.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
+#include "QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 
@@ -12,7 +12,7 @@ namespace nitro {
 
         ~CombineYCbrCrDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Combine YCbCr",
                     "CombineYCbCr",
                     {36, 98, 131},

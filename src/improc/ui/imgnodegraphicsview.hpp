@@ -4,11 +4,11 @@
 #include <QMenu>
 #include "QtNodes/DataFlowGraphModel"
 
-#include "src/gui/nodeeditor/nodegraphicsview.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 #include "ui/imgviewer/imgviewer.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
-#include "datamodels/nitronodes.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "src/core/nodes/initialization/nitronodes.hpp"
 
 namespace nitro {
 
@@ -30,8 +30,6 @@ namespace nitro {
 
         void mouseDoubleClickEvent(QMouseEvent *event) override;
 
-        void setViewerNodeId(QtNodes::NodeId nodeId);
-
         QMenu *initNodeMenu();
 
     public Q_SLOTS:
@@ -40,18 +38,18 @@ namespace nitro {
     private:
         ImageViewer *_imViewer;
         QAction *spawnViewNodeAction = nullptr;
-        QtNodes::NodeId nodeIdViewed;
+        QtNodes::NodeId nodeBeingViewed;
         QtNodes::PortIndex currentPort = 0;
         QtNodes::AbstractNodeGeometry &nodeGeometry;
         NitroNodes *nodes_;
 
 
-        QtNodes::NodeId viewerNodeId;
 
+        QAction *spawnNodeAction(const QtNodes::NodeInfo &info);
 
-        QAction *spawnNodeAction(const nitro::NodeInfo &info);
+        QAction *spawnOutputNodeAction();
 
-        QAction *spawnViewerNodeAction();
+        void spawnViewerNodeAt(int x, int y);
     };
 
 } // nitro

@@ -2,6 +2,7 @@
 
 #include <QComboBox>
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <QPainter>
 
 namespace nitro {
@@ -13,7 +14,7 @@ namespace nitro {
         ~MixDataModel() override = default;
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Color Mix",
                     "ColorMix",
                     {110, 110, 29},

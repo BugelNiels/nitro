@@ -1,6 +1,6 @@
 #include "lowpassdatamodel.hpp"
 
-#include "invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "core/algorithms/conversions/ycbcrconvert.hpp"
 #include "core/algorithms/corrections.hpp"
 
@@ -9,8 +9,9 @@
 #include <QVBoxLayout>
 
 #include "core/algorithms/filters/lowpassfilter.hpp"
-#include "src/improc/datamodels/datatypes/decimaldata.hpp"
-#include "src/improc/datamodels/datatypes/integerdata.hpp"
+#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
 
 nitro::LowPassFilterDataModel::LowPassFilterDataModel() = default;
 
@@ -55,7 +56,7 @@ nitro::LowPassFilterDataModel::dataType(QtNodes::PortType portType, QtNodes::Por
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 QWidget *nitro::LowPassFilterDataModel::initBeforeWidget() {

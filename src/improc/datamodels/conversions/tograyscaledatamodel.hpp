@@ -8,8 +8,9 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 class QLineEdit;
 
@@ -22,7 +23,7 @@ namespace nitro {
 
         ~ToGrayScaleDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"To Grayscale",
                     "ToGrayscale",
                     {131, 131, 131},

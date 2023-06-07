@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 
 namespace nitro::operations {
     nitro::CbdImage kMeansDither(const nitro::CbdImage &img, int k, int iter);

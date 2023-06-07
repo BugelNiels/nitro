@@ -8,11 +8,11 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "ui/surfacevis/renderview.hpp"
-#include "src/improc/datamodels/datatypes/imagedata.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 
 namespace nitro {
@@ -25,7 +25,7 @@ namespace nitro {
         virtual ~SurfaceViewerDataModel() {}
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"3D Image Viewer",
                     "ImageViewer3D",
                     {99, 28, 28},

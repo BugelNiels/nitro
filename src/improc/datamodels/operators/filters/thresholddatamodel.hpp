@@ -10,7 +10,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "src/improc/datamodels/operators/imopdatamodel.hpp"
 
 class QLineEdit;
@@ -25,7 +25,7 @@ namespace nitro {
         virtual ~ThresholdDataModel() {}
 
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Threshold",
                     "Threshold",
                     {43, 101, 43},

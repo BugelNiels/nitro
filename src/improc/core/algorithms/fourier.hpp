@@ -1,8 +1,8 @@
 #pragma once
 
 #include <complex>
-#include "core/matrix.hpp"
-#include "core/cbdimage.hpp"
+#include "src/core/matrix.hpp"
+#include "src/core/cbdimage.hpp"
 
 namespace nitro {
 

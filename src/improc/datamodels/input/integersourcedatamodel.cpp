@@ -1,5 +1,5 @@
 #include "integersourcedatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QPainter>
 #include "util/imgresourcereader.hpp"
+#include "nodes/datatypes/integerdata.hpp"
 
 nitro::IntegerSourceDataModel::IntegerSourceDataModel() {
 }
@@ -61,7 +62,7 @@ nitro::IntegerSourceDataModel::dataType(QtNodes::PortType portType, QtNodes::Por
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 std::shared_ptr<QtNodes::NodeData> nitro::IntegerSourceDataModel::outData(QtNodes::PortIndex) {

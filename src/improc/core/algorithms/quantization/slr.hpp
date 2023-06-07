@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 
 namespace nitro::operations {
     nitro::CbdImage histLayerRemoval(const nitro::CbdImage &img, int k);

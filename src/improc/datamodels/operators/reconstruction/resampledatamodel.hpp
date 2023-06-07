@@ -10,7 +10,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/operators/imopdatamodel.hpp"
 
 #include "core/algorithms/distancefield.hpp"
@@ -32,7 +32,7 @@ namespace nitro {
         ~ResampleDataModel() override {}
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Resample",
                     "Resample",
                     {201, 94, 6},

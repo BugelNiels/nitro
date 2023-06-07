@@ -1,15 +1,21 @@
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <utility>
+#include <QPushButton>
 #include "nitronodebuilder.hpp"
-#include "datamodels/datatypes/imagedata.hpp"
-#include "datamodels/datatypes/integerdata.hpp"
-#include "datamodels/datatypes/decimaldata.hpp"
-#include "nodeeditor/style/nodecolors.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeColors.hpp"
+#include "util/imgresourcereader.hpp"
+#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/greyimagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
+#include <QAction>
 
 using namespace nitro;
 
-NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category, std::shared_ptr<NodeAlgorithm> algo)
+NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category,
+                                   std::shared_ptr<NodeOperator> algo)
         : name_(name),
           id_(id),
           category_(category),
@@ -19,20 +25,31 @@ NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const Q
     _displayWrapper->setAttribute(Qt::WA_TranslucentBackground);
     auto *layout = new QVBoxLayout(_displayWrapper);
     layout->setAlignment(Qt::AlignLeft | Qt::AlignRight);
+
+    node_ = std::make_unique<NitroNode>();
 }
 
+
+NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category)
+        : NitroNodeBuilder(name, id, category, std::make_shared<NodeOperator>(NodeOperator())) {
+
+}
+
+
 std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
-    NodeInfo info(name_, id_, nodeColor_, iconPath_);
+    QtNodes::NodeInfo info(name_, id_, nodeColor_, iconPath_);
 
     // TODO: perhaps not the best way, but works for now
-    nitro::NodeColors::registerColor(info);
-    return std::make_unique<NitroNode>(info,
-                                       inputList_,
-                                       outputList_,
-                                       inputMap_,
-                                       outputMap_,
-                                       algo_,
-                                       _displayWrapper);
+    QtNodes::NodeColors::registerColor(info);
+
+    NodePorts nodePorts(inputList_, outputList_, inputMap_, outputMap_);
+
+    node_->init(info,
+                nodePorts,
+                algo_,
+                _displayWrapper);
+
+    return std::move(node_);
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withInputImage(const QString &name) {
@@ -40,6 +57,25 @@ NitroNodeBuilder *NitroNodeBuilder::withInputImage(const QString &name) {
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     inputList_.emplace_back(item);
     inputMap_[name] = nullptr;
+    _displayWrapper->layout()->addWidget(new QLabel("Image"));
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withInputGreyImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = GreyImageData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
+    inputList_.emplace_back(item);
+    inputMap_[name] = nullptr;
+    _displayWrapper->layout()->addWidget(new QLabel("Image"));
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withInputColImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = ColorImageData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
+    inputList_.emplace_back(item);
+    inputMap_[name] = nullptr;
+    _displayWrapper->layout()->addWidget(new QLabel("Image"));
     return this;
 }
 
@@ -54,13 +90,12 @@ NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min,
     inputList_.emplace_back(item);
     inputMap_[name] = std::make_shared<IntegerData>(defaultVal);
 
-    // TODO
     auto spinBox = new QSpinBox();
     spinBox->setMinimum(min);
     spinBox->setMaximum(max);
     spinBox->setValue(defaultVal);
+    node_->connectInputWidget(spinBox, inputList_.size() - 1);
     _displayWrapper->layout()->addWidget(spinBox);
-
     return this;
 }
 
@@ -80,15 +115,40 @@ NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double 
     spinBox->setMinimum(min);
     spinBox->setMaximum(max);
     spinBox->setValue(defaultVal);
+    node_->connectInputWidget(spinBox, inputList_.size() - 1);
     _displayWrapper->layout()->addWidget(spinBox);
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withOutputImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ImageData().type();
+NitroNodeBuilder *NitroNodeBuilder::withOutputGreyImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = GreyImageData().type();
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     outputList_.emplace_back(item);
     outputMap_[name] = nullptr;
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withOutputColImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = ColorImageData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
+    outputList_.emplace_back(item);
+    outputMap_[name] = nullptr;
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = GreyImageData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
+    outputList_.emplace_back(item);
+    outputMap_[name] = nullptr;
+
+
+    auto *loadButton_ = new QPushButton("Load Image");
+    loadButton_->setIcon(nitro::ImgResourceReader::getPixMap(":/icons/folder_open.png"));
+    loadButton_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    loadButton_->adjustSize();
+    node_->connectLoadButton(loadButton_, outputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(loadButton_);
     return this;
 }
 

@@ -3,6 +3,7 @@
 #include <QCheckBox>
 #include <QSlider>
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 namespace nitro {
 
@@ -13,7 +14,7 @@ namespace nitro {
         ~BlendDataModel() override = default;
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Blend",
                     "Blend",
                     {110, 110, 29},

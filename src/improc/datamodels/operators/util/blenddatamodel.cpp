@@ -1,5 +1,5 @@
 #include "blenddatamodel.hpp"
-#include "invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "src/improc/core/algorithms/util/imgmath.hpp"
 
 nitro::BlendDataModel::BlendDataModel() : ImageDataModel() {
@@ -81,7 +81,7 @@ QtNodes::NodeDataType nitro::BlendDataModel::dataType(QtNodes::PortType portType
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 

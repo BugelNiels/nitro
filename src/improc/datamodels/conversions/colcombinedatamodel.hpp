@@ -9,8 +9,8 @@
 #include <QLabel>
 
 
-#include "src/improc/core/cbdimage.hpp"
-#include "src/improc/datamodels/datatypes/imagedata.hpp"
+#include "src/core/cbdimage.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 namespace nitro {
     class ColorCombineDataModel : public QtNodes::NodeDelegateModel {

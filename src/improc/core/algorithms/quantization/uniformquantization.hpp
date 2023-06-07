@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 
 namespace nitro::operations {
     nitro::CbdImage uniformQuantizationDither(const nitro::CbdImage &img, int k);

@@ -3,7 +3,7 @@
 #include <QtGui/QDoubleValidator>
 #include <QImageReader>
 #include <QVBoxLayout>
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 nitro::ColorSeparateDataModel::ColorSeparateDataModel(int numChannels) {
     _result.resize(numChannels);
@@ -45,7 +45,7 @@ nitro::ColorSeparateDataModel::dataType(QtNodes::PortType portType, QtNodes::Por
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 void nitro::ColorSeparateDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {

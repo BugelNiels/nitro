@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include "mainwindow.hpp"
+#include "ui/surfacevis/renderview.hpp"
 
 namespace nitro {
 
@@ -14,9 +15,9 @@ namespace nitro {
 
         QWidget *initNodeTitleBar(MainWindow *window);
 
-        QDockWidget *initSurfaceVisDock(MainWindow *window) const;
+        QDockWidget *initSurfaceVisDock(MainWindow *window, nitro::RenderView *&surfView) const;
 
-        NodeDockWidget *initNodeDock(MainWindow *window, ImageViewer *imView);
+        NodeDockWidget *initNodeDock(MainWindow *window, ImageViewer *imView, RenderView *surfView);
 
         QDockWidget *initViewDock(nitro::MainWindow *window, nitro::ImageViewer *&imView);
     };

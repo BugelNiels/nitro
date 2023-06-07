@@ -7,8 +7,9 @@
 #include <QLabel>
 #include <QtNodes/NodeDelegateModel>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 namespace nitro {
     class ImageSourceDataModel : public ImageDataModel {
@@ -19,7 +20,7 @@ namespace nitro {
 
         ~ImageSourceDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Image Source",
                     "ImageSource",
                     {121, 70, 29},

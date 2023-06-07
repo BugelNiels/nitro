@@ -1,6 +1,3 @@
 [submodule "3rdparty/flip"]
 	path = 3rdparty/flip
 	url = git@github.com:NVlabs/flip.git
-[submodule "3rdparty/nodeeditor"]
-	path = 3rdparty/nodeeditor
-	url = git@github.com:paceholder/nodeeditor.git

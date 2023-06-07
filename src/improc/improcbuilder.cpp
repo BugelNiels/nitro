@@ -1,20 +1,16 @@
 #include "improcbuilder.hpp"
 #include "ui/imgviewer/imgviewer.hpp"
-#include "util/imgresourcereader.hpp"
 #include "components/zoombar.hpp"
 #include "ui/surfacevis/renderview.hpp"
 #include "datamodels/output/surfaceviewerdatamodel.hpp"
 #include "config.hpp"
-#include "datamodels/input/imagesourcedatamodel.hpp"
 #include <QDockWidget>
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QSplitter>
-#include "datamodels/nitronodes.hpp"
-#include "src/gui/nodeeditor/style/nodecolors.hpp"
-#include "nodeeditor/style/datacolors.hpp"
-#include "datamodels/datatypes/decimaldata.hpp"
-#include "core/algorithms/util/threshold.hpp"
+#include "src/core/nodes/initialization/nitronodes.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/DataColors.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/internal/WidgetNodePainter.hpp"
 
 nitro::ImprocBuilder::ImprocBuilder() {}
 
@@ -27,12 +23,12 @@ nitro::MainWindow *nitro::ImprocBuilder::build() {
 
 
     // Surface visualizer
-    QDockWidget *surfViewDock = initSurfaceVisDock(window);
+    nitro::RenderView *surfView;
+    QDockWidget *surfViewDock = initSurfaceVisDock(window, surfView);
 
     // Node editor
 
-    nitro::NodeDockWidget *nodeDock = initNodeDock(window, imView);
-
+    nitro::NodeDockWidget *nodeDock = initNodeDock(window, imView, surfView);
 
     // Image viewer, surface visualizer split
     auto *horLayout = new QSplitter(Qt::Horizontal, window);
@@ -95,11 +91,14 @@ nitro::ImprocBuilder::initViewDock(nitro::MainWindow *window,
     return imViewDock;
 }
 
-nitro::NodeDockWidget *nitro::ImprocBuilder::initNodeDock(nitro::MainWindow *window, nitro::ImageViewer *imView) {
+nitro::NodeDockWidget *nitro::ImprocBuilder::initNodeDock(MainWindow *window, ImageViewer *imView, RenderView *surfView) {
     // TODO: reduce pointer usage
-    auto *nodes = new NitroNodes();
+    auto *nodes = new NitroNodes(imView, surfView);
     auto *dataFlowGraphModel = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
-    auto *nodeScene = new NodeGraphicsScene(*dataFlowGraphModel);
+    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
+    // TODO: better painter enabling
+    nodeScene->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene->toggleWidgetMode();
     auto *ngView = new ImageNodeGraphicsView(nodes, imView, nodeScene, dataFlowGraphModel, window);
     auto *nodeDock = new NodeDockWidget(ngView, window);
     nodeDock->setTitleBarWidget(initNodeTitleBar(window));
@@ -108,11 +107,12 @@ nitro::NodeDockWidget *nitro::ImprocBuilder::initNodeDock(nitro::MainWindow *win
     return nodeDock;
 }
 
-QDockWidget *nitro::ImprocBuilder::initSurfaceVisDock(nitro::MainWindow *window) const {
-    QDockWidget *surfViewDock = new QDockWidget("Surface Visualizer", window);
+QDockWidget *nitro::ImprocBuilder::initSurfaceVisDock(MainWindow *window, nitro::RenderView *&surfView) const {
+    auto *surfViewDock = new QDockWidget("Surface Visualizer", window);
     surfViewDock->setTitleBarWidget(window->buildDockIcon(":/icons/surface_visualizer.png"));
-    auto *_renderView = new RenderView();
-    surfViewDock->setWidget(_renderView);
+    surfView = new RenderView();
+
+    surfViewDock->setWidget(surfView);
 
     // Surface view title TODO: clean
     auto *surfViewTitleWrapper = new QWidget();
@@ -121,15 +121,15 @@ QDockWidget *nitro::ImprocBuilder::initSurfaceVisDock(nitro::MainWindow *window)
     surfHLayout->addStretch();
 
     auto *surfPerspectiveCheckBox = new QCheckBox("Orthographic");
-    QObject::connect(surfPerspectiveCheckBox, &QCheckBox::toggled, window, [_renderView] {
-        _renderView->toggleOrthographic();
+    QObject::connect(surfPerspectiveCheckBox, &QCheckBox::toggled, window, [surfView] {
+        surfView->toggleOrthographic();
     });
     surfHLayout->addWidget(surfPerspectiveCheckBox);
 
     auto *imageColorsCheckBox = new QCheckBox("Image Colors");
     imageColorsCheckBox->setChecked(true); // TODO: don't hardcode
-    QObject::connect(imageColorsCheckBox, &QCheckBox::toggled, window, [_renderView] {
-        _renderView->toggleImageColors();
+    QObject::connect(imageColorsCheckBox, &QCheckBox::toggled, window, [surfView] {
+        surfView->toggleImageColors();
     });
     surfHLayout->addWidget(imageColorsCheckBox);
 
@@ -141,7 +141,7 @@ QDockWidget *nitro::ImprocBuilder::initSurfaceVisDock(nitro::MainWindow *window)
             surfViewDock->features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
     window->registerDock(surfViewDock);
     // TODO: do this elsewhere?
-    SurfaceViewerDataModel::setSurfaceViewer(_renderView);
+    SurfaceViewerDataModel::setSurfaceViewer(surfView);
     return surfViewDock;
 }
 

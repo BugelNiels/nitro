@@ -6,7 +6,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 
-#include "src/improc/core/algorithms/util/threshold.hpp"
+#include "src/core/nodes/operators/converter/threshold.hpp"
 
 
 nitro::ThresholdDataModel::ThresholdDataModel() = default;
@@ -60,7 +60,7 @@ std::shared_ptr<nitro::ImageData> nitro::ThresholdDataModel::compute(const nitro
         threshold += 1;
     }
 
-    auto result = nitro::operations::threshold(inputImg, threshold, greater);
+    auto result = nitro::threshold(inputImg, threshold, greater);
     auto ptrRes = std::make_shared<nitro::CbdImage>(result);
     return std::make_shared<nitro::ImageData>(ptrRes);
 }

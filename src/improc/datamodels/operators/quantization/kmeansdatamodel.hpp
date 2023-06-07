@@ -10,7 +10,7 @@
 #include <QSpinBox>
 #include <QCheckBox>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/operators/imopdatamodel.hpp"
 
 class QLineEdit;
@@ -24,7 +24,7 @@ namespace nitro {
 
         ~KMeansDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"K-Means",
                     "KMeans",
                     {43, 101, 43},

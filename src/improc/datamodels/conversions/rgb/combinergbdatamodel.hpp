@@ -2,7 +2,7 @@
 
 
 #include "datamodels/conversions/colcombinedatamodel.hpp"
-#include "src/core/nodes/nodeinfo.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 
@@ -12,7 +12,7 @@ namespace nitro {
 
         ~CombineRgbDataModel() override = default;
 
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Combine RGB",
                     "CombineRGB",
                     {36, 98, 131},

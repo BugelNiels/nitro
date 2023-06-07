@@ -1,5 +1,5 @@
 #include "flipdatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>
@@ -46,7 +46,7 @@ QtNodes::NodeDataType nitro::FlipDataModel::dataType(QtNodes::PortType portType,
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 

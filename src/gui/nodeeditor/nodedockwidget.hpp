@@ -2,10 +2,9 @@
 
 #include <QDockWidget>
 #include <QTreeWidget>
-#include "nodegraphicsview.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/DataFlowGraphModel"
 #include "src/improc/ui/imgnodegraphicsview.hpp"
-#include "src/gui/nodeeditor/nodegraphicsscene.hpp"
 
 namespace nitro {
 

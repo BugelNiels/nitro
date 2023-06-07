@@ -2,6 +2,7 @@
 
 #include <QCheckBox>
 #include "datamodels/imagedatamodel.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 namespace nitro {
 
@@ -12,7 +13,7 @@ namespace nitro {
         ~ToggleDataModel() override = default;
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Toggle",
                     "Toggle",
                     {36, 98, 131},

@@ -2,11 +2,10 @@
 
 #include <utility>
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeData"
+#include "QtNodes/NodeData"
 
-
-#include "src/improc/core/cbdimage.hpp"
-#include "nodes/datainfo.hpp"
+#include "src/core/cbdimage.hpp"
+#include "QtNodes/DataInfo.hpp"
 
 namespace nitro {
     class IntegerData : public QtNodes::NodeData {
@@ -16,7 +15,7 @@ namespace nitro {
         explicit IntegerData(int val) : val_(val) {
         }
 
-        static DataInfo dataInfo() {
+        static QtNodes::DataInfo dataInfo() {
             return {"Value", "integer", {89, 140, 92}};
         }
 

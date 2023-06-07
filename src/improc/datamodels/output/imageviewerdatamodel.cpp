@@ -1,5 +1,5 @@
 #include "imageviewerdatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -47,7 +47,7 @@ nitro::ImageViewerDataModel::dataType(QtNodes::PortType portType, QtNodes::PortI
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 std::shared_ptr<QtNodes::NodeData> nitro::ImageViewerDataModel::outData(QtNodes::PortIndex) {

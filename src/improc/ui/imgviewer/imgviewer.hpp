@@ -8,8 +8,8 @@
 #include <QMenu>
 #include <QGraphicsView>
 
-#include "src/improc/core/cbdimage.hpp"
-#include "src/improc/core/matrix.hpp"
+#include "src/core/cbdimage.hpp"
+#include "src/core/matrix.hpp"
 
 namespace nitro {
 

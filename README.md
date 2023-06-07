@@ -15,3 +15,16 @@ In case `--recurse-submodules` was not used, you can initialize the submodules u
 git submodule init
 git submodule update
 ```
+
+
+## Adding new node types
+
+- producer nodes
+- consumer nodes
+- operator nodes
+
+builder pattern...
+
+
+## Adding new data types
+

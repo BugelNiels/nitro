@@ -1,5 +1,5 @@
 #include "tograyscaledatamodel.hpp"
-#include "src/core/invaliddata.hpp"
+#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "core/algorithms/conversions/grayscaleconvert.hpp"
 
 #include <QtGui/QDoubleValidator>
@@ -46,7 +46,7 @@ nitro::ToGrayScaleDataModel::dataType(QtNodes::PortType portType, QtNodes::PortI
         default:
             break;
     }
-    return nitro::InvalidData().type();
+    return QtNodes::InvalidData().type();
 }
 
 void nitro::ToGrayScaleDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {

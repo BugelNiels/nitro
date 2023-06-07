@@ -31,8 +31,7 @@ file(GLOB_RECURSE HPPS src/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc
-        src/improc/datamodels/nitronode.cpp src/improc/datamodels/nitronode.hpp src/improc/datamodels/nitronodebuilder.cpp src/improc/datamodels/nitronodebuilder.hpp src/improc/core/algorithms/nodealgorithm.hpp src/improc/datamodels/nitronodes.cpp)
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

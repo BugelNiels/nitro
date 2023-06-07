@@ -10,7 +10,7 @@
 #include <QCheckBox>
 #include <QSpinBox>
 
-#include "src/improc/core/cbdimage.hpp"
+#include "src/core/cbdimage.hpp"
 #include "datamodels/operators/imopdatamodel.hpp"
 
 class QLineEdit;
@@ -25,7 +25,7 @@ namespace nitro {
         ~QuantisizeDataModel() override = default;
 
     public:
-        static NodeInfo nodeInfo() {
+        static QtNodes::NodeInfo nodeInfo() {
             return {"Quantisize",
                     "Quantisize",
                     {43, 101, 43},
