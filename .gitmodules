@@ -1,3 +1,11 @@
 [submodule "3rdparty/flip"]
 	path = 3rdparty/flip
 	url = git@github.com:NVlabs/flip.git
+
+[submodule "3rdparty/nodeeditor"]
+	path = 3rdparty/nodeeditor
+	url = git@github.com:BugelNiels/nodeeditor.git
+
+[submodule "3rdparty/qt-value-slider"]
+	path = 3rdparty/qt-value-slider
+	url = git@github.com:BugelNiels/qt-value-slider.git

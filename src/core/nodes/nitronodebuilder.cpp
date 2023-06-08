@@ -13,6 +13,9 @@
 #include <QAction>
 #include <QComboBox>
 
+using DoubleSlider = ValueSliders::DoubleSlider;
+using IntSlider = ValueSliders::IntSlider;
+
 using namespace nitro;
 
 NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category,
@@ -81,7 +84,16 @@ NitroNodeBuilder *NitroNodeBuilder::withInputColImage(const QString &name) {
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal) {
-    return withInputInteger(name, defaultVal, INT_MIN, INT_MAX);
+    QtNodes::NodeDataType intDataType = IntegerData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
+    inputList_.emplace_back(item);
+    inputMap_[name] = std::make_shared<IntegerData>(defaultVal);
+
+
+    auto slider = new IntSlider(name, defaultVal);
+    node_->connectInputWidget(slider, inputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(slider);
+    return this;
 }
 
 NitroNodeBuilder *
@@ -91,17 +103,23 @@ NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min,
     inputList_.emplace_back(item);
     inputMap_[name] = std::make_shared<IntegerData>(defaultVal);
 
-    auto spinBox = new QSpinBox();
-    spinBox->setMinimum(min);
-    spinBox->setMaximum(max);
-    spinBox->setValue(defaultVal);
-    node_->connectInputWidget(spinBox, inputList_.size() - 1);
-    _displayWrapper->layout()->addWidget(spinBox);
+
+    auto slider = new IntSlider(name, defaultVal, min, max);
+    node_->connectInputWidget(slider, inputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(slider);
     return this;
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withInputValue(const QString &name, double defaultVal) {
-    return withInputValue(name, defaultVal, INT_MIN, INT_MAX);
+    QtNodes::NodeDataType decimalDataType = DecimalData().type();
+    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
+    inputList_.emplace_back(item);
+    inputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+
+    auto spinBox = new DoubleSlider(name, defaultVal);
+    node_->connectInputWidget(spinBox, inputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(spinBox);
+    return this;
 }
 
 NitroNodeBuilder *
@@ -111,10 +129,7 @@ NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double 
     inputList_.emplace_back(item);
     inputMap_[name] = std::make_shared<DecimalData>(defaultVal);
 
-    auto spinBox = new QDoubleSpinBox();
-    spinBox->setMinimum(min);
-    spinBox->setMaximum(max);
-    spinBox->setValue(defaultVal);
+    auto spinBox = new DoubleSlider(name, defaultVal, min, max);
     node_->connectInputWidget(spinBox, inputList_.size() - 1);
     _displayWrapper->layout()->addWidget(spinBox);
     return this;
@@ -191,12 +206,9 @@ NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name
     outputList_.emplace_back(item);
     outputMap_[name] = std::make_shared<IntegerData>(defaultVal);
 
-    auto spinBox = new QSpinBox();
-    spinBox->setMinimum(INT_MIN);
-    spinBox->setMaximum(INT_MAX);
-    spinBox->setValue(defaultVal);
-    node_->connectSourceInteger(spinBox, outputList_.size() - 1);
-    _displayWrapper->layout()->addWidget(spinBox);
+    auto slider = new IntSlider(name, defaultVal);
+    node_->connectSourceInteger(slider, outputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(slider);
     return this;
 }
 
@@ -211,17 +223,14 @@ NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name, 
     outputList_.emplace_back(item);
     outputMap_[name] = std::make_shared<DecimalData>(defaultVal);
 
-    auto spinBox = new QDoubleSpinBox();
-    spinBox->setMinimum(INT_MIN);
-    spinBox->setMaximum(INT_MAX);
-    spinBox->setValue(defaultVal);
-    node_->connectSourceValue(spinBox, outputList_.size() - 1);
-    _displayWrapper->layout()->addWidget(spinBox);
+    auto slider = new DoubleSlider(name, defaultVal);
+    node_->connectSourceValue(slider, outputList_.size() - 1);
+    _displayWrapper->layout()->addWidget(slider);
 
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString& name, const QStringList &options) {
+NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString &name, const QStringList &options) {
     auto *comboBox = new QComboBox();
     comboBox->addItems(options);
     node_->connectComboBox(name, comboBox);

@@ -1,11 +1,7 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.9)
 project(nitro VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(CMAKE_AUTOMOC ON)
 include(GNUInstallDirs)
@@ -28,7 +24,6 @@ add_subdirectory(3rdparty)
 file(GLOB_RECURSE CPPS src/*.cpp)
 file(GLOB_RECURSE HPPS src/*.hpp)
 
-
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
         resources/resources.qrc
@@ -43,6 +38,7 @@ target_include_directories(${PROJECT_NAME}
         )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC QtNodes)
+target_link_libraries(${PROJECT_NAME} PUBLIC valueSliders)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt::Core

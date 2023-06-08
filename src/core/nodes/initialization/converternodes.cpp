@@ -15,7 +15,7 @@ nitro::NitroNodes::buildConverterNodes(std::vector<RegistryItemCreator> &creator
                 withNodeColor({43, 101, 43})->
                 withDropDown("Mode", {"<=", ">="})->
                 withInputGreyImage("image")->
-                withInputInteger("threshold", 128, 0, 255)->
+                withInputInteger("Threshold", 128, 0, 255)->
                 withOutputGreyImage("image")->
                 build();
 

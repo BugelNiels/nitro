@@ -8,6 +8,8 @@
 #include "QtNodes/NodeDelegateModel"
 #include "src/core/nodes/operators/nodeoperator.hpp"
 #include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "3rdparty/qt-value-slider/include/doubleslider.hpp"
+#include "3rdparty/qt-value-slider/include/intslider.hpp"
 
 namespace nitro {
 
@@ -64,18 +66,18 @@ namespace nitro {
 
         friend class NitroNodeBuilder;
 
-        void connectInputWidget(QSpinBox *spinBox, int port);
+        void connectInputWidget(ValueSliders::IntSlider *slider, int port);
 
-        void connectInputWidget(QDoubleSpinBox *spinBox, int port);
+        void connectInputWidget(ValueSliders::DoubleSlider *slider, int port);
 
         void connectLoadButton(QPushButton *button, int port);
         void connectComboBox(const QString& name, QComboBox *comboBox);
 
         void loadImage(QPushButton *button, int port, const QString &filePath);
 
-        void connectSourceInteger(QSpinBox *spinBox, int port);
+        void connectSourceInteger(ValueSliders::IntSlider *slider, int port);
 
-        void connectSourceValue(QDoubleSpinBox *spinBox, int port);
+        void connectSourceValue(ValueSliders::DoubleSlider *slider, int port);
     };
 
 } // nitro
