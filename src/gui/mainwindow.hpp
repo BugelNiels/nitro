@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QSplitter>
 #include "nodeeditor/nodedockwidget.hpp"
 
 namespace nitro {
@@ -10,7 +11,7 @@ namespace nitro {
     Q_OBJECT
 
     public:
-        explicit MainWindow(QWidget *parent = nullptr);
+        explicit MainWindow(NodeRegistry* registry, QWidget *parent = nullptr);
 
         ~MainWindow() override;
 
@@ -19,7 +20,7 @@ namespace nitro {
 
         void finalizeSetup();
 
-        NodeDockWidget *getNodeDock() const;
+        [[nodiscard]] NodeDockWidget *getNodeDock() const;
 
         void registerDock(QDockWidget *widget);
 
@@ -42,6 +43,7 @@ namespace nitro {
 
         QMenu *getWindowMenu();
 
+        QSplitter *dockLayout_;
     };
 
 } // nitro

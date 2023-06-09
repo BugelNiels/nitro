@@ -8,10 +8,12 @@
 
 namespace nitro {
 
+    class MainWindow;
+
     class NodeDockWidget : public QDockWidget {
     public:
 
-        NodeDockWidget(NodeGraphicsView *view, QWidget *parent);
+        NodeDockWidget(NodeRegistry* nodes, MainWindow* window);
 
         ~NodeDockWidget() override;
 
@@ -43,6 +45,8 @@ namespace nitro {
 
         QTreeWidget *nodeTreeWidget;
         QLineEdit *searchBar;
+
+        QWidget *initNodeTitleBar(nitro::MainWindow *window);
     };
 
 } // nitro

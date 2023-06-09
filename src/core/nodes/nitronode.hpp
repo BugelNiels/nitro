@@ -2,10 +2,11 @@
 
 #include <QString>
 #include "QtNodes/NodeDelegateModel"
-#include "src/core/nodes/operators/nodeoperator.hpp"
 #include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
+#include "nodeports.hpp"
+#include "include/nodes/nodeoperator.hpp"
 
 class QLabel;
 
@@ -69,7 +70,7 @@ namespace nitro {
         std::map<QString, QWidget *> widgets_;
         std::map<QString, int> options_; // used for dropdown
 
-        QWidget *widget_;
+        QWidget *widget_ = nullptr;
 
         friend class NitroNodeBuilder;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QVector>
-#include "src/core/cbdimage.hpp"
+#include "modules/imCore/internal/cbdimage.hpp"
 
 namespace nitro::operations {
 

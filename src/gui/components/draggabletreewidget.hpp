@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QTreeWidgetItem>
+#include <QTreeWidget>
 #include <QMap>
 
 namespace nitro {

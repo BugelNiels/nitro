@@ -1,8 +1,6 @@
 #include "nitronode.hpp"
 
 #include <utility>
-#include <QLabel>
-#include <QSpinBox>
 #include <QPushButton>
 #include <QComboBox>
 #include <QCheckBox>
@@ -18,8 +16,7 @@ using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
 
 namespace nitro {
-
-
+    
     NitroNode::~NitroNode() {
     }
 
@@ -76,6 +73,7 @@ namespace nitro {
             widgets_[key]->setEnabled(data == nullptr);
         }
         nodePorts_.setInData(portIndex, data);
+        qDebug() << "executing algo";
         algo_->execute(nodePorts_, options_);
 
         for (int i = 0; i < nodePorts_.numOutPorts(); i++) {

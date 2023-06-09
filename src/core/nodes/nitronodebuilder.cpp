@@ -1,5 +1,4 @@
 #include <QVBoxLayout>
-#include <QSpinBox>
 #include <utility>
 #include <QPushButton>
 #include "nitronodebuilder.hpp"
@@ -20,12 +19,12 @@ using IntSlider = ValueSliders::IntSlider;
 
 using namespace nitro;
 
-NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category,
-                                   std::shared_ptr<NodeOperator> algo)
-        : name_(name),
-          id_(id),
-          category_(category),
-          algo_(std::move(algo)) {
+NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category,
+                                   const NodeOperator &algo)
+        : name_(std::move(name)),
+          id_(std::move(id)),
+          category_(std::move(category)),
+          algo_(std::make_unique<NodeOperator>(algo)) {
 
 
     // TODO: get these values from the geometry/config
@@ -48,8 +47,8 @@ NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const Q
 }
 
 
-NitroNodeBuilder::NitroNodeBuilder(const QString name, const QString id, const QString category)
-        : NitroNodeBuilder(name, id, category, std::make_shared<NodeOperator>(NodeOperator())) {
+NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category)
+        : NitroNodeBuilder(std::move(name), std::move(id), std::move(category), NodeOperator()) {
 
 }
 

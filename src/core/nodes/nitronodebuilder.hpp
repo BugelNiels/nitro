@@ -2,9 +2,9 @@
 
 #include <QString>
 #include <set>
-#include "src/core/nodes/nitronode.hpp"
-#include "src/core/nodes/operators/nodeoperator.hpp"
 #include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "nitronode.hpp"
+#include "include/nodes/nodeoperator.hpp"
 
 class QVBoxLayout;
 
@@ -13,10 +13,10 @@ namespace nitro {
     class NitroNodeBuilder {
 
     public:
-        NitroNodeBuilder(const QString name, const QString id, const QString category,
-                         std::shared_ptr<NodeOperator> algo);
+        NitroNodeBuilder(QString  name, QString  id, QString  category,
+                         const NodeOperator& algo);
 
-        NitroNodeBuilder(const QString name, const QString id, const QString category);
+        NitroNodeBuilder(QString name, QString id, QString category);
 
         std::unique_ptr<NitroNode> build();
 

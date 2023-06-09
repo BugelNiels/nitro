@@ -21,17 +21,18 @@ include_directories(${CMAKE_BINARY_DIR})
 
 add_subdirectory(external)
 
-file(GLOB_RECURSE CPPS src/*.cpp)
-file(GLOB_RECURSE HPPS src/*.hpp)
+file(GLOB_RECURSE CPPS src/*.cpp modules/*.cpp)
+file(GLOB_RECURSE HPPS src/*.hpp modules/*.hpp include/*.hpp)
+
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
         resources/resources.qrc
-        )
+        modules/imCore/gui/surfacevis/renderdockwidget.cpp modules/imCore/gui/imgviewer/imviewdockwidget.cpp include/nitromodule.hpp modules/imCore/imcoremodule.cpp modules/imCore/imcoremodule.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_LIST_DIR}/src/core
         ${CMAKE_CURRENT_LIST_DIR}/src/gui
         ${CMAKE_CURRENT_LIST_DIR}/src/improc

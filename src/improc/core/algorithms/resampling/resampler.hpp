@@ -2,7 +2,7 @@
 
 #include <QImage>
 
-#include "src/core/cbdimage.hpp"
+#include "modules/imCore/internal/cbdimage.hpp"
 #include "src/improc/core/algorithms/distancefield.hpp"
 
 namespace nitro {

@@ -5,11 +5,25 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QHBoxLayout>
+#include <QSplitter>
 #include "util/imgresourcereader.hpp"
 #include "config.hpp"
 
-nitro::MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
+        : QMainWindow(parent) {
     setWindowTitle("NITRO");
+
+    dockLayout_ = new QSplitter(Qt::Horizontal, this);
+    dockLayout_->setSizes({this->width() / 2, this->width() / 2}); // Temp fix for equal sizes
+
+    // Node editor, visualizers split
+    auto *vertLayout = new QSplitter(Qt::Vertical, this);
+    vertLayout->addWidget(dockLayout_);
+    vertLayout->addWidget(new NodeDockWidget(registry, this));
+    vertLayout->setStretchFactor(0, 1);
+    vertLayout->setStretchFactor(1, 1);
+
+    setCentralWidget(vertLayout);
 
 }
 
@@ -19,9 +33,10 @@ void nitro::MainWindow::finalizeSetup() {
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
     setWindowState(Qt::WindowMaximized);
+
 }
 
-nitro::MainWindow::~MainWindow() {}
+nitro::MainWindow::~MainWindow() = default;
 
 
 QStatusBar *nitro::MainWindow::initFooter() {
@@ -59,7 +74,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
 
 QMenu *nitro::MainWindow::getWindowMenu() {
     auto *windowMenu = new QMenu("Window");
-    for(auto& dw : widgets) {
+    for (auto &dw: widgets) {
         auto *nodeEditorAction = new QAction(dw->windowTitle(), this);
         nodeEditorAction->setCheckable(true);
         nodeEditorAction->setChecked(!dw->isHidden());
@@ -152,4 +167,6 @@ void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {
 
 void nitro::MainWindow::registerDock(QDockWidget *widget) {
     widgets.insert(widget);
+    dockLayout_->addWidget(widget);
+    dockLayout_->setStretchFactor(widgets.size() - 1, 1);
 }

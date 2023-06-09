@@ -13,6 +13,8 @@
 #include "external/nodeeditor/include/QtNodes/DataFlowGraphModel"
 #include "external/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
 #include "config.hpp"
+#include "mainwindow.hpp"
+#include "QtNodes/internal/WidgetNodePainter.hpp"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSplitter>
@@ -22,11 +24,16 @@
 #include <QProgressBar>
 
 
-nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent)
-        : QDockWidget(parent),
-          view(view),
-          filename("untitled.json"),
-          dataFlowGraphModel(view->getDataModel()) {
+nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
+        : QDockWidget(window),
+          filename("untitled.json") {
+
+    dataFlowGraphModel = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
+    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
+    nodeScene->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene->toggleWidgetMode();
+    view = new ImageNodeGraphicsView(nodes, nodeScene, dataFlowGraphModel, window);
+
     setWindowTitle("Node Editor");
     prevSave_ = dataFlowGraphModel->save();
 
@@ -58,8 +65,13 @@ nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent)
     horLayout->addWidget(wrapper);
     horLayout->addWidget(view);
 
+    setTitleBarWidget(initNodeTitleBar(window));
+
 
     setWidget(horLayout);
+
+    setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    window->registerNodeDock(this);
 }
 
 
@@ -207,4 +219,22 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
 
 const QString &nitro::NodeDockWidget::getFileName() {
     return filename;
+}
+
+QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {
+    auto *wrapper = new QWidget();
+    auto *hLayout = new QHBoxLayout();
+    hLayout->addWidget(window->buildDockIcon(":/icons/node_editor.png"));
+
+    hLayout->addSpacing(15);
+    hLayout->addStretch();
+
+    auto *calcProgressBar = new QProgressBar();
+    calcProgressBar->setMinimum(0);
+    calcProgressBar->setMaximum(100);
+    calcProgressBar->setMaximumWidth(200);
+    hLayout->addWidget(calcProgressBar);
+
+    wrapper->setLayout(hLayout);
+    return wrapper;
 }

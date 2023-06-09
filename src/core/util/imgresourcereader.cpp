@@ -23,7 +23,8 @@ QPixmap nitro::ImgResourceReader::getPixMap(const QString &path, const QSize &si
         }
     }
 
-    auto newIcon = QPixmap::fromImage(myImage).scaled(size, Qt::AspectRatioMode::KeepAspectRatio);
+    auto newIcon = QPixmap::fromImage(myImage).scaled(size, Qt::AspectRatioMode::KeepAspectRatio,
+                                                      Qt::SmoothTransformation);
     loadedIcons[key] = newIcon;
     return newIcon;
 }

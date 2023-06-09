@@ -6,9 +6,8 @@
 
 #include "external/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
-#include "src/gui/imgviewer/imgviewer.hpp"
 #include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
-#include "src/core/nodes/initialization/nitronodes.hpp"
+#include "nodes/noderegistry.hpp"
 
 namespace nitro {
 
@@ -16,7 +15,7 @@ namespace nitro {
     public:
 
         // TODO: better initialization
-        ImageNodeGraphicsView(NitroNodes *nodes, ImageViewer *viewer, QtNodes::BasicGraphicsScene *scene,
+        ImageNodeGraphicsView(NodeRegistry *nodes, QtNodes::BasicGraphicsScene *scene,
                               QtNodes::DataFlowGraphModel *model,
                               QWidget *parent);
 
@@ -36,18 +35,14 @@ namespace nitro {
 
 
     private:
-        ImageViewer *_imViewer;
         QAction *spawnViewNodeAction = nullptr;
         QtNodes::NodeId nodeBeingViewed;
         QtNodes::PortIndex currentPort = 0;
         QtNodes::AbstractNodeGeometry &nodeGeometry;
-        NitroNodes *nodes_;
-
+        NodeRegistry *nodes_;
 
 
         QAction *spawnNodeAction(const QtNodes::NodeInfo &info);
-
-        QAction *spawnOutputNodeAction();
 
         void spawnViewerNodeAt(int x, int y);
     };
