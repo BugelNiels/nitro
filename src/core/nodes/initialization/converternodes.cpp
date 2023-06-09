@@ -14,9 +14,11 @@ nitro::NitroNodes::buildConverterNodes(std::vector<RegistryItemCreator> &creator
                 withIcon(":/icons/nodes/threshold.png")->
                 withNodeColor({43, 101, 43})->
                 withDropDown("Mode", {"<=", ">="})->
-                withInputGreyImage("image")->
+                withCheckBox("check")->
+                withInputGreyImage("Image")->
                 withInputInteger("Threshold", 128, 0, 255)->
-                withOutputGreyImage("image")->
+                withOutputGreyImage("Image")->
+                withSourcedOutputInteger("test")->
                 build();
 
         return node;

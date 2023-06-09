@@ -6,6 +6,8 @@
 #include "src/core/nodes/operators/nodeoperator.hpp"
 #include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
+class QVBoxLayout;
+
 namespace nitro {
 
     class NitroNodeBuilder {
@@ -62,8 +64,10 @@ namespace nitro {
 
         NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal);
 
-        // Widget
+        // Option Widgets
         NitroNodeBuilder *withDropDown(const QString &name, const QStringList &options);
+
+        NitroNodeBuilder *withCheckBox(const QString &name, bool checked = false);
 
     private:
         std::unique_ptr<NitroNode> node_;
@@ -72,6 +76,7 @@ namespace nitro {
         const QString id_;
         const QString category_;
         const std::shared_ptr<NodeOperator> algo_;
+        int portWidgetHeight_;
 
         // TODO: defaults
         QColor nodeColor_;
@@ -81,9 +86,21 @@ namespace nitro {
         std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList_;
         std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap_;
         std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_;
+        QVBoxLayout *inLayout_;
+        QVBoxLayout *outLayout_;
+        QVBoxLayout *optionLayout_;
 
-        QWidget *_displayWrapper;
 
+        void addInPortWidget(QWidget *widget);
+        void addInPortWidget(QLabel *label);
+
+        void addOutPortWidget(QWidget *widget);
+        void addOutPortWidget(QLabel *label);
+
+        void addOptionWidget(QWidget *widget);
+
+
+        const int portWidgetWidth_ = 150;
 
     };
 

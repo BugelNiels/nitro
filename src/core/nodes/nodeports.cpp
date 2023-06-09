@@ -13,14 +13,13 @@ namespace nitro {
         if (outputMap_.count(name) == 0) {
             std::cerr << "setOutputData: Node output does not contain port with name: " << name.toStdString()
                       << std::endl;
+            return;
         }
         outputMap_[name] = std::move(data);
     }
 
     QtNodes::NodeDataType NodePorts::inDataType(int port) const {
         if (port >= numInPorts()) {
-            std::cerr << "inDataType: Invalid port index for input type retrieval. Port: " << port << "Input size: "
-                      << inputList_.size() << std::endl;
             return QtNodes::InvalidData().type();
         }
         return inputList_[port].second;
@@ -28,8 +27,6 @@ namespace nitro {
 
     QtNodes::NodeDataType NodePorts::outDataType(int port) const {
         if (port >= numOutPorts()) {
-            std::cerr << "outDataType: Invalid port index for output type retrieval. Port: " << port << "Output size: "
-                      << outputList_.size() << std::endl;
             return QtNodes::InvalidData().type();
         }
         return outputList_[port].second;

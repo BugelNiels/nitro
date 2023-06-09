@@ -1,7 +1,11 @@
 #include "nitronode.hpp"
 
 #include <utility>
+#include <QLabel>
+#include <QSpinBox>
 #include <QPushButton>
+#include <QComboBox>
+#include <QCheckBox>
 #include <QImageReader>
 #include <QFileDialog>
 #include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
@@ -53,10 +57,10 @@ namespace nitro {
 
     QtNodes::NodeDataType NitroNode::dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const {
         if (portType == QtNodes::PortType::In) {
-            return nodePorts_.inDataType(portIndex);
+            return nodePorts_.inDataType(int(portIndex));
         }
         if (portType == QtNodes::PortType::Out) {
-            return nodePorts_.outDataType(portIndex);
+            return nodePorts_.outDataType(int(portIndex));
         }
         return QtNodes::InvalidData().type();
     }
@@ -173,7 +177,10 @@ namespace nitro {
             nodePorts_.setOutputData(portName, nullptr);
             propJson_[key] = "";
         } else {
-            button->setText(QFileInfo(filePath).fileName());
+            QFontMetrics fontMetrics(button->font());
+            QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
+                                                        button->width());
+            button->setText(elidedText);
             propJson_[key] = filePath;
             if (img.isGrayscale()) {
                 auto cbdImg = std::make_shared<CbdImage>(img);
@@ -214,11 +221,25 @@ namespace nitro {
             algo_->execute(nodePorts_, options_);
 
             for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
-                // For now just emit that everything has been updated
                 Q_EMIT dataUpdated(i);
             }
         });
+    }
 
+    void NitroNode::connectCheckBox(const QString &name, QCheckBox *checkBox) {
+        propJson_[name] = checkBox->isChecked();
+        options_[name] = checkBox->isChecked();
+        widgetsJson_[name] = [checkBox](const QJsonValue &val) {
+            checkBox->setChecked(val.toBool());
+        };
+        connect(checkBox, &QCheckBox::toggled, this, [this, name](bool checked) {
+            options_[name] = checked;
+            propJson_[name] = checked;
+            algo_->execute(nodePorts_, options_);
+            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                Q_EMIT dataUpdated(i);
+            }
+        });
     }
 
 } // nitro
