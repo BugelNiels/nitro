@@ -2,11 +2,11 @@
 
 #include <utility>
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeData"
+#include "external/nodeeditor/include/QtNodes/NodeData"
 
 
 #include "src/core/cbdimage.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/DataInfo.hpp"
+#include "external/nodeeditor/include/QtNodes/DataInfo.hpp"
 
 namespace nitro {
     class DecimalData : public QtNodes::NodeData {

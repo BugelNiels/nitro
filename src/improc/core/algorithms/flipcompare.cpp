@@ -1,6 +1,6 @@
 #include "flipcompare.hpp"
 
-#include "3rdparty/flip/cpp/CPP/FLIP.h"
+#include "external/flip/cpp/CPP/FLIP.h"
 
 
 static FLIP::image<FLIP::color3> qColImgToFlipImg(const QImage &img) {

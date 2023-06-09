@@ -1,5 +1,5 @@
 #include "blenddatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "src/improc/core/algorithms/util/imgmath.hpp"
 
 nitro::BlendDataModel::BlendDataModel() : ImageDataModel() {

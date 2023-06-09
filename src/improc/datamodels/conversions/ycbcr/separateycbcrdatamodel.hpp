@@ -2,7 +2,7 @@
 
 
 #include "datamodels/conversions/colseparatedatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 

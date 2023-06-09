@@ -1,5 +1,5 @@
 #include "tograyscaledatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "core/algorithms/conversions/grayscaleconvert.hpp"
 
 #include <QtGui/QDoubleValidator>

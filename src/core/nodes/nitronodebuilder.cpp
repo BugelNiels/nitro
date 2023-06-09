@@ -3,7 +3,7 @@
 #include <utility>
 #include <QPushButton>
 #include "nitronodebuilder.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeColors.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeColors.hpp"
 #include "util/imgresourcereader.hpp"
 #include "nodes/datatypes/imagedata.hpp"
 #include "nodes/datatypes/greyimagedata.hpp"

@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QImageReader>
 #include <QFileDialog>
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/datatypes/greyimagedata.hpp"
@@ -122,7 +122,7 @@ namespace nitro {
         };
         connect(button, &QPushButton::pressed, this, [this, port, button]() {
             QString filePath = QFileDialog::getOpenFileName(
-                    nullptr, "Load Image", "../images/",
+                    nullptr, "Load Image", "../data/",
                     tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
 
             loadImage(button, port, filePath);

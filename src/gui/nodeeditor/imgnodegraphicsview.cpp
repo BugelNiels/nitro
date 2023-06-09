@@ -1,22 +1,22 @@
 #include "imgnodegraphicsview.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/DataFlowGraphModel"
+#include "external/nodeeditor/include/QtNodes/DataFlowGraphModel"
 
 #include "src/core/nodes/initialization/nitronodes.hpp"
 
 #include "util/imgresourcereader.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/internal/AbstractNodeGeometry.hpp"
+#include "external/nodeeditor/include/QtNodes/internal/AbstractNodeGeometry.hpp"
 
 #include "util/util.hpp"
 
-#include "3rdparty/nodeeditor/include/QtNodes/internal/ConnectionGraphicsObject.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/internal/NodeGraphicsObject.hpp"
+#include "external/nodeeditor/include/QtNodes/internal/ConnectionGraphicsObject.hpp"
+#include "external/nodeeditor/include/QtNodes/internal/NodeGraphicsObject.hpp"
 #include "src/gui/imgviewer/imgviewer.hpp"
 #include "datamodels/output/imageviewerdatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "QtNodes/Definitions"
 #include "nodes/datatypes/greyimagedata.hpp"
 #include <QAction>
-#include "3rdparty/nodeeditor/include/QtNodes/BasicGraphicsScene"
+#include "external/nodeeditor/include/QtNodes/BasicGraphicsScene"
 #include <QMenu>
 
 #include <QKeyEvent>

@@ -7,9 +7,9 @@
 #include <QComboBox>
 #include "QtNodes/NodeDelegateModel"
 #include "src/core/nodes/operators/nodeoperator.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
-#include "3rdparty/qt-value-slider/include/doubleslider.hpp"
-#include "3rdparty/qt-value-slider/include/intslider.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "external/qt-value-slider/include/doubleslider.hpp"
+#include "external/qt-value-slider/include/intslider.hpp"
 
 namespace nitro {
 

@@ -1,5 +1,5 @@
 #include "imgviewer.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/internal/StyleCollection.hpp"
+#include "external/nodeeditor/include/QtNodes/internal/StyleCollection.hpp"
 
 #include <QColorSpace>
 #include <QGuiApplication>
@@ -59,7 +59,7 @@ void nitro::ImageViewer::saveImage() {
     {
         if (displayImg != nullptr) {
             QString filePath = QFileDialog::getSaveFileName(
-                    this, "Save Image", "../images/",
+                    this, "Save Image", "../data/",
                     tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
             if (filePath == "") {
                 return;

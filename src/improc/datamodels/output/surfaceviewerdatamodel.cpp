@@ -1,5 +1,5 @@
 #include "surfaceviewerdatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtWidgets/QLineEdit>
 #include <QImageReader>

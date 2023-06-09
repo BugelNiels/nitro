@@ -10,8 +10,8 @@
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
-#include "3rdparty/nodeeditor/include/QtNodes/DataFlowGraphModel"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
+#include "external/nodeeditor/include/QtNodes/DataFlowGraphModel"
+#include "external/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
 #include "config.hpp"
 #include <QFileDialog>
 #include <QMessageBox>

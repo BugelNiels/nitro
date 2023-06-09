@@ -4,7 +4,7 @@
 #include <set>
 #include "src/core/nodes/nitronode.hpp"
 #include "src/core/nodes/operators/nodeoperator.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
 

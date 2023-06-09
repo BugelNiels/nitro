@@ -14,12 +14,12 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS OpenGL OpenGLWidgets Widg
 find_package(OpenMP REQUIRED)
 
 # TODO: check this
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/CPP)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/flip/cpp/common)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/CPP)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/common)
 
 include_directories(${CMAKE_BINARY_DIR})
 
-add_subdirectory(3rdparty)
+add_subdirectory(external)
 
 file(GLOB_RECURSE CPPS src/*.cpp)
 file(GLOB_RECURSE HPPS src/*.hpp)

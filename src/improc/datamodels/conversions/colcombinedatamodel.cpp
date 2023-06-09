@@ -3,7 +3,7 @@
 #include <QtGui/QDoubleValidator>
 #include <QImageReader>
 #include <QVBoxLayout>
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 nitro::ColorCombineDataModel::ColorCombineDataModel(int numChannels) {
     _input.resize(numChannels);

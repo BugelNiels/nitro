@@ -7,8 +7,8 @@
 #include <QCheckBox>
 #include <QSplitter>
 #include "src/core/nodes/initialization/nitronodes.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/DataColors.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/internal/WidgetNodePainter.hpp"
+#include "external/nodeeditor/include/QtNodes/DataColors.hpp"
+#include "external/nodeeditor/include/QtNodes/internal/WidgetNodePainter.hpp"
 #include "surfacevis/renderview.hpp"
 
 nitro::ImprocBuilder::ImprocBuilder() {}

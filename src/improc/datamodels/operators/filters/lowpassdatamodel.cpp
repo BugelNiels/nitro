@@ -1,6 +1,6 @@
 #include "lowpassdatamodel.hpp"
 
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 #include "core/algorithms/conversions/ycbcrconvert.hpp"
 #include "core/algorithms/corrections.hpp"
 

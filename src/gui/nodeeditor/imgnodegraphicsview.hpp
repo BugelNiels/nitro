@@ -1,13 +1,13 @@
 #pragma once
 
-#include "3rdparty/nodeeditor/include/QtNodes/GraphicsView"
+#include "external/nodeeditor/include/QtNodes/GraphicsView"
 #include <QMenu>
 #include "QtNodes/DataFlowGraphModel"
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 #include "src/gui/imgviewer/imgviewer.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 #include "src/core/nodes/initialization/nitronodes.hpp"
 
 namespace nitro {

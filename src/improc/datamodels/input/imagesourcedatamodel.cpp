@@ -1,5 +1,5 @@
 #include "imagesourcedatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
@@ -84,7 +84,7 @@ QWidget *nitro::ImageSourceDataModel::initAfterWidget() {
 
 void nitro::ImageSourceDataModel::onLoadButtonPressed() {
     QString filePath = QFileDialog::getOpenFileName(
-            nullptr, "Load Image", "../images/",
+            nullptr, "Load Image", "../data/",
             tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
 
     loadImage(filePath);

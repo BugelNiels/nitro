@@ -4,9 +4,9 @@
 
 #include <QLabel>
 #include <QSpinBox>
-#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModel"
+#include "external/nodeeditor/include/QtNodes/NodeDelegateModel"
 
-#include "3rdparty/nodeeditor/include/QtNodes/NodeInfo.hpp"
+#include "external/nodeeditor/include/QtNodes/NodeInfo.hpp"
 
 namespace nitro {
     class IntegerSourceDataModel : public QtNodes::NodeDelegateModel {

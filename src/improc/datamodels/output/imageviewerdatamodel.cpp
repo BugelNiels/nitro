@@ -1,5 +1,5 @@
 #include "imageviewerdatamodel.hpp"
-#include "3rdparty/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
 
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
