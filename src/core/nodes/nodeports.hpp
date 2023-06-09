@@ -29,7 +29,6 @@ namespace nitro {
         template<class T>
         std::shared_ptr<T> getInDataAsType(const QString& name) {
             if (inputMap_.count(name) == 0) {
-                std::cerr << "Node algorithm error: " << name.toStdString() << " does not exist in node input list";
                 return nullptr;
             }
             return std::dynamic_pointer_cast<T>(inputMap_.at(name));
