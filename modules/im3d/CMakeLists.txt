@@ -1,9 +1,13 @@
-set(MODULE_NAME imCore)
+set(MODULE_NAME Im3D)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 file(GLOB_RECURSE MODULE_SOURCES src/*.cpp)
 file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
+
+# Any additional required packages defined here
+list(APPEND MODULE_LIBS Qt::OpenGL)
+list(APPEND MODULE_LIBS Qt::OpenGLWidgets)
 
 add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES} ${MODULE_HEADERS})
 

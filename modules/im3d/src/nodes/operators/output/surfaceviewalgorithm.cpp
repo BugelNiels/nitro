@@ -9,7 +9,6 @@ nitro::SurfaceViewAlgorithm::SurfaceViewAlgorithm(nitro::RenderView *surfViewer)
 }
 
 void nitro::SurfaceViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    QString paramName = "image";
     bool ok;
     auto img = nodePorts.getInputImage("image", ok);
     if (ok) {

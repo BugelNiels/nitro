@@ -4,7 +4,7 @@ foreach (module ${ENABLED_MODULES})
     string(TOLOWER ${module} lModule)
     set(MODULE_INCLUDES "${MODULE_INCLUDES}#include \"modules/${lModule}/include/${lModule}module.hpp\"\n")
     set(MODULE_APPENDS "${MODULE_APPENDS}modules.push_back(std::make_unique<nitro::${module}::${module}Module>());\n")
-    add_subdirectory(modules/${lowercaseModule})
+    add_subdirectory(modules/${lModule})
 endforeach ()
 
 configure_file(include/config.hpp.in config.hpp)

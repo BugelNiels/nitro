@@ -5,13 +5,13 @@
 #include "nodes/nitronodebuilder.hpp"
 
 namespace nitro {
-    class ImageViewer;
+    class RenderView;
 
-    namespace ImCore {
+    namespace Im3D {
 
-        class ImCoreModule : public NitroModule {
+        class Im3DModule : public NitroModule {
         public:
-            ImCoreModule();
+            Im3DModule();
 
 
             void registerDataTypes(NodeRegistry *registry) override;
@@ -21,15 +21,12 @@ namespace nitro {
             void registerNodes(NodeRegistry *registry) override;
 
         private:
-            void registerInputNodes(NodeRegistry *registry);
 
-            void registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer);
-
-            void registerUtilNodes(NodeRegistry *registry);
+            void registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer);
 
             void registerImageNodes(NodeRegistry *registry);
 
-            ImageViewer *imageViewer_;
+            RenderView *renderViewer_;
         };
     }
 

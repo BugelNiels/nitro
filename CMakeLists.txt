@@ -63,6 +63,7 @@ target_link_libraries(${PROJECT_NAME}
 # Enable Modules - add more modules if required
 set(ENABLED_MODULES
         ImCore
+        Im3D
         )
 
 include(cmake/config.cmake)

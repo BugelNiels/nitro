@@ -2,7 +2,6 @@
 
 #include <QLabel>
 #include <QOpenGLDebugLogger>
-#include <QOpenGLWidget>
 #include <QScrollArea>
 #include <QVector3D>
 #include <QMenu>
