@@ -152,7 +152,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
 
 QLabel *nitro::MainWindow::buildDockIcon(const QString &path) {
     auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImgResourceReader::getPixMap(path, {icSize, icSize}, icColor));
+    nodeIcon->setPixmap(ImResourceReader::getPixMap(path, {icSize, icSize}, icColor));
     return nodeIcon;
 }
 

@@ -5,7 +5,7 @@
 
 namespace nitro {
 
-    class ImgResourceReader {
+    class ImResourceReader {
 
     public:
         static QPixmap

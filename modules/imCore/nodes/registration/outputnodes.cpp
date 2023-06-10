@@ -4,14 +4,15 @@
 
 namespace nitro::imCore {
 
-    void ImCoreModule::buildOutputNodes(NodeRegistry* registry, ImageViewer* imageViewer, RenderView* renderViewer) {
+    void ImCoreModule::registerOutputNodes(NodeRegistry* registry, ImageViewer* imageViewer, RenderView* renderViewer) {
         const QString category = "Output";
 
+        qDebug() << imageViewer;
         // ------ Image Viewer Node ------
         registry->registerNode([category, imageViewer]() {
-            nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category,
-                                            nitro::ImageViewAlgorithm(imageViewer));
+            nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
             return builder.
+                    withOperator(std::make_unique<nitro::ImageViewAlgorithm>(imageViewer))->
                     withInputGreyImage("image")->
                     withIcon(":/icons/nodes/viewer.png")->
                     withNodeColor({60, 29, 38})->
@@ -21,9 +22,10 @@ namespace nitro::imCore {
 
         // ------ Surface Viewer Node ------
         registry->registerNode([category, renderViewer]() {
-            nitro::NitroNodeBuilder builder("3D Image Viewer", "ImageViewer3D", category,
-                                            nitro::SurfaceViewAlgorithm(renderViewer));
+            nitro::NitroNodeBuilder builder("3D Image Viewer", "ImageViewer3D", category);
             return builder.
+
+                    withOperator(std::make_unique<nitro::SurfaceViewAlgorithm>(renderViewer))->
                     withInputGreyImage("image")->
                     withIcon(":/icons/nodes/surface.png")->
                     withNodeColor({99, 28, 28})->

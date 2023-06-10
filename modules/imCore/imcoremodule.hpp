@@ -1,8 +1,8 @@
 #pragma once
 
 #include "nitromodule.hpp"
-#include "modules/imCore/gui/imgviewer/imgviewer.hpp"
-#include "modules/imCore/gui/surfacevis/renderview.hpp"
+#include "modules/imCore/gui/imviewer/imviewer.hpp"
+#include "modules/imCore/gui/im3dviewer/renderview.hpp"
 
 namespace nitro::imCore {
 
@@ -16,14 +16,10 @@ namespace nitro::imCore {
         void registerNodes(NodeRegistry* registry) override;
 
     private:
-        void buildInputNodes(NodeRegistry* registry);
-        void buildOutputNodes(NodeRegistry* registry, ImageViewer* imageViewer, RenderView* renderViewer);
-        void buildConverterNodes(NodeRegistry* registry);
-        void buildComparisonNodes(NodeRegistry* registry);
-        void buildFilterNodes(NodeRegistry* registry);
-        void buildColorNodes(NodeRegistry* registry);
-        void buildQuantizationNodes(NodeRegistry* registry);
-        void buildResampleNodes(NodeRegistry* registry);
+        void registerInputNodes(NodeRegistry* registry);
+        void registerOutputNodes(NodeRegistry* registry, ImageViewer* imageViewer, RenderView* renderViewer);
+        void registerUtilNodes(NodeRegistry* registry);
+        void registerImageNodes(NodeRegistry* registry);
 
         RenderView *renderViewer_;
         ImageViewer *imageViewer_;

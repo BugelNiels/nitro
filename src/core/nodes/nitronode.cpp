@@ -16,13 +16,13 @@ using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
 
 namespace nitro {
-    
+
     NitroNode::~NitroNode() {
     }
 
     void NitroNode::init(QtNodes::NodeInfo info,
                          const NodePorts &nodePorts,
-                         std::shared_ptr<NodeOperator> algo,
+                         std::unique_ptr<NodeOperator> algo,
                          QWidget *widget) {
         info_ = std::move(info);
         algo_ = std::move(algo);
@@ -70,10 +70,10 @@ namespace nitro {
         // TODO: extract into function
         QString key = QString("In %1").arg(portIndex);
         if (widgets_.count(key) > 0) {
+            // TODO: replace sliders
             widgets_[key]->setEnabled(data == nullptr);
         }
         nodePorts_.setInData(portIndex, data);
-        qDebug() << "executing algo";
         algo_->execute(nodePorts_, options_);
 
         for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
@@ -122,6 +122,7 @@ namespace nitro {
         widgetsJson_[key] = [this, button, port](const QJsonValue &val) {
             loadImage(button, port, val.toString());
         };
+        // TODO: extract this into general load button; pass lambda as parameter
         connect(button, &QPushButton::pressed, this, [this, port, button]() {
             QString filePath = QFileDialog::getOpenFileName(
                     nullptr, "Load Image", "../data/",

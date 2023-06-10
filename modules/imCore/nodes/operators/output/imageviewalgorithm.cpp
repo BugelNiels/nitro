@@ -3,7 +3,6 @@
 #include "nodes/datatypes/greyimagedata.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/imagedata.hpp"
-#include "modules/imCore/gui/imgviewer/imgviewer.hpp"
 
 nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
         : imViewer_(imViewer) {
@@ -11,7 +10,6 @@ nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
 
 
 void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    qDebug() << "Viewing image";
     QString paramName = "image";
     auto inputImgDatGrey = nodePorts.getInDataAsType<nitro::GreyImageData>(paramName);
     if (inputImgDatGrey != nullptr) {

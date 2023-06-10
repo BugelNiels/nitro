@@ -1,29 +1,28 @@
 #include "modules/imCore/imcoremodule.hpp"
-#include "modules/imCore/nodes/operators/converter/threshold.hpp"
+#include "modules/imCore/nodes/operators/image/threshold.hpp"
 
 namespace nitro::imCore {
 
-    void ImCoreModule::buildConverterNodes(NodeRegistry* registry) {
-        const QString category = "Converter";
+    void ImCoreModule::registerUtilNodes(NodeRegistry* registry) {
+        const QString category = "Util";
 
-        // ------ Threshold Node ------
+        // ------ Mix Node ------
         registry->registerNode([category]() {
-            nitro::NitroNodeBuilder builder("Threshold", "threshold", category,
-                                            nitro::ThresholdOperator());
+            nitro::NitroNodeBuilder builder("Mix", "mix", category);
             return builder.
-                    withIcon(":/icons/nodes/threshold.png")->
-                    withNodeColor({43, 101, 43})->
-                    withDropDown("Mode", {"<=", ">="})->
-                    withInputGreyImage("Image")->
-                    withInputInteger("Threshold", 128, 0, 255)->
-                    withOutputGreyImage("Image")->
+                    withIcon(":/icons/nodes/mix.png")->
+                    withNodeColor({110, 110, 29})->
+                    withDropDown("Mode", {"Mix", "Add"})->
+                    withInputValue("Fac", 0.5, 0, 1)->
+                    withInputImage("Image1")->
+                    withInputImage("Image2")->
+                    withOutputColImage("Image")->
                     build();
         });
 
         // ------ Separate Node ------
         registry->registerNode([category]() {
-            nitro::NitroNodeBuilder builder("Separate Channels", "separateChannels", category,
-                                            nitro::ThresholdOperator());
+            nitro::NitroNodeBuilder builder("Separate Channels", "separateChannels", category);
             return builder.
                     withIcon(":/icons/nodes/separate.png")->
                     withNodeColor({36, 98, 131})->
@@ -37,8 +36,7 @@ namespace nitro::imCore {
 
         // ------ Combine Node ------
         registry->registerNode([category]() {
-            nitro::NitroNodeBuilder builder("Combine Channels", "combineChannels", category,
-                                            nitro::ThresholdOperator());
+            nitro::NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
             return builder.
                     withIcon(":/icons/nodes/combine.png")->
                     withNodeColor({36, 98, 131})->

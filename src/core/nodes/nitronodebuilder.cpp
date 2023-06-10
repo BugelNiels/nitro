@@ -19,15 +19,10 @@ using IntSlider = ValueSliders::IntSlider;
 
 using namespace nitro;
 
-NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category,
-                                   const NodeOperator &algo)
+NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category)
         : name_(std::move(name)),
           id_(std::move(id)),
-          category_(std::move(category)),
-          algo_(std::make_unique<NodeOperator>(algo)) {
-
-
-    // TODO: get these values from the geometry/config
+          category_(std::move(category)) {
     const int portSpacing = 4;
     portWidgetHeight_ = QFontMetrics(QFont()).height() + 10;
 
@@ -46,14 +41,8 @@ NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category,
     node_ = std::make_unique<NitroNode>();
 }
 
-
-NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category)
-        : NitroNodeBuilder(std::move(name), std::move(id), std::move(category), NodeOperator()) {
-
-}
-
 std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
-    QtNodes::NodeInfo info(name_, id_, nodeColor_, iconPath_);
+    QtNodes::NodeInfo info(name_, id_, category_, nodeColor_, iconPath_);
 
     // TODO: perhaps not the best way, but works for now
     QtNodes::NodeColors::registerColor(info);
@@ -86,9 +75,8 @@ std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
 
     node_->init(info,
                 nodePorts,
-                algo_,
+                std::move(algo_),
                 displayWrapper);
-
     return std::move(node_);
 }
 
@@ -225,7 +213,7 @@ NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
 
     auto *loadButton_ = new QPushButton("Load Image");
     loadButton_->setStyleSheet("text-align: left;");
-    loadButton_->setIcon(nitro::ImgResourceReader::getPixMap(":/icons/folder_open.png"));
+    loadButton_->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));
     loadButton_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     loadButton_->adjustSize();
     node_->connectLoadButton(loadButton_, outputList_.size() - 1);
@@ -321,6 +309,11 @@ NitroNodeBuilder *NitroNodeBuilder::withNodeColor(const QColor &color) {
 
 NitroNodeBuilder *NitroNodeBuilder::withIcon(const QString &path) {
     iconPath_ = path;
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withOperator(std::unique_ptr<NodeOperator> algo) {
+    algo_ = std::move(algo);
     return this;
 }
 

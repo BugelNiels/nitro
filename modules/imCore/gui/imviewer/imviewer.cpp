@@ -1,4 +1,4 @@
-#include "imgviewer.hpp"
+#include "imviewer.hpp"
 
 #include <QColorSpace>
 #include <QGuiApplication>

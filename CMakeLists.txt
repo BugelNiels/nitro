@@ -28,7 +28,7 @@ file(GLOB_RECURSE HPPS src/*.hpp modules/*.hpp include/*.hpp)
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
         resources/resources.qrc
-        modules/imCore/gui/surfacevis/renderdockwidget.cpp modules/imCore/gui/imgviewer/imviewdockwidget.cpp include/nitromodule.hpp modules/imCore/imcoremodule.cpp modules/imCore/imcoremodule.hpp)
+        modules/imCore/gui/im3dviewer/renderdockwidget.cpp modules/imCore/gui/imviewer/imviewdockwidget.cpp include/nitromodule.hpp modules/imCore/imcoremodule.cpp modules/imCore/imcoremodule.hpp)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

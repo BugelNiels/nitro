@@ -51,7 +51,7 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
     connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
     QSize size(searchBar->height(), searchBar->height());
     auto *searchLabel = new QLabel();
-    searchLabel->setPixmap(nitro::ImgResourceReader::getPixMap(":/icons/search.png", size));
+    searchLabel->setPixmap(nitro::ImResourceReader::getPixMap(":/icons/search.png", size));
 
     auto *searchHorLayout = new QHBoxLayout();
     searchHorLayout->addWidget(searchLabel);

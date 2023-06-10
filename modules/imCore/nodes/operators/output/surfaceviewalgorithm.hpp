@@ -1,7 +1,7 @@
 #pragma once
 
 #include "include/nodes/nodeoperator.hpp"
-#include "modules/imCore/gui/surfacevis/renderview.hpp"
+#include "modules/imCore/gui/im3dviewer/renderview.hpp"
 
 namespace nitro {
 

@@ -2,14 +2,14 @@
 #include <QPainter>
 
 
-QMap<QString, QPixmap> nitro::ImgResourceReader::loadedIcons;
+QMap<QString, QPixmap> nitro::ImResourceReader::loadedIcons;
 
 
-QPixmap nitro::ImgResourceReader::getPixMap(const QString &path, const QSize &size, const QColor &color) {
+QPixmap nitro::ImResourceReader::getPixMap(const QString &path, const QSize &size, const QColor &color) {
     QString key = QString("%1?color=%2&size=%3x%4").arg(path).arg(color.name()).arg(size.width()).arg(
             size.height());
     if (loadedIcons.contains(key)) {
-        return ImgResourceReader::loadedIcons[key];
+        return ImResourceReader::loadedIcons[key];
     }
     QImage myImage(path);
 

@@ -2,9 +2,8 @@
 
 #include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
+#include "modules/imCore/gui/im3dviewer/settings.hpp"
 
-#include "modules/imCore/gui/surfacevis/settings.hpp"
-#include "modules/imCore/gui/surfacevis/shadertypes.hpp"
 
 namespace nitro {
 /**

@@ -31,7 +31,7 @@ namespace nitro {
 
         void init(QtNodes::NodeInfo info,
                   const NodePorts &nodePorts,
-                  std::shared_ptr<NodeOperator> algo,
+                  std::unique_ptr<NodeOperator> algo,
                   QWidget *widget);
 
         [[nodiscard]] QString caption() const override;
@@ -62,7 +62,7 @@ namespace nitro {
     private:
 
         QtNodes::NodeInfo info_;
-        std::shared_ptr<NodeOperator> algo_;
+        std::unique_ptr<NodeOperator> algo_;
         NodePorts nodePorts_;
         QJsonObject propJson_;
         // when new widgets are added, they register a function that allows it to grab a value from the json list

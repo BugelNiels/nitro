@@ -6,10 +6,8 @@
 #include "nodes/datatypes/integerdata.hpp"
 
 #include "nodes/datatypes/decimaldata.hpp"
-#include "modules/imCore/gui/imgviewer/imviewdockwidget.hpp"
-#include "modules/imCore/gui/surfacevis/renderdockwidget.hpp"
-#include "modules/imCore/gui/surfacevis/renderview.hpp"
-#include "modules/imCore/gui/imgviewer/imgviewer.hpp"
+#include "modules/imCore/gui/imviewer/imviewdockwidget.hpp"
+#include "modules/imCore/gui/im3dviewer/renderdockwidget.hpp"
 
 namespace nitro::imCore {
 
@@ -19,17 +17,13 @@ namespace nitro::imCore {
     }
 
     void ImCoreModule::registerNodes(NodeRegistry *registry) {
-        buildInputNodes(registry);
-        buildOutputNodes(registry, imageViewer_, renderViewer_);
-        buildConverterNodes(registry);
-        buildComparisonNodes(registry);
-        buildFilterNodes(registry);
-        buildColorNodes(registry);
-        buildQuantizationNodes(registry);
-        buildResampleNodes(registry);
+        registerInputNodes(registry);
+        registerOutputNodes(registry, imageViewer_, renderViewer_);
+        registerUtilNodes(registry);
+        registerImageNodes(registry);
     }
 
-    void ImCoreModule::registerDataTypes(NodeRegistry* registry) {
+    void ImCoreModule::registerDataTypes(NodeRegistry *registry) {
         registry->registerDataType(ImageData::dataInfo());
         registry->registerDataType(ColorImageData::dataInfo());
         registry->registerDataType(GreyImageData::dataInfo());

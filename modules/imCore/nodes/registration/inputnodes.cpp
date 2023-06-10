@@ -2,7 +2,7 @@
 
 namespace nitro::imCore {
 
-    void ImCoreModule::buildInputNodes(NodeRegistry* registry) {
+    void ImCoreModule::registerInputNodes(NodeRegistry* registry) {
         const QString category = "Input";
 
         // ------ Image Source Node ------

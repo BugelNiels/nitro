@@ -46,7 +46,7 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
         dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
     });
     QIcon icon;
-    icon.addPixmap(nitro::ImgResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
+    icon.addPixmap(nitro::ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
     createNodeAction->setIcon(icon);
     return createNodeAction;
 }
@@ -111,7 +111,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 viewerNodeId = newId;
                 dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
             }
-            
+
             auto const &cid = c->nodeId();
             if (cid == viewerNodeId) {
                 // skip being able to view the viewer itself;

@@ -13,12 +13,11 @@ namespace nitro {
     class NitroNodeBuilder {
 
     public:
-        NitroNodeBuilder(QString  name, QString  id, QString  category,
-                         const NodeOperator& algo);
-
         NitroNodeBuilder(QString name, QString id, QString category);
 
         std::unique_ptr<NitroNode> build();
+
+        NitroNodeBuilder *withOperator(std::unique_ptr<NodeOperator> algo);
 
         // Misc
         NitroNodeBuilder *withNodeColor(const QColor &color);
@@ -75,7 +74,7 @@ namespace nitro {
         const QString name_;
         const QString id_;
         const QString category_;
-        const std::shared_ptr<NodeOperator> algo_;
+        std::unique_ptr<NodeOperator> algo_;
         int portWidgetHeight_;
 
         // TODO: defaults
