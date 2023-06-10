@@ -1,10 +1,25 @@
-#include "nodeports.hpp"
+#include "include/nodes/nodeports.hpp"
 #include "QtNodes/InvalidData.hpp"
+#include "QtNodes/NodeData"
+#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 
 #include <utility>
 
 namespace nitro {
     NodePorts::NodePorts() = default;
+
+    NodePorts::NodePorts(std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList,
+                         std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList,
+                         std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap,
+                         std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap)
+            : inputList_(std::move(inputList)),
+              outputList_(std::move(outputList)),
+              inputMap_(std::move(inputMap)),
+              outputMap_(std::move(outputMap)) {
+
+    }
 
     NodePorts::~NodePorts() = default;
 
@@ -82,15 +97,55 @@ namespace nitro {
         inputMap_[inPortName(port)] = std::move(data);
     }
 
-    NodePorts::NodePorts(std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList,
-                         std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList,
-                         std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap,
-                         std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap)
-            : inputList_(std::move(inputList)),
-              outputList_(std::move(outputList)),
-              inputMap_(std::move(inputMap)),
-              outputMap_(std::move(outputMap)) {
+    int NodePorts::getInputInteger(const QString &name, bool &present) {
+        present = false;
+        if (inputMap_.count(name) == 0) {
+            return 0;
+        }
+        auto inputValDat = std::dynamic_pointer_cast<nitro::IntegerData>(inputMap_.at(name));
+        if (inputValDat == nullptr) {
+            return 0;
+        }
+        present = true;
+        return inputValDat->value();
+    }
 
+    double NodePorts::getInputValue(const QString &name, bool &present) {
+        present = false;
+        if (inputMap_.count(name) == 0) {
+            return 0;
+        }
+        auto inputValDat = std::dynamic_pointer_cast<nitro::DecimalData>(inputMap_.at(name));
+        if (inputValDat == nullptr) {
+            return 0;
+        }
+        present = true;
+        return inputValDat->value();
+    }
+
+    std::shared_ptr<cv::Mat> NodePorts::getInputImage(const QString &name, bool &present) {
+        present = false;
+        if (inputMap_.count(name) == 0) {
+            return nullptr;
+        }
+        auto inputImgDat = std::dynamic_pointer_cast<nitro::ImageData>(inputMap_.at(name));
+        if (inputImgDat == nullptr) {
+            return nullptr;
+        }
+        present = true;
+        return inputImgDat->image();
+    }
+
+    void NodePorts::setOutputInteger(const QString &name, int val) {
+        setOutputData(name, std::make_shared<nitro::IntegerData>(val));
+    }
+
+    void NodePorts::setOutputValue(const QString &name, double val) {
+        setOutputData(name, std::make_shared<nitro::DecimalData>(val));
+    }
+
+    void NodePorts::setOutputImage(const QString &name, const std::shared_ptr<cv::Mat>& im) {
+        setOutputData(name, std::make_shared<nitro::ImageData>(im));
     }
 
 

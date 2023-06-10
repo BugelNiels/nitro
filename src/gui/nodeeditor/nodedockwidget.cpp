@@ -4,16 +4,15 @@
 #include <QCheckBox>
 #include "imgnodegraphicsview.hpp"
 
-#include "util/imgresourcereader.hpp"
-#include "src/gui/components/draggabletreewidget.hpp"
+#include "src/util/imgresourcereader.hpp"
+#include "include/gui/draggabletreewidget.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
-#include "external/nodeeditor/include/QtNodes/DataFlowGraphModel"
-#include "external/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
-#include "config.hpp"
-#include "mainwindow.hpp"
+#include "QtNodes/DataFlowGraphModel"
+#include "QtNodes/NodeDelegateModelRegistry"
+#include "include/gui/mainwindow.hpp"
 #include "QtNodes/internal/WidgetNodePainter.hpp"
 #include <QFileDialog>
 #include <QMessageBox>

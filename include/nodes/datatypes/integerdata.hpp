@@ -3,8 +3,6 @@
 #include <utility>
 
 #include "QtNodes/NodeData"
-
-#include "modules/imCore/internal/cbdimage.hpp"
 #include "QtNodes/DataInfo.hpp"
 
 namespace nitro {

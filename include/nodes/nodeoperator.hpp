@@ -2,8 +2,7 @@
 
 #include <map>
 #include <QString>
-#include "QtNodes/NodeData"
-#include "src/core/nodes/nodeports.hpp"
+#include "nodeports.hpp"
 
 namespace nitro {
 

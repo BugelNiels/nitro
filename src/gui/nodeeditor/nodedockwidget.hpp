@@ -2,7 +2,7 @@
 
 #include <QDockWidget>
 #include <QTreeWidget>
-#include "external/nodeeditor/include/QtNodes/NodeGraphicsView.hpp"
+#include "QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/DataFlowGraphModel"
 #include "imgnodegraphicsview.hpp"
 

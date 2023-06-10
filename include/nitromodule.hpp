@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "nodes/noderegistry.hpp"
-#include "mainwindow.hpp"
 
 namespace nitro {
+
+    class MainWindow;
+    class NodeRegistry;
 
     class NitroModule {
     public:

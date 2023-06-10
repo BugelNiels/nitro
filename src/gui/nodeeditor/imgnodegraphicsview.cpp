@@ -1,18 +1,18 @@
 #include "imgnodegraphicsview.hpp"
-#include "external/nodeeditor/include/QtNodes/DataFlowGraphModel"
+#include "QtNodes/DataFlowGraphModel"
 
-#include "util/imgresourcereader.hpp"
-#include "external/nodeeditor/include/QtNodes/internal/AbstractNodeGeometry.hpp"
+#include "src/util/imgresourcereader.hpp"
+#include "QtNodes/internal/AbstractNodeGeometry.hpp"
 
-#include "util/util.hpp"
+#include "include/util.hpp"
 
-#include "external/nodeeditor/include/QtNodes/internal/ConnectionGraphicsObject.hpp"
-#include "external/nodeeditor/include/QtNodes/internal/NodeGraphicsObject.hpp"
-#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "QtNodes/internal/ConnectionGraphicsObject.hpp"
+#include "QtNodes/internal/NodeGraphicsObject.hpp"
+#include "QtNodes/InvalidData.hpp"
 #include "QtNodes/Definitions"
 #include <QAction>
-#include "external/nodeeditor/include/QtNodes/BasicGraphicsScene"
-#include "nodes/datatypes/greyimagedata.hpp"
+#include "QtNodes/BasicGraphicsScene"
+#include "nodes/datatypes/imagedata.hpp"
 #include <QMenu>
 
 #include <QKeyEvent>
@@ -123,7 +123,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                     currentPort++;
                     auto pData = dataModel_->portData(nodeBeingViewed, QtNodes::PortType::Out, currentPort,
                                                       QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
-                    if (pData.id == nitro::GreyImageData().type().id) {
+                    if (pData.id == nitro::ImageData().type().id) {
                         break;
                     }
                     if (pData.id == QtNodes::InvalidData().type().id) {

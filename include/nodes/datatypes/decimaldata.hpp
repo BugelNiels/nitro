@@ -2,11 +2,8 @@
 
 #include <utility>
 
-#include "external/nodeeditor/include/QtNodes/NodeData"
-
-
-#include "modules/imCore/internal/cbdimage.hpp"
-#include "external/nodeeditor/include/QtNodes/DataInfo.hpp"
+#include "QtNodes/NodeData"
+#include "QtNodes/DataInfo.hpp"
 
 namespace nitro {
     class DecimalData : public QtNodes::NodeData {
@@ -21,13 +18,13 @@ namespace nitro {
             return {"Value", "decimal", {161, 161, 161}};
         }
 
-        QtNodes::NodeDataType type() const override {
+        [[nodiscard]] QtNodes::NodeDataType type() const override {
             return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
         }
 
-        double value() const { return val_; }
+        [[nodiscard]] double value() const { return val_; }
 
     private:
-        double val_;
+        double val_ = 0;
     };
 } // nitro

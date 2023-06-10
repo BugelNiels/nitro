@@ -1,6 +1,7 @@
-#include "noderegistry.hpp"
+#include "include/nodes/noderegistry.hpp"
 
 #include "QtNodes/DataColors.hpp"
+#include "include/nodes/nitronode.hpp"
 
 
 nitro::NodeRegistry::NodeRegistry() {

@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/nitro_autogen.dir/AutogenUsed.txt"
+  "CMakeFiles/nitro_autogen.dir/ParseCache.txt"
+  "nitro_autogen"
+  "CMakeFiles/nitro.dir/nitro_autogen/3YJK5W5UP7/qrc_resources.cpp.o"
+  "CMakeFiles/nitro.dir/nitro_autogen/3YJK5W5UP7/qrc_resources.cpp.o.d"
+  "CMakeFiles/nitro.dir/nitro_autogen/mocs_compilation.cpp.o"
+  "CMakeFiles/nitro.dir/nitro_autogen/mocs_compilation.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/config.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/config.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/nodes/nitronode.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/nodes/nitronode.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/nodes/nitronodebuilder.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/nodes/nitronodebuilder.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/nodes/nodeports.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/nodes/nodeports.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/nodes/noderegistry.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/nodes/noderegistry.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/util/imgresourcereader.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/util/imgresourcereader.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/core/util/util.cpp.o"
+  "CMakeFiles/nitro.dir/src/core/util/util.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/gui/components/draggabletreewidget.cpp.o"
+  "CMakeFiles/nitro.dir/src/gui/components/draggabletreewidget.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/gui/components/zoombar.cpp.o"
+  "CMakeFiles/nitro.dir/src/gui/components/zoombar.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/gui/mainwindow.cpp.o"
+  "CMakeFiles/nitro.dir/src/gui/mainwindow.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/gui/nodeeditor/imgnodegraphicsview.cpp.o"
+  "CMakeFiles/nitro.dir/src/gui/nodeeditor/imgnodegraphicsview.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/gui/nodeeditor/nodedockwidget.cpp.o"
+  "CMakeFiles/nitro.dir/src/gui/nodeeditor/nodedockwidget.cpp.o.d"
+  "CMakeFiles/nitro.dir/src/main.cpp.o"
+  "CMakeFiles/nitro.dir/src/main.cpp.o.d"
+  "nitro"
+  "nitro.pdb"
+  "nitro_autogen/3YJK5W5UP7/qrc_resources.cpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/nitro.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

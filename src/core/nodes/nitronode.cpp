@@ -1,4 +1,4 @@
-#include "nitronode.hpp"
+#include "include/nodes/nitronode.hpp"
 
 #include <utility>
 #include <QPushButton>
@@ -6,11 +6,13 @@
 #include <QCheckBox>
 #include <QImageReader>
 #include <QFileDialog>
-#include "external/nodeeditor/include/QtNodes/InvalidData.hpp"
+#include "QtNodes/InvalidData.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/greyimagedata.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/imagedata.hpp"
+#include <opencv2/imgcodecs.hpp>
+#include "external/qt-value-slider/include/doubleslider.hpp"
+#include "external/qt-value-slider/include/intslider.hpp"
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
@@ -164,14 +166,12 @@ namespace nitro {
     }
 
     void NitroNode::loadImage(QPushButton *button, int port, const QString &filePath) {
-        QImageReader reader(filePath);
-        reader.setAutoTransform(true);
-        QImage img = reader.read();
+        cv::Mat inputImg = cv::imread(filePath.toStdString());
 
         QString portName = nodePorts_.outPortName(port);
         QString key = QString("Load %1").arg(port);
 
-        if (img.isNull()) {
+        if (inputImg.empty()) {
             button->setText("Load Image");
             nodePorts_.setOutputData(portName, nullptr);
             propJson_[key] = "";
@@ -181,15 +181,10 @@ namespace nitro {
                                                         button->width());
             button->setText(elidedText);
             propJson_[key] = filePath;
-            if (img.isGrayscale()) {
-                auto cbdImg = std::make_shared<CbdImage>(img);
-                nodePorts_.setOutputType(port, GreyImageData().type());
-                nodePorts_.setOutputData(portName, std::make_shared<GreyImageData>(cbdImg));
-            } else {
-                auto ptrImg = std::make_shared<QImage>(img);
-                nodePorts_.setOutputType(port, ColorImageData().type());
-                nodePorts_.setOutputData(portName, std::make_shared<ColorImageData>(ptrImg));
-            }
+            auto ptrImg = std::make_shared<cv::Mat>(inputImg);
+            nodePorts_.setOutputType(port, ImageData().type());
+            nodePorts_.setOutputData(portName, std::make_shared<ImageData>(ptrImg));
+
         }
         Q_EMIT dataUpdated(port);
     }

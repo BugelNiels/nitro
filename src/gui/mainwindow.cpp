@@ -1,13 +1,14 @@
-#include "mainwindow.hpp"
+#include "gui/mainwindow.hpp"
+
 #include <QMenuBar>
 #include <QStatusBar>
-
 #include <QKeyEvent>
 #include <QEvent>
 #include <QHBoxLayout>
 #include <QSplitter>
-#include "util/imgresourcereader.hpp"
-#include "config.hpp"
+#include "src/util/imgresourcereader.hpp"
+
+#include "src/gui/nodeeditor/nodedockwidget.hpp"
 
 nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
         : QMainWindow(parent) {
@@ -32,6 +33,12 @@ void nitro::MainWindow::finalizeSetup() {
 
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
+
+    const int widgetCount = dockLayout_->count();
+    QList<int> initialSizes;
+    initialSizes.fill(1, widgetCount);
+    dockLayout_->setSizes(initialSizes);
+
     setWindowState(Qt::WindowMaximized);
 
 }
@@ -40,7 +47,8 @@ nitro::MainWindow::~MainWindow() = default;
 
 
 QStatusBar *nitro::MainWindow::initFooter() {
-    auto *versionLabel = new QLabel(QString(" version %1 ").arg(nitro::config::version), this);
+    // TODO: use CMAKE version
+    auto *versionLabel = new QLabel(QString(" version %1 ").arg(1.0), this);
     fileNameLabel = new QLabel(" untitled.json ", this);
 
     auto *statusBar = new QStatusBar(this);
@@ -168,5 +176,4 @@ void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {
 void nitro::MainWindow::registerDock(QDockWidget *widget) {
     widgets.insert(widget);
     dockLayout_->addWidget(widget);
-    dockLayout_->setStretchFactor(widgets.size() - 1, 1);
 }

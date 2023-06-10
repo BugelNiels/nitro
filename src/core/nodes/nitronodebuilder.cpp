@@ -1,18 +1,22 @@
+#include "nodes/nitronodebuilder.hpp"
+
 #include <QVBoxLayout>
 #include <utility>
 #include <QPushButton>
-#include "nitronodebuilder.hpp"
-#include "external/nodeeditor/include/QtNodes/NodeColors.hpp"
-#include "util/imgresourcereader.hpp"
-#include "nodes/datatypes/imagedata.hpp"
-#include "nodes/datatypes/greyimagedata.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/integerdata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include "QtNodes/NodeColors.hpp"
 #include <QAction>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLabel>
+
+
+#include "src/util/imgresourcereader.hpp"
+#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
+#include "include/nodes/nitronode.hpp"
+#include "external/qt-value-slider/include/doubleslider.hpp"
+#include "external/qt-value-slider/include/intslider.hpp"
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
@@ -117,25 +121,6 @@ NitroNodeBuilder *NitroNodeBuilder::withInputImage(const QString &name) {
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withInputGreyImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = GreyImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    inputList_.push_back(item);
-    inputMap_[name] = nullptr;
-    auto portLabel = new QLabel(name);
-    addInPortWidget(portLabel);
-    return this;
-}
-
-NitroNodeBuilder *NitroNodeBuilder::withInputColImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ColorImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    inputList_.emplace_back(item);
-    inputMap_[name] = nullptr;
-    addInPortWidget(new QLabel(name));
-    return this;
-}
-
 NitroNodeBuilder *NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal) {
     QtNodes::NodeDataType intDataType = IntegerData().type();
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
@@ -187,17 +172,8 @@ NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double 
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withOutputGreyImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = GreyImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = nullptr;
-    addOutPortWidget(new QLabel(name));
-    return this;
-}
-
-NitroNodeBuilder *NitroNodeBuilder::withOutputColImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ColorImageData().type();
+NitroNodeBuilder *NitroNodeBuilder::withOutputImage(const QString &name) {
+    QtNodes::NodeDataType imDataType = ImageData().type();
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     outputList_.emplace_back(item);
     outputMap_[name] = nullptr;
@@ -206,7 +182,7 @@ NitroNodeBuilder *NitroNodeBuilder::withOutputColImage(const QString &name) {
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = GreyImageData().type();
+    QtNodes::NodeDataType imDataType = ImageData().type();
     auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
     outputList_.emplace_back(item);
     outputMap_[name] = nullptr;
