@@ -1,4 +1,4 @@
-#include "include/gui/zoombar.hpp"
+#include "gui/zoombar.hpp"
 
 nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
         : QProgressBar(parent),

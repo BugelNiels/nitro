@@ -14,7 +14,7 @@
 #include "nodes/datatypes/imagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "include/nodes/nitronode.hpp"
+#include "nodes/nitronode.hpp"
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
 

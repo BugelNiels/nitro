@@ -1,5 +1,5 @@
-/home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/46P4VPTTIB/moc_imviewer.cpp: /home/niels/Documents/repos/nitro/modules/imCore/src/gui/imviewer/imviewer.hpp \
-  /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/moc_predefs.h \
+/home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/46P4VPTTIB/moc_imviewer.cpp: /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/imviewer/imviewer.hpp \
+  /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/moc_predefs.h \
   /usr/include/GL/gl.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \

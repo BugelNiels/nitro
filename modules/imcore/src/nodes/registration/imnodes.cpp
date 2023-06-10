@@ -2,7 +2,7 @@
 #include "nodes/operators/image/threshold.hpp"
 #include "nodes/operators/image/kmeans.hpp"
 
-namespace nitro::imCore {
+namespace nitro::ImCore {
     void ImCoreModule::registerImageNodes(NodeRegistry* registry) {
         const QString category = "Image";
 
@@ -85,4 +85,4 @@ namespace nitro::imCore {
                     build();
         });
     }
-} // nitro::imCore
+} // nitro::ImCore

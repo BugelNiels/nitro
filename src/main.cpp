@@ -3,15 +3,15 @@
 #include <QApplication>
 #include <QSurfaceFormat>
 
-#include "include/gui/mainwindow.hpp"
+#include "gui/mainwindow.hpp"
 #include <QStyle>
 #include <QFontDatabase>
 
 #include "QtNodes/DataColors.hpp"
 #include "QtNodes/internal/WidgetNodePainter.hpp"
 #include "nitromodule.hpp"
-#include "modules/imCore/include/imcoremodule.hpp"
 #include "nodes/noderegistry.hpp"
+#include "config.hpp"
 
 void setupApplication();
 
@@ -56,8 +56,7 @@ int main(int argc, char *argv[]) {
     setupApplication();
 
 
-    std::vector<std::unique_ptr<nitro::NitroModule>> modules;
-    modules.push_back(std::make_unique<nitro::imCore::ImCoreModule>());
+    std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();
 
     auto *nodes = new nitro::NodeRegistry();
     for (auto &nitroModule: modules) {

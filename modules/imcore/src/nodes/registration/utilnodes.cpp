@@ -3,7 +3,7 @@
 
 #include "nodes/noderegistry.hpp"
 
-namespace nitro::imCore {
+namespace nitro::ImCore {
 
     void ImCoreModule::registerUtilNodes(NodeRegistry* registry) {
         const QString category = "Util";
@@ -50,4 +50,4 @@ namespace nitro::imCore {
                     build();
         });
     }
-}// nitro::imCore
+}// nitro::ImCore

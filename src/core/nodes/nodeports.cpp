@@ -1,4 +1,4 @@
-#include "include/nodes/nodeports.hpp"
+#include "nodes/nodeports.hpp"
 #include "QtNodes/InvalidData.hpp"
 #include "QtNodes/NodeData"
 #include "nodes/datatypes/imagedata.hpp"

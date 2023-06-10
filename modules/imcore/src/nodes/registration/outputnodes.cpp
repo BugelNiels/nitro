@@ -2,12 +2,11 @@
 #include "nodes/operators/output/imageviewalgorithm.hpp"
 #include "nodes/operators/output/surfaceviewalgorithm.hpp"
 
-namespace nitro::imCore {
+namespace nitro::ImCore {
 
     void ImCoreModule::registerOutputNodes(NodeRegistry* registry, ImageViewer* imageViewer, RenderView* renderViewer) {
         const QString category = "Output";
 
-        qDebug() << imageViewer;
         // ------ Image Viewer Node ------
         registry->registerNode([category, imageViewer]() {
             nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
@@ -33,4 +32,4 @@ namespace nitro::imCore {
         });
     }
 
-} // nitro::imCore
+} // nitro::ImCore

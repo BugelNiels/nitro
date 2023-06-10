@@ -1,7 +1,7 @@
-modules/imCore/CMakeFiles/imCore.dir/imCore_autogen/mocs_compilation.cpp.o: \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/mocs_compilation.cpp \
+modules/ImCore/CMakeFiles/ImCore.dir/imCore_autogen/mocs_compilation.cpp.o: \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/mocs_compilation.cpp \
  /usr/include/stdc-predef.h \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/moc_renderview.cpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/moc_renderview.cpp \
  /usr/include/c++/11/memory /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -117,7 +117,7 @@ modules/imCore/CMakeFiles/imCore.dir/imCore_autogen/mocs_compilation.cpp.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/imCore/src/gui/im3dviewer/renderview.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/ImCore/src/gui/im3dviewer/renderview.hpp \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/QOpenGLDebugLogger \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/qopengldebug.h \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/qtopenglglobal.h \
@@ -368,20 +368,20 @@ modules/imCore/CMakeFiles/imCore.dir/imCore_autogen/mocs_compilation.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qaction.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QPainterPath \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainterpath.h \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/imCore/src/gui/im3dviewer/settings.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/ImCore/src/gui/im3dviewer/settings.hpp \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QMatrix4x4 \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qmatrix4x4.h \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/imCore/src/gui/im3dviewer/shadertypes.hpp \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/imCore/src/gui/im3dviewer/renderers/shaderrenderer.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/ImCore/src/gui/im3dviewer/shadertypes.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/ImCore/src/gui/im3dviewer/renderers/shaderrenderer.hpp \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/QOpenGLTexture \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/qopengltexture.h \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/QOpenGLVertexArrayObject \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/qopenglvertexarrayobject.h \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/QOpenGLBuffer \
  /usr/include/x86_64-linux-gnu/qt6/QtOpenGL/qopenglbuffer.h \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/imCore/src/gui/im3dviewer/renderers/renderer.hpp \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/46P4VPTTIB/moc_imviewer.cpp \
- /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/46P4VPTTIB/../../../../../modules/imCore/src/gui/imviewer/imviewer.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/../../../../../modules/ImCore/src/gui/im3dviewer/renderers/renderer.hpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/46P4VPTTIB/moc_imviewer.cpp \
+ /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/46P4VPTTIB/../../../../../modules/ImCore/src/gui/imviewer/imviewer.hpp \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \

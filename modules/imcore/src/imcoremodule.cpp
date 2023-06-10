@@ -12,7 +12,7 @@
 #include "nodes/noderegistry.hpp"
 #include "gui/mainwindow.hpp"
 
-namespace nitro::imCore {
+namespace nitro::ImCore {
 
     ImCoreModule::ImCoreModule() {
         imageViewer_ = new ImageViewer(new QGraphicsScene());

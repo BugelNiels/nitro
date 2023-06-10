@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
-project(nitro VERSION 1.0 LANGUAGES CXX)
+
+set(NITRO_VERSION 1.0.0)
+
+project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 cmake_policy(SET CMP0079 NEW)
@@ -57,13 +60,12 @@ target_link_libraries(${PROJECT_NAME}
         ${NITRO_LIBS}
         )
 
-# Enable Modules
-set(MODULE_IMCORE ON)
-if (MODULE_IMCORE)
-    add_subdirectory(modules/imCore)
-endif ()
+# Enable Modules - add more modules if required
+set(ENABLED_MODULES
+        ImCore
+        )
 
-
+include(cmake/config.cmake)
 
 install(TARGETS ${PROJECT_NAME}
         BUNDLE DESTINATION .

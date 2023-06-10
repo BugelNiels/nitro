@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 #include "src/util/imgresourcereader.hpp"
+#include "config.hpp"
 
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 
@@ -48,7 +49,7 @@ nitro::MainWindow::~MainWindow() = default;
 
 QStatusBar *nitro::MainWindow::initFooter() {
     // TODO: use CMAKE version
-    auto *versionLabel = new QLabel(QString(" version %1 ").arg(1.0), this);
+    auto *versionLabel = new QLabel(QString(" version %1 ").arg(NITRO_VERSION), this);
     fileNameLabel = new QLabel(" untitled.json ", this);
 
     auto *statusBar = new QStatusBar(this);

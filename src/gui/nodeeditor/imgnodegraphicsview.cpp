@@ -4,7 +4,7 @@
 #include "src/util/imgresourcereader.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
 
-#include "include/util.hpp"
+#include "util.hpp"
 
 #include "QtNodes/internal/ConnectionGraphicsObject.hpp"
 #include "QtNodes/internal/NodeGraphicsObject.hpp"

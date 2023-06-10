@@ -35,5 +35,5 @@ fa8e9dff6d4a24bc68c49711bb1a4aa2 external/nodeeditor/include/QtNodes/internal/mo
 014dc5d771d808683e6ce5ca1a594c20 external/nodeeditor/include/QtNodes/internal/moc_locateNode.cpp
 15311e48194f85363692a819b188b069 external/nodeeditor/qrc_resources.cpp
 15b96fab593ff96b1f1016e00a6fdd88 external/qt-value-slider/CMakeFiles/valueSliders_autogen
-25e69c940b781bdc467da91aa333cb78 modules/imCore/CMakeFiles/imCore_autogen
+25e69c940b781bdc467da91aa333cb78 modules/ImCore/CMakeFiles/imCore_autogen
 8b70a3ada238d977f7cfc6a9678abb4f nitro_autogen/3YJK5W5UP7/qrc_resources.cpp

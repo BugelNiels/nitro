@@ -1,4 +1,4 @@
-#include "include/nodes/nitronode.hpp"
+#include "nodes/nitronode.hpp"
 
 #include <utility>
 #include <QPushButton>

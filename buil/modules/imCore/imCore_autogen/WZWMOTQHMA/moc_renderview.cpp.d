@@ -1,9 +1,9 @@
-/home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/WZWMOTQHMA/moc_renderview.cpp: /home/niels/Documents/repos/nitro/modules/imCore/src/gui/im3dviewer/renderview.hpp \
-  /home/niels/Documents/repos/nitro/buil/modules/imCore/imCore_autogen/moc_predefs.h \
-  /home/niels/Documents/repos/nitro/modules/imCore/src/gui/im3dviewer/renderers/renderer.hpp \
-  /home/niels/Documents/repos/nitro/modules/imCore/src/gui/im3dviewer/renderers/shaderrenderer.hpp \
-  /home/niels/Documents/repos/nitro/modules/imCore/src/gui/im3dviewer/settings.hpp \
-  /home/niels/Documents/repos/nitro/modules/imCore/src/gui/im3dviewer/shadertypes.hpp \
+/home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/WZWMOTQHMA/moc_renderview.cpp: /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/im3dviewer/renderview.hpp \
+  /home/niels/Documents/repos/nitro/buil/modules/ImCore/imCore_autogen/moc_predefs.h \
+  /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/im3dviewer/renderers/renderer.hpp \
+  /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/im3dviewer/renderers/shaderrenderer.hpp \
+  /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/im3dviewer/settings.hpp \
+  /home/niels/Documents/repos/nitro/modules/ImCore/src/gui/im3dviewer/shadertypes.hpp \
   /usr/include/GL/gl.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \

@@ -5,14 +5,14 @@
 #include "imgnodegraphicsview.hpp"
 
 #include "src/util/imgresourcereader.hpp"
-#include "include/gui/draggabletreewidget.hpp"
+#include "gui/draggabletreewidget.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
 #include "QtNodes/DataFlowGraphModel"
 #include "QtNodes/NodeDelegateModelRegistry"
-#include "include/gui/mainwindow.hpp"
+#include "gui/mainwindow.hpp"
 #include "QtNodes/internal/WidgetNodePainter.hpp"
 #include <QFileDialog>
 #include <QMessageBox>

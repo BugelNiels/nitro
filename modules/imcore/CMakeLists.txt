@@ -18,9 +18,6 @@ target_include_directories(${MODULE_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
-
-message("${MODULE_LIBS}")
-
 # Always required
 target_link_libraries(${MODULE_NAME}
         PUBLIC

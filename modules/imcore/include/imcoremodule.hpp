@@ -9,7 +9,7 @@ namespace nitro {
 
     class ImageViewer;
 
-    namespace imCore {
+    namespace ImCore {
 
         class ImCoreModule : public NitroModule {
         public:

@@ -1,6 +1,6 @@
 #include "imcoremodule.hpp"
 
-namespace nitro::imCore {
+namespace nitro::ImCore {
 
     void ImCoreModule::registerInputNodes(NodeRegistry* registry) {
         const QString category = "Input";
@@ -36,4 +36,4 @@ namespace nitro::imCore {
         });
     }
 
-} // nitro::imCore
+} // nitro::ImCore

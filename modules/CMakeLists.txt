@@ -1,1 +1,1 @@
-add_subdirectory(imCore)
+add_subdirectory(imcore)

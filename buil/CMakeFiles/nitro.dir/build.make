@@ -353,7 +353,7 @@ nitro: CMakeFiles/nitro.dir/src/main.cpp.o
 nitro: CMakeFiles/nitro.dir/nitro_autogen/3YJK5W5UP7/qrc_resources.cpp.o
 nitro: CMakeFiles/nitro.dir/build.make
 nitro: lib/libQtNodes.so
-nitro: modules/imCore/libimCore.a
+nitro: modules/ImCore/libimCore.a
 nitro: external/qt-value-slider/libvalueSliders.so
 nitro: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.4.5.4d
 nitro: /usr/lib/x86_64-linux-gnu/libopencv_alphamat.so.4.5.4d
