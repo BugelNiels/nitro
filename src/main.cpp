@@ -4,9 +4,16 @@
 #include <QSurfaceFormat>
 
 #include "gui/mainwindow.hpp"
-#include "improcbuilder.hpp"
 #include <QStyle>
 #include <QFontDatabase>
+
+#include "QtNodes/DataColors.hpp"
+#include "QtNodes/internal/WidgetNodePainter.hpp"
+#include "nitromodule.hpp"
+#include "nodes/noderegistry.hpp"
+#include "config.hpp"
+
+void setupApplication();
 
 QPalette getDarkModePalette() {
     QPalette palette;
@@ -26,15 +33,7 @@ QPalette getDarkModePalette() {
     return palette;
 }
 
-/**
- * @brief main Starts up the QT application and UI.
- * @param argc Argument count.
- * @param argv Arguments.
- * @return Exit code.
- */
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-
+void setupApplication() {
     QSurfaceFormat glFormat;
     glFormat.setProfile(QSurfaceFormat::CoreProfile);
     glFormat.setVersion(4, 1);
@@ -48,13 +47,28 @@ int main(int argc, char *argv[]) {
     QFont font("Lato");
     font.setPixelSize(14);
     QApplication::setFont(font);
-
-    nitro::ImprocBuilder builder;
-
-
-    nitro::MainWindow *w = builder.build();
+}
 
 
-    w->show();
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    setupApplication();
+
+
+    std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();
+
+    auto *nodes = new nitro::NodeRegistry();
+    for (auto &nitroModule: modules) {
+        nitroModule->registerNodes(nodes);
+        nitroModule->registerDataTypes(nodes);
+    }
+    auto *window = new nitro::MainWindow(nodes);
+    for (auto &nitroModule: modules) {
+        nitroModule->registerDocks(window);
+    }
+
+    window->finalizeSetup();
+    window->show();
     return QApplication::exec();
 }

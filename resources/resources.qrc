@@ -30,5 +30,6 @@
         <file>icons/nodes/math.png</file>
         <file>icons/nodes/toggle.png</file>
         <file>icons/nodes/blend.png</file>
+        <file>icons/nodes/convert.png</file>
     </qresource>
 </RCC>

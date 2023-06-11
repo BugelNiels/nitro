@@ -2,17 +2,18 @@
 
 #include <QDockWidget>
 #include <QTreeWidget>
-#include "nodegraphicsview.hpp"
+#include "QtNodes/NodeGraphicsView.hpp"
 #include "QtNodes/DataFlowGraphModel"
-#include "src/improc/ui/imgnodegraphicsview.hpp"
-#include "src/gui/nodeeditor/nodegraphicsscene.hpp"
+#include "imgnodegraphicsview.hpp"
 
 namespace nitro {
+
+    class MainWindow;
 
     class NodeDockWidget : public QDockWidget {
     public:
 
-        NodeDockWidget(NodeGraphicsView *view, QWidget *parent);
+        NodeDockWidget(NodeRegistry* nodes, MainWindow* window);
 
         ~NodeDockWidget() override;
 
@@ -26,13 +27,11 @@ namespace nitro {
 
         const QString &getFileName();
 
-        void recalculateNodeSizes();
-
     protected:
         void keyPressEvent(QKeyEvent* event) override;
 
     private:
-        NodeGraphicsView *view = nullptr;
+        NodeGraphicsView *view;
         QJsonObject prevSave_;
         QString filename;
         QString saveFilePath;
@@ -47,7 +46,7 @@ namespace nitro {
         QTreeWidget *nodeTreeWidget;
         QLineEdit *searchBar;
 
-        QWidget *initNodeTitleBar();
+        QWidget *initNodeTitleBar(nitro::MainWindow *window);
     };
 
 } // nitro

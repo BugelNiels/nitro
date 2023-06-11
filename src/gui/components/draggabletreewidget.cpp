@@ -1,4 +1,4 @@
-#include "draggabletreewidget.hpp"
+#include "gui/draggabletreewidget.hpp"
 #include <QMouseEvent>
 #include <QAction>
 

@@ -2,17 +2,18 @@
 
 #include <QLabel>
 #include <QCheckBox>
-#include "src/improc/ui/imgnodegraphicsview.hpp"
+#include "imgnodegraphicsview.hpp"
 
-#include "util/imgresourcereader.hpp"
-#include "src/gui/components/draggabletreewidget.hpp"
+#include "src/util/imgresourcereader.hpp"
+#include "gui/draggabletreewidget.hpp"
 
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
-#include "3rdparty/nodeeditor/include/QtNodes/DataFlowGraphModel"
-#include "3rdparty/nodeeditor/include/QtNodes/NodeDelegateModelRegistry"
-#include "config.hpp"
+#include "QtNodes/DataFlowGraphModel"
+#include "QtNodes/NodeDelegateModelRegistry"
+#include "gui/mainwindow.hpp"
+#include "QtNodes/internal/WidgetNodePainter.hpp"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSplitter>
@@ -22,11 +23,17 @@
 #include <QProgressBar>
 
 
-nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent) : QDockWidget(parent),
-                                                                                 filename("untitled.json") {
+nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
+        : QDockWidget(window),
+          filename("untitled.json") {
+
+    dataFlowGraphModel = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
+    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
+    nodeScene->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene->toggleWidgetMode();
+    view = new ImageNodeGraphicsView(nodes, nodeScene, dataFlowGraphModel, window);
+
     setWindowTitle("Node Editor");
-    this->view = view;
-    dataFlowGraphModel = view->getDataModel();
     prevSave_ = dataFlowGraphModel->save();
 
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -43,7 +50,7 @@ nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent) :
     connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
     QSize size(searchBar->height(), searchBar->height());
     auto *searchLabel = new QLabel();
-    searchLabel->setPixmap(nitro::ImgResourceReader::getPixMap(":/icons/search.png", size));
+    searchLabel->setPixmap(nitro::ImResourceReader::getPixMap(":/icons/search.png", size));
 
     auto *searchHorLayout = new QHBoxLayout();
     searchHorLayout->addWidget(searchLabel);
@@ -57,38 +64,13 @@ nitro::NodeDockWidget::NodeDockWidget(NodeGraphicsView *view, QWidget *parent) :
     horLayout->addWidget(wrapper);
     horLayout->addWidget(view);
 
+    setTitleBarWidget(initNodeTitleBar(window));
+
 
     setWidget(horLayout);
-    setTitleBarWidget(initNodeTitleBar());
-}
 
-QWidget *nitro::NodeDockWidget::initNodeTitleBar() {
-    auto *wrapper = new QWidget();
-    auto *hLayout = new QHBoxLayout();
-
-    auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImgResourceReader::getPixMap(":/icons/node_editor.png"));
-    hLayout->addWidget(nodeIcon);
-
-    auto *nodeImgCheckBox = new QCheckBox("Node Images");
-    nodeImgCheckBox->setChecked(nitro::config::nodeImages);
-    connect(nodeImgCheckBox, &QCheckBox::toggled, this, [this, nodeImgCheckBox] {
-        nitro::config::setNodeImages(nodeImgCheckBox->isChecked());
-        recalculateNodeSizes();
-
-    });
-    hLayout->addSpacing(15);
-    hLayout->addWidget(nodeImgCheckBox);
-    hLayout->addStretch();
-
-    auto *calcProgressBar = new QProgressBar();
-    calcProgressBar->setMinimum(0);
-    calcProgressBar->setMaximum(100);
-    calcProgressBar->setMaximumWidth(200);
-    hLayout->addWidget(calcProgressBar);
-
-    wrapper->setLayout(hLayout);
-    return wrapper;
+    setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    window->registerNodeDock(this);
 }
 
 
@@ -149,12 +131,11 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
 }
 
 void nitro::NodeDockWidget::clearModel() {
-    if (dataFlowGraphModel) {
-        for (const auto &item: dataFlowGraphModel->allNodeIds()) {
-            dataFlowGraphModel->deleteNode(item);
-        }
-        // TODO: delete undo history
+    for (const auto &item: dataFlowGraphModel->allNodeIds()) {
+        dataFlowGraphModel->deleteNode(item);
     }
+    // TODO: delete undo history
+
     prevSave_ = dataFlowGraphModel->save();
 }
 
@@ -174,10 +155,6 @@ bool nitro::NodeDockWidget::canQuitSafely() {
 }
 
 void nitro::NodeDockWidget::saveModel(bool askFile) {
-
-    if (!dataFlowGraphModel) {
-        return;
-    }
     QString filePath;
     if (askFile || filename == "untitled.json") {
         filePath = QFileDialog::getSaveFileName(
@@ -204,9 +181,6 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
 }
 
 void nitro::NodeDockWidget::loadModel() {
-    if (!dataFlowGraphModel) {
-        return;
-    }
     if (!canQuitSafely()) {
         return;
     }
@@ -227,16 +201,6 @@ void nitro::NodeDockWidget::loadModel() {
     clearModel();
     dataFlowGraphModel->load(doc.object());
     prevSave_ = dataFlowGraphModel->save();
-    // Ensure we cannot create a second viewer
-    // TODO: handle this elsewhere, e.g. when a model is loaded or smth
-//    for (auto &c: dataFlowGraphModel->allNodeIds()) {
-//        auto attempt = dataFlowGraphModel->delegateModel<nitro::ImageViewerDataModel>(c);
-//        if (attempt) {
-//            // TODO: just disable the action or smth
-////            view->setViewerNodeId(c);
-//            break;
-//        }
-//    }
     QApplication::restoreOverrideCursor();
 }
 
@@ -252,12 +216,24 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void nitro::NodeDockWidget::recalculateNodeSizes() {
-    for (auto &o: dataFlowGraphModel->allNodeIds()) {
-        view->getScene()->onNodeUpdated(o);
-    }
-}
-
 const QString &nitro::NodeDockWidget::getFileName() {
     return filename;
+}
+
+QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {
+    auto *wrapper = new QWidget();
+    auto *hLayout = new QHBoxLayout();
+    hLayout->addWidget(window->buildDockIcon(":/icons/node_editor.png"));
+
+    hLayout->addSpacing(15);
+    hLayout->addStretch();
+
+    auto *calcProgressBar = new QProgressBar();
+    calcProgressBar->setMinimum(0);
+    calcProgressBar->setMaximum(100);
+    calcProgressBar->setMaximumWidth(200);
+    hLayout->addWidget(calcProgressBar);
+
+    wrapper->setLayout(hLayout);
+    return wrapper;
 }

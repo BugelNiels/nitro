@@ -1,9 +1,11 @@
-#include "zoombar.hpp"
+#include "gui/zoombar.hpp"
 
-nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent) : QProgressBar(parent), m_minZoom(minZoom), m_maxZoom(maxZoom) {
+nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
+        : QProgressBar(parent),
+          m_minZoom(minZoom),
+          m_maxZoom(maxZoom) {
     setValue(50);
     m_curZoom = 100;
-
 }
 
 QString nitro::ZoomBar::text() const {
