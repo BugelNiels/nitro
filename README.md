@@ -7,12 +7,7 @@
   </p>
 </p>
 
-![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
-
-## Disclaimer
-
-The project is still in development and can be considered in early-alpha. As such, I am still working hard on fixing bugs.
-If you encounter any, please feel free to create an issue.
+![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg?cachebust=1) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
 
 ## About the project
 
@@ -26,6 +21,12 @@ The project was originally developed for my Master thesis at the University of G
 name NITRO: Niels' Image-processing Thesis on Reconstruction Operations
 
 ![Node Editor](screenshots/demo.gif)
+
+## Disclaimer
+
+The project is still in development and can be considered in early-alpha. As such, I am still working hard on fixing
+bugs and adding new features.
+If you encounter any, please feel free to create an issue.
 
 ## Getting Started
 
