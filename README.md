@@ -13,15 +13,13 @@
 ## About the project
 
 NITRO is a powerful tool for building complex image processing routines. Instead of needing to modify source code or
-scripts
-to process images in different ways, you can use this visual node editor to do that instead. The project was developed
-with
-extendability in mind, making it easy to add your own types nodes, and widgets. For more information on this,
-see [Project Structure](#project-structure).
+scripts to process images in different ways, you can use this visual node editor to do that instead. The project was
+developed with extendability in mind, making it easy to add your own types nodes, and widgets. For more information on
+this, see [Project Structure](#project-structure). The UI was inspired by
+Blender's [Shader Editor](https://docs.blender.org/manual/en/latest/editors/shader_editor.html)
 
-The project was originally
-developed for my Master thesis at the University of Groningen. That is also the origin of the name NITRO: Niels'
-Image-processing Thesis on Reconstruction Operations
+The project was originally developed for my Master thesis at the University of Groningen. That is also the origin of the
+name NITRO: Niels' Image-processing Thesis on Reconstruction Operations
 
 ![Node Editor](screenshots/demo.gif)
 
@@ -71,6 +69,8 @@ make -j8
 ```
 
 ## Features
+
+A few notable features on top of the node editor itself are:
 
 - Image Viewer ![Image Viewer](screenshots/imviewer.gif)
 - 3D Image Viewer ![3D Viewer](screenshots/3dviewer.gif)
