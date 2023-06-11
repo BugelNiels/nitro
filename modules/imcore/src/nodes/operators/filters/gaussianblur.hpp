@@ -5,7 +5,8 @@
 
 namespace nitro {
 
-    class KMeansOperator : public NodeOperator {
+    class GaussianBlurOperator : public NodeOperator {
+
 
     public:
 

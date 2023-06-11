@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <QMenu>
 #include <QGraphicsView>
+#include <opencv2/core/mat.hpp>
 
 namespace nitro {
 
@@ -28,7 +29,7 @@ namespace nitro {
 
         void resetImScale();
 
-        void setImage(const QImage &newImage);
+        void setImage(const cv::Mat &newImage);
 
         void drawBackground(QPainter *painter, const QRectF &r) override;
 
@@ -58,6 +59,7 @@ namespace nitro {
     Q_SIGNALS:
 
         void scaleChanged(double scale);
+        void imageUpdated(const cv::Mat& img);
 
     private:
 

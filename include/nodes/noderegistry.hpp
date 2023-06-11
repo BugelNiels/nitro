@@ -24,8 +24,10 @@ namespace nitro {
         void registerDataType(const QtNodes::DataInfo &info);
 
     private:
+        int catIdx_ = 0;
         std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry_;
         std::map<QString, std::vector<QtNodes::NodeInfo>> categories_;
+        std::map<QString, int> categoryOrder_;
     };
 }
 

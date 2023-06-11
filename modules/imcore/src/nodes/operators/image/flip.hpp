@@ -5,8 +5,7 @@
 
 namespace nitro {
 
-    class KMeansOperator : public NodeOperator {
-
+    class FlipOperator : public NodeOperator {
     public:
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);

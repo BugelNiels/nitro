@@ -5,7 +5,7 @@
 
 namespace nitro {
 
-    class KMeansOperator : public NodeOperator {
+    class BilateralFilterOperator : public NodeOperator {
 
     public:
 

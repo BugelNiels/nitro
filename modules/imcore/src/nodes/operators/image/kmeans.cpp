@@ -1,9 +1,10 @@
 #include "kmeans.hpp"
+#include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
 
-cv::Mat quantizeColors(const cv::Mat &image, int numColors) {
+static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
 
     cv::Mat samples(image.rows * image.cols, image.channels(), CV_32F);
     for (int y = 0; y < image.rows; y++) {
@@ -42,13 +43,27 @@ cv::Mat quantizeColors(const cv::Mat &image, int numColors) {
 void nitro::KMeansOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
     bool kPresent, imPresent;
     int k = nodePorts.getInputInteger("K", kPresent);
-    auto imageImg = nodePorts.getInputImage("Image", imPresent);
+    auto inputImg = nodePorts.getInputImage("Image", imPresent);
 
     if (!kPresent || !imPresent) {
         return;
     }
 
-    cv::Mat kMeansDat = quantizeColors(*imageImg, k);
+    cv::Mat kMeansDat = kMeansColors(*inputImg, k);
 
     nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(kMeansDat));
+}
+
+std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creator(const QString &category) {
+    return [category]() {
+        nitro::NitroNodeBuilder builder("K-Means", "kMeans", category);
+        return builder.
+                withOperator(std::make_unique<nitro::KMeansOperator>())->
+                withIcon(":/icons/nodes/quantize.png")->
+                withNodeColor({43, 101, 43})->
+                withInputImage("Image")->
+                withInputInteger("K", 8, 1, 255)->
+                withOutputImage("Image")->
+                build();
+    };
 }

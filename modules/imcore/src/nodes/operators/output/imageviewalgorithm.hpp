@@ -2,11 +2,15 @@
 
 #include "nodes/nodeoperator.hpp"
 #include "gui/imviewer/imviewer.hpp"
+#include "nodes/nitronode.hpp"
 
 namespace nitro {
 
     class ImageViewAlgorithm : public NodeOperator {
     public:
+
+        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, ImageViewer* imageViewer);
+
         explicit ImageViewAlgorithm(ImageViewer *imViewer);
 
 

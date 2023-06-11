@@ -5,11 +5,11 @@
 
 namespace nitro {
 
-    class KMeansOperator : public NodeOperator {
-
+    class MathOperator : public NodeOperator {
     public:
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+
         void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
 
     };
