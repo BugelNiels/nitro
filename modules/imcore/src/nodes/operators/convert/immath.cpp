@@ -49,8 +49,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 withIcon(":/icons/nodes/math.png")->
                 withNodeColor({110, 110, 29})->
                 withDropDown("Mode", {"Add", "Subtract", "Multiply", "Divide"})->
-                withInputValue("Fac", 0.5, 0, 1)->
                 withInputImage("Image")->
+                withInputValue("Value", 0.5, 0, 1)->
                 withOutputImage("Image")->
                 build();
     };

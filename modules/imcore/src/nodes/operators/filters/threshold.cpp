@@ -2,12 +2,10 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
-
 void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
+    // Retrieving of input parameters
     bool greater = options.at("Mode") == 1;
     auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
-
     bool imPresent, tPresent;
     auto inputImg = nodePorts.getInputImage("Image", imPresent);
     int threshold = nodePorts.getInputInteger("Threshold", tPresent);
@@ -15,12 +13,12 @@ void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QStr
         return;
     }
 
-    cv::Mat binaryMat(inputImg->size(), inputImg->type());
-    cv::threshold(*inputImg, binaryMat, threshold, 255, type);
+    // Actual Threshold operation
+    cv::Mat result;
+    cv::threshold(*inputImg, result, threshold, 255, type);
 
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(binaryMat));
-
-
+    // Set node output
+    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ThresholdOperator::creator(const QString &category) {

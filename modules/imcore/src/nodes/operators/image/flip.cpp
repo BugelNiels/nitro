@@ -89,12 +89,10 @@ void nitro::FlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
         return;
     }
 
-    qDebug() << screenWidth << resX << dist;
-
     FLIP::image<FLIP::color3> fImgA = im1->channels() == 1 ? cvGrayscaleMatToFlipImg(*im1) : cvMatToFlipImg(*im1);
     FLIP::image<FLIP::color3> fImgB = im2->channels() == 1 ? cvGrayscaleMatToFlipImg(*im2) : cvMatToFlipImg(*im2);
-    int width = im1->rows;
-    int height = im1->cols;
+    int width = im1->cols;
+    int height = im1->rows;
 
     float ppd = calculatePPD(dist, resX, screenWidth);
     FLIP::image<float> errMap(width, height, 0.0f);

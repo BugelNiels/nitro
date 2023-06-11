@@ -20,8 +20,7 @@ using IntSlider = ValueSliders::IntSlider;
 
 namespace nitro {
 
-    NitroNode::~NitroNode() {
-    }
+    NitroNode::~NitroNode() = default;
 
     void NitroNode::init(QtNodes::NodeInfo info,
                          const NodePorts &nodePorts,
@@ -117,6 +116,7 @@ namespace nitro {
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toInt());
+            slider->setEnabled(true);
         };
         connect(slider, &IntSlider::valueChanged, this, [this, key, port](int value) {
             setInData(std::make_shared<IntegerData>(value), port);
@@ -130,6 +130,7 @@ namespace nitro {
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toDouble());
+            slider->setEnabled(true);
         };
         connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
             double actualVal = value / 100.0f;
