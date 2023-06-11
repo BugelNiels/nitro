@@ -12,6 +12,7 @@ build/
 qrc_resources.cpp
 cmake-build*
 CMakeLists.txt.user*
+bin/
 
 # C++ and Qt (specific)
 BasicOpenGL
