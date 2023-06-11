@@ -8,11 +8,10 @@ nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
 
 
 void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    QString paramName = "image";
     bool ok;
-    auto img = nodePorts.getInputImage("image", ok);
+    auto img = nodePorts.getInputImage("Image", ok);
     if (ok) {
-        imViewer_->setImage(toQImage(*img));
+        imViewer_->setImage(cvMatToQImage(*img));
         return;
     }
 //    imViewer_->removeImage();

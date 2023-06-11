@@ -24,6 +24,8 @@ add_subdirectory(external)
 set(NITRO_INCLUDE_DIRS "")
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/qt-value-slider)
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/nodeeditor)
+list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/CPP)
+list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/common)
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
 
 

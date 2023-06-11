@@ -113,8 +113,9 @@ namespace nitro {
             slider->setVal(val.toDouble());
         };
         connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
-            setInData(std::make_shared<DecimalData>(value), port);
-            propJson_[key] = value;
+            double actualVal = value / 100.0f;
+            setInData(std::make_shared<DecimalData>(actualVal), port);
+            propJson_[key] = actualVal;
         });
     }
 
@@ -184,7 +185,6 @@ namespace nitro {
             auto ptrImg = std::make_shared<cv::Mat>(inputImg);
             nodePorts_.setOutputType(port, ImageData().type());
             nodePorts_.setOutputData(portName, std::make_shared<ImageData>(ptrImg));
-
         }
         Q_EMIT dataUpdated(port);
     }

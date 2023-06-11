@@ -12,7 +12,7 @@ void nitro::SurfaceViewAlgorithm::execute(NodePorts &nodePorts, const std::map<Q
     bool ok;
     auto img = nodePorts.getInputImage("image", ok);
     if (ok) {
-        surfViewer_->updateBuffers(toQImage(*img));
+        surfViewer_->updateBuffers(cvMatToQImage(*img));
         return;
     }
 }

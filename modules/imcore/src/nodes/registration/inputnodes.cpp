@@ -9,7 +9,7 @@ namespace nitro::ImCore {
         registry->registerNode([category]() {
             nitro::NitroNodeBuilder builder("Image Source", "ImageSource", category);
             return builder.
-                    withLoadedOutputImage("image")->
+                    withLoadedOutputImage("Image")->
                     withIcon(":/icons/nodes/image_source.png")->
                     withNodeColor({121, 70, 29})->
                     build();

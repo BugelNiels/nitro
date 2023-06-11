@@ -20,7 +20,7 @@ namespace nitro {
 
     QColor makeReadable(const QColor &color, bool lightMode = false);
 
+    QImage cvMatToQImage(const cv::Mat &inMat);
 
-    QImage toQImage(const cv::Mat &im);
-    cv::Mat toCvImage(const QImage &im);
+    cv::Mat QImageToCvMat(const QImage &inImage, bool inCloneImageData);
 } // nitro

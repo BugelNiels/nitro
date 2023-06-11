@@ -19,8 +19,9 @@ namespace nitro::ImCore {
     void ImCoreModule::registerNodes(NodeRegistry *registry) {
         registerInputNodes(registry);
         registerOutputNodes(registry, imageViewer_);
-        registerUtilNodes(registry);
+        registerConvertNodes(registry);
         registerImageNodes(registry);
+        registerFilterNodes(registry);
     }
 
     void ImCoreModule::registerDataTypes(NodeRegistry *registry) {

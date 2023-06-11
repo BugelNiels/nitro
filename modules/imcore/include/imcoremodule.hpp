@@ -25,7 +25,9 @@ namespace nitro {
 
             void registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer);
 
-            void registerUtilNodes(NodeRegistry *registry);
+            void registerConvertNodes(NodeRegistry *registry);
+
+            void registerFilterNodes(NodeRegistry *registry);
 
             void registerImageNodes(NodeRegistry *registry);
 

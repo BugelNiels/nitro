@@ -132,8 +132,12 @@ namespace nitro {
         if (inputImgDat == nullptr) {
             return nullptr;
         }
+        auto img = inputImgDat->image();
+        if (img == nullptr) {
+            return nullptr;
+        }
         present = true;
-        return inputImgDat->image();
+        return img;
     }
 
     void NodePorts::setOutputInteger(const QString &name, int val) {
@@ -144,7 +148,7 @@ namespace nitro {
         setOutputData(name, std::make_shared<nitro::DecimalData>(val));
     }
 
-    void NodePorts::setOutputImage(const QString &name, const std::shared_ptr<cv::Mat>& im) {
+    void NodePorts::setOutputImage(const QString &name, const std::shared_ptr<cv::Mat> &im) {
         setOutputData(name, std::make_shared<nitro::ImageData>(im));
     }
 

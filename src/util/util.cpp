@@ -3,6 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include "util.hpp"
 #include <QDebug>
+#include <iostream>
 
 QColor nitro::makeReadable(const QColor &color, bool lightMode) {
     // Convert to YIQ color space
@@ -32,62 +33,138 @@ QColor nitro::makeReadable(const QColor &color, bool lightMode) {
 }
 
 
-QImage nitro::toQImage(const cv::Mat& im) {
-    if (im.empty()) {
-        return {};  // Return an empty QImage if the input image is empty
+// Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
+QImage nitro::cvMatToQImage(const cv::Mat &inMat) {
+    switch (inMat.type()) {
+        // 8-bit, 4 channel
+        case CV_8UC4: {
+            QImage image(inMat.data,
+                         inMat.cols, inMat.rows,
+                         static_cast<int>(inMat.step),
+                         QImage::Format_ARGB32);
+
+            return image;
+        }
+
+            // 8-bit, 3 channel
+        case CV_8UC3: {
+            QImage image(inMat.data,
+                         inMat.cols, inMat.rows,
+                         static_cast<int>(inMat.step),
+                         QImage::Format_RGB888);
+
+            return image.rgbSwapped();
+        }
+
+            // 8-bit, 1 channel
+        case CV_8UC1: {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+            QImage image(inMat.data,
+                         inMat.cols, inMat.rows,
+                         static_cast<int>(inMat.step),
+                         QImage::Format_Grayscale8);
+#else
+            static QVector<QRgb>  sColorTable;
+
+            // only create our color table the first time
+            if ( sColorTable.isEmpty() )
+            {
+               sColorTable.resize( 256 );
+
+               for ( int i = 0; i < 256; ++i )
+               {
+                  sColorTable[i] = qRgb( i, i, i );
+               }
+            }
+
+            QImage image( inMat.data,
+                          inMat.cols, inMat.rows,
+                          static_cast<int>(inMat.step),
+                          QImage::Format_Indexed8 );
+
+            image.setColorTable( sColorTable );
+#endif
+
+            return image;
+        }
+
+        default:
+            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
+            break;
     }
 
-    // Determine the image format and number of channels
-    QImage::Format format;
-    int numChannels = im.channels();
-    if (numChannels == 1) {
-        format = QImage::Format_Grayscale8;
-    } else if (numChannels == 3) {
-        format = QImage::Format_RGB888;
-    } else {
-        // Unsupported number of channels
-        qDebug() << "Unsupported number of channels";
-        return {};
-    }
-    cv::cvtColor(im, im, cv::COLOR_BGR2RGB);
-
-    // Create a QImage with the appropriate format and dimensions
-    QImage qImage(im.data, im.cols, im.rows, static_cast<int>(im.step), format);
-
-    return qImage;
+    return QImage();
 }
 
-/*
- * Taken from https://stackoverflow.com/a/50848100
- */
-cv::Mat toCvImage(const QImage& image) {
-    cv::Mat out;
-    switch(image.format()) {
-        case QImage::Format_Invalid:
-        {
-            cv::Mat empty;
-            empty.copyTo(out);
-            break;
+// If inImage exists for the lifetime of the resulting cv::Mat, pass false to inCloneImageData to share inImage's
+// data with the cv::Mat directly
+//    NOTE: Format_RGB888 is an exception since we need to use a local QImage and thus must clone the data regardless
+//    NOTE: This does not cover all cases - it should be easy to add new ones as required.
+inline cv::Mat nitro::QImageToCvMat(const QImage &inImage, bool inCloneImageData = true) {
+    switch (inImage.format()) {
+        // 8-bit, 4 channel
+        case QImage::Format_ARGB32:
+        case QImage::Format_ARGB32_Premultiplied: {
+            cv::Mat mat(inImage.height(), inImage.width(),
+                        CV_8UC4,
+                        const_cast<uchar *>(inImage.bits()),
+                        static_cast<size_t>(inImage.bytesPerLine())
+            );
+
+            return (inCloneImageData ? mat.clone() : mat);
         }
-        case QImage::Format_RGB32:
-        {
-            cv::Mat view(image.height(),image.width(),CV_8UC4,(void *)image.constBits(),image.bytesPerLine());
-            view.copyTo(out);
-            break;
+
+            // 8-bit, 3 channel
+        case QImage::Format_RGB32: {
+            if (!inCloneImageData) {
+                qWarning()
+                        << "ASM::QImageToCvMat() - Conversion requires cloning so we don't modify the original QImage data";
+            }
+
+            cv::Mat mat(inImage.height(), inImage.width(),
+                        CV_8UC4,
+                        const_cast<uchar *>(inImage.bits()),
+                        static_cast<size_t>(inImage.bytesPerLine())
+            );
+
+            cv::Mat matNoAlpha;
+
+            cv::cvtColor(mat, matNoAlpha, cv::COLOR_BGRA2BGR);   // drop the all-white alpha channel
+
+            return matNoAlpha;
         }
-        case QImage::Format_RGB888:
-        {
-            cv::Mat view(image.height(),image.width(),CV_8UC3,(void *)image.constBits(),image.bytesPerLine());
-            cv::cvtColor(view, out, cv::COLOR_RGB2BGR);
-            break;
+
+            // 8-bit, 3 channel
+        case QImage::Format_RGB888: {
+            if (!inCloneImageData) {
+                qWarning()
+                        << "ASM::QImageToCvMat() - Conversion requires cloning so we don't modify the original QImage data";
+            }
+
+            QImage swapped = inImage.rgbSwapped();
+
+            return cv::Mat(swapped.height(), swapped.width(),
+                           CV_8UC3,
+                           const_cast<uchar *>(swapped.bits()),
+                           static_cast<size_t>(swapped.bytesPerLine())
+            ).clone();
         }
+
+            // 8-bit, 1 channel
+        case QImage::Format_Indexed8: {
+            cv::Mat mat(inImage.height(), inImage.width(),
+                        CV_8UC1,
+                        const_cast<uchar *>(inImage.bits()),
+                        static_cast<size_t>(inImage.bytesPerLine())
+            );
+
+            return (inCloneImageData ? mat.clone() : mat);
+        }
+
         default:
-        {
-            QImage conv = image.convertToFormat(QImage::Format_ARGB32);
-            cv::Mat view(conv.height(),conv.width(),CV_8UC4,(void *)conv.constBits(),conv.bytesPerLine());
-            view.copyTo(out);
+            qWarning() << "ASM::QImageToCvMat() - QImage format not handled in switch:" << inImage.format();
             break;
-        }
     }
-    return out;
+
+    return cv::Mat();
 }

@@ -11,7 +11,7 @@ namespace nitro::ImCore {
             nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
             return builder.
                     withOperator(std::make_unique<nitro::ImageViewAlgorithm>(imageViewer))->
-                    withInputImage("image")->
+                    withInputImage("Image")->
                     withIcon(":/icons/nodes/viewer.png")->
                     withNodeColor({60, 29, 38})->
                     build();
