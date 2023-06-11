@@ -1,0 +1,11 @@
+[submodule "external/flip"]
+	path = external/flip
+	url = git@github.com:NVlabs/flip.git
+
+[submodule "external/nodeeditor"]
+	path = external/nodeeditor
+	url = git@github.com:paceholder/nodeeditor.git
+
+[submodule "external/qt-value-slider"]
+    path = external/qt-value-slider
+    url = git@github.com:BugelNiels/qt-value-slider.git
