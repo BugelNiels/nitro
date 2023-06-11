@@ -10,6 +10,11 @@
 
 ![downloads](https://img.shields.io/appveyor/build/bugelniels/nitro.svg) ![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
 
+## Disclaimer
+
+The project is still in development and can be considered in early-alpha. As such, I am still working hard on fixing bugs.
+If you encounter any, please feel free to create an issue.
+
 ## About the project
 
 NITRO is a powerful tool for building complex image processing routines. Instead of needing to modify source code or
