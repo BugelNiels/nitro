@@ -68,12 +68,32 @@ namespace nitro {
         return nodePorts_.getOutData(portIndex);
     }
 
+    QString NitroNode::getInPortKey(unsigned int portIndex) const {
+        return QString("In %1").arg(portIndex);
+    }
+
+    QString NitroNode::getOutPortKey(unsigned int portIndex) const {
+        return QString("Out %1").arg(portIndex);
+    }
+
+
     void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
         // TODO: extract into function
-        QString key = QString("In %1").arg(portIndex);
+        QString key = getInPortKey(portIndex);
         if (widgets_.count(key) > 0) {
             // TODO: replace sliders
+            // TODO: set value of sliders
             widgets_[key]->setEnabled(data == nullptr);
+            if(auto slider = dynamic_cast<DoubleSlider*>(widgets_[key])) {
+                if(auto val = dynamic_cast<DecimalData*>(data.get())) {
+                    slider->setVal(val->value());
+                }
+            }
+            if(auto slider = dynamic_cast<IntSlider *>(widgets_[key])) {
+                if(auto val = dynamic_cast<IntegerData*>(data.get())) {
+                    slider->setVal(val->value());
+                }
+            }
         }
         nodePorts_.setInData(portIndex, data);
         algo_->execute(nodePorts_, options_);
@@ -84,6 +104,7 @@ namespace nitro {
         }
     }
 
+
     QWidget *NitroNode::embeddedWidget() {
         return widget_;
     }
@@ -93,20 +114,20 @@ namespace nitro {
     }
 
     void NitroNode::connectInputWidget(IntSlider *slider, int port) {
-        QString key = QString("In %1").arg(port);
+        QString key = getInPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toInt());
         };
         connect(slider, &IntSlider::valueChanged, this, [this, key, port](int value) {
-            setInData(std::make_shared<IntegerData>(value), port);
+;            setInData(std::make_shared<IntegerData>(value), port);
             propJson_[key] = value;
         });
     }
 
     void NitroNode::connectInputWidget(DoubleSlider *slider, int port) {
-        QString key = QString("In %1").arg(port);
+        QString key = getInPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
@@ -137,7 +158,7 @@ namespace nitro {
     }
 
     void NitroNode::connectSourceInteger(IntSlider *slider, int port) {
-        QString key = QString("Out %1").arg(port);
+        QString key = getOutPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
@@ -152,16 +173,17 @@ namespace nitro {
     }
 
     void NitroNode::connectSourceValue(DoubleSlider *slider, int port) {
-        QString key = QString("Out %1").arg(port);
+        QString key = getOutPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toDouble());
         };
         connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
+            double actualVal = value / 100.0f;
             QString portName = nodePorts_.outPortName(port);
-            nodePorts_.setOutputData(portName, std::make_shared<DecimalData>(value));
-            propJson_[key] = value;
+            nodePorts_.setOutputData(portName, std::make_shared<DecimalData>(actualVal));
+            propJson_[key] = actualVal;
             Q_EMIT dataUpdated(port);
         });
     }

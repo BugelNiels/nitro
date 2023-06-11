@@ -87,6 +87,10 @@ namespace nitro {
         void connectSourceInteger(ValueSliders::IntSlider *slider, int port);
 
         void connectSourceValue(ValueSliders::DoubleSlider *slider, int port);
+
+        QString getInPortKey(unsigned int portIndex) const;
+
+        QString getOutPortKey(unsigned int portIndex) const;
     };
 
 } // nitro

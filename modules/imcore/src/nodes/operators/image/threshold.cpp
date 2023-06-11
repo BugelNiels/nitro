@@ -5,7 +5,7 @@
 void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
 
     bool greater = options.at("Mode") == 1;
-    auto type = greater ? cv::THRESH_BINARY_INV : cv::THRESH_BINARY;
+    auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
 
     bool imPresent, tPresent;
     auto inputImg = nodePorts.getInputImage("Image", imPresent);
