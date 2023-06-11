@@ -7,8 +7,7 @@
   </p>
 </p>
 
-
-![downloads](https://img.shields.io/appveyor/build/bugelniels/nitro.svg) ![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
+![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
 
 ## Disclaimer
 
@@ -44,7 +43,7 @@ These instructions will get you a copy of the project up and running on your loc
 To set up the repository locally, clone the repository:
 
 ```shell
-git clone --recurse-submodules -j8 git@github.com:BugelNiels/nitro.git
+git clone --recurse-submodules git@github.com:BugelNiels/nitro.git
 ```
 
 In case `--recurse-submodules` was not used, you can initialize the submodules using:
