@@ -13,14 +13,14 @@
 #include <opencv2/imgcodecs.hpp>
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
+#include "util.hpp"
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
 
 namespace nitro {
 
-    NitroNode::~NitroNode() {
-    }
+    NitroNode::~NitroNode() = default;
 
     void NitroNode::init(QtNodes::NodeInfo info,
                          const NodePorts &nodePorts,
@@ -78,19 +78,16 @@ namespace nitro {
 
 
     void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-        // TODO: extract into function
         QString key = getInPortKey(portIndex);
         if (widgets_.count(key) > 0) {
-            // TODO: replace sliders
-            // TODO: set value of sliders
             widgets_[key]->setEnabled(data == nullptr);
-            if(auto slider = dynamic_cast<DoubleSlider*>(widgets_[key])) {
-                if(auto val = dynamic_cast<DecimalData*>(data.get())) {
+            if (auto slider = dynamic_cast<DoubleSlider *>(widgets_[key])) {
+                if (auto val = dynamic_cast<DecimalData *>(data.get())) {
                     slider->setVal(val->value());
                 }
             }
-            if(auto slider = dynamic_cast<IntSlider *>(widgets_[key])) {
-                if(auto val = dynamic_cast<IntegerData*>(data.get())) {
+            if (auto slider = dynamic_cast<IntSlider *>(widgets_[key])) {
+                if (auto val = dynamic_cast<IntegerData *>(data.get())) {
                     slider->setVal(val->value());
                 }
             }
@@ -119,9 +116,10 @@ namespace nitro {
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toInt());
+            slider->setEnabled(true);
         };
         connect(slider, &IntSlider::valueChanged, this, [this, key, port](int value) {
-;            setInData(std::make_shared<IntegerData>(value), port);
+            setInData(std::make_shared<IntegerData>(value), port);
             propJson_[key] = value;
         });
     }
@@ -132,6 +130,7 @@ namespace nitro {
         widgets_[key] = slider;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toDouble());
+            slider->setEnabled(true);
         };
         connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
             double actualVal = value / 100.0f;
@@ -199,6 +198,13 @@ namespace nitro {
             nodePorts_.setOutputData(portName, nullptr);
             propJson_[key] = "";
         } else {
+
+            if (inputImg.channels() > 1 && isGrayscale(inputImg)) {
+                cv::Mat gray;
+                cvtColor(inputImg, gray, cv::COLOR_RGB2GRAY);
+                inputImg = gray;
+            }
+
             QFontMetrics fontMetrics(button->font());
             QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
                                                         button->width());

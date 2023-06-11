@@ -33,6 +33,48 @@ QColor nitro::makeReadable(const QColor &color, bool lightMode) {
 }
 
 
+int nitro::getMaxValue(const cv::Mat &mat) {
+    int depth = mat.depth();
+
+    int maxValue;
+
+    switch (depth) {
+        case CV_8U:  // 8-bit unsigned integer (0-255)
+            maxValue = 255;
+            break;
+
+        case CV_8S:  // 8-bit signed integer (-128 to 127)
+            maxValue = 127;
+            break;
+
+        case CV_16U:  // 16-bit unsigned integer (0-65535)
+            maxValue = 65535;
+            break;
+
+        case CV_16S:  // 16-bit signed integer (-32768 to 32767)
+            maxValue = 32767;
+            break;
+
+        case CV_32S:  // 32-bit signed integer
+            maxValue = INT_MAX;
+            break;
+
+        case CV_32F:  // 32-bit floating-point
+            maxValue = 1.0f;
+            break;
+
+        case CV_64F:  // 64-bit floating-point
+            maxValue = 1.0;
+            break;
+
+        default:
+            maxValue = 0;
+            break;
+    }
+    return maxValue;
+}
+
+
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
 QImage nitro::cvMatToQImage(const cv::Mat &inMat) {
     switch (inMat.type()) {
@@ -167,4 +209,25 @@ inline cv::Mat nitro::QImageToCvMat(const QImage &inImage, bool inCloneImageData
     }
 
     return cv::Mat();
+}
+
+static bool equal(const cv::Mat &a, const cv::Mat &b) {
+    if ((a.rows != b.rows) || (a.cols != b.cols))
+        return false;
+    cv::Scalar s = sum(a - b);
+    return (s[0] == 0) && (s[1] == 0) && (s[2] == 0);
+}
+
+bool nitro::isGrayscale(const cv::Mat &img) {
+    if (img.channels() > 1) {
+        std::vector<cv::Mat> channels;
+        cv::split(img, channels);
+        for(int i = 0; i < channels.size(); i++) {
+            if(!equal(channels[0], channels[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return true;
 }

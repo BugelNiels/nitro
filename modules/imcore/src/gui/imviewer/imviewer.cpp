@@ -1,4 +1,5 @@
 #include "imviewer.hpp"
+#include "util.hpp"
 
 #include <QColorSpace>
 #include <QGuiApplication>
@@ -221,28 +222,32 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
     QGraphicsView::resizeEvent(event);
 }
 
-void nitro::ImageViewer::setImage(const QImage &img) {
+void nitro::ImageViewer::setImage(const cv::Mat &img) {
     _replacementDue = false;
-    if (img.sizeInBytes() == 0) {
+    if (img.empty()) {
         removeImage();
+        emit imageUpdated(cv::Mat());
         return;
     }
+    QImage qImg = cvMatToQImage(img);
     if (_imgDisplayItem == nullptr) {
-        _imgDisplayItem = new QGraphicsPixmapItem(QPixmap::fromImage(img));
+        _imgDisplayItem = new QGraphicsPixmapItem(QPixmap::fromImage(qImg));
         scene()->addItem(_imgDisplayItem);
         QRectF rect = scene()->itemsBoundingRect();
         scene()->setSceneRect(rect);
         resetImScale();
+        emit imageUpdated(img);
     } else {
-        _imgDisplayItem->setPixmap(QPixmap::fromImage(img));
+        _imgDisplayItem->setPixmap(QPixmap::fromImage(qImg));
         if (_imgDisplayItem->boundingRect().width() != displayImg->width() ||
             _imgDisplayItem->boundingRect().height() != displayImg->height()) {
             QRectF rect = scene()->itemsBoundingRect();
             scene()->setSceneRect(rect);
             resetImScale();
         }
+        emit imageUpdated(img);
     }
-    displayImg = new QImage(img);
+    displayImg = new QImage(qImg);
     repaint();
 }
 

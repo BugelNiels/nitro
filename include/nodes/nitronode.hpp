@@ -66,7 +66,7 @@ namespace nitro {
         // when new widgets are added, they register a function that allows it to grab a value from the json list
         std::map<QString, std::function<void(QJsonValue)>> widgetsJson_;
         std::map<QString, QWidget *> widgets_;
-        std::map<QString, int> options_; // used for dropdown
+        std::map<QString, int> options_; // used for dropdowns and other options
 
         QWidget *widget_ = nullptr;
 
