@@ -66,7 +66,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
         return builder.
                 withOperator(std::make_unique<nitro::ConvertOperator>(codes))->
                 withIcon(":/icons/nodes/convert.png")->
-                withNodeColor({36, 98, 131})->
+                withNodeColor({110, 110, 29})->
                 withDropDown("Mode", colorNames)->
                 withInputImage("Image")->
                 withOutputImage("Image")->

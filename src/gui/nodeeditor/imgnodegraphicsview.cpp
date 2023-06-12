@@ -13,7 +13,9 @@
 #include <QAction>
 #include "QtNodes/BasicGraphicsScene"
 #include "nodes/datatypes/imagedata.hpp"
+#include "QtNodes/internal/UndoCommands.hpp"
 #include <QMenu>
+#include <QUndoStack>
 
 #include <QKeyEvent>
 
@@ -37,13 +39,11 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
     auto *createNodeAction = new QAction(menuName, this);
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
-        QPointF posView = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
-
-        QtNodes::NodeId const newId = dataModel_->addNode(nodeType);
-        auto rect = nodeGeometry.size(newId);
-        posView.setX(posView.x() - rect.width() / 2);
-        posView.setY(posView.y() - rect.height() / 2);
-        dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
+        QPoint globalPos = mapFromGlobal(QCursor::pos());
+        if(rect().contains(globalPos)) {
+            QPointF posView = mapToScene(globalPos);
+            scene_->undoStack().push(new QtNodes::CreateCommand(scene_, nodeType, posView));
+        }
     });
     QIcon icon;
     icon.addPixmap(nitro::ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
@@ -91,7 +91,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
         if (auto c = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item)) {
 
 
-            QtNodes::NodeId viewerNodeId;
+            QtNodes::NodeId viewerNodeId = QtNodes::InvalidNodeId;
             auto allNodes = dataModel_->allNodeIds();
             QString viewerNodeName = "ImageViewer";
             for (auto id: allNodes) {
@@ -107,7 +107,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                                 c->pos().y() + c->boundingRect().height() / 4);
 
                 //TODO extract this magic string
-                QtNodes::NodeId const newId = dataModel_->addNode("ImageViewer");
+                QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
                 viewerNodeId = newId;
                 dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
             }

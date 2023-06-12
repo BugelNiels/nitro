@@ -14,6 +14,7 @@
 #include <QHBoxLayout>
 #include <QGraphicsPixmapItem>
 #include <QFileDialog>
+#include <QTimer>
 
 nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
@@ -223,12 +224,12 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
 }
 
 void nitro::ImageViewer::setImage(const cv::Mat &img) {
-    _replacementDue = false;
     if (img.empty()) {
         removeImage();
         emit imageUpdated(cv::Mat());
         return;
     }
+    removalDue_ = false;
     QImage qImg = cvMatToQImage(img);
     if (_imgDisplayItem == nullptr) {
         _imgDisplayItem = new QGraphicsPixmapItem(QPixmap::fromImage(qImg));
@@ -251,23 +252,22 @@ void nitro::ImageViewer::setImage(const cv::Mat &img) {
     repaint();
 }
 
-
-void nitro::ImageViewer::awaitReplacement() {
-    _replacementDue = true;
-}
-
-void nitro::ImageViewer::abortReplacement() {
-    _replacementDue = false;
-}
-
 void nitro::ImageViewer::removeImage() {
-    if (_replacementDue) {
-        return;
-    }
-    scene()->removeItem(_imgDisplayItem);
-    _imgDisplayItem = nullptr;
-    resetImScale();
-    repaint();
+    removalDue_ = true;
+    auto* timer = new QTimer(this);
+    timer->setSingleShot(true);
+    timer->setInterval(200);
+    connect(timer, &QTimer::timeout, [=]() {
+        if(removalDue_) {
+            scene()->removeItem(_imgDisplayItem);
+            _imgDisplayItem = nullptr;
+            resetImScale();
+            repaint();
+        }
+        timer->deleteLater();
+    });
+
+    timer->start();
 }
 
 void nitro::ImageViewer::centerScene() {
