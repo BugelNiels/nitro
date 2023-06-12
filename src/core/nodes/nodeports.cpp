@@ -67,11 +67,11 @@ namespace nitro {
         return outputMap_[name];
     }
 
-    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(const QString &name) {
-        return inputMap_[name];
+    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(const QString &name) const {
+        return inputMap_.at(name);
     }
 
-    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(int portIndex) {
+    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(int portIndex) const {
         return getInData(inPortName(portIndex));
     }
 
@@ -97,7 +97,7 @@ namespace nitro {
         inputMap_[inPortName(port)] = std::move(data);
     }
 
-    int NodePorts::getInputInteger(const QString &name, bool &present) {
+    int NodePorts::getInputInteger(const QString &name, bool &present) const {
         present = false;
         if (inputMap_.count(name) == 0) {
             return 0;
@@ -110,7 +110,7 @@ namespace nitro {
         return inputValDat->value();
     }
 
-    double NodePorts::getInputValue(const QString &name, bool &present) {
+    double NodePorts::getInputValue(const QString &name, bool &present) const {
         present = false;
         if (inputMap_.count(name) == 0) {
             return 0;
@@ -123,7 +123,7 @@ namespace nitro {
         return inputValDat->value();
     }
 
-    std::shared_ptr<cv::Mat> NodePorts::getInputImage(const QString &name, bool &present) {
+    std::shared_ptr<cv::Mat> NodePorts::getInputImage(const QString &name, bool &present) const {
         present = false;
         if (inputMap_.count(name) == 0) {
             return nullptr;

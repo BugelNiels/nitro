@@ -27,7 +27,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ThresholdOperator::cre
         return builder.
                 withOperator(std::make_unique<nitro::ThresholdOperator>())->
                 withIcon(":/icons/nodes/threshold.png")->
-                withNodeColor({43, 101, 43})->
+                withNodeColor({71, 47, 189})->
                 withDropDown("Mode", {"<=", ">="})->
                 withInputImage("Image")->
                 withInputInteger("Threshold", 128, 0, 255)->

@@ -23,7 +23,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::
         return builder.
                 withOperator(std::make_unique<nitro::GaussianBlurOperator>())->
                 withIcon(":/icons/nodes/blur.png")->
-                withNodeColor({43, 101, 43})->
+                withNodeColor({71, 47, 189})->
                 withInputImage("Image")->
                 withInputInteger("Size", 5, 1, 64)->
                 withInputValue("Sigma", 1, 0, 16)->

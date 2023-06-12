@@ -1,7 +1,7 @@
 #include "imageviewalgorithm.hpp"
-#include "nodes/datatypes/imagedata.hpp"
-#include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+
+#include <QTimer>
 
 nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
         : imViewer_(imViewer) {
@@ -15,7 +15,7 @@ void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QSt
         imViewer_->setImage(*img);
         return;
     }
-//    imViewer_->removeImage();
+    imViewer_->removeImage();
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImageViewAlgorithm::creator(const QString &category, ImageViewer* imageViewer) {

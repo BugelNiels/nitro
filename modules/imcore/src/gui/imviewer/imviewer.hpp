@@ -39,11 +39,6 @@ namespace nitro {
 
         void removeImage();
 
-        void awaitReplacement();
-
-        void abortReplacement();
-
-
         const double minScaleFactor = 0.2;
         const double maxScaleFactor = 20;
     protected:
@@ -74,7 +69,6 @@ namespace nitro {
         const int gridStepSize = 32;
         const int emptySize = 128;
 
-        bool _replacementDue = false;
         ScaleRange _scaleRange;
         QImage *displayImg = nullptr;
         QGraphicsPixmapItem *_imgDisplayItem = nullptr;
@@ -92,6 +86,7 @@ namespace nitro {
 
         void initActions();
 
+        bool removalDue_ = false;
     };
 
 } // nitro

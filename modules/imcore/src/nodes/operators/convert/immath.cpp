@@ -7,7 +7,7 @@
 void nitro::MathOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
     bool im1Present, facPresent;
     auto im1 = nodePorts.getInputImage("Image", im1Present);
-    double fac = nodePorts.getInputValue("Fac", facPresent);
+    double fac = nodePorts.getInputValue("Value", facPresent);
 
     int option = options.at("Mode");
 
@@ -47,7 +47,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
         return builder.
                 withOperator(std::make_unique<nitro::MathOperator>())->
                 withIcon(":/icons/nodes/math.png")->
-                withNodeColor({110, 110, 29})->
+                withNodeColor({36, 98, 131})->
                 withDropDown("Mode", {"Add", "Subtract", "Multiply", "Divide"})->
                 withInputImage("Image")->
                 withInputValue("Value", 0.5, 0, 1)->
