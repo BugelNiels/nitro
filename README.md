@@ -39,6 +39,40 @@ These instructions will get you a copy of the project up and running on your loc
 - [OpenGL 4.1+](https://www.opengl.org/)
 - [OpenCV 4](https://opencv.org/)
 
+#### Ubuntu Install Instructions
+
+- CMake
+  ```shell
+  sudo apt install cmake
+  ```
+- Qt6
+  ```shell
+  sudo apt install qt6-base-dev
+  ```
+- OpenGL
+  Should be supported by default. My night to install `mesa-utils`
+  ```shell
+  sudo apt install mesa-utils
+  ```
+- OpenCV 4
+  ```shell
+  sudo apt install libopencv-dev
+  ```
+
+### Dependencies
+
+These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
+installed.
+
+- [QtNodes](https://github.com/BugelNiels/nodeeditor)
+    - A custom fork of
+      the [QtNodes](https://github.com/paceholder/nodeeditor) repo.
+- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
+    - A custom widget that allows for user-friendly
+      control of numerical inputs.
+- [FLIP](https://github.com/NVlabs/flip)
+    - A state-of-the-art image comparison algorithm developed by NVIDIA.
+
 ### Installing
 
 To set up the repository locally, clone the repository:
@@ -83,8 +117,7 @@ A few notable features on top of the node editor itself are:
 ## Project Structure
 
 The project was developed with the aim of making it easily extendable. Below a number of code details are outlined to
-help
-understanding the project structure.
+illustrate some basic example usages of the project and how to extend it.
 
 ### Modules
 
@@ -189,7 +222,7 @@ New data types can be added by creating an implementation of `QtNodes::NodeData`
 the following structure:
 
 ```c++
-amespace nitro {
+namespace nitro {
     class IntegerData : public QtNodes::NodeData {
     public:
         IntegerData() = default;

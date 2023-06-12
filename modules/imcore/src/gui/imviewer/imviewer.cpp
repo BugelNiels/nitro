@@ -259,8 +259,10 @@ void nitro::ImageViewer::removeImage() {
     timer->setInterval(200);
     connect(timer, &QTimer::timeout, [=]() {
         if(removalDue_) {
-            scene()->removeItem(_imgDisplayItem);
-            _imgDisplayItem = nullptr;
+            if(_imgDisplayItem != nullptr) {
+                scene()->removeItem(_imgDisplayItem);
+                _imgDisplayItem = nullptr;
+            }
             resetImScale();
             repaint();
         }
