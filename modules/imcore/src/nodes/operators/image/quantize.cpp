@@ -19,7 +19,7 @@ void nitro::QuantizeOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     cv::Mat imIn;
     img->convertTo(imIn, CV_8U, 255);
     int max = getMaxValue(imIn);
-    cv::Mat imDat = (imIn / max) * (k) + 0.5;
+    cv::Mat imDat = (imIn / max) * k + 0.5;
     cv::Mat quant = imDat * (max / double(k));
     cv::Mat result;
     quant.convertTo(result, CV_32F, 1 / 255.0);

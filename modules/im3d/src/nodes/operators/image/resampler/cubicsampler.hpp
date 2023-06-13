@@ -15,12 +15,6 @@ namespace nitro {
                          const std::vector<cv::Mat> &df,
                          int numDesiredLevels) override;
 
-    protected:
-
-        [[nodiscard]] float distFuncIndexed(const cv::Mat &colorTable,
-                                            const std::vector<cv::Mat> &df,
-                                            int x, int y, float p, int numLevelsInput) const override { return 0; }
-
     };
 
 }  // namespace nitro

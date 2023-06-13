@@ -89,9 +89,9 @@ namespace nitro {
 
         void connectSourceValue(ValueSliders::DoubleSlider *slider, int port);
 
-        QString getInPortKey(unsigned int portIndex) const;
+        [[nodiscard]] QString getInPortKey(unsigned int portIndex) const;
 
-        QString getOutPortKey(unsigned int portIndex) const;
+        [[nodiscard]] QString getOutPortKey(unsigned int portIndex) const;
 
         void connectLabel(const QString &name, QLabel *label);
 

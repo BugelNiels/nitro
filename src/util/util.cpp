@@ -76,33 +76,31 @@ int nitro::getMaxValue(const cv::Mat &mat) {
 
 
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
-QImage nitro::cvMatToQImage(const cv::Mat &img) {
+QImage nitro::cvMatToQImage(const std::shared_ptr<cv::Mat> &img) {
 
-    cv::Mat inMat = img;
-
-    switch (inMat.type()) {
+    switch (img->type()) {
         case CV_32F: {
-            inMat.convertTo(inMat, CV_8U, 255);
+            img->convertTo(*img, CV_8U, 255);
             break;
         }
         case CV_32FC3: {
-            inMat.convertTo(inMat, CV_8UC3, 255);
+            img->convertTo(*img, CV_8UC3, 255);
             break;
         }
         case CV_32FC4: {
-            inMat.convertTo(inMat, CV_8UC4, 255);
+            img->convertTo(*img, CV_8UC4, 255);
             break;
         }
-
+        default:
+            break;
     }
 
-
-    switch (inMat.type()) {
+    switch (img->type()) {
         // 8-bit, 4 channel
         case CV_8UC4: {
-            QImage image(inMat.data,
-                         inMat.cols, inMat.rows,
-                         static_cast<int>(inMat.step),
+            QImage image(img->data,
+                         img->cols, img->rows,
+                         static_cast<int>(img->step),
                          QImage::Format_ARGB32);
 
             return image;
@@ -110,9 +108,9 @@ QImage nitro::cvMatToQImage(const cv::Mat &img) {
 
             // 8-bit, 3 channel
         case CV_8UC3: {
-            QImage image(inMat.data,
-                         inMat.cols, inMat.rows,
-                         static_cast<int>(inMat.step),
+            QImage image(img->data,
+                         img->cols, img->rows,
+                         static_cast<int>(img->step),
                          QImage::Format_RGB888);
 
             return image.rgbSwapped();
@@ -121,9 +119,9 @@ QImage nitro::cvMatToQImage(const cv::Mat &img) {
             // 8-bit, 1 channel
         case CV_8UC1: {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-            QImage image(inMat.data,
-                         inMat.cols, inMat.rows,
-                         static_cast<int>(inMat.step),
+            QImage image(img->data,
+                         img->cols, img->rows,
+                         static_cast<int>(img->step),
                          QImage::Format_Grayscale8);
 #else
             static QVector<QRgb>  sColorTable;
@@ -139,9 +137,9 @@ QImage nitro::cvMatToQImage(const cv::Mat &img) {
                }
             }
 
-            QImage image( inMat.data,
-                          inMat.cols, inMat.rows,
-                          static_cast<int>(inMat.step),
+            QImage image( img->data,
+                          img->cols, img->rows,
+                          static_cast<int>(img->step),
                           QImage::Format_Indexed8 );
 
             image.setColorTable( sColorTable );
@@ -151,11 +149,11 @@ QImage nitro::cvMatToQImage(const cv::Mat &img) {
         }
 
         default:
-            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
+            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << img->type();
             break;
     }
 
-    return QImage();
+    return {};
 }
 
 // If inImage exists for the lifetime of the resulting cv::Mat, pass false to inCloneImageData to share inImage's

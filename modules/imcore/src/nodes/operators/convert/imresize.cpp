@@ -20,14 +20,10 @@ void nitro::ResizeOperator::execute(nitro::NodePorts &nodePorts, const std::map<
     int height = nodePorts.getInputInteger(INPUT_HEIGHT);
 
     cv::InterpolationFlags mode;
-    switch (option) {
-        case 0:
-            mode = cv::INTER_CUBIC;
-            break;
-        case 1 :
-        default:
-            mode = cv::INTER_NEAREST;
-            break;
+    if (option == 0) {
+        mode = cv::INTER_CUBIC;
+    } else {
+        mode = cv::INTER_NEAREST;
     }
 
     cv::Mat result;

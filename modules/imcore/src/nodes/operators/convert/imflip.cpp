@@ -23,7 +23,6 @@ void nitro::ImFlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<
         case 1 :
             mode = 0;
             break;
-        case 2 :
         default:
             mode = -1;
             break;

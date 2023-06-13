@@ -18,7 +18,7 @@
 
 nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
-
+    currentImg_ = std::make_shared<cv::Mat>();
 
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
@@ -29,7 +29,7 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-    setBackgroundBrush(bGroundCol);
+    setBackgroundBrush(bGroundCol_);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     setScaleRange(minScaleFactor, maxScaleFactor);
@@ -49,23 +49,23 @@ nitro::ImageViewer::~ImageViewer() = default;
 
 void nitro::ImageViewer::initActions() {
 
-    resetAction = new QAction("Reset view", this);
-    connect(resetAction, &QAction::triggered, this, &nitro::ImageViewer::resetImScale);
+    resetAction_ = new QAction("Reset view", this);
+    connect(resetAction_, &QAction::triggered, this, &nitro::ImageViewer::resetImScale);
 
-    saveAction = new QAction("Save image", this);
-    connect(saveAction, &QAction::triggered, this, &nitro::ImageViewer::saveImage);
+    saveAction_ = new QAction("Save image", this);
+    connect(saveAction_, &QAction::triggered, this, &nitro::ImageViewer::saveImage);
 }
 
 void nitro::ImageViewer::saveImage() {
     {
-        if (displayImg != nullptr) {
+        if (displayImg_ != nullptr) {
             QString filePath = QFileDialog::getSaveFileName(
                     this, "Save Image", "../data/",
                     tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
             if (filePath == "") {
                 return;
             }
-            if (displayImg->save(filePath)) {
+            if (displayImg_->save(filePath)) {
                 QMessageBox::information(this, tr("Save Successful"),
                                          QString("File canQuitSafely to\n %1").arg(filePath));
             } else {
@@ -78,42 +78,42 @@ void nitro::ImageViewer::saveImage() {
 
 
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
-    painter->setBrush(QBrush(bGroundCol));
+    painter->setBrush(QBrush(bGroundCol_));
     QGraphicsView::drawBackground(painter, r);
-    painter->setBrush(QBrush(dotColor));
-    painter->setPen(dotColor);
+    painter->setBrush(QBrush(dotColor_));
+    painter->setPen(dotColor_);
 
     QRect windowRect = rect();
     QPointF tl = mapToScene(windowRect.topLeft());
     QPointF br = mapToScene(windowRect.bottomRight());
 
-    double left = std::floor(tl.x() / gridStep - 0.5);
-    double right = std::floor(br.x() / gridStep + 1.0);
-    double bottom = std::floor(tl.y() / gridStep - 0.5);
-    double top = std::floor(br.y() / gridStep + 1.0);
+    double left = std::floor(tl.x() / gridStep_ - 0.5);
+    double right = std::floor(br.x() / gridStep_ + 1.0);
+    double bottom = std::floor(tl.y() / gridStep_ - 0.5);
+    double top = std::floor(br.y() / gridStep_ + 1.0);
 
     for (int xi = int(left); xi <= int(right); ++xi) {
         for (int yi = int(bottom); yi <= int(top); ++yi) {
-            painter->drawEllipse(xi * gridStep, yi * gridStep, dotSize, dotSize);
+            painter->drawEllipse(xi * gridStep_, yi * gridStep_, dotSize_, dotSize_);
         }
     }
 
-    if (_imgDisplayItem != nullptr) {
+    if (imgDisplayItem_ != nullptr) {
         return;
     }
 
-    QRectF gridRect(-emptySize, -emptySize, emptySize * 2, emptySize * 2);
-    QPen pBounds(imgOutlineCol, 2.0);
-    painter->setBrush(QBrush(gridBackgroundColor));
+    QRectF gridRect(-emptySize_, -emptySize_, emptySize_ * 2, emptySize_ * 2);
+    QPen pBounds(imgOutlineCol_, 2.0);
+    painter->setBrush(QBrush(gridBackgroundColor_));
     painter->drawRect(gridRect);
 
-    QPen pfine(imgGridCol, 1.0);
+    QPen pFine(imgGridCol_, 1.0);
 
-    painter->setPen(pfine);
-    for (qreal x = gridRect.x() + gridStepSize; x < gridRect.x() + gridRect.width(); x += gridStepSize) {
+    painter->setPen(pFine);
+    for (qreal x = gridRect.x() + gridStepSize_; x < gridRect.x() + gridRect.width(); x += gridStepSize_) {
         painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
     }
-    for (qreal y = gridRect.y() + gridStepSize; y < gridRect.y() + gridRect.height(); y += gridStepSize) {
+    for (qreal y = gridRect.y() + gridStepSize_; y < gridRect.y() + gridRect.height(); y += gridStepSize_) {
         painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
     }
 
@@ -130,7 +130,7 @@ void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {
     minimum = std::max(0.0, minimum);
     maximum = std::max(0.0, maximum);
 
-    _scaleRange = {minimum, maximum};
+    scaleRange_ = {minimum, maximum};
 
     setupScale(transform().m11());
 }
@@ -139,10 +139,10 @@ void nitro::ImageViewer::scaleUp() {
     double const step = 1.2;
     double const factor = std::pow(step, 1.0);
 
-    if (_scaleRange.maximum > 0) {
+    if (scaleRange_.maximum > 0) {
         QTransform t = transform();
         t.scale(factor, factor);
-        if (t.m11() >= _scaleRange.maximum) {
+        if (t.m11() >= scaleRange_.maximum) {
             setupScale(t.m11());
             return;
         }
@@ -156,10 +156,10 @@ void nitro::ImageViewer::scaleDown() {
     double const step = 1.2;
     double const factor = std::pow(step, -1.0);
 
-    if (_scaleRange.minimum > 0) {
+    if (scaleRange_.minimum > 0) {
         QTransform t = transform();
         t.scale(factor, factor);
-        if (t.m11() <= _scaleRange.minimum) {
+        if (t.m11() <= scaleRange_.minimum) {
             setupScale(t.m11());
             return;
         }
@@ -170,7 +170,7 @@ void nitro::ImageViewer::scaleDown() {
 }
 
 void nitro::ImageViewer::setupScale(double scale) {
-    scale = std::max(_scaleRange.minimum, std::min(_scaleRange.maximum, scale));
+    scale = std::max(scaleRange_.minimum, std::min(scaleRange_.maximum, scale));
 
     if (scale <= 0)
         return;
@@ -204,19 +204,17 @@ void nitro::ImageViewer::wheelEvent(QWheelEvent *event) {
 
 QMenu *nitro::ImageViewer::createContextMenu() {
     auto *menu = new QMenu();
-    menu->addAction(resetAction);
-    menu->addAction(saveAction);
-    if (displayImg == nullptr) {
-        saveAction->setEnabled(false);
+    menu->addAction(resetAction_);
+    menu->addAction(saveAction_);
+    if (displayImg_ == nullptr) {
+        saveAction_->setEnabled(false);
     }
     return menu;
 }
 
 void nitro::ImageViewer::contextMenuEvent(QContextMenuEvent *event) {
     QMenu *menu = createContextMenu();
-    if (menu) {
-        menu->exec(event->globalPos());
-    }
+    menu->exec(event->globalPos());
 }
 
 void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
@@ -226,44 +224,45 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
 void nitro::ImageViewer::setImage(const cv::Mat &img) {
     if (img.empty()) {
         removeImage();
-        emit imageUpdated(cv::Mat());
         return;
     }
     removalDue_ = false;
-    QImage qImg = cvMatToQImage(img);
-    if (_imgDisplayItem == nullptr) {
-        _imgDisplayItem = new QGraphicsPixmapItem(QPixmap::fromImage(qImg));
-        scene()->addItem(_imgDisplayItem);
+    img.copyTo(*currentImg_);
+    auto qImg = new QImage(cvMatToQImage(currentImg_));
+    if (imgDisplayItem_ == nullptr) {
+        imgDisplayItem_ = new QGraphicsPixmapItem(QPixmap::fromImage(*qImg));
+        scene()->addItem(imgDisplayItem_);
         QRectF rect = scene()->itemsBoundingRect();
         scene()->setSceneRect(rect);
         resetImScale();
         emit imageUpdated(img);
     } else {
-        _imgDisplayItem->setPixmap(QPixmap::fromImage(qImg));
-        if (_imgDisplayItem->boundingRect().width() != displayImg->width() ||
-            _imgDisplayItem->boundingRect().height() != displayImg->height()) {
+        imgDisplayItem_->setPixmap(QPixmap::fromImage(*qImg));
+        if (imgDisplayItem_->boundingRect().width() != displayImg_->width() ||
+            imgDisplayItem_->boundingRect().height() != displayImg_->height()) {
             QRectF rect = scene()->itemsBoundingRect();
             scene()->setSceneRect(rect);
             resetImScale();
         }
         emit imageUpdated(img);
     }
-    displayImg = new QImage(qImg);
+    displayImg_ = qImg;
     repaint();
 }
 
 void nitro::ImageViewer::removeImage() {
     removalDue_ = true;
-    auto* timer = new QTimer(this);
+    auto *timer = new QTimer(this);
     timer->setSingleShot(true);
     timer->setInterval(200);
-    connect(timer, &QTimer::timeout, [=]() {
-        if(removalDue_) {
-            if(_imgDisplayItem != nullptr) {
-                scene()->removeItem(_imgDisplayItem);
-                _imgDisplayItem = nullptr;
+    connect(timer, &QTimer::timeout, [this, timer]() {
+        if (removalDue_) {
+            if (imgDisplayItem_ != nullptr) {
+                scene()->removeItem(imgDisplayItem_);
+                imgDisplayItem_ = nullptr;
             }
             resetImScale();
+            emit imageUpdated(cv::Mat());
             repaint();
         }
         timer->deleteLater();
@@ -275,8 +274,8 @@ void nitro::ImageViewer::removeImage() {
 void nitro::ImageViewer::centerScene() {
     if (scene()) {
         scene()->setSceneRect(QRectF());
-        if (_imgDisplayItem) {
-            centerOn(_imgDisplayItem->boundingRect().width() / 2, _imgDisplayItem->boundingRect().height() / 2);
+        if (imgDisplayItem_) {
+            centerOn(imgDisplayItem_->boundingRect().width() / 2, imgDisplayItem_->boundingRect().height() / 2);
         } else {
             centerOn(0, 0);
 
@@ -286,10 +285,10 @@ void nitro::ImageViewer::centerScene() {
 
 void nitro::ImageViewer::resetImScale() {
     centerScene();
-    if (_imgDisplayItem == nullptr) {
+    if (imgDisplayItem_ == nullptr) {
         setupScale(1.0);
     } else {
-        auto maxSize = std::max(_imgDisplayItem->boundingRect().width(), _imgDisplayItem->boundingRect().height());
+        auto maxSize = std::max(imgDisplayItem_->boundingRect().width(), imgDisplayItem_->boundingRect().height());
         auto minCurSize = std::min(rect().width(), rect().height());
         double scale = minCurSize / maxSize;
         setupScale(0.8 * scale);

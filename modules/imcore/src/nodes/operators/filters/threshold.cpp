@@ -9,14 +9,13 @@
 
 void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
     // Retrieving of input parameters
-    bool greater = options.at(MODE_DROPDOWN) == 1;
-    auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
-    bool imPresent, tPresent;
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    int threshold = nodePorts.getInputInteger(INPUT_THRESH);
-    if (!imPresent || !tPresent) {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_THRESH})) {
         return;
     }
+    bool greater = options.at(MODE_DROPDOWN) == 1;
+    auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    int threshold = nodePorts.getInputInteger(INPUT_THRESH);
 
     cv::Mat grayImage;
     inputImg->convertTo(grayImage, CV_8U, 255);

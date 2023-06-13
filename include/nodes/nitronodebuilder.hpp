@@ -67,12 +67,12 @@ namespace nitro {
 
     private:
         const int portWidgetWidth_ = 150;
-        std::unique_ptr<NitroNode> node_;
 
         const QString name_;
         const QString id_;
         const QString category_;
         std::unique_ptr<NodeOperator> algo_;
+        std::unique_ptr<NitroNode> node_;
         int portWidgetHeight_;
 
         QColor nodeColor_ = {36, 98, 131};

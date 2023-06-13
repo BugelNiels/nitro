@@ -22,16 +22,17 @@
 #include <QLineEdit>
 #include <QProgressBar>
 
+#include <QUndoStack>
 
 nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
         : QDockWidget(window),
           filename_("untitled.json") {
 
     dataFlowGraphModel_ = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
-    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel_);
-    nodeScene->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
-    nodeScene->toggleWidgetMode();
-    view_ = new ImageNodeGraphicsView(nodes, nodeScene, dataFlowGraphModel_, window);
+    nodeScene_ = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel_);
+    nodeScene_->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene_->toggleWidgetMode();
+    view_ = new ImageNodeGraphicsView(nodes, nodeScene_, dataFlowGraphModel_, window);
 
     setWindowTitle("Node Editor");
     prevSave_ = dataFlowGraphModel_->save();
@@ -134,8 +135,7 @@ void nitro::NodeDockWidget::clearModel() {
     for (const auto &item: dataFlowGraphModel_->allNodeIds()) {
         dataFlowGraphModel_->deleteNode(item);
     }
-    // TODO: delete undo history
-
+    nodeScene_->undoStack().clear();
     prevSave_ = dataFlowGraphModel_->save();
 }
 

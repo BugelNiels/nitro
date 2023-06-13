@@ -17,8 +17,8 @@ namespace nitro {
 
     protected:
 
-        virtual float distFuncIndexed(const cv::Mat &colorTable,
-                                      const std::vector<cv::Mat> &df,
-                                      int x, int y, float p, int numLevelsInput) const = 0;
+        [[nodiscard]] virtual float distFunc(const cv::Mat &colorTable,
+                                             const std::vector<cv::Mat> &df,
+                                             int x, int y, float p, int numLevelsInput) const;
     };
 }  // namespace nitro

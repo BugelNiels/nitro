@@ -18,5 +18,6 @@ namespace nitro {
 
     private:
         RenderView *surfViewer_;
+        std::shared_ptr<cv::Mat> currentImg_;
     };
 }

@@ -5,9 +5,9 @@
 #include <iostream>
 #include <QDebug>
 
-nitro::CubicSampler::CubicSampler() {}
+nitro::CubicSampler::CubicSampler() = default;
 
-nitro::CubicSampler::~CubicSampler() {}
+nitro::CubicSampler::~CubicSampler() = default;
 
 static inline float get(const cv::Mat &colorTable, int i) {
     return colorTable.at<float>(i, 0);
@@ -54,7 +54,7 @@ cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
                     double p = double(d) / (double(numDesiredLevels) - 1.0);
                     double dist = s(p);
                     if (dist <= 0) {
-                        resampled.at<float>(y, x) = p;
+                        resampled.at<float>(y, x) = float(p);
                         break;
                     }
                 }

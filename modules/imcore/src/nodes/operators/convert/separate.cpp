@@ -12,8 +12,8 @@ void nitro::SeparateOperator::execute(NodePorts &nodePorts, const std::map<QStri
     std::vector<cv::Mat> channels;
     if (inputImg->channels() == 1) {
         channels.resize(3);
-        for (int i = 0; i < channels.size(); i++) {
-            inputImg->copyTo(channels[i]);
+        for (auto & channel : channels) {
+            inputImg->copyTo(channel);
         }
     } else {
         cv::split(*inputImg, channels);

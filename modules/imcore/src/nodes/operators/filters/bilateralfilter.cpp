@@ -10,6 +10,7 @@
 #define MODE_DROPDOWN "Mode"
 
 void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    // Verifying that all the required inputs are there
     if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIGMA_C, INPUT_SIGMA_S, INPUT_D})) {
         return;
     }
