@@ -48,6 +48,7 @@ cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
                 for (int i = 0; i < numLevelsInput; ++i) {
                     values[i] = static_cast<double>(df[i].at<float>(y, x));
                 }
+                // TODO: fix the end point tangents
                 tk::spline s(cols, values, tk::spline::cspline, true);
                 // Compute interpolation tangents
                 for (int d = numDesiredLevels - 1; d >= 0; d--) {
