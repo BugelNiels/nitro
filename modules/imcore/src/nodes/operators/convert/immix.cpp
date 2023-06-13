@@ -3,6 +3,12 @@
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 
+#define INPUT_IMAGE_1 "Image 1"
+#define INPUT_IMAGE_2 "Image 2"
+#define INPUT_FAC "Fac"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
+
 static cv::Mat blendImages(const cv::Mat &image1, const cv::Mat &image2, double alpha, double beta, double gamma) {
     cv::Mat blendedImage;
     cv::addWeighted(image1, alpha, image2, beta, gamma, blendedImage);
@@ -48,16 +54,14 @@ static cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetIma
 }
 
 void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    bool im1Present, im2Present, facPresent;
-    auto im1 = nodePorts.getInputImage("Image1", im1Present);
-    auto im2 = nodePorts.getInputImage("Image2", im2Present);
-    double fac = nodePorts.getInputValue("Fac", facPresent);
-
-    int option = options.at("Mode");
-
-    if (!im1Present || !im2Present || !facPresent) {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE_1, INPUT_IMAGE_2, INPUT_FAC})) {
         return;
     }
+    auto im1 = nodePorts.getInputImage(INPUT_IMAGE_1);
+    auto im2 = nodePorts.getInputImage(INPUT_IMAGE_2);
+    double fac = nodePorts.getInputValue(INPUT_FAC);
+
+    int option = options.at(MODE_DROPDOWN);
 
     cv::Mat in1, in2;
     if (im1->size > im2->size) {
@@ -89,11 +93,17 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
         case 3:
             result = blendImages(in1, multiplyBlend(in1, in2), 1 - fac, fac, 0);
             break;
+        case 4:
+            result = blendImages(in1, cv::min(in1, in2), 1 - fac, fac, 0);
+            break;
+        case 5:
+            result = blendImages(in1, cv::max(in1, in2), 1 - fac, fac, 0);
+            break;
         default:
             result = blendImages(in1, in2, fac, 1 - fac, 0);
             break;
     }
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(const QString &category) {
@@ -101,13 +111,13 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(c
         nitro::NitroNodeBuilder builder("Mix", "mix", category);
         return builder.
                 withOperator(std::make_unique<nitro::MixOperator>())->
-                withIcon(":/icons/nodes/mix.png")->
+                withIcon("mix.png")->
                 withNodeColor({110, 110, 29})->
-                withDropDown("Mode", {"Mix", "Add", "Subtract", "Multiply"})->
-                withInputValue("Fac", 0.5, 0, 1)->
-                withInputImage("Image1")->
-                withInputImage("Image2")->
-                withOutputImage("Image")->
+                withDropDown(MODE_DROPDOWN, {"Mix", "Add", "Subtract", "Multiply", "Min", "Max"})->
+                withInputValue(INPUT_FAC, 0.5, 0, 1)->
+                withInputImage(INPUT_IMAGE_1)->
+                withInputImage(INPUT_IMAGE_2)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

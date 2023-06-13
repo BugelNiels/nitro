@@ -2,17 +2,18 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
+#define OUTPUT_IMAGE "Image"
+
 void nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
 
     std::vector<cv::Mat> channels;
     channels.resize(3);
     for (int i = 0; i < channels.size(); i++) {
-        QString name = QString("Channel%1").arg(i + 1);
-        bool imPresent;
-        auto inputImg = nodePorts.getInputImage(name, imPresent);
-        if (!imPresent) {
+        QString name = QString("Channel %1").arg(i + 1);
+        if (nodePorts.inputsPresent({name})) {
             return;
         }
+        auto inputImg = nodePorts.getInputImage(name);
         channels[i] = *inputImg;
     }
     for (int i = 1; i < channels.size(); i++) {
@@ -22,7 +23,7 @@ void nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     }
     cv::Mat result;
     cv::merge(channels, result);
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 
 }
 
@@ -31,12 +32,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CombineOperator::creat
         nitro::NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
         return builder.
                 withOperator(std::make_unique<nitro::CombineOperator>())->
-                withIcon(":/icons/nodes/combine.png")->
+                withIcon("combine.png")->
                 withNodeColor({36, 98, 131})->
-                withInputImage("Channel1")->
-                withInputImage("Channel2")->
-                withInputImage("Channel3")->
-                withOutputImage("Image")->
+                withInputImage("Channel 1")->
+                withInputImage("Channel 2")->
+                withInputImage("Channel 3")->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

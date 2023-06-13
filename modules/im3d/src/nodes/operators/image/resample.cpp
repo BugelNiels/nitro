@@ -7,28 +7,35 @@
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
-#include <opencv2/highgui.hpp>
+
+#define INPUT_IMAGE "Image"
+#define INPUT_BITS "Bits"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
 static cv::Mat getUniqueColors(const cv::Mat &src) {
 
     cv::Mat reshapedImage = src.reshape(1, 1);
-
-    std::vector<int> uniqueColors;
-    std::set<int> uniqueColorsSet(reshapedImage.begin<uchar>(), reshapedImage.end<uchar>());
+    std::vector<float> uniqueColors;
+    std::set<float> uniqueColorsSet(reshapedImage.begin<float>(), reshapedImage.end<float>());
     uniqueColors.assign(uniqueColorsSet.begin(), uniqueColorsSet.end());
 
     cv::Mat colTable;
-    colTable.create(static_cast<int>(uniqueColors.size()), 1, CV_8U);
-    for (size_t i = 0; i < uniqueColors.size(); ++i) {
-        colTable.at<uchar>(i) = uniqueColors[i];
+    colTable.create(static_cast<int>(uniqueColors.size()), 1, CV_32FC1);
+    for (int i = 0; i < uniqueColors.size(); ++i) {
+        colTable.at<float>(i) = uniqueColors[i];
     }
     return colTable;
 }
 
-cv::Mat distanceField(const cv::Mat &src, int t, int levels) {
+cv::Mat distanceField(const cv::Mat &src, float t) {
+
+    cv::Mat grayImage;
+    src.convertTo(grayImage, CV_8U, 255);
+    int thresh = int(std::round(t * 255));
     cv::Mat binaryImOutside, binaryImInside;
-    cv::threshold(src, binaryImOutside, t, levels, cv::THRESH_BINARY_INV);
-    cv::threshold(src, binaryImInside, t, levels, cv::THRESH_BINARY);
+    cv::threshold(grayImage, binaryImOutside, thresh, 255, cv::THRESH_BINARY_INV);
+    cv::threshold(grayImage, binaryImInside, thresh, 255, cv::THRESH_BINARY);
 
     // Calculate the distance transform
     cv::Mat dfIn, dfOut;
@@ -48,27 +55,25 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     cv::Mat l0(src.rows, src.cols, CV_32FC1);
 #pragma omp parallel for default(none) shared(df, src, colTable) firstprivate(numLevels, maxInputLevels)
     for (int d = 1; d < numLevels; d++) {
-        int threshold = colTable.at<uchar>(d, 0);
-        df[d] = distanceField(src, threshold, maxInputLevels);
+        float threshold = colTable.at<float>(d, 0);
+        df[d] = distanceField(src, threshold);
     }
 
     if (numLevels > 1) {
         df[1].copyTo(df[0]);
         df[0] -= 10;
     } else {
-        df[0] = distanceField(src, 1, numLevels);
+        df[0] = distanceField(src, 1);
     }
     return df;
 }
 
 void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    bool kPresent, imPresent;
-    int bits = nodePorts.getInputInteger("Bits", kPresent);
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-
-    if (!kPresent || !imPresent) {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_BITS})) {
         return;
     }
+    int bits = nodePorts.getInputInteger(INPUT_BITS);
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
 
     cv::Mat imIn;
     if (inputImg->channels() > 1) {
@@ -77,7 +82,7 @@ void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::ma
         imIn = *inputImg;
     }
 
-    int mode = options.at("Mode");
+    int mode = options.at(MODE_DROPDOWN);
     std::unique_ptr<Resampler> resampler;
     switch (mode) {
         case 0:
@@ -96,7 +101,7 @@ void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::ma
 
     cv::Mat result = resampler->resample(colTable, dfs, std::pow(2, bits));
 
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::creator(const QString &category) {
@@ -104,12 +109,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
         nitro::NitroNodeBuilder builder("Resample", "resample", category);
         return builder.
                 withOperator(std::make_unique<nitro::ResampleOperator>())->
-                withIcon(":/icons/nodes/resample.png")->
+                withIcon("resample.png")->
                 withNodeColor({201, 94, 6})->
-                withDropDown("Mode", {"Linear", "Cubic"})->
-                withInputImage("Image")->
-                withInputInteger("Bits", 8, 16, 1)->
-                withOutputImage("Image")->
+                withDropDown(MODE_DROPDOWN, {"Linear", "Cubic"})->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_BITS, 8, 1, 16)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

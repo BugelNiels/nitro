@@ -72,6 +72,8 @@ installed.
       control of numerical inputs.
 - [FLIP](https://github.com/NVlabs/flip)
     - A state-of-the-art image comparison algorithm developed by NVIDIA.
+- [Spline](https://github.com/ttk592/spline/)
+  - Small library that provides cubic spline interpolation functionality.
 
 ### Installing
 

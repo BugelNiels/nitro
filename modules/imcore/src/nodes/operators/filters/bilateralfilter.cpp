@@ -2,19 +2,24 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+#define INPUT_IMAGE "Image"
+#define INPUT_SIGMA_C "Sigma (c)"
+#define INPUT_SIGMA_S "Sigma (s)"
+#define INPUT_D "Diameter"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
-    bool imPresent, sigmaColPresent, sigmaSpacePresent, dPresent;
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-    double sigmaCol = nodePorts.getInputValue("Sigma (c)", sigmaColPresent);
-    double sigmaSpace = nodePorts.getInputValue("Sigma (s)", sigmaSpacePresent);
-    int d = nodePorts.getInputInteger("d", dPresent);
-    if (!imPresent || !sigmaColPresent || !sigmaSpacePresent || !dPresent) {
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIGMA_C, INPUT_SIGMA_S, INPUT_D})) {
         return;
     }
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    double sigmaCol = nodePorts.getInputValue(INPUT_SIGMA_C);
+    double sigmaSpace = nodePorts.getInputValue(INPUT_SIGMA_S);
+    int d = nodePorts.getInputInteger(INPUT_D);
     cv::Mat result;
     cv::bilateralFilter(*inputImg, result, d, sigmaCol, sigmaSpace);
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
@@ -22,13 +27,13 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
         nitro::NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
         return builder.
                 withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
-                withIcon(":/icons/nodes/blur.png")->
+                withIcon("blur.png")->
                 withNodeColor({71, 47, 189})->
-                withInputImage("Image")->
-                withInputInteger("d", 9, 1, 64)->
-                withInputValue("Sigma (c)", 75, 2, 255)->
-                withInputValue("Sigma (s)", 75, 2, 255)->
-                withOutputImage("Image")->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_D, 9, 1, 64)->
+                withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
+                withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

@@ -158,7 +158,7 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
     QString filePath;
     if (askFile || filename == "untitled.json") {
         filePath = QFileDialog::getSaveFileName(
-                this, "Save NITRO Config", "../saves/" + filename,
+                this, "Save NITRO Config", "../data/" + filename,
                 tr("Json Files (*.json)"));
         if (filePath == "") {
             return;
@@ -185,7 +185,7 @@ void nitro::NodeDockWidget::loadModel() {
         return;
     }
     QString filePath = QFileDialog::getOpenFileName(
-            nullptr, "Load NITRO Config", "../saves/",
+            nullptr, "Load NITRO Config", "../data/",
             tr("Json Files (*.json)"));
     if (filePath == "") {
         return;

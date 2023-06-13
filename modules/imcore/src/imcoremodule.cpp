@@ -25,6 +25,10 @@
 #include "nodes/operators/filters/denoise.hpp"
 #include "nodes/operators/filters/gaussianblur.hpp"
 #include "nodes/operators/filters/bilateralfilter.hpp"
+#include "nodes/operators/convert/imresize.hpp"
+#include "nodes/operators/convert/iminfo.hpp"
+#include "nodes/operators/convert/imflip.hpp"
+#include "nodes/operators/convert/imrotate.hpp"
 
 namespace nitro::ImCore {
 
@@ -53,16 +57,20 @@ namespace nitro::ImCore {
 
     void ImCoreModule::registerConvertNodes(NodeRegistry *registry) {
         const QString category = "Convert";
-        registry->registerNode(MixOperator::creator(category));
-        registry->registerNode(MathOperator::creator(category));
-        registry->registerNode(SeparateOperator::creator(category));
-        registry->registerNode(CombineOperator::creator(category));
         registry->registerNode(ConvertOperator::creator(category));
         registry->registerNode(GrayscaleConvert::creator(category));
+        registry->registerNode(SeparateOperator::creator(category));
+        registry->registerNode(CombineOperator::creator(category));
+        registry->registerNode(MixOperator::creator(category));
+        registry->registerNode(MathOperator::creator(category));
     }
 
     void ImCoreModule::registerImageNodes(NodeRegistry *registry) {
         const QString category = "Image";
+        registry->registerNode(ImInfoOperator::creator(category));
+        registry->registerNode(ResizeOperator::creator(category));
+        registry->registerNode(ImFlipOperator::creator(category));
+        registry->registerNode(ImRotateOperator::creator(category));
         registry->registerNode(FlipOperator::creator(category));
         registry->registerNode(QuantizeOperator::creator(category));
         registry->registerNode(KMeansOperator::creator(category));
@@ -76,7 +84,7 @@ namespace nitro::ImCore {
             NitroNodeBuilder builder("Image Source", "ImageSource", category);
             return builder.
                     withLoadedOutputImage("Image")->
-                    withIcon(":/icons/nodes/image_source.png")->
+                    withIcon("image_source.png")->
                     withNodeColor({121, 70, 29})->
                     build();
         });
@@ -86,7 +94,7 @@ namespace nitro::ImCore {
             NitroNodeBuilder builder("Value", "ValueSource", category);
             return builder.
                     withSourcedOutputValue("Value")->
-                    withIcon(":/icons/nodes/number.png")->
+                    withIcon("number.png")->
                     withNodeColor({131, 49, 74})->
                     build();
         });
@@ -96,7 +104,7 @@ namespace nitro::ImCore {
             NitroNodeBuilder builder("Integer", "IntegerSource", category);
             return builder.
                     withSourcedOutputInteger("Integer")->
-                    withIcon(":/icons/nodes/number.png")->
+                    withIcon("number.png")->
                     withNodeColor({131, 49, 74})->
                     build();
         });

@@ -32,15 +32,17 @@ namespace nitro {
         [[nodiscard]] int numInPorts() const;
         [[nodiscard]] int numOutPorts() const;
 
-        std::shared_ptr<QtNodes::NodeData> getInData(int portIndex) const;
-        std::shared_ptr<QtNodes::NodeData> getOutData(int portIndex);
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(int portIndex) const;
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(int portIndex);
 
-        std::shared_ptr<QtNodes::NodeData> getInData(const QString& name) const;
-        std::shared_ptr<QtNodes::NodeData> getOutData(const QString& name);
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(const QString& name) const;
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(const QString& name);
 
-        int getInputInteger(const QString& name, bool& present) const;
-        double getInputValue(const QString& name, bool& present) const;
-        std::shared_ptr<cv::Mat> getInputImage(const QString& name, bool& present) const;
+        [[nodiscard]] bool inputsPresent(std::initializer_list<QString> list) const;
+
+        int getInputInteger(const QString& name) const;
+        double getInputValue(const QString& name) const;
+        std::shared_ptr<cv::Mat> getInputImage(const QString& name) const;
 
         void setOutputInteger(const QString& name, int val);
         void setOutputValue(const QString& name, double val);

@@ -2,19 +2,23 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
-void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+#define INPUT_IMAGE "Image"
+#define INPUT_SIZE "Size"
+#define INPUT_SIGMA "Sigma"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
-    bool imPresent, sizePresent, sigmaPresent;
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-    int kSize = nodePorts.getInputInteger("Size", sizePresent);
-    double sigma = nodePorts.getInputValue("Sigma", sigmaPresent);
-    if (!imPresent || !sizePresent || !sigmaPresent) {
+void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIZE, INPUT_SIGMA})) {
         return;
     }
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    int kSize = nodePorts.getInputInteger(INPUT_SIZE);
+    double sigma = nodePorts.getInputValue(INPUT_SIGMA);
     cv::Mat result;
     kSize = kSize % 2 == 0 ? std::max(kSize - 1, 1) : kSize;
     cv::GaussianBlur(*inputImg, result, cv::Size(kSize, kSize), sigma, sigma);
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::creator(const QString &category) {
@@ -22,12 +26,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::
         nitro::NitroNodeBuilder builder("Gaussian Blur", "gaussianFilter", category);
         return builder.
                 withOperator(std::make_unique<nitro::GaussianBlurOperator>())->
-                withIcon(":/icons/nodes/blur.png")->
+                withIcon("blur.png")->
                 withNodeColor({71, 47, 189})->
-                withInputImage("Image")->
-                withInputInteger("Size", 5, 1, 64)->
-                withInputValue("Sigma", 1, 0, 16)->
-                withOutputImage("Image")->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_SIZE, 5, 1, 64)->
+                withInputValue(INPUT_SIGMA, 1, 0, 16)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

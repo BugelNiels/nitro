@@ -97,8 +97,7 @@ namespace nitro {
         inputMap_[inPortName(port)] = std::move(data);
     }
 
-    int NodePorts::getInputInteger(const QString &name, bool &present) const {
-        present = false;
+    int NodePorts::getInputInteger(const QString &name) const {
         if (inputMap_.count(name) == 0) {
             return 0;
         }
@@ -106,12 +105,10 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
-        present = true;
         return inputValDat->value();
     }
 
-    double NodePorts::getInputValue(const QString &name, bool &present) const {
-        present = false;
+    double NodePorts::getInputValue(const QString &name) const {
         if (inputMap_.count(name) == 0) {
             return 0;
         }
@@ -119,12 +116,10 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
-        present = true;
         return inputValDat->value();
     }
 
-    std::shared_ptr<cv::Mat> NodePorts::getInputImage(const QString &name, bool &present) const {
-        present = false;
+    std::shared_ptr<cv::Mat> NodePorts::getInputImage(const QString &name) const {
         if (inputMap_.count(name) == 0) {
             return nullptr;
         }
@@ -136,7 +131,6 @@ namespace nitro {
         if (img == nullptr) {
             return nullptr;
         }
-        present = true;
         return img;
     }
 
@@ -150,6 +144,16 @@ namespace nitro {
 
     void NodePorts::setOutputImage(const QString &name, const std::shared_ptr<cv::Mat> &im) {
         setOutputData(name, std::make_shared<nitro::ImageData>(im));
+    }
+
+    bool NodePorts::inputsPresent(std::initializer_list<QString> list) const {
+        for (auto &item: list) {
+            auto ptr = getInData(item);
+            if (ptr == nullptr) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

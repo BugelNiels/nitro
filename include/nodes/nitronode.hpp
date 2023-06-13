@@ -91,6 +91,8 @@ namespace nitro {
         QString getInPortKey(unsigned int portIndex) const;
 
         QString getOutPortKey(unsigned int portIndex) const;
+
+        void connectLabel(const QString &name, QLabel *label);
     };
 
 } // nitro

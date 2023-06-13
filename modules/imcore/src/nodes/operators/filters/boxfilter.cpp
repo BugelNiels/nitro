@@ -2,29 +2,39 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
-void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+#define INPUT_IMAGE "Image"
+#define INPUT_SIZE "Size"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
-    bool imPresent, sizePresent;
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-    int kSize = nodePorts.getInputInteger("Size", sizePresent);
-    if (!imPresent || !sizePresent) {
+void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIZE})) {
         return;
     }
-    int option = options.at("Mode");
-    cv::Mat result;
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    int kSize = nodePorts.getInputInteger(INPUT_SIZE);
+    int option = options.at(MODE_DROPDOWN);
+
+    cv::Mat charImg;
+    inputImg->convertTo(charImg, CV_8U, 255);
+
+    cv::Mat resultChar;
     switch (option) {
         case 0:
-            cv::blur(*inputImg, result, cv::Size(kSize, kSize));
+            cv::blur(charImg, resultChar, cv::Size(kSize, kSize));
             break;
         case 1:
             kSize = kSize % 2 == 0 ? std::max(kSize - 1, 1) : kSize;
-            cv::medianBlur(*inputImg, result, kSize);
+            cv::medianBlur(charImg, resultChar, kSize);
             break;
         default:
-            cv::blur(*inputImg, result, cv::Size(kSize, kSize));
+            cv::blur(charImg, resultChar, cv::Size(kSize, kSize));
             break;
     }
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+
+    cv::Mat result;
+    resultChar.convertTo(result, CV_32F, 1.0 / 255.0);
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::creator(const QString &category) {
@@ -32,12 +42,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::cre
         nitro::NitroNodeBuilder builder("Box Filter", "boxFilter", category);
         return builder.
                 withOperator(std::make_unique<nitro::BoxFilterOperator>())->
-                withIcon(":/icons/nodes/blur.png")->
+                withIcon("blur.png")->
                 withNodeColor({71, 47, 189})->
-                withDropDown("Mode", {"Average", "Median"})->
-                withInputImage("Image")->
-                withInputInteger("Size", 5, 1, 256)->
-                withOutputImage("Image")->
+                withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_SIZE, 5, 1, 256)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

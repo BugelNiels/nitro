@@ -76,7 +76,27 @@ int nitro::getMaxValue(const cv::Mat &mat) {
 
 
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
-QImage nitro::cvMatToQImage(const cv::Mat &inMat) {
+QImage nitro::cvMatToQImage(const cv::Mat &img) {
+
+    cv::Mat inMat = img;
+
+    switch (inMat.type()) {
+        case CV_32F: {
+            inMat.convertTo(inMat, CV_8U, 255);
+            break;
+        }
+        case CV_32FC3: {
+            inMat.convertTo(inMat, CV_8UC3, 255);
+            break;
+        }
+        case CV_32FC4: {
+            inMat.convertTo(inMat, CV_8UC4, 255);
+            break;
+        }
+
+    }
+
+
     switch (inMat.type()) {
         // 8-bit, 4 channel
         case CV_8UC4: {
@@ -222,8 +242,8 @@ bool nitro::isGrayscale(const cv::Mat &img) {
     if (img.channels() > 1) {
         std::vector<cv::Mat> channels;
         cv::split(img, channels);
-        for(int i = 0; i < channels.size(); i++) {
-            if(!equal(channels[0], channels[i])) {
+        for (int i = 0; i < channels.size(); i++) {
+            if (!equal(channels[0], channels[i])) {
                 return false;
             }
         }

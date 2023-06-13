@@ -1,6 +1,7 @@
 #include "resampler.hpp"
 #include <QDebug>
 #include <opencv2/highgui.hpp>
+#include <iostream>
 
 nitro::Resampler::Resampler() = default;
 
@@ -12,24 +13,23 @@ cv::Mat nitro::Resampler::resample(const cv::Mat &colTable,
     int width = df[0].cols;
     int height = df[0].rows;
 
-    cv::Mat resampled(height, width, CV_8U);
+    cv::Mat resampled(height, width, CV_32FC1);
 
     int numLevelsInput = df.size();
 
-//#pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(image, df, resampled, colTable)
+#pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, colTable)
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             for (int d = numDesiredLevels - 1; d >= 0; d--) {
-                float p = d / (numDesiredLevels - 1.0f);
+                float p = float(d) / (float(numDesiredLevels) - 1.0f);
                 float dist = distFuncIndexed(colTable, df, x, y, p, numLevelsInput);
                 if (dist <= 0) {
-                    resampled.at<uchar>(y, x) = d;
+                    resampled.at<float>(y, x) = p;
                     break;
                 }
             }
         }
     }
 
-    // TODO: make work for something other than 8 bits
     return resampled;
 }

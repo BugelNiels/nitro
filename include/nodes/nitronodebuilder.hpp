@@ -63,6 +63,8 @@ namespace nitro {
 
         NitroNodeBuilder *withCheckBox(const QString &name, bool checked = false);
 
+        NitroNodeBuilder *withDisplayWidget(const QString& name, QLabel* label);
+
     private:
         std::unique_ptr<NitroNode> node_;
 

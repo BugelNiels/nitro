@@ -18,21 +18,8 @@ namespace nitro {
     protected:
 
         [[nodiscard]] float distFuncIndexed(const cv::Mat &colorTable,
-                                      const std::vector<cv::Mat> &df,
-                                      int x, int y, float p, int numLevelsInput) const override {}
-
-
-        virtual float distFuncIndexed(const cv::Mat &colorTable,
-                                      const std::vector<cv::Mat> &df,
-                                      int x, int y, float p, int numLevelsInput,
-                                      std::vector<float> &tangents) const;
-
-    private:
-        void computeMonotonicTangents(const cv::Mat &colorTable,
-                                      const std::vector<cv::Mat> &df,
-                                      int x, int y,
-                                      std::vector<float> &tangents,
-                                      std::vector<float> &secants);
+                                            const std::vector<cv::Mat> &df,
+                                            int x, int y, float p, int numLevelsInput) const override {}
 
     };
 

@@ -187,13 +187,13 @@ NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
     outputList_.emplace_back(item);
     outputMap_[name] = nullptr;
 
-    auto *loadButton_ = new QPushButton("Load Image");
-    loadButton_->setStyleSheet("text-align: left;");
-    loadButton_->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));
-    loadButton_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    loadButton_->adjustSize();
-    node_->connectLoadButton(loadButton_, outputList_.size() - 1);
-    addOutPortWidget(loadButton_);
+    auto *loadButton = new QPushButton("Load Image");
+    loadButton->setStyleSheet("text-align: left;");
+    loadButton->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));
+    loadButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    loadButton->adjustSize();
+    node_->connectLoadButton(loadButton, outputList_.size() - 1);
+    addOutPortWidget(loadButton);
     return this;
 }
 
@@ -278,13 +278,20 @@ NitroNodeBuilder *NitroNodeBuilder::withCheckBox(const QString &name, bool check
     return this;
 }
 
+
+NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, QLabel *label) {
+    node_->connectLabel(name, label);
+    addOptionWidget(label);
+    return this;
+}
+
 NitroNodeBuilder *NitroNodeBuilder::withNodeColor(const QColor &color) {
     nodeColor_ = color;
     return this;
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withIcon(const QString &path) {
-    iconPath_ = path;
+    iconPath_ = QString(":/icons/nodes/%1").arg(path);
     return this;
 }
 
