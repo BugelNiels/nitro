@@ -1,12 +1,13 @@
-#include "cubicinterpolatoryresampler.hpp"
+#include "cubicsampler.hpp"
 
 #include "spline.h"
 
+#include <iostream>
 #include <QDebug>
 
-nitro::CubicInterpolatorySampler::CubicInterpolatorySampler() {}
+nitro::CubicSampler::CubicSampler() {}
 
-nitro::CubicInterpolatorySampler::~CubicInterpolatorySampler() {}
+nitro::CubicSampler::~CubicSampler() {}
 
 static inline float get(const cv::Mat &colorTable, int i) {
     return colorTable.at<float>(i, 0);
@@ -25,18 +26,18 @@ static std::vector<double> colTableToVector(const cv::Mat &colorTable) {
     return colorTableVector;
 }
 
-cv::Mat nitro::CubicInterpolatorySampler::resample(const cv::Mat &colTable,
-                                                   const std::vector<cv::Mat> &df,
-                                                   int numDesiredLevels) {
+cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
+                                      const std::vector<cv::Mat> &df,
+                                      int numDesiredLevels) {
     int width = df[0].cols;
     int height = df[0].rows;
 
     cv::Mat resampled(height, width, CV_32FC1);
 
     auto cols = colTableToVector(colTable);
-
-
     int numLevelsInput = df.size();
+
+
 #pragma omp parallel default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, cols)
     {
         std::vector<double> values;
@@ -57,6 +58,7 @@ cv::Mat nitro::CubicInterpolatorySampler::resample(const cv::Mat &colTable,
                         break;
                     }
                 }
+                exit(0);
             }
         }
     }

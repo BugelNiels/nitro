@@ -9,20 +9,7 @@
 #define OUTPUT_IMAGE "Image"
 
 static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
-
-    cv::Mat samples(image.rows * image.cols, image.channels(), CV_32F);
-    for (int y = 0; y < image.rows; y++) {
-        for (int x = 0; x < image.cols; x++) {
-            for (int z = 0; z < image.channels(); z++) {
-                if (image.channels() == 3) {
-                    samples.at<float>(y * image.cols + x, z) = image.at<cv::Vec3f>(y, x)[z];
-                } else {
-                    samples.at<float>(y * image.cols + x, z) = image.at<float>(y, x);
-                }
-            }
-        }
-    }
-
+    cv::Mat samples = image.reshape(1, image.rows * image.cols);
     cv::Mat labels, centers;
     cv::kmeans(samples,
                numColors,
@@ -31,12 +18,12 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
                1,
                cv::KMEANS_RANDOM_CENTERS, centers);
 
-    cv::Mat quantImg(image.size(), CV_32F);
+    cv::Mat quantImg(image.size(), image.type());
     for (int y = 0; y < image.rows; y++) {
         for (int x = 0; x < image.cols; x++) {
             int cluster_idx = labels.at<int>(y * image.cols + x, 0);
-            if (centers.channels() == 3) {
-                for (int i = 0; i < centers.channels(); i++) {
+            if (centers.cols == 3) {
+                for (int i = 0; i < centers.cols; i++) {
                     quantImg.at<cv::Vec3f>(y, x)[i] = centers.at<float>(cluster_idx, i);
                 }
             } else {

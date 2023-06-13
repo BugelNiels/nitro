@@ -10,9 +10,7 @@ namespace nitro {
     public:
         DecimalData() = default;
 
-        explicit DecimalData(double val) : val_(val) {
-        }
-
+        explicit DecimalData(double val) : val_(val) {}
 
         static QtNodes::DataInfo dataInfo() {
             return {"Value", "decimal", {161, 161, 161}};

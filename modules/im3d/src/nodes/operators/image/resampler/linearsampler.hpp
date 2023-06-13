@@ -1,10 +1,10 @@
 #pragma once
 
-#include "resampler.hpp"
+#include "sampler.hpp"
 
 namespace nitro {
 
-    class LinearSampler : public Resampler {
+    class LinearSampler : public Sampler {
     public:
         LinearSampler();
 

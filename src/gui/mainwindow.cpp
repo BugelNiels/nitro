@@ -50,10 +50,10 @@ nitro::MainWindow::~MainWindow() = default;
 QStatusBar *nitro::MainWindow::initFooter() {
     // TODO: use CMAKE version
     auto *versionLabel = new QLabel(QString(" version %1 ").arg(NITRO_VERSION), this);
-    fileNameLabel = new QLabel(" untitled.json ", this);
+    fileNameLabel_ = new QLabel(" untitled.json ", this);
 
     auto *statusBar = new QStatusBar(this);
-    statusBar->insertPermanentWidget(0, fileNameLabel, 1);
+    statusBar->insertPermanentWidget(0, fileNameLabel_, 1);
     statusBar->insertPermanentWidget(1, versionLabel, 0);
     statusBar->setSizeGripEnabled(false);
     statusBar->setStyleSheet("color: grey;");
@@ -83,7 +83,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
 
 QMenu *nitro::MainWindow::getWindowMenu() {
     auto *windowMenu = new QMenu("Window");
-    for (auto &dw: widgets) {
+    for (auto &dw: widgets_) {
         auto *nodeEditorAction = new QAction(dw->windowTitle(), this);
         nodeEditorAction->setCheckable(true);
         nodeEditorAction->setChecked(!dw->isHidden());
@@ -101,12 +101,12 @@ QMenu *nitro::MainWindow::getFileMenu() {
     auto *newAction = new QAction(QStringLiteral("New"), this);
     newAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     connect(newAction, &QAction::triggered, [this]() {
-        if (nodeDock) {
-            if (!nodeDock->canQuitSafely()) {
+        if (nodeDock_) {
+            if (!nodeDock_->canQuitSafely()) {
                 return;
             }
-            fileNameLabel->setText(nodeDock->getFileName());
-            nodeDock->clearModel();
+            fileNameLabel_->setText(nodeDock_->getFileName());
+            nodeDock_->clearModel();
         }
     });
     fileMenu->addAction(newAction);
@@ -114,9 +114,9 @@ QMenu *nitro::MainWindow::getFileMenu() {
     auto *openAction = new QAction(QStringLiteral("Open"), this);
     openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     connect(openAction, &QAction::triggered, [this]() {
-        if (nodeDock) {
-            nodeDock->loadModel();
-            fileNameLabel->setText(nodeDock->getFileName());
+        if (nodeDock_) {
+            nodeDock_->loadModel();
+            fileNameLabel_->setText(nodeDock_->getFileName());
         }
     });
     fileMenu->addAction(openAction);
@@ -125,9 +125,9 @@ QMenu *nitro::MainWindow::getFileMenu() {
     auto *saveAction = new QAction(QStringLiteral("Save"), this);
     saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     connect(saveAction, &QAction::triggered, [this]() {
-        if (nodeDock) {
-            nodeDock->saveModel();
-            fileNameLabel->setText(nodeDock->getFileName());
+        if (nodeDock_) {
+            nodeDock_->saveModel();
+            fileNameLabel_->setText(nodeDock_->getFileName());
         }
     });
     fileMenu->addAction(saveAction);
@@ -135,9 +135,9 @@ QMenu *nitro::MainWindow::getFileMenu() {
     auto *saveAsAction = new QAction(QStringLiteral("Save As..."), this);
     saveAsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
     connect(saveAsAction, &QAction::triggered, [this]() {
-        if (nodeDock) {
-            nodeDock->saveModel(true);
-            fileNameLabel->setText(nodeDock->getFileName());
+        if (nodeDock_) {
+            nodeDock_->saveModel(true);
+            fileNameLabel_->setText(nodeDock_->getFileName());
         }
     });
     fileMenu->addAction(saveAsAction);
@@ -147,8 +147,8 @@ QMenu *nitro::MainWindow::getFileMenu() {
     quitAction->setShortcutContext(Qt::ApplicationShortcut);
     quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     connect(quitAction, &QAction::triggered, [this]() {
-        if (nodeDock) {
-            if (!nodeDock->canQuitSafely()) {
+        if (nodeDock_) {
+            if (!nodeDock_->canQuitSafely()) {
                 return;
             }
         }
@@ -161,20 +161,20 @@ QMenu *nitro::MainWindow::getFileMenu() {
 
 QLabel *nitro::MainWindow::buildDockIcon(const QString &path) {
     auto *nodeIcon = new QLabel();
-    nodeIcon->setPixmap(ImResourceReader::getPixMap(path, {icSize, icSize}, icColor));
+    nodeIcon->setPixmap(ImResourceReader::getPixMap(path, {icSize_, icSize_}, icColor_));
     return nodeIcon;
 }
 
 nitro::NodeDockWidget *nitro::MainWindow::getNodeDock() const {
-    return nodeDock;
+    return nodeDock_;
 }
 
 void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {
-    nodeDock = widget;
+    nodeDock_ = widget;
     registerDock(widget);
 }
 
 void nitro::MainWindow::registerDock(QDockWidget *widget) {
-    widgets.insert(widget);
+    widgets_.insert(widget);
     dockLayout_->addWidget(widget);
 }

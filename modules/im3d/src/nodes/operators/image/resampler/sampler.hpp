@@ -5,11 +5,11 @@
 
 namespace nitro {
 
-    class Resampler {
+    class Sampler {
     public:
-        Resampler();
+        Sampler();
 
-        virtual ~Resampler();
+        virtual ~Sampler();
 
         virtual cv::Mat resample(const cv::Mat &colTable,
                                  const std::vector<cv::Mat> &df,

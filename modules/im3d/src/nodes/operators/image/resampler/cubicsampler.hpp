@@ -1,14 +1,14 @@
 #pragma once
 
-#include "resampler.hpp"
+#include "sampler.hpp"
 
 namespace nitro {
 
-    class CubicInterpolatorySampler : public Resampler {
+    class CubicSampler : public Sampler {
     public:
-        CubicInterpolatorySampler();
+        CubicSampler();
 
-        ~CubicInterpolatorySampler() override;
+        ~CubicSampler() override;
 
 
         cv::Mat resample(const cv::Mat &colTable,

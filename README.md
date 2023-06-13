@@ -13,7 +13,7 @@
 
 NITRO is a powerful tool for building complex image processing routines. Instead of needing to modify source code or
 scripts to process images in different ways, you can use this visual node editor to do that instead. The project was
-developed with extendability in mind, making it easy to add your own types nodes, and widgets. For more information on
+developed with extendability in mind, making it easy to add your own types nodes, and widgets_. For more information on
 this, see [Project Structure](#project-structure). The UI was inspired by
 Blender's [Shader Editor](https://docs.blender.org/manual/en/latest/editors/shader_editor.html)
 
@@ -136,12 +136,12 @@ The different modules can be found in the `modules/` directory. Currently, there
 Adding new modules can be done by following a similar structure to the existing module:
 
 - Create an implementation of `imcoremodule.hpp`. This implementation should register the new nodes, in addition to the
-  data types and widgets (if there are any).
+  data types and widgets_ (if there are any).
 - Create a `CMakeLists.txt` to create a library of the module. See
   e.g. [this CMakeLists.txt](modules/imcore/CMakeLists.txt) on how to do this.
   Note that any libraries used in the module, must unfortunately still be found and linked in the
   main [CMakeLists.txt](CMakeLists.txt). A future release should hopefully fix this issue.
-- Add any nodes, data types or widgets as needed (see below).
+- Add any nodes, data types or widgets_ as needed (see below).
 
 ### Nodes
 

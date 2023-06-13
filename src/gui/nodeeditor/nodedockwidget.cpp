@@ -25,18 +25,18 @@
 
 nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
         : QDockWidget(window),
-          filename("untitled.json") {
+          filename_("untitled.json") {
 
-    dataFlowGraphModel = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
-    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel);
+    dataFlowGraphModel_ = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
+    auto *nodeScene = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel_);
     nodeScene->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
     nodeScene->toggleWidgetMode();
-    view = new ImageNodeGraphicsView(nodes, nodeScene, dataFlowGraphModel, window);
+    view_ = new ImageNodeGraphicsView(nodes, nodeScene, dataFlowGraphModel_, window);
 
     setWindowTitle("Node Editor");
-    prevSave_ = dataFlowGraphModel->save();
+    prevSave_ = dataFlowGraphModel_->save();
 
-    view->setContextMenuPolicy(Qt::ActionsContextMenu);
+    view_->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     auto *horLayout = new QSplitter(Qt::Horizontal, this);
 
@@ -44,25 +44,25 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
     auto *menuVertLayout = new QVBoxLayout();
 
 
-    searchBar = new QLineEdit(this);
-    searchBar->setPlaceholderText("Search");
-    searchBar->adjustSize();
-    connect(searchBar, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
-    QSize size(searchBar->height(), searchBar->height());
+    searchBar_ = new QLineEdit(this);
+    searchBar_->setPlaceholderText("Search");
+    searchBar_->adjustSize();
+    connect(searchBar_, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
+    QSize size(searchBar_->height(), searchBar_->height());
     auto *searchLabel = new QLabel();
     searchLabel->setPixmap(nitro::ImResourceReader::getPixMap(":/icons/search.png", size));
 
     auto *searchHorLayout = new QHBoxLayout();
     searchHorLayout->addWidget(searchLabel);
-    searchHorLayout->addWidget(searchBar);
+    searchHorLayout->addWidget(searchBar_);
     menuVertLayout->addLayout(searchHorLayout);
 
 
-    nodeTreeWidget = initSideMenu();
-    menuVertLayout->addWidget(nodeTreeWidget);
+    nodeTreeWidget_ = initSideMenu();
+    menuVertLayout->addWidget(nodeTreeWidget_);
     wrapper->setLayout(menuVertLayout);
     horLayout->addWidget(wrapper);
-    horLayout->addWidget(view);
+    horLayout->addWidget(view_);
 
     setTitleBarWidget(initNodeTitleBar(window));
 
@@ -78,8 +78,8 @@ nitro::NodeDockWidget::~NodeDockWidget() = default;
 
 void nitro::NodeDockWidget::searchTextChanged(const QString &searchText) {
     // Loop through all items in the tree widget
-    for (int i = 0; i < nodeTreeWidget->topLevelItemCount(); ++i) {
-        QTreeWidgetItem *topLevelItem = nodeTreeWidget->topLevelItem(i);
+    for (int i = 0; i < nodeTreeWidget_->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *topLevelItem = nodeTreeWidget_->topLevelItem(i);
         int matchCount = 0;
         for (int j = 0; j < topLevelItem->childCount(); ++j) {
             matchCount += searchTreeItem(topLevelItem->child(j), searchText);
@@ -103,7 +103,7 @@ bool nitro::NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString 
 QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
     auto *treeWidget = new nitro::DraggableTreeWidget(this);
     treeWidget->setHeaderHidden(true);
-    auto nodeMenu = view->initNodeMenu();
+    auto nodeMenu = view_->initNodeMenu();
     for (auto *subMen: nodeMenu->actions()) {
 
         if (subMen->menu()) {
@@ -131,20 +131,20 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
 }
 
 void nitro::NodeDockWidget::clearModel() {
-    for (const auto &item: dataFlowGraphModel->allNodeIds()) {
-        dataFlowGraphModel->deleteNode(item);
+    for (const auto &item: dataFlowGraphModel_->allNodeIds()) {
+        dataFlowGraphModel_->deleteNode(item);
     }
     // TODO: delete undo history
 
-    prevSave_ = dataFlowGraphModel->save();
+    prevSave_ = dataFlowGraphModel_->save();
 }
 
 bool nitro::NodeDockWidget::canQuitSafely() {
-    if (prevSave_ == dataFlowGraphModel->save()) {
+    if (prevSave_ == dataFlowGraphModel_->save()) {
         return true;
     }
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Save changes before closing?", filename,
+    reply = QMessageBox::question(this, "Save changes before closing?", filename_,
                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     if (reply == QMessageBox::Yes) {
         saveModel();
@@ -156,19 +156,19 @@ bool nitro::NodeDockWidget::canQuitSafely() {
 
 void nitro::NodeDockWidget::saveModel(bool askFile) {
     QString filePath;
-    if (askFile || filename == "untitled.json") {
+    if (askFile || filename_ == "untitled.json") {
         filePath = QFileDialog::getSaveFileName(
-                this, "Save NITRO Config", "../data/" + filename,
+                this, "Save NITRO Config", "../data/" + filename_,
                 tr("Json Files (*.json)"));
         if (filePath == "") {
             return;
         }
         saveFilePath = filePath;
-        filename = QFileInfo(filePath).fileName();
+        filename_ = QFileInfo(filePath).fileName();
     } else {
         filePath = saveFilePath;
     }
-    auto saveObject = dataFlowGraphModel->save();
+    auto saveObject = dataFlowGraphModel_->save();
     QFile jsonFile(filePath);
     if (jsonFile.open(QFile::WriteOnly)) {
         QJsonDocument document;
@@ -193,14 +193,14 @@ void nitro::NodeDockWidget::loadModel() {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     update();
     QFile jsonFile(filePath);
-    filename = QFileInfo(filePath).fileName();
+    filename_ = QFileInfo(filePath).fileName();
     saveFilePath = filePath;
 
     jsonFile.open(QFile::ReadOnly);
     auto doc = QJsonDocument::fromJson(jsonFile.readAll());
     clearModel();
-    dataFlowGraphModel->load(doc.object());
-    prevSave_ = dataFlowGraphModel->save();
+    dataFlowGraphModel_->load(doc.object());
+    prevSave_ = dataFlowGraphModel_->save();
     QApplication::restoreOverrideCursor();
 }
 
@@ -208,16 +208,16 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     QWidget::keyPressEvent(event);
     switch (event->key()) {
         case Qt::Key_Space:
-            if (!searchBar->hasFocus()) {
-                searchBar->setText("");
+            if (!searchBar_->hasFocus()) {
+                searchBar_->setText("");
             }
-            searchBar->setFocus();
+            searchBar_->setFocus();
             break;
     }
 }
 
 const QString &nitro::NodeDockWidget::getFileName() {
-    return filename;
+    return filename_;
 }
 
 QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {

@@ -24,8 +24,8 @@ nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
                                                     QtNodes::BasicGraphicsScene *scene,
                                                     QtNodes::DataFlowGraphModel *model, QWidget *parent)
         : NodeGraphicsView(scene, model, parent),
-          nodeBeingViewed(QtNodes::InvalidNodeId),
-          nodeGeometry(scene->nodeGeometry()),
+          nodeBeingViewed_(QtNodes::InvalidNodeId),
+          nodeGeometry_(scene->nodeGeometry()),
           nodes_(nodes) {
 
 }
@@ -118,23 +118,23 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 return;
             }
             // Find a suitable port to view; multiple clicks will cycle through the ports
-            if (nodeBeingViewed == cid) {
+            if (nodeBeingViewed_ == cid) {
                 while (true) {
-                    currentPort++;
-                    auto pData = dataModel_->portData(nodeBeingViewed, QtNodes::PortType::Out, currentPort,
+                    currentPort_++;
+                    auto pData = dataModel_->portData(nodeBeingViewed_, QtNodes::PortType::Out, currentPort_,
                                                       QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
                     if (pData.id == nitro::ImageData().type().id) {
                         break;
                     }
                     if (pData.id == QtNodes::InvalidData().type().id) {
-                        currentPort = -1; // will become 0 in the next iteration
+                        currentPort_ = -1; // will become 0 in the next iteration
                     }
                 }
             } else {
-                nodeBeingViewed = cid;
-                currentPort = 0;
+                nodeBeingViewed_ = cid;
+                currentPort_ = 0;
             }
-            QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort, .inNodeId = viewerNodeId, .inPortIndex = 0};
+            QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort_, .inNodeId = viewerNodeId, .inPortIndex = 0};
 
             auto getDataType = [&](QtNodes::PortType const portType) {
                 return dataModel_->portData(getNodeId(portType, connectionId), portType,

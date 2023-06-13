@@ -1,20 +1,19 @@
-#include "resampler.hpp"
-#include <QDebug>
+#include "sampler.hpp"
 #include <opencv2/highgui.hpp>
+#include <QDebug>
 #include <iostream>
 
-nitro::Resampler::Resampler() = default;
+nitro::Sampler::Sampler() = default;
 
-nitro::Resampler::~Resampler() = default;
+nitro::Sampler::~Sampler() = default;
 
-cv::Mat nitro::Resampler::resample(const cv::Mat &colTable,
-                                   const std::vector<cv::Mat> &df,
-                                   int numDesiredLevels) {
+cv::Mat nitro::Sampler::resample(const cv::Mat &colTable,
+                                 const std::vector<cv::Mat> &df,
+                                 int numDesiredLevels) {
     int width = df[0].cols;
     int height = df[0].rows;
 
     cv::Mat resampled(height, width, CV_32FC1);
-
     int numLevelsInput = df.size();
 
 #pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, colTable)

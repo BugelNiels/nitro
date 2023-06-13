@@ -16,8 +16,7 @@ namespace nitro {
             return {"Image", "universalImage", {199, 199, 41}};
         }
 
-        explicit ImageData(const std::shared_ptr<cv::Mat> &img) : image_(img) {
-        }
+        explicit ImageData(const std::shared_ptr<cv::Mat> &img) : image_(img) {}
 
         [[nodiscard]] bool isGrayscaleImg() const {
             return image_->channels() == 1;

@@ -1,8 +1,8 @@
 #include "resample.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/operators/image/resampler/resampler.hpp"
-#include "nodes/operators/image/resampler/linearresampler.hpp"
-#include "nodes/operators/image/resampler/cubicinterpolatoryresampler.hpp"
+#include "nodes/operators/image/resampler/sampler.hpp"
+#include "nodes/operators/image/resampler/linearsampler.hpp"
+#include "nodes/operators/image/resampler/cubicsampler.hpp"
 #include "util.hpp"
 #include <opencv2/imgproc.hpp>
 
@@ -30,12 +30,10 @@ static cv::Mat getUniqueColors(const cv::Mat &src) {
 
 cv::Mat distanceField(const cv::Mat &src, float t) {
 
-    cv::Mat grayImage;
-    src.convertTo(grayImage, CV_8U, 255);
     int thresh = int(std::round(t * 255));
     cv::Mat binaryImOutside, binaryImInside;
-    cv::threshold(grayImage, binaryImOutside, thresh, 255, cv::THRESH_BINARY_INV);
-    cv::threshold(grayImage, binaryImInside, thresh, 255, cv::THRESH_BINARY);
+    cv::threshold(src, binaryImOutside, thresh, 255, cv::THRESH_BINARY_INV);
+    cv::threshold(src, binaryImInside, thresh, 255, cv::THRESH_BINARY);
 
     // Calculate the distance transform
     cv::Mat dfIn, dfOut;
@@ -52,11 +50,13 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     std::vector<cv::Mat> df(numLevels);
     int maxInputLevels = nitro::getMaxValue(src);
 
-    cv::Mat l0(src.rows, src.cols, CV_32FC1);
-#pragma omp parallel for default(none) shared(df, src, colTable) firstprivate(numLevels, maxInputLevels)
+    cv::Mat grayImage;
+    src.convertTo(grayImage, CV_8U, 255);
+
+#pragma omp parallel for default(none) shared(df, grayImage, colTable) firstprivate(numLevels, maxInputLevels)
     for (int d = 1; d < numLevels; d++) {
         float threshold = colTable.at<float>(d, 0);
-        df[d] = distanceField(src, threshold);
+        df[d] = distanceField(grayImage, threshold);
     }
 
     if (numLevels > 1) {
@@ -83,23 +83,23 @@ void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     }
 
     int mode = options.at(MODE_DROPDOWN);
-    std::unique_ptr<Resampler> resampler;
+    std::unique_ptr<Sampler> sampler;
     switch (mode) {
         case 0:
-            resampler = std::make_unique<LinearSampler>();
+            sampler = std::make_unique<LinearSampler>();
             break;
         case 1:
-            resampler = std::make_unique<CubicInterpolatorySampler>();
+            sampler = std::make_unique<CubicSampler>();
             break;
         default:
-            resampler = std::make_unique<LinearSampler>();
+            sampler = std::make_unique<LinearSampler>();
             break;
     }
     cv::Mat colTable = getUniqueColors(imIn);
     int numLevels = colTable.rows;
     std::vector<cv::Mat> dfs = getDfs(imIn, colTable, numLevels);
 
-    cv::Mat result = resampler->resample(colTable, dfs, std::pow(2, bits));
+    cv::Mat result = sampler->resample(colTable, dfs, std::pow(2, bits));
 
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }

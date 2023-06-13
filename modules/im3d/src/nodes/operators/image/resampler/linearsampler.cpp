@@ -1,4 +1,4 @@
-#include "linearresampler.hpp"
+#include "linearsampler.hpp"
 #include <opencv2/highgui.hpp>
 
 #include <iostream>

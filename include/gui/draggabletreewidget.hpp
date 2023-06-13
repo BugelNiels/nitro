@@ -21,8 +21,8 @@ namespace nitro {
         void mouseMoveEvent(QMouseEvent *event) override;
 
     private:
-        QMap<QString, QAction*> actions;
-        QTreeWidgetItem *m_draggedItem{};
+        QMap<QString, QAction*> actions_;
+        QTreeWidgetItem *draggedItem_;
     };
 
 

@@ -17,13 +17,13 @@ namespace nitro {
             return {"Value", "integer", {89, 140, 92}};
         }
 
-        QtNodes::NodeDataType type() const override {
+        [[nodiscard]] QtNodes::NodeDataType type() const override {
             return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
         }
 
-        int value() const { return val_; }
+        [[nodiscard]] int value() const { return val_; }
 
     private:
-        int val_;
+        int val_ = 0;
     };
 } // nitro
