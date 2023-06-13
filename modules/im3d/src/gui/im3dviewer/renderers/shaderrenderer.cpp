@@ -16,7 +16,6 @@ nitro::ShaderRenderer::~ShaderRenderer() {
     texture->destroy();
     delete coordsBO;
     delete indexBO;
-    delete texture;
     delete shader;
 }
 
@@ -56,7 +55,7 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
     m_imWidth = image.width();
     m_imHeight = image.height();
 
-    texture = new QOpenGLTexture(image.mirrored());
+    texture = std::make_unique<QOpenGLTexture>(image.mirrored());
     texture->setWrapMode(QOpenGLTexture::ClampToEdge);
     texture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
     texture->bind();

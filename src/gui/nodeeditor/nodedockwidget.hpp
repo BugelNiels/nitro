@@ -38,7 +38,8 @@ namespace nitro {
         QtNodes::DataFlowGraphModel *dataFlowGraphModel_;
         QTreeWidget *nodeTreeWidget_;
         QLineEdit *searchBar_;
-        
+        QtNodes::BasicGraphicsScene *nodeScene_;
+
         bool searchTreeItem(QTreeWidgetItem *item, const QString &searchText);
 
         void searchTextChanged(const QString &searchText);
@@ -46,6 +47,7 @@ namespace nitro {
         QTreeWidget *initSideMenu();
 
         QWidget *initNodeTitleBar(nitro::MainWindow *window);
+
     };
 
 } // nitro

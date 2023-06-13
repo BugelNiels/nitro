@@ -6,7 +6,7 @@ namespace nitro {
 
     QColor makeReadable(const QColor &color, bool lightMode = false);
 
-    QImage cvMatToQImage(const cv::Mat &inMat);
+    QImage cvMatToQImage(const std::shared_ptr<cv::Mat> &img);
 
     cv::Mat QImageToCvMat(const QImage &inImage, bool inCloneImageData);
 

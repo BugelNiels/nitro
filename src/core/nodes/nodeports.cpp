@@ -146,14 +146,22 @@ namespace nitro {
         setOutputData(name, std::make_shared<nitro::ImageData>(im));
     }
 
-    bool NodePorts::inputsPresent(std::initializer_list<QString> list) const {
+    bool NodePorts::inputsPresent(std::initializer_list<QString> list) {
+        bool present = true;
         for (auto &item: list) {
             auto ptr = getInData(item);
             if (ptr == nullptr) {
-                return false;
+                present = false;
+                break;
             }
         }
-        return true;
+        // Reset all output
+        if (!present) {
+            for (auto &entry: outputMap_) {
+                entry.second = nullptr;
+            }
+        }
+        return present;
     }
 
 

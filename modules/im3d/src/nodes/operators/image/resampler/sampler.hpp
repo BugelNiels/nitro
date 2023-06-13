@@ -11,14 +11,14 @@ namespace nitro {
 
         virtual ~Sampler();
 
-        virtual cv::Mat resample(const cv::Mat &colTable,
+        virtual cv::Mat resample(const cv::Mat& img, const cv::Mat &colTable,
                                  const std::vector<cv::Mat> &df,
                                  int numDesiredLevels);
 
     protected:
 
-        virtual float distFuncIndexed(const cv::Mat &colorTable,
-                                      const std::vector<cv::Mat> &df,
-                                      int x, int y, float p, int numLevelsInput) const = 0;
+        [[nodiscard]] virtual float distFunc(const cv::Mat &colorTable,
+                                             const std::vector<cv::Mat> &df,
+                                             int x, int y, float p, int numLevelsInput) const;
     };
 }  // namespace nitro

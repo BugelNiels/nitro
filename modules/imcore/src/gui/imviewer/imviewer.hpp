@@ -29,7 +29,7 @@ namespace nitro {
 
         void resetImScale();
 
-        void setImage(const cv::Mat &newImage);
+        void setImage(const cv::Mat& img);
 
         void drawBackground(QPainter *painter, const QRectF &r) override;
 
@@ -58,20 +58,24 @@ namespace nitro {
 
     private:
 
-        const int dotSize = 3;
-        const int gridStep = 64;
+        const int dotSize_ = 3;
+        const int gridStep_ = 64;
 
-        const QColor dotColor = QColor(80, 80, 80);
-        const QColor gridBackgroundColor = QColor(57, 57, 57);
-        const QColor bGroundCol = QColor(55, 55, 55);
-        const QColor imgOutlineCol = QColor(128, 128, 128);
-        const QColor imgGridCol = QColor(78, 78, 78);
-        const int gridStepSize = 32;
-        const int emptySize = 128;
+        const QColor dotColor_ = QColor(80, 80, 80);
+        const QColor gridBackgroundColor_ = QColor(57, 57, 57);
+        const QColor bGroundCol_ = QColor(55, 55, 55);
+        const QColor imgOutlineCol_ = QColor(128, 128, 128);
+        const QColor imgGridCol_ = QColor(78, 78, 78);
+        const int gridStepSize_ = 32;
+        const int emptySize_ = 128;
 
-        ScaleRange _scaleRange;
-        QImage *displayImg = nullptr;
-        QGraphicsPixmapItem *_imgDisplayItem = nullptr;
+        ScaleRange scaleRange_;
+        QImage* displayImg_ = nullptr;
+        std::shared_ptr<cv::Mat> currentImg_;
+        QGraphicsPixmapItem *imgDisplayItem_ = nullptr;
+        QAction *saveAction_;
+        QAction *resetAction_;
+        bool removalDue_ = false;
 
         void setScaleRange(double minimum = 0, double maximum = 0);
 
@@ -81,12 +85,9 @@ namespace nitro {
 
         void centerScene();
 
-        QAction *saveAction;
-        QAction *resetAction;
 
         void initActions();
 
-        bool removalDue_ = false;
     };
 
 } // nitro

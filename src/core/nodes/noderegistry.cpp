@@ -30,8 +30,7 @@ void nitro::NodeRegistry::registerNode(const std::function<std::unique_ptr<Nitro
         categoryOrder_[info.getCategory()] = catIdx_;
         catIdx_++;
     }
-    RegistryItemCreator creator = buildFunction;
-    registry_->registerModel<nitro::NitroNode>(creator);
+    registry_->registerModel<nitro::NitroNode>(buildFunction);
 }
 
 void nitro::NodeRegistry::registerDataType(const QtNodes::DataInfo &info) {

@@ -48,7 +48,6 @@ nitro::MainWindow::~MainWindow() = default;
 
 
 QStatusBar *nitro::MainWindow::initFooter() {
-    // TODO: use CMAKE version
     auto *versionLabel = new QLabel(QString(" version %1 ").arg(NITRO_VERSION), this);
     fileNameLabel_ = new QLabel(" untitled.json ", this);
 

@@ -10,15 +10,21 @@
 #define MODE_DROPDOWN "Mode"
 
 void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    // Verifying that all the required inputs are there
     if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIGMA_C, INPUT_SIGMA_S, INPUT_D})) {
         return;
     }
+    // Get the input data
     auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
     double sigmaCol = nodePorts.getInputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.getInputValue(INPUT_SIGMA_S);
     int d = nodePorts.getInputInteger(INPUT_D);
+
+    // Perform filtering
     cv::Mat result;
     cv::bilateralFilter(*inputImg, result, d, sigmaCol, sigmaSpace);
+
+    // Store the result
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 

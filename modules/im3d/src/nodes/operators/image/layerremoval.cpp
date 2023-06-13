@@ -7,10 +7,13 @@
 
 #define INPUT_IMAGE "Image"
 #define INPUT_K "K"
+#define OPTION_CUMULATIVE "Cumulative"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
 #define EPSILON 0.00001
+
+#define MAX_GRAY 256
 
 // Source: https://github.com/dennisjosesilva/morphotree
 
@@ -27,7 +30,6 @@ static void detect_peak(const std::vector<double> &data,
                         int data_count,
                         std::vector<int> &emi_peaks,
                         double delta, int emi_first) {
-    int i;
     double mx;
     double mn;
     int mx_pos = 0;
@@ -38,7 +40,7 @@ static void detect_peak(const std::vector<double> &data,
     mx = data[0];
     mn = data[0];
 
-    for (i = 1; i < data_count; ++i) {
+    for (int i = 1; i < data_count; ++i) {
         if (data[i] > mx) {
             mx_pos = i;
             mx = data[i];
@@ -75,14 +77,17 @@ static void find_peaks(std::vector<double> &importance, double width) {
     int numIter = 0;
     while (numIter < 1000) {
         v.clear();
-        detect_peak(importance, 256, v, impFac, 0);
+        detect_peak(importance, MAX_GRAY, v, impFac, 0);
         if (v.size() < width)
             impFac *= .9;
         else if (v.size() > width)
             impFac /= .9;
         else
             break;
-        if (impFac < 0.0002) break;//Too small, then break
+        if (impFac < 0.0002) {
+            qDebug() << "breaking";
+            break;//Too small, then break
+        }
         numIter++;
     }
     std::fill(importance.begin(), importance.end(), 0);
@@ -104,14 +109,15 @@ static void detect_layers(int clear_color,
     int StartPoint = distinguishable_interval; //There is no need to check i and i+1; it is not distinguished by eyes, so check between i and i+StartPoint.
     double difference;
 
-    double copy_upper_level[256];
+    std::vector<double> copy_upper_level = upper_level;
 
-    for (int j = 0; j < 256; ++j) {
+    for (int j = 0; j < MAX_GRAY; ++j) {
         copy_upper_level[j] = upper_level[j];
     }
 
     while ((i + StartPoint) < (max_elem + 1)) {
-        difference = copy_upper_level[i + StartPoint] - copy_upper_level[i]; //attention: here shouldn't be upper_level
+        difference =
+                copy_upper_level[i + StartPoint] - copy_upper_level[i]; //attention: here shouldn't be upper_level
         if (difference > threshold) { //choose this layer
             if (needAssign) {
                 upper_level[i + StartPoint] = 2; //Give it a num that it can never be.
@@ -138,7 +144,7 @@ static void find_layers(int clear_color,
     double tail = 0.5;
     int numIter = 0;
     int peaks = 0;
-    while (numIter < 255) {
+    while (numIter < MAX_GRAY) {
         if (impFac < 0.003) break;// The difference is too small
         detect_layers(clear_color, importance_upper, impFac, false, peaks, max_elem);
         if (peaks < width) { // impFac need a smaller one
@@ -152,9 +158,10 @@ static void find_layers(int clear_color,
         numIter++;
     }
 
-    detect_layers(clear_color, importance_upper, impFac, true, peaks, max_elem);//the impfac to be calculated is 0.003/2
+    detect_layers(clear_color, importance_upper, impFac, true, peaks,
+                  max_elem);//the impfac to be calculated is 0.003/2
 
-    for (int i = 0; i < 256; ++i) {
+    for (int i = 0; i < MAX_GRAY; ++i) {
         if (importance_upper[i] == 2) {
             importance[i] = 1;
         } else {
@@ -174,8 +181,8 @@ static std::vector<double> calculateImportance(const cv::Mat &img, bool cumulati
 
     std::vector<double> importance;
     std::vector<double> upperLevelSet;
-    importance.resize(256);
-    upperLevelSet.resize(256);
+    importance.resize(MAX_GRAY);
+    upperLevelSet.resize(MAX_GRAY);
 
     for (int i = 0; i < img.rows; i++) {
         for (int j = 0; j < img.cols; j++) {
@@ -188,19 +195,19 @@ static std::vector<double> calculateImportance(const cv::Mat &img, bool cumulati
 
     int clear_color = min_elem;
     upperLevelSet[0] = importance[0];
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < MAX_GRAY; i++) {
         upperLevelSet[i + 1] = importance[i + 1] + upperLevelSet[i];
     }
 
     // Normalize. Local-maximal method.
     int normFac = int(*std::max_element(importance.begin(), importance.end()));
-    for (int i = 0; i < 256; ++i) {
+    for (int i = 0; i < MAX_GRAY; ++i) {
         importance[i] /= static_cast<double>(normFac);
     }
     // Normalize. Cumulative method.
-    double max = upperLevelSet[256];
-    for (int i = 0; i < 256; ++i) {
-        upperLevelSet[i] = upperLevelSet[i] / static_cast<double>(max) - EPSILON;//To avoid to be 1.
+    double max = upperLevelSet[upperLevelSet.size() - 1];
+    for (int i = 0; i < MAX_GRAY; ++i) {
+        upperLevelSet[i] = upperLevelSet[i] / max - EPSILON;//To avoid to be 1.
     }
 
     // Cumulative method.
@@ -226,18 +233,14 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
             int val_dn = pixelValue;
             if (importance[val_up] == 1)
                 continue;
-            while (val_dn >= 0 || val_up < 256) {
-                if (val_dn >= 0) {
-                    if (importance[val_dn] == 1) {
-                        res.at<uchar>(y, x) = val_dn;
-                        break;
-                    }
+            while (val_dn >= 0 || val_up < MAX_GRAY) {
+                if (val_dn >= 0 && importance[val_dn] == 1) {
+                    res.at<uchar>(y, x) = val_dn;
+                    break;
                 }
-                if (val_up < 256) {
-                    if (importance[val_up] == 1) {
-                        res.at<uchar>(y, x) = val_up;
-                        break;
-                    }
+                if (val_up < MAX_GRAY && importance[val_up] == 1) {
+                    res.at<uchar>(y, x) = val_up;
+                    break;
                 }
                 val_dn--;
                 val_up++;
@@ -247,18 +250,19 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
     return res;
 }
 
-void nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
+void
+nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
     if (!nodePorts.inputsPresent({INPUT_K, INPUT_IMAGE})) {
         return;
     }
     int k = nodePorts.getInputInteger(INPUT_K);
     auto img = nodePorts.getInputImage(INPUT_IMAGE);
+    int cumulative = options.at(OPTION_CUMULATIVE);
 
     cv::Mat byteImg;
-    img->convertTo(byteImg, CV_8U, 255);
+    img->convertTo(byteImg, CV_8U, MAX_GRAY - 1);
 
     cv::Mat res;
-    bool cumulative = true;
     if (byteImg.channels() == 1) {
         std::vector<double> importance = calculateImportance(byteImg, cumulative, k - 1);
         res = removeLayers(byteImg, importance);
@@ -268,7 +272,7 @@ void nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std
         cv::split(byteImg, channels);
         outChannels.resize(channels.size());
         for (int i = 0; i < channels.size(); i++) {
-            auto channelImg = channels[i];
+            auto const &channelImg = channels[i];
             std::vector<double> importance = calculateImportance(channelImg, cumulative, k - 1);
             outChannels[i] = removeLayers(channelImg, importance);
         }
@@ -277,7 +281,7 @@ void nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std
 
 
     cv::Mat result;
-    res.convertTo(result, CV_32F, 1.0 / 255.0);
+    res.convertTo(result, CV_32F, 1.0 / double(MAX_GRAY - 1));
 
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
@@ -290,7 +294,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::
                 withIcon("quantize.png")->
                 withNodeColor({43, 101, 43})->
                 withInputImage(INPUT_IMAGE)->
-                withInputInteger(INPUT_K, 8, 1, 255)->
+                withInputInteger(INPUT_K, 8, 1, MAX_GRAY - 1)->
+                withCheckBox(OPTION_CUMULATIVE, true)->
                 withOutputImage(OUTPUT_IMAGE)->
                 build();
     };

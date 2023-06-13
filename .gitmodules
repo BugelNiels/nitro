@@ -9,3 +9,7 @@
 [submodule "external/qt-value-slider"]
     path = external/qt-value-slider
     url = git@github.com:BugelNiels/qt-value-slider.git
+
+[submodule "external/spline"]
+    path = external/spline
+    url = git@github.com:ttk592/spline.git

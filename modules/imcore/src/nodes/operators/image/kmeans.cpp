@@ -9,8 +9,9 @@
 #define OUTPUT_IMAGE "Image"
 
 static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
+    cv::Mat labels;
+    cv::Mat centers;
     cv::Mat samples = image.reshape(1, image.rows * image.cols);
-    cv::Mat labels, centers;
     cv::kmeans(samples,
                numColors,
                labels,
@@ -24,7 +25,8 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
             int cluster_idx = labels.at<int>(y * image.cols + x, 0);
             if (centers.cols == 3) {
                 for (int i = 0; i < centers.cols; i++) {
-                    quantImg.at<cv::Vec3f>(y, x)[i] = centers.at<float>(cluster_idx, i);
+                    float v = centers.at<float>(cluster_idx, i);
+                    quantImg.at<cv::Vec3f>(y, x)[i] = v; // This is an out of bounds memory access?
                 }
             } else {
                 quantImg.at<float>(y, x) = centers.at<float>(cluster_idx, 0);

@@ -35,7 +35,7 @@ namespace nitro {
         QOpenGLVertexArrayObject *vao;
         QOpenGLBuffer *coordsBO;
         QOpenGLBuffer *indexBO;
-        QOpenGLTexture *texture;
+        std::unique_ptr<QOpenGLTexture> texture;
         const int meshIBOSize;
         int m_imWidth;
         int m_imHeight;

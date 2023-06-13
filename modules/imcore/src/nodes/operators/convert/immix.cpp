@@ -9,9 +9,9 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-static cv::Mat blendImages(const cv::Mat &image1, const cv::Mat &image2, double alpha, double beta, double gamma) {
+static cv::Mat blendImages(const cv::Mat &image1, const cv::Mat &image2, double alpha, double beta) {
     cv::Mat blendedImage;
-    cv::addWeighted(image1, alpha, image2, beta, gamma, blendedImage);
+    cv::addWeighted(image1, alpha, image2, beta, 0.0, blendedImage);
     return blendedImage;
 }
 
@@ -63,7 +63,8 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
 
     int option = options.at(MODE_DROPDOWN);
 
-    cv::Mat in1, in2;
+    cv::Mat in1;
+    cv::Mat in2;
     if (im1->size > im2->size) {
         in2 = *im2;
         in1 = cropToMatchSize(*im1, *im2);
@@ -82,25 +83,25 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
     cv::Mat result;
     switch (option) {
         case 0:
-            result = blendImages(in1, in2, fac, 1 - fac, 0);
+            result = blendImages(in1, in2, fac, 1 - fac);
             break;
         case 1:
-            result = blendImages(in1, addBlend(in1, in2), 1 - fac, fac, 0);
+            result = blendImages(in1, addBlend(in1, in2), 1 - fac, fac);
             break;
         case 2:
-            result = blendImages(in1, subtractBlend(in1, in2), 1 - fac, fac, 0);
+            result = blendImages(in1, subtractBlend(in1, in2), 1 - fac, fac);
             break;
         case 3:
-            result = blendImages(in1, multiplyBlend(in1, in2), 1 - fac, fac, 0);
+            result = blendImages(in1, multiplyBlend(in1, in2), 1 - fac, fac);
             break;
         case 4:
-            result = blendImages(in1, cv::min(in1, in2), 1 - fac, fac, 0);
+            result = blendImages(in1, cv::min(in1, in2), 1 - fac, fac);
             break;
         case 5:
-            result = blendImages(in1, cv::max(in1, in2), 1 - fac, fac, 0);
+            result = blendImages(in1, cv::max(in1, in2), 1 - fac, fac);
             break;
         default:
-            result = blendImages(in1, in2, fac, 1 - fac, 0);
+            result = blendImages(in1, in2, fac, 1 - fac);
             break;
     }
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));

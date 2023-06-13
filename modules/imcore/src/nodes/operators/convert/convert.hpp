@@ -18,6 +18,7 @@ namespace nitro {
     private:
         std::vector<cv::ColorConversionCodes> codes_;
 
+        static void getConversions(QStringList &colorNames, std::vector<cv::ColorConversionCodes> &codes);
     };
 
 } // nitro

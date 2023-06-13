@@ -47,8 +47,6 @@ NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category)
 
 std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
     QtNodes::NodeInfo info(name_, id_, category_, nodeColor_, iconPath_);
-
-    // TODO: perhaps not the best way, but works for now
     QtNodes::NodeColors::registerColor(info);
 
     NodePorts nodePorts(inputList_, outputList_, inputMap_, outputMap_);

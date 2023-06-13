@@ -1,4 +1,6 @@
-#include <omp.h>
+#if _OPENMP
+    #include <omp.h>
+#endif
 
 #include <QApplication>
 #include <QSurfaceFormat>
@@ -29,7 +31,6 @@ QPalette getDarkModePalette() {
     palette.setColor(QPalette::Highlight, QColor(75, 110, 175));        // Highlight color
     palette.setColor(QPalette::HighlightedText, QColor(239, 239, 239)); // Highlight text color
     palette.setColor(QPalette::PlaceholderText, QColor(150, 150, 150)); // PlaceHolder text color
-
     return palette;
 }
 
@@ -39,8 +40,11 @@ void setupApplication() {
     glFormat.setVersion(4, 1);
     glFormat.setOption(QSurfaceFormat::DebugContext);
     QSurfaceFormat::setDefaultFormat(glFormat);
+#ifdef _OPENMP
     omp_set_num_threads(8);
-
+#else
+    std::cerr << "Warning: OpenMP not found. No parallelization available." << std::endl;
+#endif
     QPalette palette = getDarkModePalette();
     QApplication::setPalette(palette);
 
@@ -54,7 +58,6 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     setupApplication();
-
 
     std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();
 

@@ -6,8 +6,6 @@
 #define OUTPUT_IMAGE "Image"
 
 void nitro::GrayscaleConvert::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    bool imPresent;
     auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
     if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
         return;

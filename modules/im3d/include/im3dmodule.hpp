@@ -13,7 +13,6 @@ namespace nitro {
         public:
             Im3DModule();
 
-
             void registerDataTypes(NodeRegistry *registry) override;
 
             void registerDocks(MainWindow *window) override;

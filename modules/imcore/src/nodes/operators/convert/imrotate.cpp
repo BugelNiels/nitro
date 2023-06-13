@@ -23,7 +23,6 @@ void nitro::ImRotateOperator::execute(nitro::NodePorts &nodePorts, const std::ma
         case 1 :
             mode = cv::ROTATE_90_COUNTERCLOCKWISE;
             break;
-        case 2 :
         default:
             mode = cv::ROTATE_180;
             break;
