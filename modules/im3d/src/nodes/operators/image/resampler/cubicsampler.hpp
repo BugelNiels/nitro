@@ -11,7 +11,7 @@ namespace nitro {
         ~CubicSampler() override;
 
 
-        cv::Mat resample(const cv::Mat &colTable,
+        cv::Mat resample(const cv::Mat& img, const cv::Mat &colTable,
                          const std::vector<cv::Mat> &df,
                          int numDesiredLevels) override;
 

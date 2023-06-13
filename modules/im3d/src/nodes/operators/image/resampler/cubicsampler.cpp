@@ -26,19 +26,19 @@ static std::vector<double> colTableToVector(const cv::Mat &colorTable) {
     return colorTableVector;
 }
 
-cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
+cv::Mat nitro::CubicSampler::resample(const cv::Mat &img, const cv::Mat &colTable,
                                       const std::vector<cv::Mat> &df,
                                       int numDesiredLevels) {
     int width = df[0].cols;
     int height = df[0].rows;
 
-    cv::Mat resampled(height, width, CV_32FC1);
+    cv::Mat resampled = cv::Mat::zeros(height, width, CV_32FC1);
 
     auto cols = colTableToVector(colTable);
     int numLevelsInput = df.size();
 
 
-#pragma omp parallel default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, cols)
+#pragma omp parallel default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, cols, img)
     {
         std::vector<double> values;
         values.resize(numLevelsInput);
@@ -50,8 +50,9 @@ cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
                 }
                 // TODO: fix the end point tangents
                 tk::spline s(cols, values, tk::spline::cspline, true);
+                int start = img.at<int>(y, x);
                 // Compute interpolation tangents
-                for (int d = numDesiredLevels - 1; d >= 0; d--) {
+                for (int d = start; d >= 0; d--) {
                     double p = double(d) / (double(numDesiredLevels) - 1.0);
                     double dist = s(p);
                     if (dist <= 0) {

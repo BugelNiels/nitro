@@ -9,6 +9,7 @@
 
 #define INPUT_IMAGE "Image"
 #define INPUT_BITS "Bits"
+#define INPUT_LOWER_OFFSET "Offset L0"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
@@ -24,16 +25,36 @@ static cv::Mat getUniqueColors(const cv::Mat &src) {
     for (int i = 0; i < uniqueColors.size(); ++i) {
         colTable.at<float>(i) = uniqueColors[i];
     }
+
+
     return colTable;
+}
+
+static cv::Mat getNextLabels(const cv::Mat &src, const cv::Mat &colTable, int numDesiredLevels) {
+    cv::Mat nextLabels(src.rows, src.cols, CV_32SC1);
+    for (int y = 0; y < src.rows; y++) {
+        for (int x = 0; x < src.cols; x++) {
+            float val = src.at<float>(y, x);
+            int next = numDesiredLevels - 1;
+            for (int i = 0; i < colTable.rows - 1; ++i) {
+                if (val == colTable.at<float>(i)) {
+                    next = colTable.at<float>(i + 1) * (numDesiredLevels - 1.0f);
+                    break;
+                }
+            }
+            nextLabels.at<int>(y, x) = next;
+        }
+    }
+    return nextLabels;
 }
 
 cv::Mat distanceField(const cv::Mat &src, float t) {
 
-    int thresh = int((t * 255));
+    int thresh = int((t * 255)) - 1;
     cv::Mat binaryImOutside;
     cv::Mat binaryImInside;
-    cv::threshold(src, binaryImOutside, thresh - 1, 255, cv::THRESH_BINARY_INV);
-    cv::threshold(src, binaryImInside, thresh - 1, 255, cv::THRESH_BINARY);
+    cv::threshold(src, binaryImOutside, thresh, 255, cv::THRESH_BINARY_INV);
+    cv::threshold(src, binaryImInside, thresh, 255, cv::THRESH_BINARY);
 
     // Calculate the distance transform
     cv::Mat dfIn;
@@ -47,7 +68,7 @@ cv::Mat distanceField(const cv::Mat &src, float t) {
     return df;
 }
 
-std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int numLevels) {
+std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int numLevels, int offset) {
     std::vector<cv::Mat> df(numLevels);
 
     cv::Mat grayImage;
@@ -61,7 +82,7 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
 
     if (numLevels > 1) {
         df[1].copyTo(df[0]);
-        df[0] -= 10;
+        df[0] -= offset;
     } else {
         df[0] = distanceField(grayImage, 1);
     }
@@ -69,11 +90,12 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
 }
 
 void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_BITS})) {
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_BITS, INPUT_LOWER_OFFSET})) {
         return;
     }
     int bits = nodePorts.getInputInteger(INPUT_BITS);
     auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    int offset = nodePorts.getInputInteger(INPUT_LOWER_OFFSET);
 
     cv::Mat imIn;
     if (inputImg->channels() > 1) {
@@ -97,9 +119,11 @@ void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     }
     cv::Mat colTable = getUniqueColors(imIn);
     int numLevels = colTable.rows;
-    std::vector<cv::Mat> dfs = getDfs(imIn, colTable, numLevels);
+    std::vector<cv::Mat> dfs = getDfs(imIn, colTable, numLevels, offset);
 
-    cv::Mat result = sampler->resample(colTable, dfs, int(std::pow(2, bits)));
+    int numDesiredLevels = int(std::pow(2, bits));
+    cv::Mat nextLabels = getNextLabels(imIn, colTable, numDesiredLevels);
+    cv::Mat result = sampler->resample(nextLabels, colTable, dfs, int(std::pow(2, bits)));
 
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
@@ -114,6 +138,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic"})->
                 withInputImage(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 8, 1, 16)->
+                withInputInteger(INPUT_LOWER_OFFSET, 10, 0, 100)->
                 withOutputImage(OUTPUT_IMAGE)->
                 build();
     };

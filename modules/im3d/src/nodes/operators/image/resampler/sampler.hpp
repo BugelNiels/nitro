@@ -11,7 +11,7 @@ namespace nitro {
 
         virtual ~Sampler();
 
-        virtual cv::Mat resample(const cv::Mat &colTable,
+        virtual cv::Mat resample(const cv::Mat& img, const cv::Mat &colTable,
                                  const std::vector<cv::Mat> &df,
                                  int numDesiredLevels);
 

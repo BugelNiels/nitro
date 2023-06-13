@@ -17,8 +17,8 @@ static inline float get(const cv::Mat &colorTable, int i) {
 }
 
 float nitro::Sampler::distFunc(const cv::Mat &colorTable,
-                                            const std::vector<cv::Mat> &df,
-                                            int x, int y, float p, int numLevelsInput) const {
+                               const std::vector<cv::Mat> &df,
+                               int x, int y, float p, int numLevelsInput) const {
 
 
     int layer0 = -1;
@@ -54,20 +54,20 @@ float nitro::Sampler::distFunc(const cv::Mat &colorTable,
 }
 
 
-cv::Mat nitro::Sampler::resample(const cv::Mat &colTable,
+cv::Mat nitro::Sampler::resample(const cv::Mat &img, const cv::Mat &colTable,
                                  const std::vector<cv::Mat> &df,
                                  int numDesiredLevels) {
     int width = df[0].cols;
     int height = df[0].rows;
 
-    cv::Mat resampled(height, width, CV_32FC1);
+    cv::Mat resampled = cv::Mat::zeros(height, width, CV_32FC1);
     int numLevelsInput = df.size();
 
-#pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, colTable)
+#pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, colTable, img)
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            resampled.at<float>(y, x) = 0;
-            for (int d = numDesiredLevels - 1; d >= 0; d--) {
+            int start = img.at<int>(y, x);
+            for (int d = start; d >= 0; d--) {
                 float p = float(d) / (float(numDesiredLevels) - 1.0f);
                 float dist = distFunc(colTable, df, x, y, p, numLevelsInput);
                 if (dist <= 0) {
