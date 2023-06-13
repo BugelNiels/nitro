@@ -3,6 +3,9 @@
 #include <opencv2/imgproc.hpp>
 #include <utility>
 
+#define INPUT_IMAGE "Image"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
 nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> codes) : codes_(std::move(codes)) {
 
@@ -10,28 +13,63 @@ nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> co
 
 
 void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-
-    cv::ColorConversionCodes codec = codes_[options.at("Mode")];
-
-    bool imPresent;
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-    if (!imPresent) {
+    cv::ColorConversionCodes codec = codes_[options.at(MODE_DROPDOWN)];
+    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
         return;
+    }
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    cv::Mat in;
+    if (inputImg->channels() == 1) {
+        cv::cvtColor(*inputImg, in, cv::COLOR_GRAY2RGB);
+    } else {
+        inputImg->copyTo(in);
     }
 
     cv::Mat result;
-    if (inputImg->channels() == 1) {
-        cv::cvtColor(*inputImg, result, cv::COLOR_GRAY2BGR);
-    } else {
-        inputImg->copyTo(result);
+    switch (codec) {
+        case cv::COLOR_Lab2RGB: {
+            std::vector<cv::Mat> channels;
+            cv::split(in, channels);
+            channels[0] = channels[0] * 100.0;
+            channels[1] = channels[1] * 255.0 - 128;
+            channels[2] = channels[2] * 255.0 - 128;
+            cv::merge(channels, in);
+            break;
+        }
+        case cv::COLOR_Luv2RGB: {
+            std::vector<cv::Mat> channels;
+            cv::split(in, channels);
+            channels[0] = channels[0] * 100.0;
+            channels[1] = channels[1] * 354.0 - 134.0;
+            channels[2] = channels[2] * 262.0 - 140.0;
+            cv::merge(channels, in);
+            break;
+        }
+    }
+    cvtColor(in, result, codec);
+    // Hard coded, but necessary unfortunately
+    switch (codec) {
+        case cv::COLOR_RGB2Lab: {
+            std::vector<cv::Mat> channels;
+            cv::split(result, channels);
+            channels[0] = channels[0] / 100.0;
+            channels[1] = channels[1] / 255 + 128 / 255.0;
+            channels[2] = channels[2] / 255 + 128 / 255.0;
+            cv::merge(channels, result);
+            break;
+        }
+        case cv::COLOR_RGB2Luv: {
+            std::vector<cv::Mat> channels;
+            cv::split(result, channels);
+            channels[0] = channels[0] / 100.0;
+            channels[1] = (channels[1] + 134.0) / 354.0;
+            channels[2] = (channels[2] + 140.0) / 262.0;
+            cv::merge(channels, result);
+            break;
+        }
     }
 
-    cvtColor(result, result, codec);
-
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
-
-
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creator(const QString &category) {
@@ -56,20 +94,26 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
         colorNames.append("HSV -> RGB");
         codes.push_back(cv::COLOR_HSV2RGB);
 
-        colorNames.append("RGB -> LAB");
+        colorNames.append("RGB -> CIELAB");
         codes.push_back(cv::COLOR_RGB2Lab);
 
-        colorNames.append("LAB -> RGB");
+        colorNames.append("CIELAB -> RGB");
         codes.push_back(cv::COLOR_Lab2RGB);
 
-        nitro::NitroNodeBuilder builder("Convert", "convert", category);
+        colorNames.append("RGB -> CIELUV");
+        codes.push_back(cv::COLOR_RGB2Luv);
+
+        colorNames.append("CIELUV -> RGB");
+        codes.push_back(cv::COLOR_Luv2RGB);
+
+        nitro::NitroNodeBuilder builder("Color Space Convert", "convert", category);
         return builder.
                 withOperator(std::make_unique<nitro::ConvertOperator>(codes))->
-                withIcon(":/icons/nodes/convert.png")->
+                withIcon("convert.png")->
                 withNodeColor({110, 110, 29})->
-                withDropDown("Mode", colorNames)->
-                withInputImage("Image")->
-                withOutputImage("Image")->
+                withDropDown(MODE_DROPDOWN, colorNames)->
+                withInputImage(INPUT_IMAGE)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

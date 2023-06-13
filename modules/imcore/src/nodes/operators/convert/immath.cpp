@@ -3,27 +3,26 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
+#define INPUT_IMAGE "Image"
+#define INPUT_VALUE "Value"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
 void nitro::MathOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    bool im1Present, facPresent;
-    auto im1 = nodePorts.getInputImage("Image", im1Present);
-    double fac = nodePorts.getInputValue("Value", facPresent);
-
-    int option = options.at("Mode");
-
-    if (!im1Present || !facPresent) {
+    if (!nodePorts.inputsPresent({INPUT_VALUE, INPUT_IMAGE})) {
         return;
     }
+    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
+    double fac = nodePorts.getInputValue(INPUT_VALUE);
+    int option = options.at(MODE_DROPDOWN);
     cv::Mat result;
     switch (option) {
         case 0: {
-            cv::Mat maxValueMat(im1->size(), im1->type(), cv::Scalar(fac * getMaxValue(*im1)));
-            cv::add(*im1, maxValueMat, result);
+            result = *im1 + fac;
             break;
         }
         case 1: {
-            cv::Mat maxValueMat(im1->size(), im1->type(), cv::Scalar(getMaxValue(*im1)));
-            cv::subtract(*im1, fac * maxValueMat, result);
+            result = *im1 - fac;
             break;
         }
         case 2:
@@ -32,13 +31,19 @@ void nitro::MathOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
         case 3:
             result = *im1 / fac;
             break;
+        case 4:
+            result = cv::min(*im1, fac);
+            break;
+        case 5:
+            result = cv::max(*im1, fac);
+            break;
         default:
             result = *im1 * fac;
             break;
 
     }
 
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(const QString &category) {
@@ -46,12 +51,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
         nitro::NitroNodeBuilder builder("Math", "math", category);
         return builder.
                 withOperator(std::make_unique<nitro::MathOperator>())->
-                withIcon(":/icons/nodes/math.png")->
+                withIcon("math.png")->
                 withNodeColor({36, 98, 131})->
-                withDropDown("Mode", {"Add", "Subtract", "Multiply", "Divide"})->
-                withInputImage("Image")->
-                withInputValue("Value", 0.5, 0, 1)->
-                withOutputImage("Image")->
+                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max"})->
+                withInputImage(INPUT_IMAGE)->
+                withInputValue(INPUT_VALUE, 0.5)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }

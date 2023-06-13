@@ -2,21 +2,21 @@
 
 nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
         : QProgressBar(parent),
-          m_minZoom(minZoom),
-          m_maxZoom(maxZoom) {
+          minZoom_(minZoom),
+          maxZoom_(maxZoom) {
     setValue(50);
-    m_curZoom = 100;
+    curZoom_ = 100;
 }
 
 QString nitro::ZoomBar::text() const {
-    return QString::number(m_curZoom) + "%";
+    return QString::number(curZoom_) + "%";
 }
 
 void nitro::ZoomBar::setZoom(int zoom) {
-    m_curZoom = zoom;
-    double logValue = log10(m_curZoom);
-    double logMin = log10(m_minZoom);
-    double logMax = log10(m_maxZoom);
+    curZoom_ = zoom;
+    double logValue = log10(curZoom_);
+    double logMin = log10(minZoom_);
+    double logMax = log10(maxZoom_);
     double logPercent = (logValue - logMin) / (logMax - logMin);
 
     int percent = logPercent * 100;

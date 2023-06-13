@@ -35,10 +35,9 @@ namespace nitro {
 
 
     private:
-        QAction *spawnViewNodeAction = nullptr;
-        QtNodes::NodeId nodeBeingViewed;
-        QtNodes::PortIndex currentPort = 0;
-        QtNodes::AbstractNodeGeometry &nodeGeometry;
+        QtNodes::NodeId nodeBeingViewed_;
+        QtNodes::PortIndex currentPort_ = 0;
+        QtNodes::AbstractNodeGeometry &nodeGeometry_;
         NodeRegistry *nodes_;
 
 

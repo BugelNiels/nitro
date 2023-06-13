@@ -6,64 +6,69 @@
 
 #include <QDebug>
 
-static FLIP::image<FLIP::color3> cvMatToFlipImg(const cv::Mat& img) {
+#define INPUT_IMAGE_1 "Image 1"
+#define INPUT_IMAGE_2 "Image 2"
+#define INPUT_WIDTH "Width (m)"
+#define INPUT_RES "Res (x)"
+#define INPUT_DIST "Dist (m)"
+#define OUTPUT_RESULT "Result"
+#define OUTPUT_ERROR_MAP "Errors"
+#define MODE_DROPDOWN "Mode"
+
+static FLIP::image<FLIP::color3> cvMatToFlipImg(const cv::Mat &img) {
     int width = img.cols;
     int height = img.rows;
 
     FLIP::image<FLIP::color3> res(width, height);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            cv::Vec3b col = img.at<cv::Vec3b>(y, x);
-            float r = col[2] / 255.0f;
-            float g = col[1] / 255.0f;
-            float b = col[0] / 255.0f;
+            cv::Vec3f col = img.at<cv::Vec3f>(y, x);
+            float r = col[2];
+            float g = col[1];
+            float b = col[0];
             res.set(x, y, FLIP::color3(r, g, b));
         }
     }
     return res;
 }
 
-static FLIP::image<FLIP::color3> cvGrayscaleMatToFlipImg(const cv::Mat& img) {
+static FLIP::image<FLIP::color3> cvGrayscaleMatToFlipImg(const cv::Mat &img) {
     int width = img.cols;
     int height = img.rows;
 
     FLIP::image<FLIP::color3> res(width, height);
     for (int y = 0; y < height; y++) {
-        const uchar* row = img.ptr(y);
         for (int x = 0; x < width; x++) {
-            float intensity = row[x] / 255.0f;
+            float intensity = img.at<float>(y, x);
             res.set(x, y, FLIP::color3(intensity));
         }
     }
     return res;
 }
 
-static cv::Mat flipImgToCvMat(const FLIP::image<FLIP::color3>& img) {
+static cv::Mat flipImgToCvMat(const FLIP::image<FLIP::color3> &img) {
     int width = img.getWidth();
     int height = img.getHeight();
 
-    cv::Mat res(height, width, CV_8UC3);
+    cv::Mat res(height, width, CV_32FC3);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             FLIP::color3 col = img.get(x, y);
-            int r = 255 * col.r + 0.5f;
-            int g = 255 * col.g + 0.5f;
-            int b = 255 * col.b + 0.5f;
-            res.at<cv::Vec3b>(y, x) = cv::Vec3b(b, g, r);
+            res.at<cv::Vec3f>(y, x) = cv::Vec3f(col.b, col.g, col.r);
         }
     }
     return res;
 }
 
-static cv::Mat flipImgFloatToGrayMat(const FLIP::image<float>& img) {
+static cv::Mat flipImgFloatToGrayMat(const FLIP::image<float> &img) {
     int width = img.getWidth();
     int height = img.getHeight();
 
-    cv::Mat res(height, width, CV_8UC1);
+    cv::Mat res(height, width, CV_32F);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             float value = img.get(x, y);
-            res.at<uchar>(y, x) = static_cast<uchar>(value * 255.0f);
+            res.at<float>(y, x) = value;
         }
     }
     return res;
@@ -79,11 +84,11 @@ static FLIP::image<FLIP::color3> magmaMap(FLIP::MapMagma, 256);
 
 void nitro::FlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
     bool im1Present, im2Present, sPres, resPres, distPres;
-    auto im1 = nodePorts.getInputImage("Image1", im1Present);
-    auto im2 = nodePorts.getInputImage("Image2", im2Present);
-    double screenWidth = nodePorts.getInputValue("Width (m)", sPres);
-    int resX = nodePorts.getInputInteger("Res (x)", resPres);
-    double dist = nodePorts.getInputValue("Dist (m)", distPres);
+    auto im1 = nodePorts.getInputImage(INPUT_IMAGE_1);
+    auto im2 = nodePorts.getInputImage(INPUT_IMAGE_2);
+    double screenWidth = nodePorts.getInputValue(INPUT_WIDTH);
+    int resX = nodePorts.getInputInteger(INPUT_RES);
+    double dist = nodePorts.getInputValue(INPUT_DIST);
 
     if (!im1Present || !im2Present || !sPres || !resPres || !distPres) {
         return;
@@ -103,24 +108,24 @@ void nitro::FlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
 
     colResult.colorMap(errMap, magmaMap);
 
-    nodePorts.setOutputImage("Error Map", std::make_shared<cv::Mat>(flipImgToCvMat(colResult)));
-    nodePorts.setOutputImage("Errors", std::make_shared<cv::Mat>(flipImgFloatToGrayMat(errMap)));
+    nodePorts.setOutputImage(OUTPUT_RESULT, std::make_shared<cv::Mat>(flipImgToCvMat(colResult)));
+    nodePorts.setOutputImage(OUTPUT_ERROR_MAP, std::make_shared<cv::Mat>(flipImgFloatToGrayMat(errMap)));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("FLIP", "flip", category);
+        nitro::NitroNodeBuilder builder("NVIDIA FLIP", "nvidiaFlip", category);
         return builder.
                 withOperator(std::make_unique<nitro::FlipOperator>())->
-                withIcon(":/icons/nodes/compare.png")->
+                withIcon("compare.png")->
                 withNodeColor({118, 185, 0})->
-                withInputImage("Image1")->
-                withInputImage("Image2")->
-                withInputValue("Width (m)", 0.7, 0.1, 5)->
-                withInputInteger("Res (x)", 1920, 1024, 7680)->
-                withInputValue("Dist (m)", 0.7, 0, 5)->
-                withOutputImage("Error Map")->
-                withOutputImage("Errors")->
+                withInputImage(INPUT_IMAGE_1)->
+                withInputImage(INPUT_IMAGE_2)->
+                withInputValue(INPUT_WIDTH, 0.7, 0.1, 5)->
+                withInputInteger(INPUT_RES, 1920, 1024, 7680)->
+                withInputValue(INPUT_DIST, 0.7, 0, 5)->
+                withOutputImage(OUTPUT_RESULT)->
+                withOutputImage(OUTPUT_ERROR_MAP)->
                 build();
     };
 }

@@ -7,13 +7,14 @@
 namespace nitro {
 
     class NodeRegistry;
+
     class NodeDockWidget;
 
     class MainWindow : public QMainWindow {
     Q_OBJECT
 
     public:
-        explicit MainWindow(NodeRegistry* registry, QWidget *parent = nullptr);
+        explicit MainWindow(NodeRegistry *registry, QWidget *parent = nullptr);
 
         ~MainWindow() override;
 
@@ -29,13 +30,12 @@ namespace nitro {
         void registerNodeDock(NodeDockWidget *widget);
 
     private:
-
-        QSet<QDockWidget *> widgets;
-        const int icSize = 16;
-        const QColor icColor = {180, 180, 180};
-
-        QLabel *fileNameLabel = nullptr;
-        NodeDockWidget *nodeDock = nullptr;
+        const int icSize_ = 16;
+        const QColor icColor_ = {180, 180, 180};
+        QSet<QDockWidget *> widgets_;
+        QLabel *fileNameLabel_ = nullptr;
+        NodeDockWidget *nodeDock_ = nullptr;
+        QSplitter *dockLayout_ = nullptr;
 
         QMenuBar *initMenuBar();
 
@@ -45,7 +45,6 @@ namespace nitro {
 
         QMenu *getWindowMenu();
 
-        QSplitter *dockLayout_;
     };
 
 } // nitro

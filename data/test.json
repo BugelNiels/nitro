@@ -1,0 +1,76 @@
+{
+    "connections": [
+        {
+            "inPortIndex": 0,
+            "intNodeId": 3,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 1,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 2,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Load 0": "/home/niels/Documents/repos/nitro/data/lena.pgm"
+                }
+            },
+            "position": {
+                "x": -416,
+                "y": -21
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 8
+                }
+            },
+            "position": {
+                "x": -111,
+                "y": -31
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 311,
+                "y": -97
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "model-name": "ImageViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 562,
+                "y": -35.5
+            }
+        }
+    ]
+}

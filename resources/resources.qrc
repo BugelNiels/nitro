@@ -31,5 +31,9 @@
         <file>icons/nodes/toggle.png</file>
         <file>icons/nodes/blend.png</file>
         <file>icons/nodes/convert.png</file>
+        <file>icons/nodes/resize.png</file>
+        <file>icons/nodes/info.png</file>
+        <file>icons/nodes/flip.png</file>
+        <file>icons/nodes/rotate.png</file>
     </qresource>
 </RCC>

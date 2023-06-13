@@ -5,6 +5,10 @@
 
 #include <QDebug>
 
+#define INPUT_IMAGE "Image"
+#define INPUT_K "K"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
 
 #define EPSILON 0.00001
 
@@ -19,8 +23,10 @@
  * @param emi_first should we search emission peak first of
                                      absorption peak first?
  */
-static void
-detect_peak(const std::vector<double> &data, int data_count, std::vector<int> &emi_peaks, double delta, int emi_first) {
+static void detect_peak(const std::vector<double> &data,
+                        int data_count,
+                        std::vector<int> &emi_peaks,
+                        double delta, int emi_first) {
     int i;
     double mx;
     double mn;
@@ -85,9 +91,12 @@ static void find_peaks(std::vector<double> &importance, double width) {
     }
 }
 
-static void
-detect_layers(int clear_color, std::vector<double> &upper_level, double threshold, bool needAssign, int &peaks,
-              int max_elem) {
+static void detect_layers(int clear_color,
+                          std::vector<double> &upper_level,
+                          double threshold,
+                          bool needAssign,
+                          int &peaks,
+                          int max_elem) {
 
     int distinguishable_interval = 1; //distinguishable_interval is set to 7
     peaks = 0;
@@ -119,9 +128,11 @@ detect_layers(int clear_color, std::vector<double> &upper_level, double threshol
 }
 
 //binary search
-static void
-find_layers(int clear_color, std::vector<double> &importance_upper, double width, std::vector<double> &importance,
-            int max_elem) {
+static void find_layers(int clear_color,
+                        std::vector<double> &importance_upper,
+                        double width,
+                        std::vector<double> &importance,
+                        int max_elem) {
     double impFac = 0.5;
     double head = 0;
     double tail = 0.5;
@@ -215,14 +226,14 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
             int val_dn = pixelValue;
             if (importance[val_up] == 1)
                 continue;
-            while (val_dn >= 0 || val_up <= 256) {
+            while (val_dn >= 0 || val_up < 256) {
                 if (val_dn >= 0) {
                     if (importance[val_dn] == 1) {
                         res.at<uchar>(y, x) = val_dn;
                         break;
                     }
                 }
-                if (val_up <= 256) {
+                if (val_up < 256) {
                     if (importance[val_up] == 1) {
                         res.at<uchar>(y, x) = val_up;
                         break;
@@ -237,23 +248,24 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
 }
 
 void nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    bool kPresent, imPresent;
-    int k = nodePorts.getInputInteger("K", kPresent);
-    auto img = nodePorts.getInputImage("Image", imPresent);
-
-    if (!kPresent || !imPresent) {
+    if (!nodePorts.inputsPresent({INPUT_K, INPUT_IMAGE})) {
         return;
     }
+    int k = nodePorts.getInputInteger(INPUT_K);
+    auto img = nodePorts.getInputImage(INPUT_IMAGE);
+
+    cv::Mat byteImg;
+    img->convertTo(byteImg, CV_8U, 255);
 
     cv::Mat res;
     bool cumulative = true;
-    if (img->channels() == 1) {
-        std::vector<double> importance = calculateImportance(*img, cumulative, k - 1);
-        res = removeLayers(*img, importance);
+    if (byteImg.channels() == 1) {
+        std::vector<double> importance = calculateImportance(byteImg, cumulative, k - 1);
+        res = removeLayers(byteImg, importance);
     } else {
         std::vector<cv::Mat> channels;
         std::vector<cv::Mat> outChannels;
-        cv::split(*img, channels);
+        cv::split(byteImg, channels);
         outChannels.resize(channels.size());
         for (int i = 0; i < channels.size(); i++) {
             auto channelImg = channels[i];
@@ -263,14 +275,23 @@ void nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std
         cv::merge(outChannels, res);
     }
 
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(res));
+
+    cv::Mat result;
+    res.convertTo(result, CV_32F, 1.0 / 255.0);
+
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::creator(const QString &category) {
     return [category]() {
         nitro::NitroNodeBuilder builder("Layer Removal", "layerRemoval", category);
-        return builder.withOperator(std::make_unique<nitro::LayerRemovalOperator>())->withIcon(
-                ":/icons/nodes/quantize.png")->withNodeColor({43, 101, 43})->withInputImage("Image")->withInputInteger(
-                "K", 8, 1, 255)->withOutputImage("Image")->build();
+        return builder.
+                withOperator(std::make_unique<nitro::LayerRemovalOperator>())->
+                withIcon("quantize.png")->
+                withNodeColor({43, 101, 43})->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_K, 8, 1, 255)->
+                withOutputImage(OUTPUT_IMAGE)->
+                build();
     };
 }

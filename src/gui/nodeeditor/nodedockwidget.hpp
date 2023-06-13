@@ -13,7 +13,7 @@ namespace nitro {
     class NodeDockWidget : public QDockWidget {
     public:
 
-        NodeDockWidget(NodeRegistry* nodes, MainWindow* window);
+        NodeDockWidget(NodeRegistry *nodes, MainWindow *window);
 
         ~NodeDockWidget() override;
 
@@ -28,23 +28,22 @@ namespace nitro {
         const QString &getFileName();
 
     protected:
-        void keyPressEvent(QKeyEvent* event) override;
+        void keyPressEvent(QKeyEvent *event) override;
 
     private:
-        NodeGraphicsView *view;
+        NodeGraphicsView *view_;
         QJsonObject prevSave_;
-        QString filename;
+        QString filename_;
         QString saveFilePath;
-        QtNodes::DataFlowGraphModel *dataFlowGraphModel;
-
-        QTreeWidget *initSideMenu();
-
+        QtNodes::DataFlowGraphModel *dataFlowGraphModel_;
+        QTreeWidget *nodeTreeWidget_;
+        QLineEdit *searchBar_;
+        
         bool searchTreeItem(QTreeWidgetItem *item, const QString &searchText);
 
         void searchTextChanged(const QString &searchText);
 
-        QTreeWidget *nodeTreeWidget;
-        QLineEdit *searchBar;
+        QTreeWidget *initSideMenu();
 
         QWidget *initNodeTitleBar(nitro::MainWindow *window);
     };

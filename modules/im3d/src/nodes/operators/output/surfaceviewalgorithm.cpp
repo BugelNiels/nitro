@@ -3,16 +3,15 @@
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
 
+#define INPUT_IMAGE "Image"
 
 nitro::SurfaceViewAlgorithm::SurfaceViewAlgorithm(nitro::RenderView *surfViewer)
         : surfViewer_(surfViewer) {
-
 }
 
 void nitro::SurfaceViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    bool ok;
-    auto img = nodePorts.getInputImage("image", ok);
-    if (ok) {
+    if (nodePorts.inputsPresent({INPUT_IMAGE})) {
+        auto img = nodePorts.getInputImage(INPUT_IMAGE);
         surfViewer_->updateBuffers(cvMatToQImage(*img));
         return;
     }
@@ -24,9 +23,9 @@ nitro::SurfaceViewAlgorithm::creator(const QString &category, RenderView *render
         nitro::NitroNodeBuilder builder("3D Image Viewer", "ImageViewer3D", category);
         return builder.
                 withOperator(std::make_unique<nitro::SurfaceViewAlgorithm>(renderViewer))->
-                withInputImage("image")->
-                withIcon(":/icons/nodes/surface.png")->
+                withIcon("surface.png")->
                 withNodeColor({99, 28, 28})->
+                withInputImage(INPUT_IMAGE)->
                 build();
     };
 }

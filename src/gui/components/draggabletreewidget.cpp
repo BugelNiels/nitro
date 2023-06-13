@@ -7,8 +7,8 @@ void nitro::DraggableTreeWidget::mousePressEvent(QMouseEvent *event) {
     auto item = itemAt(event->pos());
     if (item && event->button() == Qt::LeftButton) {
 
-        if(actions.contains(item->text(0))) {
-            m_draggedItem = item;
+        if(actions_.contains(item->text(0))) {
+            draggedItem_ = item;
             setCursor(Qt::OpenHandCursor);
         }
     }
@@ -16,21 +16,21 @@ void nitro::DraggableTreeWidget::mousePressEvent(QMouseEvent *event) {
 
 void nitro::DraggableTreeWidget::mouseReleaseEvent(QMouseEvent *event) {
     QTreeWidget::mouseReleaseEvent(event);
-    if (m_draggedItem && event->button() == Qt::LeftButton) {
-        if(actions.contains(m_draggedItem->text(0))) {
-            actions[m_draggedItem->text(0)]->trigger();
+    if (draggedItem_ && event->button() == Qt::LeftButton) {
+        if(actions_.contains(draggedItem_->text(0))) {
+            actions_[draggedItem_->text(0)]->trigger();
         }
-        m_draggedItem = nullptr;
+        draggedItem_ = nullptr;
     }
     unsetCursor();
 }
 
 void nitro::DraggableTreeWidget::registerAction(const QString &key, QAction *action) {
-    actions[key] = action;
+    actions_[key] = action;
 }
 
 void nitro::DraggableTreeWidget::mouseMoveEvent(QMouseEvent *event) {
-    if(!m_draggedItem) {(0, Qt::yellow);
+    if(!draggedItem_) {(0, Qt::yellow);
         QTreeWidget::mouseMoveEvent(event);
     }
 }

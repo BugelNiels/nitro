@@ -5,7 +5,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 file(GLOB_RECURSE MODULE_SOURCES src/*.cpp)
 file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
 
-add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES} ${MODULE_HEADERS})
+add_library(${MODULE_NAME} STATIC
+        ${MODULE_SOURCES} ${MODULE_HEADERS}
+        )
 
 target_include_directories(${MODULE_NAME}
         PUBLIC

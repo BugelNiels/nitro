@@ -63,7 +63,10 @@ namespace nitro {
 
         NitroNodeBuilder *withCheckBox(const QString &name, bool checked = false);
 
+        NitroNodeBuilder *withDisplayWidget(const QString& name, QLabel* label);
+
     private:
+        const int portWidgetWidth_ = 150;
         std::unique_ptr<NitroNode> node_;
 
         const QString name_;
@@ -94,7 +97,6 @@ namespace nitro {
         void addOptionWidget(QWidget *widget);
 
 
-        const int portWidgetWidth_ = 150;
 
     };
 

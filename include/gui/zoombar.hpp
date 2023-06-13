@@ -11,9 +11,9 @@ namespace nitro {
         void setZoom(int zoom);
         void setZoom(double zoomFactor);
     private:
-        int m_curZoom;
-        int m_minZoom;
-        int m_maxZoom;
+        int curZoom_;
+        int minZoom_;
+        int maxZoom_;
     };
 } // nitro
 

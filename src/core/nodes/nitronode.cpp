@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QLabel>
 #include <QImageReader>
 #include <QFileDialog>
 #include "QtNodes/InvalidData.hpp"
@@ -92,6 +93,7 @@ namespace nitro {
                 }
             }
         }
+        // TODO: check if the data changed
         nodePorts_.setInData(portIndex, data);
         algo_->execute(nodePorts_, options_);
 
@@ -194,9 +196,7 @@ namespace nitro {
         QString key = QString("Load %1").arg(port);
 
         if (inputImg.empty()) {
-            button->setText("Load Image");
-            nodePorts_.setOutputData(portName, nullptr);
-            propJson_[key] = "";
+            return;
         } else {
 
             if (inputImg.channels() > 1 && isGrayscale(inputImg)) {
@@ -204,6 +204,10 @@ namespace nitro {
                 cvtColor(inputImg, gray, cv::COLOR_RGB2GRAY);
                 inputImg = gray;
             }
+            cv::Mat floatImg;
+            float max = nitro::getMaxValue(inputImg);
+            inputImg.convertTo(floatImg, CV_32F, 1.0 / max);
+            inputImg = floatImg;
 
             QFontMetrics fontMetrics(button->font());
             QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
@@ -262,6 +266,13 @@ namespace nitro {
                 Q_EMIT dataUpdated(i);
             }
         });
+    }
+
+    void NitroNode::connectLabel(const QString &name, QLabel *label) {
+        propJson_[name] = label->text();
+        widgetsJson_[name] = [label](const QJsonValue &val) {
+            label->setText(val.toString());
+        };
     }
 
 } // nitro
