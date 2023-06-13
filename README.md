@@ -39,25 +39,7 @@ These instructions will get you a copy of the project up and running on your loc
 - [OpenGL 4.1+](https://www.opengl.org/)
 - [OpenCV 4](https://opencv.org/)
 
-#### Dependencies
-
-These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
-installed.
-
-- [QtNodes](https://github.com/BugelNiels/nodeeditor)
-  - A custom fork of
-    the [QtNodes](https://github.com/paceholder/nodeeditor) repo.
-- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
-  - A custom widget that allows for user-friendly
-    control of numerical inputs.
-- [FLIP](https://github.com/NVlabs/flip)
-  - A state-of-the-art image comparison algorithm developed by NVIDIA.
-- [Spline](https://github.com/ttk592/spline/)
-  - Small library that provides cubic spline interpolation functionality.
-
-
-### 2. Install Instructions
-
+#### 1.1 Install Instructions
 
 **Ubuntu:**
 
@@ -78,9 +60,8 @@ installed.
   ```shell
   sudo apt install mesa-utils
   ```
-  
-**Mac:**
 
+**Mac:**
 
 - CMake
   ```shell
@@ -94,10 +75,26 @@ installed.
   ```shell
   brew install opencv
   ```
-  
+
 > If on Windows, good luck.
 
-### 3. Installing
+#### 1.2 Dependencies
+
+These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
+installed.
+
+- [QtNodes](https://github.com/BugelNiels/nodeeditor)
+    - A custom fork of the [QtNodes](https://github.com/paceholder/nodeeditor) repo. This fork was specifically created
+      to work with NITRO.
+- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
+    - A custom widget that allows for user-friendly control of numerical inputs. Resembles the widgets used in Blender
+      to select numerical values.
+- [FLIP](https://github.com/NVlabs/flip)
+    - A state-of-the-art image comparison algorithm developed by NVIDIA.
+- [Spline](https://github.com/ttk592/spline/)
+    - Small library that provides cubic spline interpolation functionality.
+
+### 2. Installing
 
 To set up the repository locally, clone the repository:
 
@@ -112,7 +109,7 @@ git submodule init
 git submodule update
 ```
 
-### 4. Building & Running
+### 3. Building & Running
 
 To build the project, can execute the `build.sh` script and run the resulting binary:
 
@@ -131,13 +128,6 @@ make -j8
 ./nitro
 ```
 
-## Features
-
-A few notable features on top of the node editor itself are:
-
-- Image Viewer ![Image Viewer](screenshots/imviewer.gif)
-- 3D Image Viewer ![3D Viewer](screenshots/3dviewer.gif)
-
 ## Project Structure
 
 The project was developed with the aim of making it easily extendable. Below a number of code details are outlined to
@@ -151,9 +141,10 @@ starts.
 
 The different modules can be found in the `modules/` directory. Currently, there are two modules here:
 
-- **imcore**. This is the main module. It provides support for basic image operations and the image viewer widget.
+- **imcore**. This is the main module. It provides support for basic image operations and the image viewer
+  widget: ![Image Viewer](screenshots/imviewer.gif)
 - **im3d**. This module contains some nodes that can be used to compress and enhance bit-depth. Additionally, it
-  contains a widget that allows for viewing of images as 3D objects.
+  contains a widget that allows for viewing of images as 3D objects: ![3D Viewer](screenshots/3dviewer.gif)
 
 Adding new modules can be done by following a similar structure to the existing module:
 
@@ -173,9 +164,9 @@ Each node will typically have a `NodeOperator`. This operator is what performs t
 For details on how to construct a node, you can look at the [NitroNodeBuilder](include/nodes/nitronodebuilder.hpp)
 class.
 
-A simple implementation of a threshold node is then as follows:
+A simple implementation of a denoising node is then as follows:
 
-[Header file](modules/imcore/src/nodes/operators/filters/threshold.hpp)
+[Header file](modules/imcore/src/nodes/operators/filters/bilateralfilter.hpp)
 
 ```c++
 #pragma once
@@ -185,65 +176,85 @@ A simple implementation of a threshold node is then as follows:
 
 namespace nitro {
 
-    class ThresholdOperator : public NodeOperator {
+    /**
+     * Node that performs Bilateral filtering on an input image.
+     */
+    class BilateralFilterOperator : public NodeOperator {
     public:
-
+        /**
+         * Responsible for creating a function that builds this node.
+         *
+         * @param category Category name this node should be put in.
+         * @return A function that creates this particular node.
+         */
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
+        /**
+         * Executes the Bilateral filtering algorithm of this node on the current input data.
+         * @param nodePorts Port data containing the current input and output information.
+         * @param options Options for passing additional parameters to the algorithm. Currently unused.
+         */
         void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
 
     };
-
 } // nitro
+
 ```
 
-[Source file](modules/imcore/src/nodes/operators/filters/threshold.cpp)
+[Source file](modules/imcore/src/nodes/operators/filters/bilateralfilter.cpp)
 
 ```c++
-#include "threshold.hpp"
+#include "bilateralfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 
-void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    // Retrieving of input parameters
-    bool greater = options.at("Mode") == 1;
-    auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
-    bool imPresent, tPresent;
-    auto inputImg = nodePorts.getInputImage("Image", imPresent);
-    int threshold = nodePorts.getInputInteger("Threshold", tPresent);
-    if(!imPresent || !tPresent) {
+#define INPUT_IMAGE "Image"
+#define INPUT_SIGMA_C "Sigma (c)"
+#define INPUT_SIGMA_S "Sigma (s)"
+#define INPUT_D "Diameter"
+#define OUTPUT_IMAGE "Image"
+#define MODE_DROPDOWN "Mode"
+
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
+    // Verifying that all the required inputs are there
+    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIGMA_C, INPUT_SIGMA_S, INPUT_D})) {
         return;
     }
+    // Get the input data
+    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    double sigmaCol = nodePorts.getInputValue(INPUT_SIGMA_C);
+    double sigmaSpace = nodePorts.getInputValue(INPUT_SIGMA_S);
+    int d = nodePorts.getInputInteger(INPUT_D);
 
-    // Actual Threshold operation
+    // Perform filtering
     cv::Mat result;
-    cv::threshold(*inputImg, result, threshold, 255, type);
+    cv::bilateralFilter(*inputImg, result, d, sigmaCol, sigmaSpace);
 
-    // Set node output
-    nodePorts.setOutputImage("Image", std::make_shared<cv::Mat>(result));
+    // Store the result
+    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ThresholdOperator::creator(const QString &category) {
+std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Threshold", "threshold", category);
+        nitro::NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
         return builder.
-                withOperator(std::make_unique<nitro::ThresholdOperator>())->
-                withIcon(":/icons/nodes/threshold.png")->
-                withNodeColor({43, 101, 43})->
-                withDropDown("Mode", {"<=", ">="})->
-                withInputImage("Image")->
-                withInputInteger("Threshold", 128, 0, 255)->
-                withOutputImage("Image")->
+                withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
+                withIcon("blur.png")->
+                withNodeColor({71, 47, 189})->
+                withInputImage(INPUT_IMAGE)->
+                withInputInteger(INPUT_D, 9, 1, 64)->
+                withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
+                withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
+                withOutputImage(OUTPUT_IMAGE)->
                 build();
     };
 }
-
 ```
 
 ### Data Types
 
-New data types can be added by creating an implementation of `QtNodes::NodeData`. For example, the integer data type has
-the following structure:
+New data types can be added by creating an implementation of `QtNodes::NodeData`. For example,
+the [integer data type](include/nodes/datatypes/integerdata.hpp) has the following structure:
 
 ```c++
 namespace nitro {
@@ -251,8 +262,7 @@ namespace nitro {
     public:
         IntegerData() = default;
 
-        explicit IntegerData(int val) : val_(val) {
-        }
+        explicit IntegerData(int val) : val_(val) {}
 
         static QtNodes::DataInfo dataInfo() {
             return {"Value", "integer", {89, 140, 92}};
