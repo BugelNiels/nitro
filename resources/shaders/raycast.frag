@@ -101,12 +101,13 @@ void main() {
     float t;
     if (rayboxintersect(ro, rd, -offset, offset, t)) {
         ro += offset;
-        ro += (t - 0.01) * rd; // TODO: ensure we start outside the box
+        ro += (t - 0.0001) * rd;
         ivec3 mapPos = ivec3(floor(ro + 0.));
         vec3 deltaDist = abs(vec3(length(rd)) / rd);
         ivec3 rayStep = ivec3(sign(rd));
         vec3 sideDist = (sign(rd) * (vec3(mapPos) - ro) + (sign(rd) * 0.5) + 0.5) * deltaDist;
         bvec3 mask = bvec3(0);
+        mask = lessThanEqual(sideDist.xyz, min(sideDist.yzx, sideDist.zxy));
         int maxSteps = imWidth + imHeight + 256;
         for (int i = 0; i < maxSteps; i++) {
             if (getVoxel(mapPos)) {
