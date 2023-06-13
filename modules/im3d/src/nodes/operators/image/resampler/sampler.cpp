@@ -16,6 +16,8 @@ cv::Mat nitro::Sampler::resample(const cv::Mat &colTable,
     cv::Mat resampled(height, width, CV_32FC1);
     int numLevelsInput = df.size();
 
+    std::cout << colTable << std::endl;
+
 #pragma omp parallel for default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, colTable)
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {

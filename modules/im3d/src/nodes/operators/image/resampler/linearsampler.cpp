@@ -44,14 +44,11 @@ float nitro::LinearSampler::distFuncIndexed(const cv::Mat &colorTable,
 
     float delta = (layer1Col - layer0Col);
     float t = (p - layer0Col) / delta;
+    t = std::clamp(t, 0.0f, 1.0f);
 
 
     float p0 = df[layer0].at<float>(y, x);
     float p1 = df[layer1].at<float>(y, x);
-
-    if(delta == 0) {
-        return p0;
-    }
 
     return mix(p0, p1, t);
 }

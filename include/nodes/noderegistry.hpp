@@ -5,10 +5,6 @@
 #include "QtNodes/DataInfo.hpp"
 #include "QtNodes/NodeInfo.hpp"
 
-// TODO: check usage
-using RegistryItemPtr = std::unique_ptr<QtNodes::NodeDelegateModel>;
-using RegistryItemCreator = std::function<RegistryItemPtr()>;
-
 namespace nitro {
     class NodeRegistry {
 

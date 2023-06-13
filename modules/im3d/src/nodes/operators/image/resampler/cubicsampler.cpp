@@ -51,14 +51,13 @@ cv::Mat nitro::CubicSampler::resample(const cv::Mat &colTable,
                 tk::spline s(cols, values, tk::spline::cspline, true);
                 // Compute interpolation tangents
                 for (int d = numDesiredLevels - 1; d >= 0; d--) {
-                    double p = double(d) / (double(numDesiredLevels) - 1.0f);
+                    double p = double(d) / (double(numDesiredLevels) - 1.0);
                     double dist = s(p);
                     if (dist <= 0) {
                         resampled.at<float>(y, x) = p;
                         break;
                     }
                 }
-                exit(0);
             }
         }
     }

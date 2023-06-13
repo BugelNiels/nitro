@@ -63,7 +63,7 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
         df[1].copyTo(df[0]);
         df[0] -= 10;
     } else {
-        df[0] = distanceField(src, 1);
+        df[0] = distanceField(grayImage, 1);
     }
     return df;
 }

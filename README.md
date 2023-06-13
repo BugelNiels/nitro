@@ -13,7 +13,7 @@
 
 NITRO is a powerful tool for building complex image processing routines. Instead of needing to modify source code or
 scripts to process images in different ways, you can use this visual node editor to do that instead. The project was
-developed with extendability in mind, making it easy to add your own types nodes, and widgets_. For more information on
+developed with extendability in mind, making it easy to add your own types nodes, and widgets. For more information on
 this, see [Project Structure](#project-structure). The UI was inspired by
 Blender's [Shader Editor](https://docs.blender.org/manual/en/latest/editors/shader_editor.html)
 
@@ -32,14 +32,34 @@ If you encounter any, please feel free to create an issue.
 
 These instructions will get you a copy of the project up and running on your local machine.
 
-### Prerequisites
+### 1. Prerequisites
 
 - [CMake 3.9+](https://cmake.org/)
 - [Qt6](https://www.qt.io/product/qt6)
 - [OpenGL 4.1+](https://www.opengl.org/)
 - [OpenCV 4](https://opencv.org/)
 
-#### Ubuntu Install Instructions
+#### Dependencies
+
+These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
+installed.
+
+- [QtNodes](https://github.com/BugelNiels/nodeeditor)
+  - A custom fork of
+    the [QtNodes](https://github.com/paceholder/nodeeditor) repo.
+- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
+  - A custom widget that allows for user-friendly
+    control of numerical inputs.
+- [FLIP](https://github.com/NVlabs/flip)
+  - A state-of-the-art image comparison algorithm developed by NVIDIA.
+- [Spline](https://github.com/ttk592/spline/)
+  - Small library that provides cubic spline interpolation functionality.
+
+
+### 2. Install Instructions
+
+
+**Ubuntu:**
 
 - CMake
   ```shell
@@ -49,33 +69,35 @@ These instructions will get you a copy of the project up and running on your loc
   ```shell
   sudo apt install qt6-base-dev
   ```
-- OpenGL
-  Should be supported by default. My night to install `mesa-utils`
-  ```shell
-  sudo apt install mesa-utils
-  ```
 - OpenCV 4
   ```shell
   sudo apt install libopencv-dev
   ```
+- OpenGL.
+  Should be supported by default. Might need to install `mesa-utils`
+  ```shell
+  sudo apt install mesa-utils
+  ```
+  
+**Mac:**
 
-### Dependencies
 
-These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
-installed.
+- CMake
+  ```shell
+  brew install cmake
+  ```
+- Qt6
+  ```shell
+  brew install qt
+  ```
+- OpenCV 4
+  ```shell
+  brew install opencv
+  ```
+  
+> If on Windows, good luck.
 
-- [QtNodes](https://github.com/BugelNiels/nodeeditor)
-    - A custom fork of
-      the [QtNodes](https://github.com/paceholder/nodeeditor) repo.
-- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
-    - A custom widget that allows for user-friendly
-      control of numerical inputs.
-- [FLIP](https://github.com/NVlabs/flip)
-    - A state-of-the-art image comparison algorithm developed by NVIDIA.
-- [Spline](https://github.com/ttk592/spline/)
-  - Small library that provides cubic spline interpolation functionality.
-
-### Installing
+### 3. Installing
 
 To set up the repository locally, clone the repository:
 
@@ -90,7 +112,7 @@ git submodule init
 git submodule update
 ```
 
-### Building
+### 4. Building & Running
 
 To build the project, can execute the `build.sh` script and run the resulting binary:
 
@@ -136,12 +158,12 @@ The different modules can be found in the `modules/` directory. Currently, there
 Adding new modules can be done by following a similar structure to the existing module:
 
 - Create an implementation of `imcoremodule.hpp`. This implementation should register the new nodes, in addition to the
-  data types and widgets_ (if there are any).
+  data types and widgets (if there are any).
 - Create a `CMakeLists.txt` to create a library of the module. See
   e.g. [this CMakeLists.txt](modules/imcore/CMakeLists.txt) on how to do this.
   Note that any libraries used in the module, must unfortunately still be found and linked in the
   main [CMakeLists.txt](CMakeLists.txt). A future release should hopefully fix this issue.
-- Add any nodes, data types or widgets_ as needed (see below).
+- Add any nodes, data types or widgets as needed (see below).
 
 ### Nodes
 

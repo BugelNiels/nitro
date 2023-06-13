@@ -75,8 +75,7 @@ namespace nitro {
         std::unique_ptr<NodeOperator> algo_;
         int portWidgetHeight_;
 
-        // TODO: defaults
-        QColor nodeColor_;
+        QColor nodeColor_ = {36, 98, 131};
         QString iconPath_;
 
         std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_;

@@ -144,7 +144,8 @@ bool nitro::NodeDockWidget::canQuitSafely() {
         return true;
     }
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Save changes before closing?", filename_,
+    reply = QMessageBox::question(this, "Save changes",
+                                  QString("Save changes before closing?\n%1").arg(filename_),
                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     if (reply == QMessageBox::Yes) {
         saveModel();

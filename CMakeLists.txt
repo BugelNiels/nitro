@@ -17,25 +17,21 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets OpenGL OpenGL
 find_package(OpenCV REQUIRED)
 find_package(OpenMP REQUIRED)
 
-add_subdirectory(external)
-
-# Set dependencies
 set(NITRO_INCLUDE_DIRS "")
-# TODO: set this in the external/ CMakeLists.txt
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/qt-value-slider)
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/nodeeditor)
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/CPP)
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/flip/cpp/common)
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/spline/src)
+set(EXTERNAL_LIBS "")
+add_subdirectory(external)
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
-
 
 set(NITRO_LIBS "")
 list(APPEND NITRO_LIBS ${OpenCV_LIBS})
 list(APPEND NITRO_LIBS Qt::Core)
 list(APPEND NITRO_LIBS Qt::Gui)
 list(APPEND NITRO_LIBS Qt::Widgets)
-list(APPEND NITRO_LIBS OpenMP::OpenMP_CXX)
+if (OpenMP_FOUND)
+    list(APPEND NITRO_LIBS OpenMP::OpenMP_CXX)
+else ()
+    message("OpenMP was not found.")
+endif ()
 
 include_directories(
         ${CMAKE_BINARY_DIR}
@@ -56,9 +52,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
-        QtNodes
-        valueSliders
-
+        ${EXTERNAL_LIBS}
         PRIVATE
         ${NITRO_LIBS}
         )
