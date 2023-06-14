@@ -53,6 +53,10 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     // Hard coded, but necessary unfortunately
     switch (codec) {
         case cv::COLOR_RGB2Lab: {
+
+            cv::Mat temp;
+            result.convertTo(temp, CV_8U);
+            temp.convertTo(result, CV_32F);
             std::vector<cv::Mat> channels;
             cv::split(result, channels);
             channels[0] = channels[0] / 100.0;
@@ -74,6 +78,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
             // These do not require any normalization
             break;
     }
+
 
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
