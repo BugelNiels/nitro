@@ -10,7 +10,7 @@ void nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     channels.resize(3);
     for (int i = 0; i < channels.size(); i++) {
         QString name = QString("Channel %1").arg(i + 1);
-        if (nodePorts.inputsPresent({name})) {
+        if (!nodePorts.inputsPresent({name})) {
             return;
         }
         auto inputImg = nodePorts.getInputImage(name);
