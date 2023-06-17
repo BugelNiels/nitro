@@ -22,7 +22,7 @@ namespace nitro {
 
     private:
         QMap<QString, QAction*> actions_;
-        QTreeWidgetItem *draggedItem_;
+        QTreeWidgetItem *draggedItem_ = nullptr;
     };
 
 

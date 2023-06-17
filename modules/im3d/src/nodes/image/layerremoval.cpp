@@ -85,7 +85,6 @@ static void find_peaks(std::vector<double> &importance, double width) {
         else
             break;
         if (impFac < 0.0002) {
-            qDebug() << "breaking";
             break;//Too small, then break
         }
         numIter++;

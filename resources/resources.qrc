@@ -35,5 +35,7 @@
         <file>icons/nodes/info.png</file>
         <file>icons/nodes/flip.png</file>
         <file>icons/nodes/rotate.png</file>
+        <file>icons/nodes/kernel.png</file>
+        <file>icons/nodes/ellipse.png</file>
     </qresource>
 </RCC>

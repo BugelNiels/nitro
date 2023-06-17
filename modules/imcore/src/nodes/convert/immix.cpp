@@ -2,6 +2,7 @@
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
+#include "util.hpp"
 
 #define INPUT_IMAGE_1 "Image 1"
 #define INPUT_IMAGE_2 "Image 2"
@@ -15,15 +16,17 @@ static cv::Mat blendImages(const cv::Mat &image1, const cv::Mat &image2, double 
     return blendedImage;
 }
 
-static cv::Mat addBlend(const cv::Mat &image1, const cv::Mat &image2) {
+static cv::Mat addBlend(const cv::Mat &image1, const cv::Mat &image2, const cv::Mat &mask) {
     cv::Mat blendedImage;
-    cv::add(image1, image2, blendedImage);
+    image1.copyTo(blendedImage);
+    cv::add(image1, image2, blendedImage, mask);
     return blendedImage;
 }
 
-static cv::Mat subtractBlend(const cv::Mat &image1, const cv::Mat &image2) {
+static cv::Mat subtractBlend(const cv::Mat &image1, const cv::Mat &image2, const cv::Mat &mask) {
     cv::Mat blendedImage;
-    cv::subtract(image1, image2, blendedImage);
+    image1.copyTo(blendedImage);
+    cv::subtract(image1, image2, blendedImage, mask);
     return blendedImage;
 }
 
@@ -31,26 +34,6 @@ static cv::Mat multiplyBlend(const cv::Mat &image1, const cv::Mat &image2) {
     cv::Mat blendedImage;
     cv::multiply(image1, image2, blendedImage);
     return blendedImage;
-}
-
-static cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage) {
-    int targetWidth = targetImage.cols;
-    int targetHeight = targetImage.rows;
-
-    // Create a rectangle for the ROI with the size of the target image
-    cv::Rect roi(0, 0, targetWidth, targetHeight);
-
-    // Adjust the ROI if the source image is larger than the target image
-    if (srcImage.cols > targetWidth || srcImage.rows > targetHeight) {
-        int offsetX = (srcImage.cols - targetWidth) / 2;
-        int offsetY = (srcImage.rows - targetHeight) / 2;
-        roi = cv::Rect(offsetX, offsetY, targetWidth, targetHeight);
-    }
-
-    // Crop the source image using the defined ROI
-    cv::Mat croppedImage = srcImage(roi).clone();
-
-    return croppedImage;
 }
 
 void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
@@ -65,13 +48,8 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
 
     cv::Mat in1;
     cv::Mat in2;
-    if (im1->size > im2->size) {
-        in2 = *im2;
-        in1 = cropToMatchSize(*im1, *im2);
-    } else {
-        in1 = *im1;
-        in2 = cropToMatchSize(*im2, *im1);
-    }
+    im1->copyTo(in1);
+    im2->copyTo(in2);
 
     if (im1->channels() == 1 && im2->channels() == 3) {
         cv::cvtColor(in1, in1, cv::COLOR_GRAY2BGR);
@@ -79,18 +57,24 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
     if (im1->channels() == 3 && im2->channels() == 1) {
         cv::cvtColor(in2, in2, cv::COLOR_GRAY2BGR);
     }
+    in2 = cropToMatchSize(in2, in1);
+
 
     cv::Mat result;
     switch (option) {
         case 0:
             result = blendImages(in1, in2, fac, 1 - fac);
             break;
-        case 1:
-            result = blendImages(in1, addBlend(in1, in2), 1 - fac, fac);
+        case 1: {
+            cv::Mat mask = createMask(im2->size, in1.size);
+            result = blendImages(in1, addBlend(in1, in2, mask), 1 - fac, fac);
             break;
-        case 2:
-            result = blendImages(in1, subtractBlend(in1, in2), 1 - fac, fac);
+        }
+        case 2: {
+            cv::Mat mask = createMask(im2->size, in1.size);
+            result = blendImages(in1, subtractBlend(in1, in2, mask), 1 - fac, fac);
             break;
+        }
         case 3:
             result = blendImages(in1, multiplyBlend(in1, in2), 1 - fac, fac);
             break;

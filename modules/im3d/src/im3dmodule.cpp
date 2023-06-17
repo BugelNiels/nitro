@@ -6,9 +6,9 @@
 #include "nodes/noderegistry.hpp"
 #include "gui/mainwindow.hpp"
 
-#include "nodes/operators/image/layerremoval.hpp"
-#include "nodes/operators/image/resample.hpp"
-#include "nodes/operators/output/surfaceviewalgorithm.hpp"
+#include "nodes/image/layerremoval.hpp"
+#include "nodes/image/resample.hpp"
+#include "nodes/output/surfaceviewalgorithm.hpp"
 
 namespace nitro::Im3D {
 
@@ -30,7 +30,7 @@ namespace nitro::Im3D {
     }
 
     void Im3DModule::registerImageNodes(NodeRegistry* registry) {
-        const QString category = "Image";
+        const QString category = "Quantization";
         registry->registerNode(LayerRemovalOperator::creator(category));
         registry->registerNode(ResampleOperator::creator(category));
     }

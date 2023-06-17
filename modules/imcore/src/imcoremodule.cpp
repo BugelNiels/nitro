@@ -10,25 +10,25 @@
 #include "nodes/noderegistry.hpp"
 #include "gui/mainwindow.hpp"
 
-#include "nodes/operators/convert/convert.hpp"
-#include "nodes/operators/convert/separate.hpp"
-#include "nodes/operators/convert/combine.hpp"
-#include "nodes/operators/convert/grayscale.hpp"
-#include "nodes/operators/convert/immix.hpp"
-#include "nodes/operators/convert/immath.hpp"
-#include "nodes/operators/image/kmeans.hpp"
-#include "nodes/operators/image/flip.hpp"
-#include "nodes/operators/image/quantize.hpp"
-#include "nodes/operators/output/imageviewalgorithm.hpp"
-#include "nodes/operators/filters/threshold.hpp"
-#include "nodes/operators/filters/boxfilter.hpp"
-#include "nodes/operators/filters/denoise.hpp"
-#include "nodes/operators/filters/gaussianblur.hpp"
-#include "nodes/operators/filters/bilateralfilter.hpp"
-#include "nodes/operators/convert/imresize.hpp"
-#include "nodes/operators/convert/iminfo.hpp"
-#include "nodes/operators/convert/imflip.hpp"
-#include "nodes/operators/convert/imrotate.hpp"
+#include "nodes/convert/convert.hpp"
+#include "nodes/convert/separate.hpp"
+#include "nodes/convert/combine.hpp"
+#include "nodes/convert/grayscale.hpp"
+#include "nodes/convert/immix.hpp"
+#include "nodes/convert/immath.hpp"
+#include "nodes/image/kmeans.hpp"
+#include "nodes/image/flip.hpp"
+#include "nodes/image/quantize.hpp"
+#include "nodes/output/imageviewalgorithm.hpp"
+#include "nodes/filters/threshold.hpp"
+#include "nodes/filters/boxfilter.hpp"
+#include "nodes/filters/denoise.hpp"
+#include "nodes/filters/gaussianblur.hpp"
+#include "nodes/filters/bilateralfilter.hpp"
+#include "src/nodes/util/imresize.hpp"
+#include "src/nodes/util/iminfo.hpp"
+#include "src/nodes/util/imflip.hpp"
+#include "src/nodes/util/imrotate.hpp"
 
 namespace nitro::ImCore {
 
@@ -40,8 +40,10 @@ namespace nitro::ImCore {
         registerInputNodes(registry);
         registerOutputNodes(registry, imageViewer_);
         registerConvertNodes(registry);
-        registerImageNodes(registry);
+        registerQuantizationNodes(registry);
         registerFilterNodes(registry);
+        registerComparisonNodes(registry);
+        registerUtilNodes(registry);
     }
 
     void ImCoreModule::registerDataTypes(NodeRegistry *registry) {
@@ -65,15 +67,24 @@ namespace nitro::ImCore {
         registry->registerNode(MathOperator::creator(category));
     }
 
-    void ImCoreModule::registerImageNodes(NodeRegistry *registry) {
-        const QString category = "Image";
+    void ImCoreModule::registerQuantizationNodes(NodeRegistry *registry) {
+        const QString category = "Quantization";
+        registry->registerNode(FlipOperator::creator(category));
+        registry->registerNode(QuantizeOperator::creator(category));
+        registry->registerNode(KMeansOperator::creator(category));
+    }
+
+    void ImCoreModule::registerUtilNodes(NodeRegistry *registry) {
+        const QString category = "Util";
         registry->registerNode(ImInfoOperator::creator(category));
         registry->registerNode(ResizeOperator::creator(category));
         registry->registerNode(ImFlipOperator::creator(category));
         registry->registerNode(ImRotateOperator::creator(category));
+    }
+
+    void ImCoreModule::registerComparisonNodes(NodeRegistry *registry) {
+        const QString category = "Compare";
         registry->registerNode(FlipOperator::creator(category));
-        registry->registerNode(QuantizeOperator::creator(category));
-        registry->registerNode(KMeansOperator::creator(category));
     }
 
     void ImCoreModule::registerInputNodes(NodeRegistry *registry) {

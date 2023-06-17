@@ -4,8 +4,11 @@
 #include "nodes/datatypes/imagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+#include "QtNodes/Definitions"
 
 #include <utility>
+
+#include <QDebug>
 
 namespace nitro {
     NodePorts::NodePorts() = default;
@@ -33,14 +36,14 @@ namespace nitro {
         outputMap_[name] = std::move(data);
     }
 
-    QtNodes::NodeDataType NodePorts::inDataType(int port) const {
+    QtNodes::NodeDataType NodePorts::inDataType(QtNodes::PortIndex port) const {
         if (port >= numInPorts()) {
             return QtNodes::InvalidData().type();
         }
         return inputList_[port].second;
     }
 
-    QtNodes::NodeDataType NodePorts::outDataType(int port) const {
+    QtNodes::NodeDataType NodePorts::outDataType(QtNodes::PortIndex port) const {
         if (port >= numOutPorts()) {
             return QtNodes::InvalidData().type();
         }
@@ -55,11 +58,11 @@ namespace nitro {
         return outputList_.size();
     }
 
-    const QString &NodePorts::inPortName(int port) const {
+    const QString &NodePorts::inPortName(QtNodes::PortIndex port) const {
         return inputList_[port].first;
     }
 
-    const QString &NodePorts::outPortName(int port) const {
+    const QString &NodePorts::outPortName(QtNodes::PortIndex port) const {
         return outputList_[port].first;
     }
 
@@ -71,27 +74,23 @@ namespace nitro {
         return inputMap_.at(name);
     }
 
-    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(int portIndex) const {
+    std::shared_ptr<QtNodes::NodeData> NodePorts::getInData(QtNodes::PortIndex portIndex) const {
         return getInData(inPortName(portIndex));
     }
 
-    std::shared_ptr<QtNodes::NodeData> NodePorts::getOutData(int portIndex) {
+    std::shared_ptr<QtNodes::NodeData> NodePorts::getOutData(QtNodes::PortIndex portIndex) {
         return getOutData(outPortName(portIndex));
     }
 
-    void NodePorts::setOutputType(int port, QtNodes::NodeDataType type) {
-        if (port >= numOutPorts()) {
-            std::cerr << "setOutputType: Invalid port index for output data setting. Port: " << port << "Output size: "
-                      << outputList_.size() << std::endl;
+    void NodePorts::setOutputType(QtNodes::PortIndex port, QtNodes::NodeDataType type) {
+        if (port == QtNodes::InvalidPortIndex || port >= numOutPorts()) {
             return;
         }
         outputList_[port].second = std::move(type);
     }
 
-    void NodePorts::setInData(int port, std::shared_ptr<QtNodes::NodeData> data) {
-        if (port >= numInPorts()) {
-            std::cerr << "setInData: Invalid port index for input data setting. Port: " << port << "Input size: "
-                      << inputList_.size() << std::endl;
+    void NodePorts::setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data) {
+        if (port == QtNodes::InvalidPortIndex || port >= numInPorts()) {
             return;
         }
         inputMap_[inPortName(port)] = std::move(data);

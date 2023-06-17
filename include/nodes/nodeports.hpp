@@ -5,6 +5,7 @@
 #include <iostream>
 #include <map>
 #include <opencv2/core/mat.hpp>
+#include "QtNodes/Definitions"
 
 namespace QtNodes {
     class NodeData;
@@ -25,21 +26,21 @@ namespace nitro {
 
         ~NodePorts();
 
-        [[nodiscard]] const QString &inPortName(int port) const;
+        [[nodiscard]] const QString &inPortName(QtNodes::PortIndex port) const;
 
-        [[nodiscard]] const QString &outPortName(int port) const;
+        [[nodiscard]] const QString &outPortName(QtNodes::PortIndex port) const;
 
-        [[nodiscard]] QtNodes::NodeDataType inDataType(int port) const;
+        [[nodiscard]] QtNodes::NodeDataType inDataType(QtNodes::PortIndex port) const;
 
-        [[nodiscard]] QtNodes::NodeDataType outDataType(int port) const;
+        [[nodiscard]] QtNodes::NodeDataType outDataType(QtNodes::PortIndex port) const;
 
         [[nodiscard]] int numInPorts() const;
 
         [[nodiscard]] int numOutPorts() const;
 
-        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(int portIndex) const;
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(QtNodes::PortIndex portIndex) const;
 
-        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(int portIndex);
+        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(QtNodes::PortIndex portIndex);
 
         [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(const QString &name) const;
 
@@ -74,9 +75,9 @@ namespace nitro {
 
         void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 
-        void setOutputType(int port, QtNodes::NodeDataType type);
+        void setOutputType(QtNodes::PortIndex port, QtNodes::NodeDataType type);
 
-        void setInData(int port, std::shared_ptr<QtNodes::NodeData> data);
+        void setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data);
 
     private:
         std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_;

@@ -249,3 +249,33 @@ bool nitro::isGrayscale(const cv::Mat &img) {
     }
     return true;
 }
+
+
+cv::Mat nitro::cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage) {
+    int targetWidth = targetImage.cols;
+    int targetHeight = targetImage.rows;
+
+    int cropWidth = std::min(targetWidth, srcImage.cols);
+    int cropHeight = std::min(targetHeight, srcImage.rows);
+
+    cv::Rect croppedRect(0, 0, cropWidth, cropHeight);
+
+    cv::Mat canvas;
+    targetImage.copyTo(canvas);
+    srcImage(croppedRect).copyTo(canvas(croppedRect));
+    return canvas;
+}
+
+cv::Mat nitro::createMask(const cv::MatSize& srcSize, const cv::MatSize &targetSize) {
+    int targetWidth = targetSize[1];
+    int targetHeight = targetSize[0];
+
+    int cropWidth = std::min(targetWidth, srcSize[1]);
+    int cropHeight = std::min(targetHeight, srcSize[0]);
+
+    cv::Rect croppedRect(0, 0, cropWidth, cropHeight);
+
+    cv::Mat mask(targetHeight, targetWidth, CV_8UC1, cv::Scalar(0));
+    mask(croppedRect).setTo(cv::Scalar(1));
+    return mask;
+}

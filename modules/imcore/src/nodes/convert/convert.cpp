@@ -53,7 +53,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     // Hard coded, but necessary unfortunately
     switch (codec) {
         case cv::COLOR_RGB2Lab: {
-
+            // Temp fix to clamp number of gray levels
             cv::Mat temp;
             result.convertTo(temp, CV_8U);
             temp.convertTo(result, CV_32F);
@@ -66,6 +66,9 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
             break;
         }
         case cv::COLOR_RGB2Luv: {
+            cv::Mat temp;
+            result.convertTo(temp, CV_8U);
+            temp.convertTo(result, CV_32F);
             std::vector<cv::Mat> channels;
             cv::split(result, channels);
             channels[0] = channels[0] / 100.0;

@@ -61,6 +61,7 @@ target_link_libraries(${PROJECT_NAME}
 set(ENABLED_MODULES
         ImCore
         Im3D
+        ImExtra
         )
 
 include(cmake/config.cmake)

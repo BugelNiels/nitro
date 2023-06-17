@@ -13,4 +13,8 @@ namespace nitro {
     int getMaxValue(const cv::Mat &mat);
 
     bool isGrayscale(const cv::Mat &img);
+
+    cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage);
+    cv::Mat createMask(const cv::MatSize& srcSize, const cv::MatSize &targetSize);
+
 } // nitro

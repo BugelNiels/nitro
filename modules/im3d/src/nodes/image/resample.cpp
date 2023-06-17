@@ -1,7 +1,7 @@
 #include "resample.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/operators/image/resampler/sampler.hpp"
-#include "nodes/operators/image/resampler/cubicsampler.hpp"
+#include "src/nodes/image/resampler/sampler.hpp"
+#include "src/nodes/image/resampler/cubicsampler.hpp"
 #include "util.hpp"
 #include <opencv2/imgproc.hpp>
 

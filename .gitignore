@@ -64,3 +64,12 @@ CatmarkSubdiv
 *.vrb
 
 saves/
+appdir/AppRun
+appdir/.DirIcon
+appdir/conicsubdiv.desktop
+appdir/usr/translations/
+appdir/usr/plugins/
+appdir/usr/lib/
+appdir/usr/bin/
+appdir/usr/share/doc
+*.AppImage
