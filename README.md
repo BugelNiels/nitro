@@ -1,13 +1,33 @@
+<a name="readme-top"></a>
+
+[![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg?style=for-the-badge)]()
+[![Github All Releases](https://img.shields.io/github/downloads/BugelNiels/nitro/total.svg?style=for-the-badge)]()
+[![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg?style=for-the-badge)]()
+[![license](https://img.shields.io/github/license/bugelniels/nitro.svg?style=for-the-badge)]()
+[![follow](https://img.shields.io/github/followers/bugelniels.svg?style=for-the-badge&label=Follow&maxAge=2592000)]()
+![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555]https://linkedin.com/in/nielsbugel)
+
 <br />
-<p align="center">
-  <h1 align="center">NITRO</h1>
+<div align="center">
+<h1 align="center">NITRO</h3>
 
   <p align="center">
-    Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques. 
+    Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques.
+    <br />
+    <br />
+    <br />
+    <a href="">Latest Release</a>
+    ·
+    <a href="https://github.com/BugelNiels/nitro/INSTALL.md">Install Instructions</a>
+    ·
+    <a href="https://github.com/BugelNiels/nitro/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/BugelNiels/nitro/issues">Request Feature</a>
   </p>
-</p>
+</div>
 
-![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg) ![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg) ![license](https://img.shields.io/github/license/bugelniels/nitro.svg?cachebust=1) ![follow](https://img.shields.io/github/followers/bugelniels.svg?style=social&label=Follow&maxAge=2592000)
+
+![Node Editor](screenshots/front.png)
 
 ## About the project
 
@@ -18,9 +38,10 @@ this, see [Project Structure](#project-structure). The UI was inspired by
 Blender's [Shader Editor](https://docs.blender.org/manual/en/latest/editors/shader_editor.html)
 
 The project was originally developed for my Master thesis at the University of Groningen. That is also the origin of the
-name NITRO: Niels' Image-processing Thesis on Reconstruction Operations
+name NITRO: Niels' Image-processing Thesis on Reconstruction Operations.
 
-![Node Editor](screenshots/demo.gif)
+To get a local copy up and running, download the latest release. Alternatively, read through
+the [Install Instructions](INSTALL.md) to build the project from the source code.
 
 ## Disclaimer
 
@@ -28,105 +49,30 @@ The project is still in development and can be considered in early-alpha. As suc
 bugs and adding new features.
 If you encounter any, please feel free to create an issue.
 
-## Getting Started
+## Features
 
-These instructions will get you a copy of the project up and running on your local machine.
+- Flexible Node system with support for numerous image processing techniques
+- Supports both grayscale and color images
+- Easily extendable with new nodes and data types
+- Module system configurable at compile time
+- Image Viewer widget
+- 3D Image Viewer widget
+- Saving and loading support
+- Undo/Redo support
+- Dark Mode and Light Mode
 
-### 1. Prerequisites
+![Node Editor](screenshots/demo.gif)
 
-- [CMake 3.9+](https://cmake.org/)
-- [Qt6](https://www.qt.io/product/qt6)
-- [OpenGL 4.1+](https://www.opengl.org/)
-- [OpenCV 4](https://opencv.org/)
+## Controls
 
-#### 1.1 Install Instructions
+Nodes can be spawned via the side menu (drag and drop). Connections can be made between nodes via drag and drop as well.
 
-**Ubuntu:**
+A few useful shortcuts:
 
-- CMake
-  ```shell
-  sudo apt install cmake
-  ```
-- Qt6
-  ```shell
-  sudo apt install qt6-base-dev
-  ```
-- OpenCV 4
-  ```shell
-  sudo apt install libopencv-dev
-  ```
-- OpenGL.
-  Should be supported by default. Might need to install `mesa-utils`
-  ```shell
-  sudo apt install mesa-utils
-  ```
-
-**Mac:**
-
-- CMake
-  ```shell
-  brew install cmake
-  ```
-- Qt6
-  ```shell
-  brew install qt
-  ```
-- OpenCV 4
-  ```shell
-  brew install opencv
-  ```
-
-> If on Windows, good luck.
-
-#### 1.2 Dependencies
-
-These dependencies are used by NITRO and are included as Git submodules. As such, these don't need to be manually
-installed.
-
-- [QtNodes](https://github.com/BugelNiels/nodeeditor)
-    - A custom fork of the [QtNodes](https://github.com/paceholder/nodeeditor) repo. This fork was specifically created
-      to work with NITRO.
-- [Qt Value Sliders](https://github.com/BugelNiels/qt-value-slider)
-    - A custom widget that allows for user-friendly control of numerical inputs. Resembles the widgets used in Blender
-      to select numerical values.
-- [FLIP](https://github.com/NVlabs/flip)
-    - A state-of-the-art image comparison algorithm developed by NVIDIA.
-- [Spline](https://github.com/ttk592/spline/)
-    - Small library that provides cubic spline interpolation functionality.
-
-### 2. Installing
-
-To set up the repository locally, clone the repository:
-
-```shell
-git clone --recurse-submodules git@github.com:BugelNiels/nitro.git
-```
-
-In case `--recurse-submodules` was not used, you can initialize the submodules using:
-
-```shell
-git submodule init
-git submodule update
-```
-
-### 3. Building & Running
-
-To build the project, can execute the `build.sh` script and run the resulting binary:
-
-```shellell
-sh build.sh
-./bin/nitro
-```
-
-Alternatively, you can manually build and run the program:
-
-```shell
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make -j8
-./nitro
-```
+- Holding `ctrl+shift` while clicking on a node will spawn a viewer node for said node.
+- Pressing `shift+a` will open a menu that allows for node spawning.
+- Selecting two nodes and pressing `f` will attempt to create a connection between them.
+- Pressing `shift+f` will enter first person mode in the 3D viewer dock.
 
 ## Project Structure
 
