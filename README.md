@@ -9,13 +9,14 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/BugelNiels/nitro">
+  <a href="https://bugelniels.github.io/nitro/">
     <img src="appdir/logo.png" alt="Logo" width="128" height="128">
   </a>
 <h3 align="center" style="padding-top: 0">NITRO</h3>
   <p align="center">
     Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques.
     <br />
+    <a href="https://bugelniels.github.io/nitro/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/BugelNiels/nitro/releases/latest">Latest Release</a>
@@ -50,7 +51,7 @@ chmod u+x nitro-x86_64.AppImage
 ./nitro-x86_64.AppImage
 ```
 
-Alternatively, you can read through the [Install Instructions](docs/INSTALL.md) to build the project from the source code.
+Alternatively, you can read through the [Installation Instructions](docs/INSTALL.md) to build the project from the source code.
 
 ## Disclaimer
 
@@ -88,5 +89,5 @@ A few useful shortcuts:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](docs/LICENCE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](docs/LICENSE.md) file for details
 
