@@ -25,32 +25,32 @@
 var NAVTREE =
 [
   [ "NITRO", "index.html", [
-    [ "Contributing Guidelines", "md_docs_CONTRIBUTING.html", [
-      [ "About the project", "index.html#autotoc_md0", null ],
-      [ "Disclaimer", "index.html#autotoc_md1", null ],
-      [ "Features", "index.html#autotoc_md2", null ],
-      [ "Controls", "index.html#autotoc_md3", null ],
-      [ "Demo", "index.html#autotoc_md4", null ],
-      [ "License", "index.html#autotoc_md5", null ],
-      [ "Table of Contents", "md_docs_CONTRIBUTING.html#autotoc_md7", null ],
-      [ "Contributing", "md_docs_CONTRIBUTING.html#autotoc_md8", [
-        [ "How Can I Contribute?", "md_docs_CONTRIBUTING.html#autotoc_md9", null ],
-        [ "Submitting Contributions", "md_docs_CONTRIBUTING.html#autotoc_md10", null ],
-        [ "Development Setup", "md_docs_CONTRIBUTING.html#autotoc_md11", null ],
-        [ "Coding Guidelines", "md_docs_CONTRIBUTING.html#autotoc_md12", null ]
+    [ "Contributing Guidelines", "d5/d0d/md_docs_CONTRIBUTING.html", [
+      [ "Documentation", "index.html#autotoc_md8", null ],
+      [ "About the project", "index.html#autotoc_md9", null ],
+      [ "Disclaimer", "index.html#autotoc_md10", null ],
+      [ "Features", "index.html#autotoc_md11", null ],
+      [ "Controls", "index.html#autotoc_md12", null ],
+      [ "License", "index.html#autotoc_md13", null ],
+      [ "Table of Contents", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md1", null ],
+      [ "Contributing", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md2", [
+        [ "How Can I Contribute?", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md3", null ],
+        [ "Submitting Contributions", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md4", null ],
+        [ "Development Setup", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md5", null ],
+        [ "Coding Guidelines", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md6", null ]
       ] ],
-      [ "License", "md_docs_CONTRIBUTING.html#autotoc_md13", null ]
+      [ "License", "d5/d0d/md_docs_CONTRIBUTING.html#autotoc_md7", null ]
     ] ],
-    [ "Installing", "md_docs_INSTALL.html", [
-      [ "1. Downloading the Repository", "md_docs_INSTALL.html#autotoc_md15", null ],
-      [ "2. Prerequisites", "md_docs_INSTALL.html#autotoc_md16", [
-        [ "2.1 Install Instructions", "md_docs_INSTALL.html#autotoc_md17", null ],
-        [ "2.2 Dependencies", "md_docs_INSTALL.html#autotoc_md18", null ]
+    [ "Installing", "df/d06/md_docs_INSTALL.html", [
+      [ "1. Downloading the Repository", "df/d06/md_docs_INSTALL.html#autotoc_md15", null ],
+      [ "2. Prerequisites", "df/d06/md_docs_INSTALL.html#autotoc_md16", [
+        [ "2.1 Install Instructions", "df/d06/md_docs_INSTALL.html#autotoc_md17", null ],
+        [ "2.2 Dependencies", "df/d06/md_docs_INSTALL.html#autotoc_md18", null ]
       ] ],
-      [ "3. Building & Running", "md_docs_INSTALL.html#autotoc_md19", null ]
+      [ "3. Building & Running", "df/d06/md_docs_INSTALL.html#autotoc_md19", null ]
     ] ],
-    [ "LICENSE", "md_docs_LICENSE.html", null ],
-    [ "Project Structure", "md_docs_PROJECT_STRUCTURE.html", null ],
+    [ "LICENSE", "d5/d74/md_docs_LICENSE.html", null ],
+    [ "Project Structure", "d6/d44/md_docs_PROJECT_STRUCTURE.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -69,7 +69,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classnitro_1_1RenderView.html#afbb384978d01165ce9a2eeb42b004df6"
+"da/dd1/classnitro_1_1NitroNodeBuilder.html#a8708a13522cf69c185c6660eab8d9fbd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

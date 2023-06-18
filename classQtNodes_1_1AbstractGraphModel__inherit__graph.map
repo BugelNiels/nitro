@@ -1,8 +1,0 @@
-<map id="QtNodes::AbstractGraphModel" name="QtNodes::AbstractGraphModel">
-<area shape="rect" id="node1" title=" " alt="" coords="293,80,511,107"/>
-<area shape="rect" id="node3" href="$classDynamicPortsModel.html" title=" " alt="" coords="5,155,159,181"/>
-<area shape="rect" id="node4" href="$classQtNodes_1_1DataFlowGraphModel.html" title=" " alt="" coords="183,155,410,181"/>
-<area shape="rect" id="node6" href="$classSimpleGraphModel.html" title=" " alt="" coords="434,155,581,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="365,5,439,32"/>
-<area shape="rect" id="node5" href="$classDataFlowModel.html" title=" " alt="" coords="235,229,359,256"/>
-</map>

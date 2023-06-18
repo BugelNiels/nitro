@@ -1,6 +1,0 @@
-<map id="QtNodes::GraphicsView" name="QtNodes::GraphicsView">
-<area shape="rect" id="node1" title="A central view able to render objects from BasicGraphicsScene." alt="" coords="30,80,205,107"/>
-<area shape="rect" id="node3" href="$classnitro_1_1NodeGraphicsView.html" title=" " alt="" coords="26,155,209,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="57,5,178,32"/>
-<area shape="rect" id="node4" href="$classnitro_1_1ImageNodeGraphicsView.html" title=" " alt="" coords="5,229,229,256"/>
-</map>

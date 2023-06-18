@@ -1,5 +1,0 @@
-<map id="QtNodes::DataFlowGraphicsScene" name="QtNodes::DataFlowGraphicsScene">
-<area shape="rect" id="node1" title="An advanced scene working with data&#45;propagating graphs." alt="" coords="11,155,217,196"/>
-<area shape="rect" id="node2" href="$classQtNodes_1_1BasicGraphicsScene.html" title="An instance of QGraphicsScene, holds connections and nodes." alt="" coords="5,80,223,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="50,5,178,32"/>
-</map>

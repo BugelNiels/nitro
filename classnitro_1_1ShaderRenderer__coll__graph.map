@@ -1,5 +1,0 @@
-<map id="nitro::ShaderRenderer" name="nitro::ShaderRenderer">
-<area shape="rect" id="node1" title="The MeshRenderer class is responsible for rendering a mesh. Can render any arbitrary mesh." alt="" coords="5,171,169,197"/>
-<area shape="rect" id="node2" href="$classnitro_1_1Renderer.html" title="The Renderer class represents a generic renderer class. The class is essentially abstract and should ..." alt="" coords="28,95,147,121"/>
-<area shape="rect" id="node3" href="$structnitro_1_1Settings.html" title=" " alt="" coords="31,5,144,32"/>
-</map>
