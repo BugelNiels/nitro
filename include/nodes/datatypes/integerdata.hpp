@@ -23,6 +23,10 @@ namespace nitro {
 
         [[nodiscard]] int value() const { return val_; }
 
+        [[nodiscard]] QString getDescription() const override  {
+            return QString::number(val_);
+        }
+
     private:
         int val_ = 0;
     };

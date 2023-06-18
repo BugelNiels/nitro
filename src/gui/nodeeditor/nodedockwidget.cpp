@@ -23,6 +23,7 @@
 #include <QProgressBar>
 
 #include <QUndoStack>
+#include <QPushButton>
 
 nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
         : QDockWidget(window),
@@ -43,8 +44,6 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
 
     auto *wrapper = new QWidget(horLayout);
     auto *menuVertLayout = new QVBoxLayout();
-
-
     searchBar_ = new QLineEdit(this);
     searchBar_->setPlaceholderText("Search");
     searchBar_->adjustSize();
@@ -57,7 +56,6 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
     searchHorLayout->addWidget(searchLabel);
     searchHorLayout->addWidget(searchBar_);
     menuVertLayout->addLayout(searchHorLayout);
-
 
     nodeTreeWidget_ = initSideMenu();
     menuVertLayout->addWidget(nodeTreeWidget_);
@@ -103,6 +101,7 @@ bool nitro::NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString 
 
 QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
     auto *treeWidget = new nitro::DraggableTreeWidget(this);
+    treeWidget->setStyleSheet("QTreeView::item { padding: 5px; }");
     treeWidget->setHeaderHidden(true);
     auto nodeMenu = view_->initNodeMenu();
     for (auto *subMen: nodeMenu->actions()) {
@@ -241,4 +240,6 @@ void nitro::NodeDockWidget::updateGraphicsView() {
     for (auto &item: dataFlowGraphModel_->allNodeIds()) {
         dataFlowGraphModel_->nodeUpdated(item);
     }
+
+    nodeTreeWidget_->setStyleSheet("QTreeView::item { padding: 5px; }");
 }

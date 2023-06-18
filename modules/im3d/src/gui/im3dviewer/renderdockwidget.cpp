@@ -8,7 +8,6 @@
 nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
         : QDockWidget(window),
           renderView_(renderView) {
-    setHidden(true);
     setWindowTitle("3D Image Viewer");
     setTitleBarWidget(window->buildDockIcon(":/icons/surface_visualizer.png"));
 

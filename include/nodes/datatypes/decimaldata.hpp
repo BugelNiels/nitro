@@ -22,6 +22,10 @@ namespace nitro {
 
         [[nodiscard]] double value() const { return val_; }
 
+        [[nodiscard]] QString getDescription() const override  {
+            return QString::number(val_, 'f', 3);
+        }
+
     private:
         double val_ = 0;
     };

@@ -32,6 +32,10 @@ namespace nitro {
 
         [[nodiscard]] std::shared_ptr<cv::Mat> image() const { return image_; }
 
+        [[nodiscard]] QString getDescription() const override  {
+            return "";
+        }
+
     private:
         std::shared_ptr<cv::Mat> image_;
     };
