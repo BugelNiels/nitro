@@ -1,0 +1,7 @@
+<map id="_EXRMultiPartHeader" name="_EXRMultiPartHeader">
+<area shape="rect" id="node1" title=" " alt="" coords="139,199,299,225"/>
+<area shape="rect" id="node2" href="$struct__EXRHeader.html" title=" " alt="" coords="167,109,270,136"/>
+<area shape="rect" id="node3" href="$struct__EXRChannelInfo.html" title=" " alt="" coords="5,5,139,32"/>
+<area shape="rect" id="node4" href="$struct__EXRAttribute.html" title=" " alt="" coords="163,5,275,32"/>
+<area shape="rect" id="node5" href="$struct__EXRBox2i.html" title=" " alt="" coords="326,5,418,32"/>
+</map>

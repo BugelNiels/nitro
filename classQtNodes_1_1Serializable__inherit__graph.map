@@ -1,0 +1,21 @@
+<map id="QtNodes::Serializable" name="QtNodes::Serializable">
+<area shape="rect" id="node1" title=" " alt="" coords="5,259,168,285"/>
+<area shape="rect" id="node2" href="$classQtNodes_1_1DataFlowGraphModel.html" title=" " alt="" coords="216,120,443,147"/>
+<area shape="rect" id="node4" href="$classQtNodes_1_1NodeDelegateModel.html" title=" " alt="" coords="220,284,439,311"/>
+<area shape="rect" id="node3" href="$classDataFlowModel.html" title=" " alt="" coords="526,5,650,32"/>
+<area shape="rect" id="node5" href="$classImageLoaderModel.html" title=" " alt="" coords="515,56,661,83"/>
+<area shape="rect" id="node6" href="$classImageShowModel.html" title=" " alt="" coords="519,107,657,133"/>
+<area shape="rect" id="node7" href="$classMathOperationDataModel.html" title=" " alt="" coords="493,157,683,184"/>
+<area shape="rect" id="node12" href="$classMyDataModel.html" title=" " alt="" coords="531,208,645,235"/>
+<area shape="rect" id="node13" href="$classNaiveDataModel.html" title=" " alt="" coords="523,259,653,285"/>
+<area shape="rect" id="node14" href="$classNumberDisplayDataModel.html" title=" " alt="" coords="491,309,685,336"/>
+<area shape="rect" id="node15" href="$classNumberSourceDataModel.html" title=" " alt="" coords="493,360,683,387"/>
+<area shape="rect" id="node16" href="$classSimpleDataModel.html" title=" " alt="" coords="519,411,657,437"/>
+<area shape="rect" id="node17" href="$classTextDisplayDataModel.html" title=" " alt="" coords="503,461,673,488"/>
+<area shape="rect" id="node18" href="$classTextSourceDataModel.html" title=" " alt="" coords="506,512,670,539"/>
+<area shape="rect" id="node19" href="$classnitro_1_1NitroNode.html" title=" " alt="" coords="525,563,651,589"/>
+<area shape="rect" id="node8" href="$classAdditionModel.html" title=" " alt="" coords="751,81,867,108"/>
+<area shape="rect" id="node9" href="$classDivisionModel.html" title=" " alt="" coords="751,132,866,159"/>
+<area shape="rect" id="node10" href="$classMultiplicationModel.html" title=" " alt="" coords="733,183,884,209"/>
+<area shape="rect" id="node11" href="$classSubtractionModel.html" title=" " alt="" coords="741,233,877,260"/>
+</map>

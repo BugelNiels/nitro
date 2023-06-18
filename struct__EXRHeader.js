@@ -1,0 +1,27 @@
+var struct__EXRHeader =
+[
+    [ "channels", "struct__EXRHeader.html#aa0e1fe4ddb92ec7f0f9e0395c85f344e", null ],
+    [ "chunk_count", "struct__EXRHeader.html#af6057c3c794eb209b73a65016cf1aa5b", null ],
+    [ "compression_type", "struct__EXRHeader.html#a159232dbf8187dbae7fe835188435ef5", null ],
+    [ "custom_attributes", "struct__EXRHeader.html#a36da9e518e6aed70b30600ffd5c40241", null ],
+    [ "data_window", "struct__EXRHeader.html#a3c92d089973aa7432b1225a03752ebdd", null ],
+    [ "display_window", "struct__EXRHeader.html#a6d792eb21f53a9c10b5040f140e688f0", null ],
+    [ "header_len", "struct__EXRHeader.html#ae205345923a9029be89ce70b44723743", null ],
+    [ "line_order", "struct__EXRHeader.html#a494bb3ac9dbb1033354d5e8c304443d8", null ],
+    [ "long_name", "struct__EXRHeader.html#a1118e4e9fedca54184cdc4cec6a24e8d", null ],
+    [ "multipart", "struct__EXRHeader.html#aa054302e7f981a172e16b087c4089812", null ],
+    [ "name", "struct__EXRHeader.html#ac3907371b611c2ed76a72a5862734482", null ],
+    [ "non_image", "struct__EXRHeader.html#a42282a695dc0db3479ff42465f6600a0", null ],
+    [ "num_channels", "struct__EXRHeader.html#acc5b0db8a42316771fbb9c0bac5cb883", null ],
+    [ "num_custom_attributes", "struct__EXRHeader.html#abd7ade32504f6aded8f698959c69b368", null ],
+    [ "pixel_aspect_ratio", "struct__EXRHeader.html#ac4b32fbae2ec5402b3df14d4264dd393", null ],
+    [ "pixel_types", "struct__EXRHeader.html#a8b06e3e463f543456ece2fd5510503b7", null ],
+    [ "requested_pixel_types", "struct__EXRHeader.html#a35952379943c01be66fb4b663dd77158", null ],
+    [ "screen_window_center", "struct__EXRHeader.html#af0689fc02efa683705301add0327e96b", null ],
+    [ "screen_window_width", "struct__EXRHeader.html#ad5ef27db3931640273165ec28670adbc", null ],
+    [ "tile_level_mode", "struct__EXRHeader.html#a6c8e694855b6d4ddce9ed1c5aa6a9dbf", null ],
+    [ "tile_rounding_mode", "struct__EXRHeader.html#a47345282e3b13f099bcf7d5c04aef214", null ],
+    [ "tile_size_x", "struct__EXRHeader.html#afd8cd1b6471bf3efada4051eea6c83d7", null ],
+    [ "tile_size_y", "struct__EXRHeader.html#a37fe90260dff4f573f7a5d127a6d92bc", null ],
+    [ "tiled", "struct__EXRHeader.html#a7d400d9472940e1ec71327bb42512059", null ]
+];

@@ -1,0 +1,11 @@
+<map id="nitro::NodeGraphicsView" name="nitro::NodeGraphicsView">
+<area shape="rect" id="node1" title=" " alt="" coords="280,247,463,273"/>
+<area shape="rect" id="node2" href="$classQtNodes_1_1GraphicsView.html" title="A central view able to render objects from BasicGraphicsScene." alt="" coords="5,157,180,184"/>
+<area shape="rect" id="node3" title=" " alt="" coords="19,81,140,108"/>
+<area shape="rect" id="node4" href="$classQtNodes_1_1DataFlowGraphModel.html" title=" " alt="" coords="258,157,485,184"/>
+<area shape="rect" id="node5" href="$classQtNodes_1_1AbstractGraphModel.html" title=" " alt="" coords="165,81,383,108"/>
+<area shape="rect" id="node6" title=" " alt="" coords="237,5,311,32"/>
+<area shape="rect" id="node7" href="$classQtNodes_1_1Serializable.html" title=" " alt="" coords="407,81,570,108"/>
+<area shape="rect" id="node8" href="$classQtNodes_1_1BasicGraphicsScene.html" title="An instance of QGraphicsScene, holds connections and nodes." alt="" coords="536,157,753,184"/>
+<area shape="rect" id="node9" title=" " alt="" coords="594,81,722,108"/>
+</map>
