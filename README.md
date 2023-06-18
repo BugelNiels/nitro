@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/BugelNiels/nitro">
-    <img src="appdir/logo256x256.png" alt="Logo" width="128" height="128">
+    <img src="appdir/logo.png" alt="Logo" width="128" height="128">
   </a>
 <h3 align="center" style="padding-top: 0">NITRO</h3>
   <p align="center">
