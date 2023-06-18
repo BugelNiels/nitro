@@ -49,8 +49,8 @@ var NAVTREE =
       ] ],
       [ "3. Building & Running", "df/d06/md_docs_INSTALL.html#autotoc_md19", null ]
     ] ],
-    [ "LICENSE", "d5/d74/md_docs_LICENSE.html", null ],
     [ "Project Structure", "d6/d44/md_docs_PROJECT_STRUCTURE.html", null ],
+    [ "LICENSE", "da/d19/md_LICENSE.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
