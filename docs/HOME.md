@@ -1,27 +1,19 @@
 <a name="readme-top"></a>
 
-[![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/stargazers)
-[![Github All Releases](https://img.shields.io/github/downloads/BugelNiels/nitro/total.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/releases/latest)
-[![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/watchers)
-[![license](https://img.shields.io/github/license/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/blob/main/LICENCE.md)
-[![follow](https://img.shields.io/github/followers/bugelniels.svg?style=for-the-badge&label=Follow&maxAge=2592000)](https://github.com/BugelNiels?tab=followers)
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://nl.linkedin.com/in/nielsbugel)
-
 <br />
 <div align="center">
   <a href="https://bugelniels.github.io/nitro/">
-    <img src="appdir/logo.png" alt="Logo" width="128" height="128">
+    <img src="logo.png" alt="Logo" width="128" height="128">
   </a>
 <h3 align="center" style="padding-top: 0">NITRO</h3>
   <p align="center">
     Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques.
     <br />
-    <a href="https://bugelniels.github.io/nitro/"><strong>Explore the docs »</strong></a>
-    <br />
+    <a href="https://github.com/BugelNiels/nitro"><strong>Repository Home Page »</strong></a>
     <br />
     <a href="https://github.com/BugelNiels/nitro/releases/latest">Latest Release</a>
     ·
-    <a href="https://github.com/BugelNiels/nitro/blob/main/docs/INSTALL.md">Install Instructions</a>
+    <a href="https://github.com/BugelNiels/nitro/blob/main/INSTALL.md">Install Instructions</a>
     ·
     <a href="https://github.com/BugelNiels/nitro/issues">Report Bug</a>
     ·
@@ -30,6 +22,10 @@
 </div>
 
 ![Node Editor](screenshots/front.png)
+
+## Documentation
+
+Welcome to the documentation page of NITRO. You can find all relevant information in the menu on the left.
 
 ## About the project
 
@@ -51,7 +47,7 @@ chmod u+x nitro-x86_64.AppImage
 ./nitro-x86_64.AppImage
 ```
 
-Alternatively, you can read through the [Installation Instructions](docs/INSTALL.md) to build the project from the source code.
+Alternatively, you can read through the [Installation Instructions](INSTALL.md) to build the project from the source code.
 
 ## Disclaimer
 
@@ -81,13 +77,7 @@ A few useful shortcuts:
 - Selecting two nodes and pressing `f` will attempt to create a connection between them.
 - Pressing `shift+f` will enter first person mode in the 3D viewer dock.
 
-## Demo
-
-![Node Editor](screenshots/demo.gif)
-![Image Viewer](screenshots/imviewer.gif)
-![3D Viewer](screenshots/3dviewer.gif)
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](docs/LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 

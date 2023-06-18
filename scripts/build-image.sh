@@ -22,7 +22,7 @@ if [[ $? -eq 0 ]]; then
     wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     chmod u+x linuxdeployqt-continuous-x86_64.AppImage
   fi
-  ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -unsupported-allow-new-glibc -appimage
+  ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
   cd scripts || exit
 else
   cd .. || exit

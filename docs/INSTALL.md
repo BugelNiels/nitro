@@ -28,7 +28,7 @@ git submodule update
 
 ### 2.1 Install Instructions
 
-Note that a plain [Ubuntu docker image](docker/ubuntu.Dockerfile) can be found in the [docker/](docker) directory.
+Note that a plain [Ubuntu docker image](../docker/ubuntu.Dockerfile) can be found in the [docker/](../docker) directory.
 
 **Ubuntu:**
 
