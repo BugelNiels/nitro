@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd ..
+
+doxygen docs/Doxyfile
+
 # Exit if any command fails
 set -e
 
