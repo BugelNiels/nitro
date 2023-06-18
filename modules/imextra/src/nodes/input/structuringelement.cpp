@@ -1,4 +1,4 @@
-#include "kernel.hpp"
+#include "structuringelement.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include <opencv2/imgproc.hpp>

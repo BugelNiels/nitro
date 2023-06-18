@@ -38,7 +38,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
         return builder.
                 withOperator(std::make_unique<nitro::ResizeOperator>())->
                 withIcon("resize.png")->
-                withNodeColor({36, 98, 131})->
+                withNodeColor({60, 60, 131})->
                 withDropDown(MODE_DROPDOWN, {"Cubic", "Nearest-Neighbour"})->
                 withInputImage(INPUT_IMAGE)->
                 withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
