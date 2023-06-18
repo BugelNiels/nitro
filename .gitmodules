@@ -15,5 +15,5 @@
     url = git@github.com:ttk592/spline.git
 
 [submodule "external/doxygen-awesome-css"]
-	path = doxygen-awesome-css
-	url = https://github.com/jothepro/doxygen-awesome-css.git
+	path = external/doxygen-awesome-css
+	url = git@github.com:jothepro/doxygen-awesome-css.git
