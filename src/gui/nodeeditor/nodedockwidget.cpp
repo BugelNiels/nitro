@@ -116,14 +116,12 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
                 auto *item = new QTreeWidgetItem(category, QStringList() << subAction->text());
                 auto font = category->font(0);
                 font.setWeight(QFont::Light);
-                font.setPixelSize(14); // TODO: more dynamic
-                item->setForeground(0, QBrush({180, 180, 180}));
+                font.setPixelSize(14);
                 item->setFont(0, font);
                 item->setIcon(0, subAction->icon());
 
                 category->addChild(item);
                 treeWidget->registerAction(subAction->text(), subAction);
-                // TODO: allow drag and drop
             }
         }
     }
@@ -237,4 +235,10 @@ QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {
 
     wrapper->setLayout(hLayout);
     return wrapper;
+}
+
+void nitro::NodeDockWidget::updateGraphicsView() {
+    for (auto &item: dataFlowGraphModel_->allNodeIds()) {
+        dataFlowGraphModel_->nodeUpdated(item);
+    }
 }

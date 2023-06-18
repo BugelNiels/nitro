@@ -14,13 +14,11 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
     imHLayout->addWidget(window->buildDockIcon(":/icons/image_viewer.png"));
 
     auto zoomBar = new ZoomBar(imageViewer_->minScaleFactor * 100.0, imageViewer_->maxScaleFactor * 100.0);
+    zoomBar->setEnabled(false);
     auto sizeLabel = new QLabel("0 x 0");
     sizeLabel->setFixedWidth(100);
     auto channelsLabel = new QLabel("-");
     channelsLabel->setFixedWidth(20);
-    QPalette palette = zoomBar->palette();
-    palette.setColor(QPalette::Highlight, QColor(60, 60, 60)); // set the color to red
-    zoomBar->setPalette(palette);
     zoomBar->setMaximumWidth(200);
     auto zoomLabel = new QLabel("zoom:");
     imHLayout->addStretch();

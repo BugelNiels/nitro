@@ -15,6 +15,7 @@
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
 #include "util.hpp"
+#include <QApplication>
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
@@ -31,6 +32,8 @@ namespace nitro {
         algo_ = std::move(algo);
         nodePorts_ = nodePorts;
         widget_ = widget;
+        // Force auto generating nodes to update
+        setInData(nullptr, QtNodes::InvalidPortIndex);
     }
 
     QString NitroNode::caption() const {
@@ -95,11 +98,14 @@ namespace nitro {
         }
         // TODO: check if the data changed
         nodePorts_.setInData(portIndex, data);
-        algo_->execute(nodePorts_, options_);
+        if (algo_) {
 
-        for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
-            // Emit that everything has been updated
-            Q_EMIT dataUpdated(i);
+            algo_->execute(nodePorts_, options_);
+
+            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                // Emit that everything has been updated
+                Q_EMIT dataUpdated(i);
+            }
         }
     }
 
@@ -211,7 +217,7 @@ namespace nitro {
 
             QFontMetrics fontMetrics(button->font());
             QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
-                                                        button->width());
+                                                        button->width() - 30);
             button->setText(elidedText);
             propJson_[key] = filePath;
             auto ptrImg = std::make_shared<cv::Mat>(inputImg);

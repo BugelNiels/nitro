@@ -27,6 +27,8 @@ namespace nitro {
 
         const QString &getFileName();
 
+        void updateGraphicsView();
+
     protected:
         void keyPressEvent(QKeyEvent *event) override;
 

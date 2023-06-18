@@ -93,6 +93,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
 
             QtNodes::NodeId viewerNodeId = QtNodes::InvalidNodeId;
             auto allNodes = dataModel_->allNodeIds();
+            //TODO extract this magic string
             QString viewerNodeName = "ImageViewer";
             for (auto id: allNodes) {
                 if (viewerNodeName == dataModel_->nodeData(id, QtNodes::NodeRole::Type).value<QString>()) {
@@ -106,7 +107,6 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 QPointF posView(c->pos().x() + c->boundingRect().width() + 5,
                                 c->pos().y() + c->boundingRect().height() / 4);
 
-                //TODO extract this magic string
                 QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
                 viewerNodeId = newId;
                 dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
@@ -131,7 +131,6 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                     }
                 }
             } else {
-                nodeBeingViewed_ = cid;
                 currentPort_ = 0;
             }
             QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort_, .inNodeId = viewerNodeId, .inPortIndex = 0};
@@ -153,6 +152,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                     dataModel_->deleteConnection(con);
                 }
                 dataModel_->addConnection(connectionId);
+                nodeBeingViewed_ = cid;
             }
         }
     }

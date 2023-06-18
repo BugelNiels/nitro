@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(NITRO_VERSION 1.0.0)
+set(NITRO_VERSION 1.1.0)
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
 
@@ -42,8 +42,7 @@ file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc
-        )
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
@@ -60,6 +59,7 @@ target_link_libraries(${PROJECT_NAME}
 # Enable Modules - add more modules if required
 set(ENABLED_MODULES
         ImCore
+        ImExtra
         Im3D
         )
 

@@ -186,11 +186,11 @@ NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
     outputMap_[name] = nullptr;
 
     auto *loadButton = new QPushButton("Load Image");
-    loadButton->setStyleSheet("text-align: left;");
     loadButton->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));
     loadButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     loadButton->adjustSize();
     node_->connectLoadButton(loadButton, outputList_.size() - 1);
+
     addOutPortWidget(loadButton);
     return this;
 }
