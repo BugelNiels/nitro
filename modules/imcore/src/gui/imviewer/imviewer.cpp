@@ -29,7 +29,7 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-    setBackgroundBrush(bGroundCol_);
+//    setBackgroundBrush(bGroundCol_);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     setScaleRange(minScaleFactor, maxScaleFactor);
@@ -78,6 +78,13 @@ void nitro::ImageViewer::saveImage() {
 
 
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
+
+    const QColor dotColor_ = palette().color(QPalette::Button);
+    const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled,QPalette::AlternateBase);
+    const QColor bGroundCol_ = palette().color(QPalette::Base);
+    const QColor imgOutlineCol_ = palette().color(QPalette::Disabled, QPalette::Button);
+    const QColor imgGridCol_ = palette().color(QPalette::Base);
+
     painter->setBrush(QBrush(bGroundCol_));
     QGraphicsView::drawBackground(painter, r);
     painter->setBrush(QBrush(dotColor_));

@@ -25,7 +25,7 @@ nitro::SurfaceViewAlgorithm::creator(const QString &category, RenderView *render
         nitro::NitroNodeBuilder builder("3D Image Viewer", "ImageViewer3D", category);
         return builder.
                 withOperator(std::make_unique<nitro::SurfaceViewAlgorithm>(renderViewer))->
-                withIcon("surface.png")->
+                withIcon("3d.png")->
                 withNodeColor({99, 28, 28})->
                 withInputImage(INPUT_IMAGE)->
                 build();

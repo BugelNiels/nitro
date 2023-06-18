@@ -6,6 +6,7 @@
 #define INPUT_SIZE "Size"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
+#define BORDER_DROPDOWN "Border"
 
 void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
     if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIZE})) {
@@ -14,6 +15,7 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QStr
     auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
     int kSize = nodePorts.getInputInteger(INPUT_SIZE);
     int option = options.at(MODE_DROPDOWN);
+    int borderOption = options.at(BORDER_DROPDOWN);
 
     cv::Mat charImg;
     inputImg->convertTo(charImg, CV_8U, 255);
@@ -21,14 +23,14 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QStr
     cv::Mat resultChar;
     switch (option) {
         case 0:
-            cv::blur(charImg, resultChar, cv::Size(kSize, kSize));
+            cv::blur(charImg, resultChar, cv::Size(kSize, kSize), cv::Point(-1, -1), borderOption);
             break;
         case 1:
             kSize = kSize % 2 == 0 ? std::max(kSize - 1, 1) : kSize;
             cv::medianBlur(charImg, resultChar, kSize);
             break;
         default:
-            cv::blur(charImg, resultChar, cv::Size(kSize, kSize));
+            cv::blur(charImg, resultChar, cv::Size(kSize, kSize), cv::Point(-1, -1), borderOption);
             break;
     }
 
@@ -45,6 +47,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::cre
                 withIcon("blur.png")->
                 withNodeColor({71, 47, 189})->
                 withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
+                withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
                 withInputImage(INPUT_IMAGE)->
                 withInputInteger(INPUT_SIZE, 5, 1, 256)->
                 withOutputImage(OUTPUT_IMAGE)->

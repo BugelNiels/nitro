@@ -37,6 +37,18 @@ void nitro::MathOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
         case 5:
             result = cv::max(*im1, fac);
             break;
+        case 6:
+            cv::pow(*im1, fac, result);
+            break;
+        case 7:
+            cv::log(*im1, result);
+            break;
+        case 8:
+            result = cv::abs(*im1);
+            break;
+        case 9:
+            cv::sqrt(*im1, result);
+            break;
         default:
             result = *im1 * fac;
             break;
@@ -53,7 +65,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 withOperator(std::make_unique<nitro::MathOperator>())->
                 withIcon("math.png")->
                 withNodeColor({36, 98, 131})->
-                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max"})->
+                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Pow", "Log", "Abs",
+                                             "Square Root"})->
                 withInputImage(INPUT_IMAGE)->
                 withInputValue(INPUT_VALUE, 0.5)->
                 withOutputImage(OUTPUT_IMAGE)->

@@ -57,7 +57,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::cr
         nitro::NitroNodeBuilder builder("Morphology", "morphology", category);
         return builder.
                 withOperator(std::make_unique<nitro::MorphologyOperator>())->
-                withIcon("mix.png")->
+                withIcon("morphology.png")->
                 withNodeColor({71, 47, 189})->
                 withDropDown(MODE_DROPDOWN,
                              {"Dilate", "Erode", "Open", "Close", "Top Hat", "Black Hat"})->

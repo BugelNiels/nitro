@@ -30,7 +30,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DenoiseOperator::creat
         nitro::NitroNodeBuilder builder("Denoise", "denoise", category);
         return builder.
                 withOperator(std::make_unique<nitro::DenoiseOperator>())->
-                withIcon("resample.png")->
+                withIcon("denoise.png")->
                 withNodeColor({71, 47, 189})->
                 withInputImage(INPUT_IMAGE)->
                 withOutputImage(OUTPUT_IMAGE)->

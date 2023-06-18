@@ -29,7 +29,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::SeparateOperator::crea
         nitro::NitroNodeBuilder builder("Separate Channels", "separateChannels", category);
         return builder.
                 withOperator(std::make_unique<nitro::SeparateOperator>())->
-                withIcon("separate.png")->
+                withIcon("layers.png")->
                 withNodeColor({36, 98, 131})->
                 withInputImage("Image")->
                 withOutputImage("Channel 1")->

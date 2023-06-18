@@ -35,6 +35,8 @@ namespace nitro {
             void registerUtilNodes(NodeRegistry *registry);
 
             void registerComparisonNodes(NodeRegistry *registry);
+
+            void registerTransformNodes(NodeRegistry *registry);
         };
     }
 

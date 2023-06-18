@@ -32,7 +32,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CombineOperator::creat
         nitro::NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
         return builder.
                 withOperator(std::make_unique<nitro::CombineOperator>())->
-                withIcon("combine.png")->
+                withIcon("layers.png")->
                 withNodeColor({36, 98, 131})->
                 withInputImage("Channel 1")->
                 withInputImage("Channel 2")->

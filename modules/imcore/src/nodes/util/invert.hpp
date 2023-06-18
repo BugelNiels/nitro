@@ -6,7 +6,7 @@
 
 namespace nitro {
 
-    class GrayscaleConvertOperator : public NodeOperator {
+    class InvertOperator : public NodeOperator {
 
     public:
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);

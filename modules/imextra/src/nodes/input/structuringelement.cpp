@@ -8,7 +8,7 @@
 #define OUTPUT_IMAGE "Kernel"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::KernelOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
+void nitro::StructElemOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
 
     if (!nodePorts.inputsPresent({INPUT_WIDTH, INPUT_HEIGHT})) {
         return;
@@ -39,11 +39,11 @@ void nitro::KernelOperator::execute(nitro::NodePorts &nodePorts, const std::map<
     nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KernelOperator::creator(const QString &category) {
+std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Kernel", "kernel", category);
+        nitro::NitroNodeBuilder builder("Structuring Element", "structuringElement", category);
         return builder.
-                withOperator(std::make_unique<nitro::KernelOperator>())->
+                withOperator(std::make_unique<nitro::StructElemOperator>())->
                 withIcon("kernel.png")->
                 withNodeColor({131, 49, 74})->
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->

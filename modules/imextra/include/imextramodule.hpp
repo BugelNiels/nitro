@@ -18,6 +18,10 @@ namespace nitro {
             void registerMorphologyNodes(NodeRegistry *registry);
 
             void registerEdgeDetectNodes(NodeRegistry *registry);
+
+            void registerFrequencyNodes(NodeRegistry *registry);
+
+            void registerInputNodes(NodeRegistry *registry);
         };
     }
 

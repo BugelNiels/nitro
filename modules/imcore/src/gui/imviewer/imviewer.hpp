@@ -61,11 +61,11 @@ namespace nitro {
         const int dotSize_ = 3;
         const int gridStep_ = 64;
 
-        const QColor dotColor_ = QColor(80, 80, 80);
-        const QColor gridBackgroundColor_ = QColor(57, 57, 57);
-        const QColor bGroundCol_ = QColor(55, 55, 55);
-        const QColor imgOutlineCol_ = QColor(128, 128, 128);
-        const QColor imgGridCol_ = QColor(78, 78, 78);
+//        const QColor dotColor_ = QColor(80, 80, 80);
+//        const QColor gridBackgroundColor_ = QColor(57, 57, 57);
+//        const QColor bGroundCol_ = QColor(55, 55, 55);
+//        const QColor imgOutlineCol_ = QColor(128, 128, 128);
+//        const QColor imgGridCol_ = QColor(78, 78, 78);
         const int gridStepSize_ = 32;
         const int emptySize_ = 128;
 

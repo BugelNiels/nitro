@@ -5,7 +5,7 @@
 
 namespace nitro {
 
-    class KernelOperator : public NodeOperator {
+    class StructElemOperator : public NodeOperator {
     public:
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
