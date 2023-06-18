@@ -8,8 +8,6 @@
 
 #include <utility>
 
-#include <QDebug>
-
 namespace nitro {
     NodePorts::NodePorts() = default;
 

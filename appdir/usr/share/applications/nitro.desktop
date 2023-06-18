@@ -3,6 +3,6 @@ Type=Application
 Name=NITRO
 Comment=Node Editor for building Image Processing Routines
 Exec=nitro
-Icon=nitro
+Icon=logo
 Categories=Graphics;
 X-AppImage-Version=

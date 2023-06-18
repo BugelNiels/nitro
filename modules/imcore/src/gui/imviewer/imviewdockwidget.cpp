@@ -24,7 +24,6 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
     imHLayout->addStretch();
     imHLayout->addWidget(zoomLabel);
     imHLayout->addWidget(zoomBar);
-    imHLayout->addStretch();
     imHLayout->addWidget(new QLabel("size: "));
     imHLayout->addWidget(sizeLabel);
     imHLayout->addSpacing(20);

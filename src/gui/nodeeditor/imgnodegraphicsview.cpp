@@ -26,9 +26,7 @@ nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
         : NodeGraphicsView(scene, model, parent),
           nodeBeingViewed_(QtNodes::InvalidNodeId),
           nodeGeometry_(scene->nodeGeometry()),
-          nodes_(nodes) {
-
-}
+          nodes_(nodes) {}
 
 QAction *
 nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
@@ -40,7 +38,7 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
     QObject::connect(createNodeAction, &QAction::triggered, [this, nodeType]() {
         // Mouse position in scene coordinates.
         QPoint globalPos = mapFromGlobal(QCursor::pos());
-        if(rect().contains(globalPos)) {
+        if (rect().contains(globalPos)) {
             QPointF posView = mapToScene(globalPos);
             scene_->undoStack().push(new QtNodes::CreateCommand(scene_, nodeType, posView));
         }

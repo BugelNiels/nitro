@@ -18,7 +18,6 @@ namespace nitro {
 
         ~MainWindow() override;
 
-    public:
         QLabel *buildDockIcon(const QString &path);
 
         void finalizeSetup();
@@ -31,7 +30,7 @@ namespace nitro {
 
     private:
         const int icSize_ = 16;
-        const QColor icColor_ = {180, 180, 180};
+        const QColor icColor_ = {148, 148, 148};
         QSet<QDockWidget *> widgets_;
         QLabel *fileNameLabel_ = nullptr;
         NodeDockWidget *nodeDock_ = nullptr;

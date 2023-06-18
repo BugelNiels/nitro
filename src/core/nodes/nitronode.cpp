@@ -250,10 +250,11 @@ namespace nitro {
         connect(comboBox, &QComboBox::currentIndexChanged, this, [this, name](int idx) {
             options_[name] = idx;
             propJson_[name] = idx;
-            algo_->execute(nodePorts_, options_);
-
-            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
-                Q_EMIT dataUpdated(i);
+            if (algo_) {
+                algo_->execute(nodePorts_, options_);
+                for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                    Q_EMIT dataUpdated(i);
+                }
             }
         });
     }
@@ -267,9 +268,11 @@ namespace nitro {
         connect(checkBox, &QCheckBox::toggled, this, [this, name](bool checked) {
             options_[name] = checked;
             propJson_[name] = checked;
-            algo_->execute(nodePorts_, options_);
-            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
-                Q_EMIT dataUpdated(i);
+            if (algo_) {
+                algo_->execute(nodePorts_, options_);
+                for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                    Q_EMIT dataUpdated(i);
+                }
             }
         });
     }

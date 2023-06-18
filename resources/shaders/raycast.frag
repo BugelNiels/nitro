@@ -19,7 +19,7 @@ uniform int imHeight;
 uniform bool enableImageColors;
 uniform bool enableOrthographic;
 
-const vec3 backgroundCol = vec3(0.2);
+const vec3 backgroundCol = vec3(0.2, 0.2, 0.22);
 
 float sdBox(vec3 p, vec3 b) {
     vec3 q = abs(p) - b;

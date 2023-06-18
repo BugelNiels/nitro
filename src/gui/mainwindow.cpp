@@ -16,7 +16,7 @@
 nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
         : QMainWindow(parent) {
     setWindowTitle("NITRO");
-    setWindowIcon(nitro::ImResourceReader::getPixMap(":/icons/nitro.png", {48, 48}, QColor(113, 124, 143)));
+    setWindowIcon(QIcon(":/icons/nitro.png"));
 
     dockLayout_ = new QSplitter(Qt::Horizontal, this);
     dockLayout_->setSizes({this->width() / 2, this->width() / 2}); // Temp fix for equal sizes
@@ -65,7 +65,8 @@ QStatusBar *nitro::MainWindow::initFooter() {
 
 QMenuBar *nitro::MainWindow::initMenuBar() {
     auto *menuBar = new QMenuBar();
-
+    auto *iconLabel = new QAction(QIcon(":/icons/nitro.png"), "", this);
+    menuBar->addAction(iconLabel);
     QMenu *fileMenu = getFileMenu();
 
     menuBar->addMenu(fileMenu);
@@ -74,7 +75,6 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     menuBar->addMenu(editMenu);
     auto *viewMenu = new QMenu("View");
     menuBar->addMenu(viewMenu);
-
 
     QMenu *windowMenu = getWindowMenu();
     menuBar->addMenu(windowMenu);
