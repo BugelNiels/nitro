@@ -18,7 +18,7 @@
     <br />
     <a href="">Latest Release</a>
     ·
-    <a href="https://github.com/BugelNiels/nitro/INSTALL.md">Install Instructions</a>
+    <a href="https://github.com/BugelNiels/nitro/blob/main/INSTALL.md">Install Instructions</a>
     ·
     <a href="https://github.com/BugelNiels/nitro/issues">Report Bug</a>
     ·
