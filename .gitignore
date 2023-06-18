@@ -7,7 +7,6 @@ ui_*
 moc*.cpp
 moc*.h
 qrc_*
-build-*
 build/
 qrc_resources.cpp
 cmake-build*
@@ -64,6 +63,7 @@ CatmarkSubdiv
 *.vrb
 
 saves/
+# AppImage creation related
 appdir/AppRun
 appdir/.DirIcon
 appdir/conicsubdiv.desktop
@@ -72,4 +72,6 @@ appdir/usr/plugins/
 appdir/usr/lib/
 appdir/usr/bin/
 appdir/usr/share/doc
+appdir/usr/include
+appdir/nitro.desktop
 *.AppImage

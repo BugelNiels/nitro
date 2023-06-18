@@ -16,5 +16,4 @@ namespace nitro {
 
     cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage);
     cv::Mat createMask(const cv::MatSize& srcSize, const cv::MatSize &targetSize);
-
 } // nitro
