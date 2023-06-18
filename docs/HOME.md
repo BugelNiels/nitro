@@ -11,6 +11,7 @@
     <br />
     <a href="https://github.com/BugelNiels/nitro"><strong>Repository Home Page »</strong></a>
     <br />
+    <br />
     <a href="https://github.com/BugelNiels/nitro/releases/latest">Latest Release</a>
     ·
     <a href="https://github.com/BugelNiels/nitro/blob/main/INSTALL.md">Install Instructions</a>
@@ -79,5 +80,5 @@ A few useful shortcuts:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](../LICENSE.md) file for details
 
