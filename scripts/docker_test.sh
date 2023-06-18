@@ -6,6 +6,6 @@
 cd ..
 docker build -t test_image -f docker/run.Dockerfile .
 xhost + local:docker
-docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -h $(hostname) test_image timeout 1s ./squashfs-root/AppRun
+docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -h $(hostname) test_image timeout 5s ./squashfs-root/AppRun
 xhost - local:docker
 cd scripts || exit
