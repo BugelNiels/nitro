@@ -1,11 +1,11 @@
 <a name="readme-top"></a>
 
 [![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg?style=for-the-badge)]()
-[![Github All Releases](https://img.shields.io/github/downloads/BugelNiels/nitro/total.svg?style=for-the-badge)]()
+[![Github All Releases](https://img.shields.io/github/downloads/BugelNiels/nitro/total.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/releases/latest)
 [![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg?style=for-the-badge)]()
-[![license](https://img.shields.io/github/license/bugelniels/nitro.svg?style=for-the-badge)]()
-[![follow](https://img.shields.io/github/followers/bugelniels.svg?style=for-the-badge&label=Follow&maxAge=2592000)]()
-![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555]https://linkedin.com/in/nielsbugel)
+[![license](https://img.shields.io/github/license/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/blob/main/LICENCE.md)
+[![follow](https://img.shields.io/github/followers/bugelniels.svg?style=for-the-badge&label=Follow&maxAge=2592000)](https://github.com/BugelNiels?tab=followers)
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://nl.linkedin.com/in/nielsbugel)
 
 <br />
 <div align="center">
@@ -16,7 +16,7 @@
     <br />
     <br />
     <br />
-    <a href="">Latest Release</a>
+    <a href="https://github.com/BugelNiels/nitro/releases/latest">Latest Release</a>
     ·
     <a href="https://github.com/BugelNiels/nitro/blob/main/INSTALL.md">Install Instructions</a>
     ·
@@ -40,14 +40,21 @@ Blender's [Shader Editor](https://docs.blender.org/manual/en/latest/editors/shad
 The project was originally developed for my Master thesis at the University of Groningen. That is also the origin of the
 name NITRO: Niels' Image-processing Thesis on Reconstruction Operations.
 
-To get a local copy up and running, download the latest release. Alternatively, read through
-the [Install Instructions](INSTALL.md) to build the project from the source code.
+To get a local copy up and running, download the [latest release](https://github.com/BugelNiels/nitro/releases/latest).
+Once downloaded, you should have a file
+called `nitro-x86_64.AppImage`. You can run this using:
+
+```shell
+chmod u+x nitro-x86_64.AppImage
+./nitro-x86_64.AppImage
+```
+
+Alternatively, you can read through the [Install Instructions](INSTALL.md) to build the project from the source code.
 
 ## Disclaimer
 
 The project is still in development and can be considered in early-alpha. As such, I am still working hard on fixing
-bugs and adding new features.
-If you encounter any, please feel free to create an issue.
+bugs and adding new features. If you encounter any, please feel free to create an issue.
 
 ## Features
 
