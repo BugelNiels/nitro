@@ -9,6 +9,7 @@
   <p align="center">
     Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques.
     <br />
+    <a href="https://github.com/BugelNiels/nitro"><strong>Repository Home Page »</strong></a>
     <br />
     <a href="https://github.com/BugelNiels/nitro/releases/latest">Latest Release</a>
     ·
