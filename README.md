@@ -1,16 +1,18 @@
 <a name="readme-top"></a>
 
-[![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg?style=for-the-badge)]()
+[![stars](https://img.shields.io/github/stars/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/stargazers)
 [![Github All Releases](https://img.shields.io/github/downloads/BugelNiels/nitro/total.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/releases/latest)
-[![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg?style=for-the-badge)]()
+[![watchers](https://img.shields.io/github/watchers/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/watchers)
 [![license](https://img.shields.io/github/license/bugelniels/nitro.svg?style=for-the-badge)](https://github.com/BugelNiels/nitro/blob/main/LICENCE.md)
 [![follow](https://img.shields.io/github/followers/bugelniels.svg?style=for-the-badge&label=Follow&maxAge=2592000)](https://github.com/BugelNiels?tab=followers)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://nl.linkedin.com/in/nielsbugel)
 
 <br />
 <div align="center">
-<h1 align="center">NITRO</h3>
-
+  <a href="https://github.com/BugelNiels/nitro">
+    <img src="appdir/logo256x256.png" alt="Logo" width="128" height="128">
+  </a>
+<h3 align="center" style="padding-top: 0">NITRO</h3>
   <p align="center">
     Powerful and flexible node editor that facilitates building complex combinations of various image processing techniques.
     <br />
@@ -25,7 +27,6 @@
     <a href="https://github.com/BugelNiels/nitro/issues">Request Feature</a>
   </p>
 </div>
-
 
 ![Node Editor](screenshots/front.png)
 
