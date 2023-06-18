@@ -10,10 +10,13 @@
 #include "config.hpp"
 
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
+#include "stylepresets.hpp"
+#include <QApplication>
 
 nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
         : QMainWindow(parent) {
     setWindowTitle("NITRO");
+    setWindowIcon(nitro::ImResourceReader::getPixMap(":/icons/nitro.png", {48, 48}, QColor(113, 124, 143)));
 
     dockLayout_ = new QSplitter(Qt::Horizontal, this);
     dockLayout_->setSizes({this->width() / 2, this->width() / 2}); // Temp fix for equal sizes
@@ -75,8 +78,30 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
 
     QMenu *windowMenu = getWindowMenu();
     menuBar->addMenu(windowMenu);
-    // TODO: extract this color
-    menuBar->setStyleSheet("QMenuBar { background-color: rgb(28, 28, 28); }");
+
+    auto *lightModeToggle = new QAction(menuBar);
+    lightModeToggle->setIcon(
+            QIcon(nitro::ImResourceReader::getPixMap(":/icons/theme.png", {42, 42}, QColor(128, 128, 128))));
+    lightModeToggle->setCheckable(true);
+    lightModeToggle->setChecked(false); // default is dark mode
+    connect(lightModeToggle, &QAction::toggled, this, [this](bool toggled) {
+        if (toggled) {
+            nitro::applyStylePreset(nitro::getLightModePalette());
+        } else {
+            nitro::applyStylePreset(nitro::getDarkModePalette());
+        }
+        QWidget *topLevelWidget = QApplication::topLevelWidgets().at(0);
+
+        // Recursively update the entire widget hierarchy
+        nodeDock_->updateGraphicsView();
+        const QList<QWidget *> allWidgets = topLevelWidget->findChildren<QWidget *>();
+        for (QWidget *widget: allWidgets) {
+            widget->repaint();
+        }
+    });
+    auto *rightBar = new QMenuBar(menuBar);
+    rightBar->addAction(lightModeToggle);
+    menuBar->setCornerWidget(rightBar);
     return menuBar;
 }
 
@@ -86,7 +111,7 @@ QMenu *nitro::MainWindow::getWindowMenu() {
         auto *nodeEditorAction = new QAction(dw->windowTitle(), this);
         nodeEditorAction->setCheckable(true);
         nodeEditorAction->setChecked(!dw->isHidden());
-        connect(nodeEditorAction, &QAction::triggered, [this, dw]() {
+        connect(nodeEditorAction, &QAction::triggered, [dw]() {
             dw->setHidden(!dw->isHidden());
         });
         windowMenu->addAction(nodeEditorAction);

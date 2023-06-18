@@ -29,7 +29,7 @@ void nitro::DraggableTreeWidget::registerAction(const QString &key, QAction *act
 }
 
 void nitro::DraggableTreeWidget::mouseMoveEvent(QMouseEvent *event) {
-    if(!draggedItem_) {(0, Qt::yellow);
+    if(!draggedItem_) {
         QTreeWidget::mouseMoveEvent(event);
     }
 }

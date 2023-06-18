@@ -15,6 +15,7 @@
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
 #include "util.hpp"
+#include <QApplication>
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
@@ -216,7 +217,7 @@ namespace nitro {
 
             QFontMetrics fontMetrics(button->font());
             QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
-                                                        button->width());
+                                                        button->width() - 30);
             button->setText(elidedText);
             propJson_[key] = filePath;
             auto ptrImg = std::make_shared<cv::Mat>(inputImg);
