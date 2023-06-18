@@ -74,3 +74,5 @@ appdir/usr/share/doc
 appdir/usr/include
 appdir/nitro.desktop
 *.AppImage
+
+docs/html

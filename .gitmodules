@@ -13,3 +13,6 @@
 [submodule "external/spline"]
     path = external/spline
     url = git@github.com:ttk592/spline.git
+[submodule "doxygen-awesome-css"]
+	path = doxygen-awesome-css
+	url = https://github.com/jothepro/doxygen-awesome-css.git

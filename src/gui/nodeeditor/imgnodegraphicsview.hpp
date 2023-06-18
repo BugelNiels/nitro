@@ -19,11 +19,6 @@ namespace nitro {
                               QtNodes::DataFlowGraphModel *model,
                               QWidget *parent);
 
-        ImageNodeGraphicsView(const GraphicsView &) = delete;
-
-
-        NodeGraphicsView operator=(const GraphicsView &) = delete;
-
 
         void mousePressEvent(QMouseEvent *event) override;
 
