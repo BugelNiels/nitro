@@ -1,5 +1,7 @@
 #if _OPENMP
-    #include <omp.h>
+
+#include <omp.h>
+
 #endif
 
 #include <QApplication>
@@ -14,9 +16,8 @@
 #include "nitromodule.hpp"
 #include "nodes/noderegistry.hpp"
 #include "config.hpp"
-#include "src/gui/stylepresets.hpp"
 
-void setupApplication();
+#include "src/gui/stylepresets.hpp"
 
 void setupApplication() {
     QSurfaceFormat glFormat;
