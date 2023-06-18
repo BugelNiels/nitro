@@ -29,3 +29,6 @@ git checkout -
 rm -rf "$tmp_dir"
 
 echo "Documentation generated and pushed to $target_branch branch."
+
+git submodule init
+git submodule update
