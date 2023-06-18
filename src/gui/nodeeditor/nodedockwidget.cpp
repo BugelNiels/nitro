@@ -184,7 +184,7 @@ void nitro::NodeDockWidget::loadModel() {
         return;
     }
     QString filePath = QFileDialog::getOpenFileName(
-            nullptr, "Load NITRO Config", "../data/",
+            this, "Load NITRO Config", "../data/",
             tr("Json Files (*.json)"));
     if (filePath == "") {
         return;

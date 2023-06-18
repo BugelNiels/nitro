@@ -11,6 +11,7 @@
 
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "stylepresets.hpp"
+#include "src/gui/componentspp/nonselectableaction.hpp"
 #include <QApplication>
 
 nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
@@ -65,7 +66,6 @@ QStatusBar *nitro::MainWindow::initFooter() {
 
 QMenuBar *nitro::MainWindow::initMenuBar() {
     auto *menuBar = new QMenuBar();
-
 
     auto *iconLabel = new QAction(QIcon(":/icons/nitro.png"), "", this);
     menuBar->addAction(iconLabel);
