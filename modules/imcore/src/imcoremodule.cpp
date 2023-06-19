@@ -32,6 +32,7 @@
 #include "nodes/util/normalize.hpp"
 #include "nodes/util/invert.hpp"
 #include "nodes/util/colormap.hpp"
+#include "nodes/comparison/unimath.hpp"
 
 namespace nitro::ImCore {
 
@@ -63,6 +64,7 @@ namespace nitro::ImCore {
 
     void ImCoreModule::registerConvertNodes(NodeRegistry *registry) {
         const QString category = "Convert";
+        registry->registerNode(UniMathOperator::creator(category));
         registry->registerNode(MathOperator::creator(category));
         registry->registerNode(MixOperator::creator(category));
         registry->registerNode(ConvertOperator::creator(category));
