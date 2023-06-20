@@ -3,18 +3,19 @@
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include "util.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 #define INPUT_IMAGE_1 "Image"
 #define INPUT_IMAGE_2 "Kernel"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::MorphologyOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE_1, INPUT_IMAGE_2})) {
+void nitro::MorphologyOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE_1);
-    auto im2 = nodePorts.getInputImage(INPUT_IMAGE_2);
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE_1).data();
+    auto im2 = nodePorts.inGet<ImageData>(INPUT_IMAGE_2).data();
 
 
     cv::Mat kernel;
@@ -49,7 +50,7 @@ void nitro::MorphologyOperator::execute(nitro::NodePorts &nodePorts, const std::
 
     result.convertTo(result, CV_32F);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::creator(const QString &category) {
@@ -61,9 +62,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::cr
                 withNodeColor({71, 47, 189})->
                 withDropDown(MODE_DROPDOWN,
                              {"Dilate", "Erode", "Open", "Close", "Top Hat", "Black Hat"})->
-                withInputImage(INPUT_IMAGE_1)->
-                withInputImage(INPUT_IMAGE_2)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE_1)->
+                withInputPort<ImageData>(INPUT_IMAGE_2)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

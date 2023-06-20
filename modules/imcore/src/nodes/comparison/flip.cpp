@@ -3,6 +3,7 @@
 #include "FLIP.h"
 #include "color.h"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 #include <QDebug>
 
@@ -82,17 +83,16 @@ inline static float calculatePPD(const double dist, const double resolutionX,
 // To prevent initializing this thing all the time
 
 
-void nitro::FlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_IMAGE_1, INPUT_IMAGE_2, INPUT_WIDTH, INPUT_RES, INPUT_DIST})) {
+void
+nitro::FlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE_1);
-    auto im2 = nodePorts.getInputImage(INPUT_IMAGE_2);
-    double screenWidth = nodePorts.getInputValue(INPUT_WIDTH);
-    int resX = nodePorts.getInputInteger(INPUT_RES);
-    double dist = nodePorts.getInputValue(INPUT_DIST);
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE_1).data();
+    auto im2 = nodePorts.inGet<ImageData>(INPUT_IMAGE_2).data();
+    double screenWidth = nodePorts.inputValue(INPUT_WIDTH);
+    int resX = nodePorts.inputInteger(INPUT_RES);
+    double dist = nodePorts.inputValue(INPUT_DIST);
 
     FLIP::image<FLIP::color3> fImgA = im1->channels() == 1 ? cvGrayscaleMatToFlipImg(*im1) : cvMatToFlipImg(*im1);
     FLIP::image<FLIP::color3> fImgB = im2->channels() == 1 ? cvGrayscaleMatToFlipImg(*im2) : cvMatToFlipImg(*im2);
@@ -108,8 +108,8 @@ void nitro::FlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
     FLIP::image<FLIP::color3> magmaMap(FLIP::MapMagma, 256);
     colResult.colorMap(errMap, magmaMap);
 
-    nodePorts.setOutputImage(OUTPUT_RESULT, std::make_shared<cv::Mat>(flipImgToCvMat(colResult)));
-    nodePorts.setOutputImage(OUTPUT_ERROR_MAP, std::make_shared<cv::Mat>(flipImgFloatToGrayMat(errMap)));
+    nodePorts.output<ImageData>(OUTPUT_RESULT, flipImgToCvMat(colResult));
+    nodePorts.output<ImageData>(OUTPUT_ERROR_MAP, flipImgFloatToGrayMat(errMap));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(const QString &category) {
@@ -119,13 +119,13 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(
                 withOperator(std::make_unique<nitro::FlipOperator>())->
                 withIcon("compare.png")->
                 withNodeColor({118, 185, 0})->
-                withInputImage(INPUT_IMAGE_1)->
-                withInputImage(INPUT_IMAGE_2)->
-                withInputValue(INPUT_WIDTH, 0.7, 0.1, 5)->
-                withInputInteger(INPUT_RES, 1920, 1024, 7680)->
-                withInputValue(INPUT_DIST, 0.7, 0, 5)->
-                withOutputImage(OUTPUT_RESULT)->
-                withOutputImage(OUTPUT_ERROR_MAP)->
+                withInputPort<ImageData>(INPUT_IMAGE_1)->
+                withInputPort<ImageData>(INPUT_IMAGE_2)->
+                withInputValue(INPUT_WIDTH, 0.7, 0.1)->
+                withInputInteger(INPUT_RES, 1920, 1024)->
+                withInputValue(INPUT_DIST, 0.7, 0)->
+                withOutputPort<ImageData>(OUTPUT_RESULT)->
+                withOutputPort<ImageData>(OUTPUT_ERROR_MAP)->
                 build();
     };
 }

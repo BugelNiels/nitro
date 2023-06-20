@@ -1,6 +1,9 @@
 #include "iminfo.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -16,14 +19,15 @@ nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
 
 }
 
-void nitro::ImInfoOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void
+nitro::ImInfoOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
-    nodePorts.setOutputInteger(OUTPUT_WIDTH, im1->cols);
-    nodePorts.setOutputInteger(OUTPUT_HEIGHT, im1->rows);
-    nodePorts.setOutputInteger(OUTPUT_CHANNELS, im1->channels());
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    nodePorts.output<IntegerData>(OUTPUT_WIDTH, im1->cols);
+    nodePorts.output<IntegerData>(OUTPUT_HEIGHT, im1->rows);
+    nodePorts.output<IntegerData>(OUTPUT_CHANNELS, im1->channels());
 
     QString type;
     switch (im1->depth()) {
@@ -68,8 +72,8 @@ void nitro::ImInfoOperator::execute(nitro::NodePorts &nodePorts, const std::map<
     }
 
     typeLabel_->setText(QString("Type: %1").arg(type));
-    nodePorts.setOutputValue(OUTPUT_MIN, minValue);
-    nodePorts.setOutputValue(OUTPUT_MAX, maxValue);
+    nodePorts.output<DecimalData>(OUTPUT_MIN, minValue);
+    nodePorts.output<DecimalData>(OUTPUT_MAX, maxValue);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creator(const QString &category) {
@@ -80,7 +84,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creato
                 withOperator(std::make_unique<nitro::ImInfoOperator>(typeLabel))->
                 withIcon("info.png")->
                 withNodeColor({36, 98, 131})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withDisplayWidget(OUTPUT_TYPE, typeLabel)->
                 withOutputInteger(OUTPUT_WIDTH)->
                 withOutputInteger(OUTPUT_HEIGHT)->

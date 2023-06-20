@@ -1,5 +1,6 @@
 #include "threshold.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -7,29 +8,21 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    // Retrieving of input parameters
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_THRESH})) {
+void nitro::ThresholdOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     bool greater = options.at(MODE_DROPDOWN) == 1;
     auto type = greater ? cv::THRESH_BINARY : cv::THRESH_BINARY_INV;
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    int threshold = nodePorts.getInputInteger(INPUT_THRESH);
-
-    cv::Mat grayImage;
-    inputImg->convertTo(grayImage, CV_8U, 255);
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    int threshold = nodePorts.inputInteger(INPUT_THRESH);
 
     // Apply thresholding to the grayscale image
-    cv::Mat thresholded;
-    cv::threshold(grayImage, thresholded, threshold, 255, type);
-
-    // Actual Threshold operation
     cv::Mat result;
-    thresholded.convertTo(result, CV_32F, 1.0 / 255.0);
+    cv::threshold(*inputImg, result, threshold / 255.0, 1, type);
 
     // Set node output
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ThresholdOperator::creator(const QString &category) {
@@ -40,9 +33,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ThresholdOperator::cre
                 withIcon("threshold.png")->
                 withNodeColor({71, 47, 189})->
                 withDropDown(MODE_DROPDOWN, {"<=", ">="})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_THRESH, 128, 0, 255)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

@@ -23,6 +23,16 @@ using IntSlider = ValueSliders::IntSlider;
 
 using namespace nitro;
 
+
+static QWidget *createWrapper() {
+    auto *wrapper = new QWidget();
+    wrapper->setContentsMargins(0, 0, 0, 0);
+    auto *layout = new QHBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
+    wrapper->setLayout(layout);
+    return wrapper;
+}
+
 NitroNodeBuilder::NitroNodeBuilder(QString name, QString id, QString category)
         : name_(std::move(name)),
           id_(std::move(id)),
@@ -49,7 +59,7 @@ std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
     QtNodes::NodeInfo info(name_, id_, category_, nodeColor_, iconPath_);
     QtNodes::NodeColors::registerColor(info);
 
-    NodePorts nodePorts(inputList_, outputList_, inputMap_, outputMap_);
+    NodePorts nodePorts(inputList_, outputList_);
 
     auto *displayWrapper = new QWidget();
     displayWrapper->setAttribute(Qt::WA_TranslucentBackground);
@@ -110,87 +120,80 @@ void NitroNodeBuilder::addOutPortWidget(QLabel *label) {
     outLayout_->addWidget(label, 0, Qt::AlignTop | Qt::AlignRight);
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withInputImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    inputList_.push_back(item);
-    inputMap_[name] = nullptr;
-    addInPortWidget(new QLabel(name));
-    return this;
-}
+NitroNodeBuilder *
+NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int bound, BoundMode boundMode) {
+    inputList_.emplace_back(name, std::make_shared<IntegerData>(defaultVal));
 
-NitroNodeBuilder *NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal) {
-    QtNodes::NodeDataType intDataType = IntegerData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
-    inputList_.emplace_back(item);
-    inputMap_[name] = std::make_shared<IntegerData>(defaultVal);
-
-
-    auto slider = new IntSlider(name, defaultVal);
-    node_->connectInputWidget(slider, inputList_.size() - 1);
-    addInPortWidget(slider);
+    auto slider = new IntSlider(name, defaultVal, bound, boundMode);
+    auto valueLabel = new QLabel(name);
+    node_->connectInputWidget(slider, valueLabel, inputList_.size() - 1);
+    QWidget *wrapper = createWrapper();
+    wrapper->layout()->addWidget(slider);
+    wrapper->layout()->addWidget(valueLabel);
+    valueLabel->setHidden(true);
+    addInPortWidget(wrapper);
     return this;
 }
 
 NitroNodeBuilder *
-NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min, int max) {
-    QtNodes::NodeDataType intDataType = IntegerData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
-    inputList_.emplace_back(item);
-    inputMap_[name] = std::make_shared<IntegerData>(defaultVal);
+NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min, int max,
+                                   BoundMode boundMode) {
+    inputList_.emplace_back(name, std::make_shared<IntegerData>(defaultVal));
 
-    auto slider = new IntSlider(name, defaultVal, min, max);
-    node_->connectInputWidget(slider, inputList_.size() - 1);
-    addInPortWidget(slider);
+    auto slider = new IntSlider(name, defaultVal, min, max, boundMode);
+    auto valueLabel = new QLabel(name);
+    node_->connectInputWidget(slider, valueLabel, inputList_.size() - 1);
+    QWidget *wrapper = createWrapper();
+    wrapper->layout()->addWidget(slider);
+    wrapper->layout()->addWidget(valueLabel);
+    valueLabel->setHidden(true);
+    addInPortWidget(wrapper);
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withInputValue(const QString &name, double defaultVal) {
-    QtNodes::NodeDataType decimalDataType = DecimalData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
-    inputList_.emplace_back(item);
-    inputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+NitroNodeBuilder *NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double bound,
+                                                   BoundMode boundMode) {
+    auto data = std::make_shared<DecimalData>(defaultVal);
+    data->allowConversions(true);
+    inputList_.emplace_back(name, data);
 
-    auto slider = new DoubleSlider(name, defaultVal);
-    node_->connectInputWidget(slider, inputList_.size() - 1);
-    addInPortWidget(slider);
+    auto slider = new DoubleSlider(name, defaultVal, bound, boundMode);
+    auto valueLabel = new QLabel(name);
+    node_->connectInputWidget(slider, valueLabel, inputList_.size() - 1);
+    QWidget *wrapper = createWrapper();
+    wrapper->layout()->addWidget(slider);
+    wrapper->layout()->addWidget(valueLabel);
+    valueLabel->setHidden(true);
+    addInPortWidget(wrapper);
     return this;
 }
 
 NitroNodeBuilder *
-NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double min, double max) {
-    QtNodes::NodeDataType decimalDataType = DecimalData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
-    inputList_.emplace_back(item);
-    inputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double min, double max,
+                                 BoundMode boundMode) {
+    auto data = std::make_shared<DecimalData>(defaultVal);
+    data->allowConversions(true);
+    inputList_.emplace_back(name, data);
 
-    auto slider = new DoubleSlider(name, defaultVal, min, max);
-    node_->connectInputWidget(slider, inputList_.size() - 1);
-    addInPortWidget(slider);
+    auto slider = new DoubleSlider(name, defaultVal, min, max, boundMode);
+    auto valueLabel = new QLabel(name);
+    node_->connectInputWidget(slider, valueLabel, inputList_.size() - 1);
+    QWidget *wrapper = createWrapper();
+    wrapper->layout()->addWidget(slider);
+    wrapper->layout()->addWidget(valueLabel);
+    valueLabel->setHidden(true);
+    addInPortWidget(wrapper);
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withOutputImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = nullptr;
-    addOutPortWidget(new QLabel(name));
-    return this;
-}
-
-NitroNodeBuilder *NitroNodeBuilder::withLoadedOutputImage(const QString &name) {
-    QtNodes::NodeDataType imDataType = ImageData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, imDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = nullptr;
-
-    auto *loadButton = new QPushButton("Load Image");
+NitroNodeBuilder *NitroNodeBuilder::withLoadButton(const QString &name, const QString &filters) {
+    outputList_.emplace_back(name, std::make_shared<ImageData>());
+    // TODO: align icon
+    auto *loadButton = new QPushButton();
     loadButton->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));
     loadButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     loadButton->adjustSize();
-    node_->connectLoadButton(loadButton, outputList_.size() - 1);
-
+    node_->connectLoadButton(name, loadButton, outputList_.size() - 1, filters);
     addOutPortWidget(loadButton);
     return this;
 }
@@ -201,10 +204,7 @@ NitroNodeBuilder *NitroNodeBuilder::withOutputInteger(const QString &name) {
 
 
 NitroNodeBuilder *NitroNodeBuilder::withOutputInteger(const QString &name, int defaultVal) {
-    QtNodes::NodeDataType intDataType = IntegerData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = std::make_shared<IntegerData>(defaultVal);
+    outputList_.emplace_back(name, std::make_shared<IntegerData>(defaultVal));
 
     addOutPortWidget(new QLabel(name));
     return this;
@@ -216,47 +216,50 @@ NitroNodeBuilder *NitroNodeBuilder::withOutputValue(const QString &name) {
 
 
 NitroNodeBuilder *NitroNodeBuilder::withOutputValue(const QString &name, double defaultVal) {
-    QtNodes::NodeDataType decimalDataType = DecimalData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = std::make_shared<DecimalData>(defaultVal);
-
+    outputList_.emplace_back(name, std::make_shared<DecimalData>(defaultVal));
     addOutPortWidget(new QLabel(name));
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name) {
-    return withSourcedOutputInteger(name, 0);
-}
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name, int defaultVal, int bound,
+                                                             BoundMode boundMode) {
+    outputList_.emplace_back(name, std::make_shared<IntegerData>(defaultVal));
 
-
-NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name, int defaultVal) {
-    QtNodes::NodeDataType intDataType = IntegerData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, intDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = std::make_shared<IntegerData>(defaultVal);
-
-    auto slider = new IntSlider("", defaultVal);
+    auto slider = new IntSlider("", defaultVal, bound, boundMode);
     node_->connectSourceInteger(slider, outputList_.size() - 1);
     addOutPortWidget(slider);
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name) {
-    return withSourcedOutputValue(name, 0);
+
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputInteger(const QString &name, int defaultVal, int min, int max,
+                                                             BoundMode boundMode) {
+    outputList_.emplace_back(name, std::make_shared<IntegerData>(defaultVal));
+
+    auto slider = new IntSlider("", defaultVal, min, max, boundMode);
+    node_->connectSourceInteger(slider, outputList_.size() - 1);
+    addOutPortWidget(slider);
+    return this;
+}
+
+NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name, double defaultVal, double bound,
+                                                           BoundMode boundMode) {
+    outputList_.emplace_back(name, std::make_shared<DecimalData>(defaultVal));
+    auto slider = new DoubleSlider("", defaultVal, bound, boundMode);
+    node_->connectSourceValue(slider, outputList_.size() - 1);
+    addOutPortWidget(slider);
+    return this;
 }
 
 
-NitroNodeBuilder *NitroNodeBuilder::withSourcedOutputValue(const QString &name, double defaultVal) {
-    QtNodes::NodeDataType decimalDataType = DecimalData().type();
-    auto item = std::pair<QString, QtNodes::NodeDataType>(name, decimalDataType);
-    outputList_.emplace_back(item);
-    outputMap_[name] = std::make_shared<DecimalData>(defaultVal);
+NitroNodeBuilder *
+NitroNodeBuilder::withSourcedOutputValue(const QString &name, double defaultVal, double min, double max,
+                                         BoundMode boundMode) {
+    outputList_.emplace_back(name, std::make_shared<DecimalData>(defaultVal));
 
-    auto slider = new DoubleSlider("", defaultVal);
+    auto slider = new DoubleSlider("", defaultVal, min, max, boundMode);
     node_->connectSourceValue(slider, outputList_.size() - 1);
     addOutPortWidget(slider);
-
     return this;
 }
 

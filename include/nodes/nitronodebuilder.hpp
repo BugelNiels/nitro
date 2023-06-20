@@ -6,8 +6,12 @@
 #include <QLabel>
 #include "nodeoperator.hpp"
 #include "nitronode.hpp"
+#include "datainfo.hpp"
+#include "include/valueslider.hpp"
 
 class QVBoxLayout;
+
+using BoundMode = ValueSliders::BoundMode;
 
 namespace nitro {
 
@@ -25,22 +29,40 @@ namespace nitro {
 
         NitroNodeBuilder *withIcon(const QString &path);
 
-        // Input
-        NitroNodeBuilder *withInputImage(const QString &name);
+        template<class T>
+        NitroNodeBuilder *withInputPort(const QString &name) {
+            nitro::DataInfo info = T::dataInfo();
+            QtNodes::NodeDataType imDataType = {info.getDataId(), info.getDataName(), info.getDataColor()};
+            // TODO: do this automatically
+            imDataType.allowedConversion.insert("Decimal");
+            inputList_.emplace_back(name, imDataType);
+            addInPortWidget(new QLabel(name));
+            return this;
+        }
 
-        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal);
+        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int bound,
+                                           BoundMode boundMode = BoundMode::LOWER_ONLY);
 
-        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int min, int max);
+        NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int min, int max,
+                                           BoundMode boundMode = BoundMode::UPPER_LOWER);
 
-        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal);
+        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double bound,
+                                         BoundMode boundMode = BoundMode::LOWER_ONLY);
 
-        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double min, double max);
+        NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double min, double max,
+                                         BoundMode boundMode = BoundMode::UPPER_LOWER);
 
         // Output
+        template<class T>
+        NitroNodeBuilder *withOutputPort(const QString &name) {
+            nitro::DataInfo info = T::dataInfo();
+            QtNodes::NodeDataType imDataType = {info.getDataId(), info.getDataName(), info.getDataColor()};
+            outputList_.emplace_back(name, imDataType);
+            addOutPortWidget(new QLabel(name));
+            return this;
+        }
 
-        NitroNodeBuilder *withOutputImage(const QString &name);
-
-        NitroNodeBuilder *withLoadedOutputImage(const QString &name);
+        NitroNodeBuilder *withLoadButton(const QString &name, const QString &filters);
 
         NitroNodeBuilder *withOutputInteger(const QString &name);
 
@@ -50,20 +72,25 @@ namespace nitro {
 
         NitroNodeBuilder *withOutputValue(const QString &name, double defaultVal);
 
-        NitroNodeBuilder *withSourcedOutputInteger(const QString &name);
+        NitroNodeBuilder *withSourcedOutputInteger(const QString &name, int defaultVal, int bound,
+                                                   BoundMode boundMode = BoundMode::LOWER_ONLY);
 
-        NitroNodeBuilder *withSourcedOutputInteger(const QString &name, int defaultVal);
+        NitroNodeBuilder *withSourcedOutputInteger(const QString &name, int defaultVal, int min, int max,
+                                                   BoundMode boundMode = BoundMode::UPPER_LOWER);
 
-        NitroNodeBuilder *withSourcedOutputValue(const QString &name);
 
-        NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal);
+        NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal, double bound,
+                                                   BoundMode boundMode = BoundMode::LOWER_ONLY);
+
+        NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal, double min, double max,
+                                                   BoundMode boundMode = BoundMode::UPPER_LOWER);
 
         // Option Widgets
         NitroNodeBuilder *withDropDown(const QString &name, const QStringList &options);
 
         NitroNodeBuilder *withCheckBox(const QString &name, bool checked = false);
 
-        NitroNodeBuilder *withDisplayWidget(const QString& name, QLabel* label);
+        NitroNodeBuilder *withDisplayWidget(const QString &name, QLabel *label);
 
     private:
         const int portWidgetWidth_ = 150;
@@ -78,23 +105,22 @@ namespace nitro {
         QColor nodeColor_ = {36, 98, 131};
         QString iconPath_;
 
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_;
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_;
+        std::vector<PortData> inputList_;
+        std::vector<PortData> outputList_;
         QVBoxLayout *inLayout_;
         QVBoxLayout *outLayout_;
         QVBoxLayout *optionLayout_;
 
 
         void addInPortWidget(QWidget *widget);
+
         void addInPortWidget(QLabel *label);
 
         void addOutPortWidget(QWidget *widget);
+
         void addOutPortWidget(QLabel *label);
 
         void addOptionWidget(QWidget *widget);
-
 
 
     };

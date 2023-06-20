@@ -1,6 +1,7 @@
 #include "structuringelement.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_WIDTH "Width"
@@ -8,14 +9,13 @@
 #define OUTPUT_IMAGE "Kernel"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::StructElemOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_WIDTH, INPUT_HEIGHT})) {
+void nitro::StructElemOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    int width = nodePorts.getInputInteger(INPUT_WIDTH);
-    int height = nodePorts.getInputInteger(INPUT_HEIGHT);
+    int width = nodePorts.inputInteger(INPUT_WIDTH);
+    int height = nodePorts.inputInteger(INPUT_HEIGHT);
 
     cv::MorphShapes shape;
     switch (option) {
@@ -36,7 +36,7 @@ void nitro::StructElemOperator::execute(nitro::NodePorts &nodePorts, const std::
     cv::Mat result;
     kernel.convertTo(result, CV_32F);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::creator(const QString &category) {
@@ -49,7 +49,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::cr
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
                 withInputInteger(INPUT_WIDTH, 3, 1, 15)->
                 withInputInteger(INPUT_HEIGHT, 3, 1, 15)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

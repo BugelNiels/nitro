@@ -1,5 +1,6 @@
 #include "fouriershift.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -27,19 +28,18 @@ bool fftShift(const cv::Mat &src, cv::Mat &dst) {
     return false;
 }
 
-void nitro::FFTShift::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    // Verifying that all the required inputs are there
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::FFTShift::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
 
     cv::Mat result;
     fftShift(*inputImg, result);
 
     // Store the result
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShift::creator(const QString &category) {
@@ -49,8 +49,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShift::creator(cons
                 withOperator(std::make_unique<nitro::FFTShift>())->
                 withIcon("shift.png")->
                 withNodeColor({47, 105, 204})->
-                withInputImage(INPUT_IMAGE)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

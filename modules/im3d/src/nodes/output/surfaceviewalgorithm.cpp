@@ -7,16 +7,14 @@
 
 nitro::SurfaceViewAlgorithm::SurfaceViewAlgorithm(nitro::RenderView *surfViewer)
         : surfViewer_(surfViewer) {
-    currentImg_ = std::make_shared<cv::Mat>();
 }
 
-void nitro::SurfaceViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (nodePorts.inputsPresent({INPUT_IMAGE})) {
-        auto img = nodePorts.getInputImage(INPUT_IMAGE);
-        img->copyTo(*currentImg_);
-        surfViewer_->updateBuffers(cvMatToQImage(currentImg_));
+void nitro::SurfaceViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
+    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    surfViewer_->updateBuffers(cvMatToQImage(*img, currentImg_));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()>
@@ -27,7 +25,7 @@ nitro::SurfaceViewAlgorithm::creator(const QString &category, RenderView *render
                 withOperator(std::make_unique<nitro::SurfaceViewAlgorithm>(renderViewer))->
                 withIcon("3d.png")->
                 withNodeColor({99, 28, 28})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 build();
     };
 }

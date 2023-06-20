@@ -1,19 +1,19 @@
 #include "imflip.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::ImFlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::ImFlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
 
     int mode;
     switch (option) {
@@ -29,9 +29,8 @@ void nitro::ImFlipOperator::execute(nitro::NodePorts &nodePorts, const std::map<
     }
 
     cv::Mat result;
-    cv::Mat resizedImage;
     cv::flip(*im1, result, mode);
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImFlipOperator::creator(const QString &category) {
@@ -42,8 +41,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImFlipOperator::creato
                 withIcon("flip.png")->
                 withNodeColor({60, 60, 131})->
                 withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})->
-                withInputImage(INPUT_IMAGE)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

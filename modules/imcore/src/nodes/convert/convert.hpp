@@ -13,7 +13,7 @@ namespace nitro {
 
         explicit ConvertOperator(std::vector<cv::ColorConversionCodes> codes);
 
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
 
     private:
         std::vector<cv::ColorConversionCodes> codes_;

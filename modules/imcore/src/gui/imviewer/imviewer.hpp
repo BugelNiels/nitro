@@ -10,6 +10,12 @@
 
 namespace nitro {
 
+    struct ImageInfo {
+        int width;
+        int height;
+        int channels;
+    };
+
     class ImageViewer : public QGraphicsView {
     Q_OBJECT
 
@@ -29,7 +35,7 @@ namespace nitro {
 
         void resetImScale();
 
-        void setImage(const cv::Mat& img);
+        void setImage(const std::shared_ptr<cv::Mat> &img);
 
         void drawBackground(QPainter *painter, const QRectF &r) override;
 
@@ -54,24 +60,19 @@ namespace nitro {
     Q_SIGNALS:
 
         void scaleChanged(double scale);
-        void imageUpdated(const cv::Mat& img);
+        void imageUpdated(const ImageInfo& img);
 
     private:
 
         const int dotSize_ = 3;
         const int gridStep_ = 64;
 
-//        const QColor dotColor_ = QColor(80, 80, 80);
-//        const QColor gridBackgroundColor_ = QColor(57, 57, 57);
-//        const QColor bGroundCol_ = QColor(55, 55, 55);
-//        const QColor imgOutlineCol_ = QColor(128, 128, 128);
-//        const QColor imgGridCol_ = QColor(78, 78, 78);
         const int gridStepSize_ = 32;
         const int emptySize_ = 128;
 
         ScaleRange scaleRange_;
-        QImage* displayImg_ = nullptr;
-        std::shared_ptr<cv::Mat> currentImg_;
+        QImage displayImg_;
+        cv::Mat currentImg_;
         QGraphicsPixmapItem *imgDisplayItem_ = nullptr;
         QAction *saveAction_;
         QAction *resetAction_;

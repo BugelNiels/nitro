@@ -3,30 +3,44 @@
 #include <utility>
 
 #include "QtNodes/NodeData"
-#include "QtNodes/DataInfo.hpp"
+#include "nodes/datainfo.hpp"
+#include "flexibledata.hpp"
+#include "imagedata.hpp"
 
 namespace nitro {
-    class DecimalData : public QtNodes::NodeData {
+    class DecimalData : public FlexibleData<double> {
     public:
         DecimalData() = default;
 
-        explicit DecimalData(double val) : val_(val) {}
+        using FlexibleData::FlexibleData;
 
-        static QtNodes::DataInfo dataInfo() {
-            return {"Value", "decimal", {161, 161, 161}};
+        static nitro::DataInfo dataInfo() {
+            return {name_, id_, baseColor_};
         }
 
         [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
+            return type_;
         }
 
-        [[nodiscard]] double value() const { return val_; }
+        [[nodiscard]] double value() const { return data(); }
 
-        [[nodiscard]] QString getDescription() const override  {
-            return QString::number(val_, 'f', 3);
+        [[nodiscard]] QString getDescription() const override {
+            return QString::number(data(), 'f', 3);
+        }
+
+        void allowConversions(bool checked) override {
+            if(checked) {
+                type_.allowedConversion.insert(ImageData::dataInfo().getDataId());
+            } else {
+                type_.allowedConversion.clear();
+            }
         }
 
     private:
-        double val_ = 0;
+        inline static const QString name_ = "Double";
+        inline static const QString id_ = "Decimal";
+        inline static const QColor baseColor_ = {161, 161, 161};
+
+        QtNodes::NodeDataType type_ = {dataInfo().getDataId(), dataInfo().getDataName(), baseColor_};
     };
 } // nitro

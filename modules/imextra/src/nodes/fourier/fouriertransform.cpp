@@ -1,18 +1,18 @@
 #include "fouriertransform.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 #define OPTION_INVERSE "Inverse"
 
-void nitro::FFTOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    // Verifying that all the required inputs are there
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::FFTOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
     int inverse = options.at(OPTION_INVERSE);
 
     cv::Mat imIn;
@@ -26,7 +26,7 @@ void nitro::FFTOperator::execute(NodePorts &nodePorts, const std::map<QString, i
     cv::dft(imIn, result, inverse);
 
     // Store the result
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTOperator::creator(const QString &category) {
@@ -36,9 +36,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTOperator::creator(c
                 withOperator(std::make_unique<nitro::FFTOperator>())->
                 withIcon("frequency.png")->
                 withNodeColor({47, 105, 204})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withCheckBox(OPTION_INVERSE, false)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

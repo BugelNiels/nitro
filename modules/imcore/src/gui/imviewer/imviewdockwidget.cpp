@@ -34,9 +34,9 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
                          zoomBar->setZoom(scale);
                      });
     QObject::connect(imageViewer_, &nitro::ImageViewer::imageUpdated, window,
-                     [sizeLabel, channelsLabel](const cv::Mat &img) {
-                         sizeLabel->setText(QString("%1 x %2").arg(img.cols).arg(img.rows));
-                         channelsLabel->setText(QString("%1").arg(img.channels()));
+                     [sizeLabel, channelsLabel](const ImageInfo &img) {
+                         sizeLabel->setText(QString("%1 x %2").arg(img.width).arg(img.height));
+                         channelsLabel->setText(QString("%1").arg(img.channels));
                      });
 
 

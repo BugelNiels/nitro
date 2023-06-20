@@ -1,5 +1,6 @@
 #include "convert.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 #include <utility>
 
@@ -11,70 +12,68 @@ nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> co
 
 }
 
-
-void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    cv::ColorConversionCodes codec = codes_[options.at(MODE_DROPDOWN)];
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    cv::Mat in;
+    cv::ColorConversionCodes codec = codes_[options.at(MODE_DROPDOWN)];
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    cv::Mat img;
     if (inputImg->channels() == 1) {
-        cv::cvtColor(*inputImg, in, cv::COLOR_GRAY2RGB);
+        cv::cvtColor(*inputImg, img, cv::COLOR_GRAY2RGB);
     } else {
-        inputImg->copyTo(in);
+        inputImg->copyTo(img);
     }
 
-    cv::Mat result;
     switch (codec) {
         case cv::COLOR_Lab2RGB: {
             std::vector<cv::Mat> channels;
-            cv::split(in, channels);
+            cv::split(img, channels);
             channels[0] = channels[0] * 100.0;
             channels[1] = channels[1] * 255.0 - 128;
             channels[2] = channels[2] * 255.0 - 128;
-            cv::merge(channels, in);
+            cv::merge(channels, img);
             break;
         }
         case cv::COLOR_Luv2RGB: {
             std::vector<cv::Mat> channels;
-            cv::split(in, channels);
+            cv::split(img, channels);
             channels[0] = channels[0] * 100.0;
             channels[1] = channels[1] * 354.0 - 134.0;
             channels[2] = channels[2] * 262.0 - 140.0;
-            cv::merge(channels, in);
+            cv::merge(channels, img);
             break;
         }
         default:
             // These do not require any normalization
             break;
     }
-    cvtColor(in, result, codec);
+    cvtColor(img, img, codec);
     // Hard coded, but necessary unfortunately
     switch (codec) {
         case cv::COLOR_RGB2Lab: {
             // Temp fix to clamp number of gray levels
             cv::Mat temp;
-            result.convertTo(temp, CV_8U);
-            temp.convertTo(result, CV_32F);
+            img.convertTo(temp, CV_8U);
+            temp.convertTo(img, CV_32F);
             std::vector<cv::Mat> channels;
-            cv::split(result, channels);
+            cv::split(img, channels);
             channels[0] = channels[0] / 100.0;
             channels[1] = channels[1] / 255 + 128 / 255.0;
             channels[2] = channels[2] / 255 + 128 / 255.0;
-            cv::merge(channels, result);
+            cv::merge(channels, img);
             break;
         }
         case cv::COLOR_RGB2Luv: {
             cv::Mat temp;
-            result.convertTo(temp, CV_8U);
-            temp.convertTo(result, CV_32F);
+            img.convertTo(temp, CV_8U);
+            temp.convertTo(img, CV_32F);
             std::vector<cv::Mat> channels;
-            cv::split(result, channels);
+            cv::split(img, channels);
             channels[0] = channels[0] / 100.0;
             channels[1] = (channels[1] + 134.0) / 354.0;
             channels[2] = (channels[2] + 140.0) / 262.0;
-            cv::merge(channels, result);
+            cv::merge(channels, img);
             break;
         }
         default:
@@ -83,7 +82,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     }
 
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, img);
 }
 
 
@@ -131,8 +130,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
                 withIcon("convert.png")->
                 withNodeColor({110, 110, 29})->
                 withDropDown(MODE_DROPDOWN, colorNames)->
-                withInputImage(INPUT_IMAGE)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

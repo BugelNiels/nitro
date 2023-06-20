@@ -1,19 +1,19 @@
 #include "imrotate.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::ImRotateOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::ImRotateOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
 
     cv::RotateFlags mode;
     switch (option) {
@@ -31,7 +31,7 @@ void nitro::ImRotateOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     cv::Mat result;
     cv::rotate(*im1, result, mode);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImRotateOperator::creator(const QString &category) {
@@ -42,8 +42,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImRotateOperator::crea
                 withIcon("rotate.png")->
                 withNodeColor({60, 60, 131})->
                 withDropDown(MODE_DROPDOWN, {"90 (CW)", "90 (CCw)", "180"})->
-                withInputImage(INPUT_IMAGE)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

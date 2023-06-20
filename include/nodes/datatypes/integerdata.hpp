@@ -3,31 +3,33 @@
 #include <utility>
 
 #include "QtNodes/NodeData"
-#include "QtNodes/DataInfo.hpp"
+#include "nodes/datainfo.hpp"
+#include "flexibledata.hpp"
 
 namespace nitro {
-    class IntegerData : public QtNodes::NodeData {
+    class IntegerData : public FlexibleData<int> {
     public:
         IntegerData() = default;
 
-        explicit IntegerData(int val) : val_(val) {
-        }
+        using FlexibleData::FlexibleData;
 
-        static QtNodes::DataInfo dataInfo() {
-            return {"Value", "integer", {89, 140, 92}};
+        // TODO: check if we can do without this being static
+        static nitro::DataInfo dataInfo() {
+            return {name_, "Integer", baseColor_};
         }
 
         [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
+            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName(), baseColor_};
         }
 
-        [[nodiscard]] int value() const { return val_; }
+        [[nodiscard]] int value() const { return data(); }
 
-        [[nodiscard]] QString getDescription() const override  {
-            return QString::number(val_);
+        [[nodiscard]] QString getDescription() const override {
+            return QString::number(data());
         }
 
     private:
-        int val_ = 0;
+        inline static const QString name_ = "Integer";
+        inline static const QColor baseColor_ = {89, 140, 92};
     };
 } // nitro

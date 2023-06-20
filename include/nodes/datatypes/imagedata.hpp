@@ -1,42 +1,50 @@
 #pragma once
 
 #include "QtNodes/NodeData"
-#include "QtNodes/DataInfo.hpp"
+#include "nodes/datainfo.hpp"
+#include "flexibledata.hpp"
 #include <opencv2/imgproc.hpp>
 #include <QImage>
 
 namespace nitro {
 
-    class ImageData : public QtNodes::NodeData {
+    class ImageData : public FlexibleData<std::shared_ptr<cv::Mat>> {
     public:
-        ImageData() = default;
+        ImageData() : FlexibleData<std::shared_ptr<cv::Mat>>(std::make_shared<cv::Mat>()) {}
 
-
-        static QtNodes::DataInfo dataInfo() {
-            return {"Image", "universalImage", {199, 199, 41}};
-        }
-
-        explicit ImageData(const std::shared_ptr<cv::Mat> &img) : image_(img) {}
-
-        [[nodiscard]] bool isGrayscaleImg() const {
-            return image_->channels() == 1;
-        }
-
-        [[nodiscard]] bool isColImg() const {
-            return image_->channels() > 1;
+        static nitro::DataInfo dataInfo() {
+            return {name_, id_, colColor_};
         }
 
         [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
+            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName(), color_};
         }
 
-        [[nodiscard]] std::shared_ptr<cv::Mat> image() const { return image_; }
+        // TODO: check reference
+        explicit ImageData(const cv::Mat &dat) : FlexibleData(std::make_shared<cv::Mat>(dat)) {
+//            color_ = dat.channels() == 1 ? greyscaleColor_ : colColor_;
+        }
 
-        [[nodiscard]] QString getDescription() const override  {
+        explicit ImageData(std::shared_ptr<cv::Mat> dat) : FlexibleData(std::move(dat)) {
+//            color_ = data()->channels() == 1 ? greyscaleColor_ : colColor_;
+        }
+
+        [[nodiscard]] std::shared_ptr<cv::Mat> image() const { return data(); }
+
+        [[nodiscard]] QString getDescription() const override {
             return "";
         }
 
+
+        [[nodiscard]] bool empty() const override { return data() == nullptr || data()->empty(); }
+
     private:
-        std::shared_ptr<cv::Mat> image_;
+        inline static const QString name_ = "Image";
+        inline static const QString id_ = "Image";
+        inline static const QColor greyscaleColor_ = {161, 161, 161};
+        inline static const QColor colColor_ = {199, 199, 41};
+
+        QColor color_ = colColor_;
+
     };
 } // nitro

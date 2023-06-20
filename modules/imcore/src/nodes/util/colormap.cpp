@@ -1,6 +1,7 @@
 #include "colormap.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -24,19 +25,18 @@ static cv::Mat createGradientImage(int width, int height) {
 
 nitro::ColorMapOperator::ColorMapOperator(QLabel *displayLabel) : displayLabel_(displayLabel) {}
 
-void nitro::ColorMapOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    int option = options.at(OPTION_DROPDOWN);
-    cv::ColormapTypes colormapType = static_cast<cv::ColormapTypes>(option);
-    cv::Mat mapLabel = createGradientImage(200, 20);
-    cv::applyColorMap(mapLabel, mapLabel, colormapType);
-    auto qImg = cvMatToQImage(std::make_shared<cv::Mat>(mapLabel));
-    displayLabel_->setPixmap(QPixmap::fromImage(qImg));
-
-    if (!nodePorts.inputsPresent({INPUT_IMAGE})) {
+void nitro::ColorMapOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = nodePorts.getInputImage(INPUT_IMAGE);
+
+    int option = options.at(OPTION_DROPDOWN);
+    auto colormapType = static_cast<cv::ColormapTypes>(option);
+    cv::Mat mapLabel = createGradientImage(200, 20);
+    cv::applyColorMap(mapLabel, mapLabel, colormapType);
+    displayLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(mapLabel, displayImage_)));
+
+    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
     cv::Mat result;
 
     cv::Mat imIn;
@@ -46,7 +46,7 @@ void nitro::ColorMapOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     result.convertTo(result, CV_32F, 1 / 255.0);
 
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::creator(const QString &category) {
@@ -57,33 +57,33 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::crea
                 .withOperator(std::make_unique<nitro::ColorMapOperator>(displayLabel))->
                 withIcon("colormap.png")->
                 withNodeColor({110, 110, 29})->
-                withInputImage(INPUT_IMAGE)->withDropDown(OPTION_DROPDOWN,
-                                                          {
-                                                                  "Autumn",
-                                                                  "Bone",
-                                                                  "Jet",
-                                                                  "Winter",
-                                                                  "Rainbow",
-                                                                  "Ocean",
-                                                                  "Summer",
-                                                                  "Spring",
-                                                                  "Cool",
-                                                                  "Hsv",
-                                                                  "Pink",
-                                                                  "Hot",
-                                                                  "Parula",
-                                                                  "Magma",
-                                                                  "Inferno",
-                                                                  "Plasma",
-                                                                  "Viridis",
-                                                                  "Cividis",
-                                                                  "Twilight",
-                                                                  "Twilight Shifted",
-                                                                  "Turbo",
-                                                                  "Deep green"
-                                                          })->
+                withInputPort<ImageData>(INPUT_IMAGE)->withDropDown(OPTION_DROPDOWN,
+                                                                    {
+                                                                            "Autumn",
+                                                                            "Bone",
+                                                                            "Jet",
+                                                                            "Winter",
+                                                                            "Rainbow",
+                                                                            "Ocean",
+                                                                            "Summer",
+                                                                            "Spring",
+                                                                            "Cool",
+                                                                            "Hsv",
+                                                                            "Pink",
+                                                                            "Hot",
+                                                                            "Parula",
+                                                                            "Magma",
+                                                                            "Inferno",
+                                                                            "Plasma",
+                                                                            "Viridis",
+                                                                            "Cividis",
+                                                                            "Twilight",
+                                                                            "Twilight Shifted",
+                                                                            "Turbo",
+                                                                            "Deep green"
+                                                                    })->
                 withDisplayWidget(DISPLAY_LABEL, displayLabel)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

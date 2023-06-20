@@ -11,7 +11,6 @@
 #include <QStyle>
 #include <QFontDatabase>
 
-#include "QtNodes/DataColors.hpp"
 #include "QtNodes/internal/WidgetNodePainter.hpp"
 #include "nitromodule.hpp"
 #include "nodes/noderegistry.hpp"
@@ -47,8 +46,8 @@ int main(int argc, char *argv[]) {
 
     auto *nodes = new nitro::NodeRegistry();
     for (auto &nitroModule: modules) {
-        nitroModule->registerNodes(nodes);
         nitroModule->registerDataTypes(nodes);
+        nitroModule->registerNodes(nodes);
     }
     auto *window = new nitro::MainWindow(nodes);
     for (auto &nitroModule: modules) {

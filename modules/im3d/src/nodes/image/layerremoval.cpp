@@ -1,6 +1,7 @@
 #include "layerremoval.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -250,12 +251,12 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
 }
 
 void
-nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_K, INPUT_IMAGE})) {
+nitro::LayerRemovalOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    int k = nodePorts.getInputInteger(INPUT_K);
-    auto img = nodePorts.getInputImage(INPUT_IMAGE);
+    int k = nodePorts.inputInteger(INPUT_K);
+    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
     int cumulative = options.at(OPTION_CUMULATIVE);
 
     cv::Mat byteImg;
@@ -282,7 +283,7 @@ nitro::LayerRemovalOperator::execute(nitro::NodePorts &nodePorts, const std::map
     cv::Mat result;
     res.convertTo(result, CV_32F, 1.0 / double(MAX_GRAY - 1));
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::creator(const QString &category) {
@@ -292,10 +293,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::
                 withOperator(std::make_unique<nitro::LayerRemovalOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor({43, 101, 43})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_K, 8, 1, MAX_GRAY - 1)->
                 withCheckBox(OPTION_CUMULATIVE, true)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

@@ -7,7 +7,7 @@ file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
 
 add_library(${MODULE_NAME} STATIC
         ${MODULE_SOURCES} ${MODULE_HEADERS}
-        src/nodes/comparison/unimath.cpp)
+        src/nodes/input/imagesourceoperator.cpp)
 
 target_include_directories(${MODULE_NAME}
         PUBLIC

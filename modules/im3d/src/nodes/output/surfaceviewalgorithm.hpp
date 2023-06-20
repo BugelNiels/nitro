@@ -14,10 +14,10 @@ namespace nitro {
 
         explicit SurfaceViewAlgorithm(RenderView *surfViewer);
 
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
 
     private:
         RenderView *surfViewer_;
-        std::shared_ptr<cv::Mat> currentImg_;
+        cv::Mat currentImg_;
     };
 }

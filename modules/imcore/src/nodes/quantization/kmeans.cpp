@@ -1,5 +1,6 @@
 #include "kmeans.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -36,16 +37,17 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
     return quantImg;
 }
 
-void nitro::KMeansOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_K})) {
+void
+nitro::KMeansOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    int k = nodePorts.getInputInteger(INPUT_K);
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    int k = nodePorts.inputInteger(INPUT_K);
 
     cv::Mat kMeansDat = kMeansColors(*inputImg, k);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(kMeansDat));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, kMeansDat);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creator(const QString &category) {
@@ -55,9 +57,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creato
                 withOperator(std::make_unique<nitro::KMeansOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor({43, 101, 43})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_K, 8, 2, 255)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

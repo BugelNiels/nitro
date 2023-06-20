@@ -1,6 +1,7 @@
 #include "mask.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_MASK_WIDTH "Inner Width"
@@ -10,16 +11,15 @@
 #define OUTPUT_IMAGE "Kernel"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::MaskOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_WIDTH, INPUT_HEIGHT})) {
+void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    int width = nodePorts.getInputInteger(INPUT_WIDTH);
-    int height = nodePorts.getInputInteger(INPUT_HEIGHT);
-    double innerWidth = nodePorts.getInputValue(INPUT_MASK_WIDTH);
-    double innerHeight = nodePorts.getInputValue(INPUT_MASK_HEIGHT);
+    int width = nodePorts.inputInteger(INPUT_WIDTH);
+    int height = nodePorts.inputInteger(INPUT_HEIGHT);
+    double innerWidth = nodePorts.inputValue(INPUT_MASK_WIDTH);
+    double innerHeight = nodePorts.inputValue(INPUT_MASK_HEIGHT);
 
     cv::MorphShapes shape;
     switch (option) {
@@ -55,7 +55,7 @@ void nitro::MaskOperator::execute(nitro::NodePorts &nodePorts, const std::map<QS
     cv::Mat result;
     image.convertTo(result, CV_32F);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MaskOperator::creator(const QString &category) {
@@ -70,7 +70,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MaskOperator::creator(
                 withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->
                 withInputValue(INPUT_MASK_WIDTH, 1, 0, 2)->
                 withInputValue(INPUT_MASK_HEIGHT, 1, 0, 2)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

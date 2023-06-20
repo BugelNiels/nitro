@@ -3,6 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include "util.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 
 #define INPUT_IMAGE_1 "Image 1"
 #define INPUT_IMAGE_2 "Image 2"
@@ -36,13 +37,14 @@ static cv::Mat multiplyBlend(const cv::Mat &image1, const cv::Mat &image2) {
     return blendedImage;
 }
 
-void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE_1, INPUT_IMAGE_2, INPUT_FAC})) {
+void
+nitro::MixOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE_1);
-    auto im2 = nodePorts.getInputImage(INPUT_IMAGE_2);
-    double fac = nodePorts.getInputValue(INPUT_FAC);
+    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE_1).data();
+    auto im2 = nodePorts.inGet<ImageData>(INPUT_IMAGE_2).data();
+    double fac = nodePorts.inputValue(INPUT_FAC);
 
     int option = options.at(MODE_DROPDOWN);
 
@@ -88,7 +90,7 @@ void nitro::MixOperator::execute(nitro::NodePorts &nodePorts, const std::map<QSt
             result = blendImages(in1, in2, fac, 1 - fac);
             break;
     }
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(const QString &category) {
@@ -100,9 +102,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(c
                 withNodeColor({110, 110, 29})->
                 withDropDown(MODE_DROPDOWN, {"Mix", "Add", "Subtract", "Multiply", "Min", "Max"})->
                 withInputValue(INPUT_FAC, 0.5, 0, 1)->
-                withInputImage(INPUT_IMAGE_1)->
-                withInputImage(INPUT_IMAGE_2)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE_1)->
+                withInputPort<ImageData>(INPUT_IMAGE_2)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

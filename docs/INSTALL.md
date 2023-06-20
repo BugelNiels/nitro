@@ -15,7 +15,7 @@ git clone --recurse-submodules git@github.com:BugelNiels/nitro.git
 In case `--recurse-submodules` was not used, you can initialize the submodules using:
 
 ```shell
-git submodule init
+git submodule updatebounds
 git submodule update
 ```
 

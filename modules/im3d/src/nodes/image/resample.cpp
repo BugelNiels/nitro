@@ -3,6 +3,7 @@
 #include "src/nodes/image/resampler/sampler.hpp"
 #include "src/nodes/image/resampler/cubicsampler.hpp"
 #include "util.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -89,13 +90,13 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     return df;
 }
 
-void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_BITS, INPUT_LOWER_OFFSET})) {
+void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    int bits = nodePorts.getInputInteger(INPUT_BITS);
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    int offset = nodePorts.getInputInteger(INPUT_LOWER_OFFSET);
+    int bits = nodePorts.inputInteger(INPUT_BITS);
+    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
     cv::Mat imIn;
     if (inputImg->channels() > 1) {
@@ -125,7 +126,7 @@ void nitro::ResampleOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     cv::Mat nextLabels = getNextLabels(imIn, colTable, numDesiredLevels);
     cv::Mat result = sampler->resample(nextLabels, colTable, dfs, int(std::pow(2, bits)));
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::creator(const QString &category) {
@@ -136,10 +137,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 withIcon("resample.png")->
                 withNodeColor({201, 94, 6})->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic"})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 8, 1, 16)->
                 withInputInteger(INPUT_LOWER_OFFSET, 10, 0, 100)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

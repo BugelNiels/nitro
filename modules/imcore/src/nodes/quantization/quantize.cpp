@@ -1,6 +1,7 @@
 #include "quantize.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -9,12 +10,12 @@
 #define INPUT_K "K"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::QuantizeOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_K})) {
+void nitro::QuantizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = nodePorts.getInputImage(INPUT_IMAGE);
-    int k = nodePorts.getInputInteger(INPUT_K);
+    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    int k = nodePorts.inputInteger(INPUT_K);
 
     cv::Mat imIn;
     img->convertTo(imIn, CV_8U, 255);
@@ -23,7 +24,7 @@ void nitro::QuantizeOperator::execute(nitro::NodePorts &nodePorts, const std::ma
     cv::Mat quant = imDat * (max / double(k));
     cv::Mat result;
     quant.convertTo(result, CV_32F, 1 / 255.0);
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::QuantizeOperator::creator(const QString &category) {
@@ -33,9 +34,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::QuantizeOperator::crea
                 withOperator(std::make_unique<nitro::QuantizeOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor({43, 101, 43})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_K, 8, 2, 255)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

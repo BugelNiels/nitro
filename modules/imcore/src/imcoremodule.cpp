@@ -19,7 +19,7 @@
 #include "nodes/quantization//kmeans.hpp"
 #include "src/nodes/comparison/flip.hpp"
 #include "nodes/quantization//quantize.hpp"
-#include "nodes/output/imageviewalgorithm.hpp"
+#include "nodes/output/imageviewoperator.hpp"
 #include "nodes/filters/threshold.hpp"
 #include "nodes/filters/boxfilter.hpp"
 #include "nodes/filters/denoise.hpp"
@@ -32,7 +32,7 @@
 #include "nodes/util/normalize.hpp"
 #include "nodes/util/invert.hpp"
 #include "nodes/util/colormap.hpp"
-#include "nodes/comparison/unimath.hpp"
+#include "nodes/input/imagesourceoperator.hpp"
 
 namespace nitro::ImCore {
 
@@ -52,9 +52,11 @@ namespace nitro::ImCore {
     }
 
     void ImCoreModule::registerDataTypes(NodeRegistry *registry) {
-        registry->registerDataType(ImageData::dataInfo());
-        registry->registerDataType(IntegerData::dataInfo());
-        registry->registerDataType(DecimalData::dataInfo());
+        ImageData::registerConversion(DecimalData::dataInfo(), [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+            auto imData = std::static_pointer_cast<DecimalData>(nodeData);
+            double val = imData->data();
+            return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
+        });
     }
 
     void ImCoreModule::registerDocks(nitro::MainWindow *window) {
@@ -64,7 +66,6 @@ namespace nitro::ImCore {
 
     void ImCoreModule::registerConvertNodes(NodeRegistry *registry) {
         const QString category = "Convert";
-        registry->registerNode(UniMathOperator::creator(category));
         registry->registerNode(MathOperator::creator(category));
         registry->registerNode(MixOperator::creator(category));
         registry->registerNode(ConvertOperator::creator(category));
@@ -104,20 +105,13 @@ namespace nitro::ImCore {
         const QString category = "Input";
 
         // ------ Image Source Node ------
-        registry->registerNode([category]() {
-            NitroNodeBuilder builder("Image Source", "ImageSource", category);
-            return builder.
-                    withLoadedOutputImage("Image")->
-                    withIcon("image_source.png")->
-                    withNodeColor({121, 70, 29})->
-                    build();
-        });
+        registry->registerNode(ImageSourceOperator::creator(category));
 
         // ------ Decimal Source Node ------
         registry->registerNode([category]() {
             NitroNodeBuilder builder("Value", "ValueSource", category);
             return builder.
-                    withSourcedOutputValue("Value")->
+                    withSourcedOutputValue("Value", 0, 0, 1, BoundMode::UNCHECKED)->
                     withIcon("number.png")->
                     withNodeColor({131, 49, 74})->
                     build();
@@ -127,7 +121,7 @@ namespace nitro::ImCore {
         registry->registerNode([category]() {
             NitroNodeBuilder builder("Integer", "IntegerSource", category);
             return builder.
-                    withSourcedOutputInteger("Integer")->
+                    withSourcedOutputInteger("Integer", 128, 0, 255, BoundMode::UNCHECKED)->
                     withIcon("number.png")->
                     withNodeColor({131, 49, 74})->
                     build();

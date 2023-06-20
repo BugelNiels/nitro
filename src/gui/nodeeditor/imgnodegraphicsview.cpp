@@ -99,29 +99,27 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                     break;
                 }
             }
-
             if (!dataModel_->nodeExists(viewerNodeId)) {
                 // Spawn viewer node
-                QPointF posView(c->pos().x() + c->boundingRect().width() + 5,
-                                c->pos().y() + c->boundingRect().height() / 4);
 
                 QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
                 viewerNodeId = newId;
-                dataModel_->setNodeData(newId, QtNodes::NodeRole::Position, posView);
             }
+            QPointF posView(c->pos().x() + c->boundingRect().width() * 2,
+                            c->pos().y() + c->boundingRect().height() / 4);
+            dataModel_->setNodeData(viewerNodeId, QtNodes::NodeRole::Position, posView);
+            auto viewerType = dataModel_->portData(viewerNodeId, QtNodes::PortType::In, 0,
+                                                   QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
 
             auto const &cid = c->nodeId();
-            if (cid == viewerNodeId) {
-                // skip being able to view the viewer itself;
-                return;
-            }
             // Find a suitable port to view; multiple clicks will cycle through the ports
             if (nodeBeingViewed_ == cid) {
-                while (true) {
+                int numPorts = dataModel_->nodeData(cid, QtNodes::NodeRole::OutPortCount).toInt();
+                for (int i = 0; i < numPorts; ++i) {
                     currentPort_++;
                     auto pData = dataModel_->portData(nodeBeingViewed_, QtNodes::PortType::Out, currentPort_,
                                                       QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
-                    if (pData.id == nitro::ImageData().type().id) {
+                    if (pData.id == viewerType.id || viewerType.allowConversionFrom(pData.id)) {
                         break;
                     }
                     if (pData.id == QtNodes::InvalidData().type().id) {
@@ -132,15 +130,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 currentPort_ = 0;
             }
             QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort_, .inNodeId = viewerNodeId, .inPortIndex = 0};
-
-            auto getDataType = [&](QtNodes::PortType const portType) {
-                return dataModel_->portData(getNodeId(portType, connectionId), portType,
-                                            getPortIndex(portType, connectionId),
-                                            QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
-            };
-
-            // Check if connection possible
-            if (getDataType(QtNodes::PortType::Out).id == getDataType(QtNodes::PortType::In).id) {
+            if (dataModel_->connectionPossible(connectionId)) {
 
                 QtNodes::NodeId const nodeId = getNodeId(QtNodes::PortType::In, connectionId);
                 QtNodes::PortIndex const portIndex = getPortIndex(QtNodes::PortType::In, connectionId);
