@@ -42,10 +42,6 @@ namespace nitro {
             return conversions[id](data);
         }
 
-        static void registerConversion(const QString &id,
-                                       std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
-            conversions[id] = std::move(conversion);
-        }
 
         [[nodiscard]] bool empty() const override { return false; }
 
@@ -55,6 +51,12 @@ namespace nitro {
 
         [[nodiscard]] QtNodes::NodeDataType type() const override {
             return type_;
+        }
+
+    protected:
+        static void registerConversionFrom(const QString &id,
+                                           std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
+            conversions[id] = std::move(conversion);
         }
 
     private:

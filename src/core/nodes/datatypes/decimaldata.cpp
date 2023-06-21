@@ -16,4 +16,20 @@ namespace nitro {
         return QString::number(data(), 'f', 3);
     }
 
+    void DecimalData::registerConversions() {
+
+        // Every type needs a "conversion" to itself
+        DecimalData::registerConversionFrom(DecimalData::id(),
+                                            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                return std::static_pointer_cast<DecimalData>(nodeData)->data();
+                                            });
+
+        DecimalData::registerConversionFrom(IntegerData::id(),
+                                            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                auto intData = std::static_pointer_cast<IntegerData>(nodeData);
+                                                return double(intData->data());
+                                            });
+    }
+
 } // nitro
+

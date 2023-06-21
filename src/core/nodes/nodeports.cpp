@@ -92,6 +92,7 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
+        // TODO: clamp
         return inputValDat->data();
     }
 
@@ -103,6 +104,7 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
+        // TODO: clamp
         return inputValDat->data();
     }
 

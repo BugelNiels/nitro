@@ -17,6 +17,8 @@ namespace nitro {
             return id_;
         }
 
+        static void registerConversions();
+
         [[nodiscard]] QString getDescription() const override;
 
     private:

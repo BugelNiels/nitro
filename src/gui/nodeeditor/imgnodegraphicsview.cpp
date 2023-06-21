@@ -117,7 +117,6 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
             }
             if (!dataModel_->nodeExists(viewerNodeId)) {
                 // Spawn viewer node
-
                 QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
                 viewerNodeId = newId;
                 QPointF posView(c->pos().x() + c->boundingRect().width() * 2,

@@ -2,7 +2,6 @@
 #include "util.hpp"
 
 #include <QColorSpace>
-#include <QGuiApplication>
 #include <QImage>
 #include <QImageReader>
 #include <QMessageBox>
@@ -29,7 +28,6 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-//    setBackgroundBrush(bGroundCol_);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     setScaleRange(minScaleFactor, maxScaleFactor);
@@ -306,9 +304,6 @@ void nitro::ImageViewer::resetImScale() {
 }
 
 void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
-//    QGraphicsView::keyPressEvent(event);
-
-
     if (event->key() == Qt::Key_R) {
         resetImScale();
         event->accept();
@@ -325,7 +320,6 @@ void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
         if (rect().contains(mousePos)) {
             crossHairMode_ = true;
             QApplication::setOverrideCursor(Qt::CrossCursor);
-            event->accept();
         }
     }
 }
@@ -335,7 +329,6 @@ void nitro::ImageViewer::keyReleaseEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Control) {
         crossHairMode_ = false;
         QApplication::restoreOverrideCursor();
-        repaint();
     }
 }
 

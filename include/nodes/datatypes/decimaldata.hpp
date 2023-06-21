@@ -5,6 +5,7 @@
 #include "QtNodes/NodeData"
 #include "flexibledata.hpp"
 #include "colimagedata.hpp"
+#include "include/valueslider.hpp"
 
 namespace nitro {
     class DecimalData : public FlexibleData<double> {
@@ -16,6 +17,8 @@ namespace nitro {
         static QString id() {
             return id_;
         }
+
+        static void registerConversions();
 
         [[nodiscard]] QString getDescription() const override;
 

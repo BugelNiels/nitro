@@ -86,8 +86,8 @@ namespace nitro {
 
 
     void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-        // TODO: notify which part of the data changed
         if (data == nullptr && sliderInputDeleted_) {
+            // Give the input back to the slider widgets after the connection was deleted
             if (nodePorts_.inDataType(portIndex).id == DecimalData().type().id) {
                 QString key = getInPortKey(portIndex);
                 auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
@@ -98,8 +98,22 @@ namespace nitro {
                 data = std::make_shared<IntegerData>(slider->getVal());
             }
             sliderInputDeleted_ = false;
+        } else if (data != nullptr) {
+            // Verifies that integers and doubles don't go out of the bounds of the sliders
+            // Probably a cleaner solution for this, but this will have to do for now
+            if (data->type().id == DecimalData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
+                double newVal = std::dynamic_pointer_cast<DecimalData>(data)->data();
+                data = std::make_shared<DecimalData>(slider->boundVal(newVal));
+            } else if (data->type().id == IntegerData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<IntSlider *>(widgets_[key]);
+                int newVal = std::dynamic_pointer_cast<IntegerData>(data)->data();
+                data = std::make_shared<IntegerData>(slider->boundVal(newVal));
+            }
         }
-
+        // TODO: notify which part of the data changed
         nodePorts_.setInData(portIndex, data);
         if (algo_) {
             algo_->execute(nodePorts_, options_);
