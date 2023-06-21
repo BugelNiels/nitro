@@ -58,13 +58,14 @@ void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, 
     nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
 }
 
+// TODO: position
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MaskOperator::creator(const QString &category) {
     return [category]() {
         nitro::NitroNodeBuilder builder("Mask", "mask", category);
         return builder.
                 withOperator(std::make_unique<nitro::MaskOperator>())->
                 withIcon("mask.png")->
-                withNodeColor({131, 49, 74})->
+                withNodeColor(NITRO_INPUT_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Ellipse", "Rectangle"})->
                 withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
                 withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->

@@ -13,7 +13,9 @@ namespace nitro {
     public:
         FlexibleData() = default;
 
-        explicit FlexibleData(T val) : data_(val) {}
+        explicit FlexibleData(T val, const DataInfo &info, QColor color)
+                : data_(val),
+                  type_({info.getDataId(), info.getDataName(), color}) {}
 
         [[nodiscard]] QString getDescription() const override {
             return "";
@@ -24,7 +26,7 @@ namespace nitro {
         }
 
         [[nodiscard]] static T from(const std::shared_ptr<QtNodes::NodeData> &data) {
-            if(data == nullptr) {
+            if (data == nullptr) {
                 throw std::invalid_argument("Data is null.\n");
             }
             auto flexDat = std::dynamic_pointer_cast<FlexibleData<T>>(data);
@@ -46,13 +48,21 @@ namespace nitro {
             conversions[info.getDataName()] = std::move(conversion);
         }
 
-
         [[nodiscard]] bool empty() const override { return false; }
+
+        void allowConversionFrom(const QtNodes::NodeDataType &type) override {
+            type_.allowedFromConversions.insert(type.id);
+        }
+
+        [[nodiscard]] QtNodes::NodeDataType type() const override {
+            return type_;
+        }
 
     private:
         static std::map<QString, std::function<T(const std::shared_ptr<QtNodes::NodeData> &)>> conversions;
 
         T data_;
+        QtNodes::NodeDataType type_;
     };
 
     template<class T>

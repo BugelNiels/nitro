@@ -45,7 +45,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::cr
         return builder.
                 withOperator(std::make_unique<nitro::StructElemOperator>())->
                 withIcon("kernel.png")->
-                withNodeColor({131, 49, 74})->
+                withNodeColor(NITRO_INPUT_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
                 withInputInteger(INPUT_WIDTH, 3, 1, 15)->
                 withInputInteger(INPUT_HEIGHT, 3, 1, 15)->

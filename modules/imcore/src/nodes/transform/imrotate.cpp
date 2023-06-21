@@ -40,7 +40,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImRotateOperator::crea
         return builder.
                 withOperator(std::make_unique<nitro::ImRotateOperator>())->
                 withIcon("rotate.png")->
-                withNodeColor({60, 60, 131})->
+                withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"90 (CW)", "90 (CCw)", "180"})->
                 withInputPort<ImageData>(INPUT_IMAGE)->
                 withOutputPort<ImageData>(OUTPUT_IMAGE)->

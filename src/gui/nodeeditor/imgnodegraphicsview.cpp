@@ -18,6 +18,8 @@
 #include <QUndoStack>
 
 #include <QKeyEvent>
+#include <QLineEdit>
+#include <QWidgetAction>
 
 
 nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
@@ -51,16 +53,29 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
 
 QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
+    const int padding = 12;
+    menu->setContentsMargins(padding,padding,padding,padding);
 
     QAction *sectionTitle = menu->addSection("Add");
     QFont font;
     font.setWeight(QFont::Light);
     sectionTitle->setFont(font);
 
+    // TODO
+    // Add filterbox to the context menu
+//    auto *txtBox = new QLineEdit(menu);
+//    txtBox->setPlaceholderText(QStringLiteral("Filter"));
+//    txtBox->setClearButtonEnabled(true);
+//
+//    auto *txtBoxAction = new QWidgetAction(menu);
+//    txtBoxAction->setDefaultWidget(txtBox);
+//
+//    menu->addAction(txtBoxAction);
     menu->addSeparator();
 
     auto categories = nodes_->getCategories();
 
+    // TODO: treeview
     for (const auto &category: categories) {
         auto *subMenu = new QMenu(category.first);
         auto nodeInfos = category.second;
@@ -69,6 +84,7 @@ QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
         }
         menu->addMenu(subMenu);
     }
+
     menu->setMaximumSize(menu->sizeHint());
     return menu;
 }
@@ -104,10 +120,10 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
 
                 QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
                 viewerNodeId = newId;
+                QPointF posView(c->pos().x() + c->boundingRect().width() * 2,
+                                c->pos().y() + c->boundingRect().height() / 4);
+                dataModel_->setNodeData(viewerNodeId, QtNodes::NodeRole::Position, posView);
             }
-            QPointF posView(c->pos().x() + c->boundingRect().width() * 2,
-                            c->pos().y() + c->boundingRect().height() / 4);
-            dataModel_->setNodeData(viewerNodeId, QtNodes::NodeRole::Position, posView);
             auto viewerType = dataModel_->portData(viewerNodeId, QtNodes::PortType::In, 0,
                                                    QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
 

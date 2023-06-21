@@ -28,15 +28,17 @@ namespace nitro {
 
             void registerFilterNodes(NodeRegistry *registry);
 
-            void registerQuantizationNodes(NodeRegistry *registry);
+            void registerCompressionNodes(NodeRegistry *registry);
 
             ImageViewer *imageViewer_;
 
-            void registerUtilNodes(NodeRegistry *registry);
+            void registerColorNodes(NodeRegistry *registry);
 
-            void registerComparisonNodes(NodeRegistry *registry);
+            void registerQualityMetricNodes(NodeRegistry *registry);
 
             void registerTransformNodes(NodeRegistry *registry);
+
+            void registerRestorationNodes(NodeRegistry *registry);
         };
     }
 

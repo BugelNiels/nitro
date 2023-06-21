@@ -6,12 +6,12 @@
 
 #include <QDebug>
 
-nitro::ImageViewAlgorithm::ImageViewAlgorithm(nitro::ImageViewer *imViewer)
+nitro::ImageViewOperator::ImageViewOperator(nitro::ImageViewer *imViewer)
         : imViewer_(imViewer) {
 }
 
 
-void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ImageViewOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
     if (!nodePorts.allInputsPresent()) {
         imViewer_->removeImage();
         return;
@@ -26,13 +26,13 @@ void nitro::ImageViewAlgorithm::execute(NodePorts &nodePorts, const std::map<QSt
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ImageViewAlgorithm::creator(const QString &category, ImageViewer *imageViewer) {
+nitro::ImageViewOperator::creator(const QString &category, ImageViewer *imageViewer) {
     return [category, imageViewer]() {
         nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
         return builder.
-                withOperator(std::make_unique<nitro::ImageViewAlgorithm>(imageViewer))->
+                withOperator(std::make_unique<nitro::ImageViewOperator>(imageViewer))->
                 withIcon("viewer.png")->
-                withNodeColor({60, 29, 38})->
+                withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<ImageData>(INPUT_IMAGE)->
                 build();
     };

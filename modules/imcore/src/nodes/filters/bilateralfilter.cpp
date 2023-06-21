@@ -34,7 +34,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
         return builder.
                 withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
                 withIcon("blur.png")->
-                withNodeColor({71, 47, 189})->
+                withNodeColor(NITRO_FILTER_COLOR)->
                 withInputPort<ImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_D, 9, 1, 64)->
                 withInputValue(INPUT_SIGMA_C, 75, 2, 255)->

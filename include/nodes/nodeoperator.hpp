@@ -4,6 +4,8 @@
 #include <QString>
 #include "nodeports.hpp"
 
+#include "categorycolors.h"
+
 namespace nitro {
 
     class NodeOperator {

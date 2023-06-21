@@ -46,7 +46,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::cre
         return builder.
                 withOperator(std::make_unique<nitro::BoxFilterOperator>())->
                 withIcon("blur.png")->
-                withNodeColor({71, 47, 189})->
+                withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
                 withInputPort<ImageData>(INPUT_IMAGE)->

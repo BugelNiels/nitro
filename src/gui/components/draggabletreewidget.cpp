@@ -1,6 +1,12 @@
 #include "gui/draggabletreewidget.hpp"
 #include <QMouseEvent>
 #include <QAction>
+#include <QScrollBar>
+
+nitro::DraggableTreeWidget::DraggableTreeWidget(QWidget *parent)
+        : QTreeWidget(parent) {
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+}
 
 void nitro::DraggableTreeWidget::mousePressEvent(QMouseEvent *event) {
     QTreeWidget::mousePressEvent(event);

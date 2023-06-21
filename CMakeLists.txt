@@ -42,7 +42,7 @@ file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc include/nodes/portdata.hpp)
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

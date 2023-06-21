@@ -10,16 +10,12 @@
 namespace nitro {
     class DecimalData : public FlexibleData<double> {
     public:
-        DecimalData() = default;
+        DecimalData() : FlexibleData<double>(0, dataInfo(), baseColor_) {}
 
-        using FlexibleData::FlexibleData;
+        explicit DecimalData(double value) : FlexibleData<double>(value, dataInfo(), baseColor_) {}
 
         static nitro::DataInfo dataInfo() {
             return {name_, id_, baseColor_};
-        }
-
-        [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return type_;
         }
 
         [[nodiscard]] double value() const { return data(); }
@@ -28,19 +24,9 @@ namespace nitro {
             return QString::number(data(), 'f', 3);
         }
 
-        void allowConversions(bool checked) override {
-            if(checked) {
-                type_.allowedConversion.insert(ImageData::dataInfo().getDataId());
-            } else {
-                type_.allowedConversion.clear();
-            }
-        }
-
     private:
         inline static const QString name_ = "Double";
         inline static const QString id_ = "Decimal";
         inline static const QColor baseColor_ = {161, 161, 161};
-
-        QtNodes::NodeDataType type_ = {dataInfo().getDataId(), dataInfo().getDataName(), baseColor_};
     };
 } // nitro

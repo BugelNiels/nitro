@@ -39,7 +39,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImFlipOperator::creato
         return builder.
                 withOperator(std::make_unique<nitro::ImFlipOperator>())->
                 withIcon("flip.png")->
-                withNodeColor({60, 60, 131})->
+                withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})->
                 withInputPort<ImageData>(INPUT_IMAGE)->
                 withOutputPort<ImageData>(OUTPUT_IMAGE)->

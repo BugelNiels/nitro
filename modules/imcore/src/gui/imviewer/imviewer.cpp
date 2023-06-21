@@ -15,6 +15,7 @@
 #include <QGraphicsPixmapItem>
 #include <QFileDialog>
 #include <QTimer>
+#include <QApplication>
 
 nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
@@ -128,6 +129,7 @@ void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     QBrush brush(Qt::transparent);
     painter->setBrush(brush);
     painter->drawRect(gridRect);
+
 }
 
 void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {
@@ -230,10 +232,8 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
 void nitro::ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
     if (img->empty()) {
         removeImage();
-        qDebug() << "removing image";
         return;
     }
-    // TODO: improve efficiency
     removalDue_ = false;
 
     int oldDisplayWidth = displayImg_.width();
@@ -307,10 +307,44 @@ void nitro::ImageViewer::resetImScale() {
 
 void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
     QGraphicsView::keyPressEvent(event);
+
+    if (event->key() == Qt::Key_Control) {
+        QPoint mousePos = mapFromGlobal(QCursor::pos());
+        qDebug() << "test" << QCursor::pos();
+        if (rect().contains(mousePos)) {
+            qDebug() << "pressed" << QCursor::pos();
+            crossHairMode_ = true;
+            QApplication::setOverrideCursor(Qt::CrossCursor);
+        }
+    }
+
     if (event->key() == Qt::Key_R) {
         resetImScale();
     } else if (event->key() == Qt::Key_S && event->modifiers().testFlag(Qt::AltModifier)) {
         saveImage();
     }
+}
 
+void nitro::ImageViewer::keyReleaseEvent(QKeyEvent *event) {
+    QGraphicsView::keyReleaseEvent(event);
+    if (event->key() == Qt::Key_Control) {
+        crossHairMode_ = false;
+        QApplication::restoreOverrideCursor();
+        repaint();
+    }
+}
+
+
+void nitro::ImageViewer::mouseMoveEvent(QMouseEvent *event) {
+    QGraphicsView::mouseMoveEvent(event);
+    if (imgDisplayItem_ != nullptr && crossHairMode_) {
+        QPointF scenePos = mapToScene(event->pos());
+        if (!imgDisplayItem_->contains(scenePos)) {
+            return;
+        }
+        QPoint itemPos = imgDisplayItem_->mapFromScene(scenePos).toPoint();
+        emit mousePosUpdated(itemPos, displayImg_.pixelColor(itemPos));
+        repaint();
+
+    }
 }

@@ -10,29 +10,31 @@
 #include "nodes/noderegistry.hpp"
 #include "gui/mainwindow.hpp"
 
-#include "nodes/convert/convert.hpp"
-#include "nodes/convert/separate.hpp"
-#include "nodes/convert/combine.hpp"
-#include "nodes/convert/grayscale.hpp"
-#include "nodes/convert/immix.hpp"
-#include "nodes/convert/immath.hpp"
-#include "nodes/quantization//kmeans.hpp"
-#include "src/nodes/comparison/flip.hpp"
-#include "nodes/quantization//quantize.hpp"
 #include "nodes/output/imageviewoperator.hpp"
-#include "nodes/filters/threshold.hpp"
 #include "nodes/filters/boxfilter.hpp"
-#include "nodes/filters/denoise.hpp"
+#include "src/nodes/restoration/denoise.hpp"
 #include "nodes/filters/gaussianblur.hpp"
 #include "nodes/filters/bilateralfilter.hpp"
 #include "src/nodes/transform/imresize.hpp"
-#include "src/nodes/util/iminfo.hpp"
 #include "src/nodes/transform/imflip.hpp"
 #include "src/nodes/transform/imrotate.hpp"
-#include "nodes/util/normalize.hpp"
-#include "nodes/util/invert.hpp"
-#include "nodes/util/colormap.hpp"
 #include "nodes/input/imagesourceoperator.hpp"
+#include "nodes/input/randomoperator.hpp"
+#include "nodes/converter/iminfo.hpp"
+#include "nodes/converter/immath.hpp"
+#include "nodes/converter/booleanmath.hpp"
+#include "nodes/converter/reduction.hpp"
+#include "nodes/converter/normalize.hpp"
+#include "nodes/converter/invert.hpp"
+#include "nodes/converter/rgbtobw.hpp"
+#include "nodes/converter/separate.hpp"
+#include "nodes/converter/combine.hpp"
+#include "nodes/compression/quantize.hpp"
+#include "nodes/compression/kmeans.hpp"
+#include "nodes/color/immix.hpp"
+#include "nodes/color/colorspaceconvert.hpp"
+#include "nodes/color/colormap.hpp"
+#include "nodes/quality/flip.hpp"
 
 namespace nitro::ImCore {
 
@@ -44,19 +46,40 @@ namespace nitro::ImCore {
         registerInputNodes(registry);
         registerOutputNodes(registry, imageViewer_);
         registerConvertNodes(registry);
+        registerColorNodes(registry);
         registerTransformNodes(registry);
-        registerQuantizationNodes(registry);
         registerFilterNodes(registry);
-        registerComparisonNodes(registry);
-        registerUtilNodes(registry);
+        registerCompressionNodes(registry);
+        registerQualityMetricNodes(registry);
+        registerRestorationNodes(registry);
     }
 
     void ImCoreModule::registerDataTypes(NodeRegistry *registry) {
-        ImageData::registerConversion(DecimalData::dataInfo(), [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-            auto imData = std::static_pointer_cast<DecimalData>(nodeData);
-            double val = imData->data();
-            return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
-        });
+        ImageData::registerConversion(DecimalData::dataInfo(),
+                                      [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                          auto imData = std::static_pointer_cast<DecimalData>(nodeData);
+                                          double val = imData->data();
+                                          return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
+                                      });
+
+        ImageData::registerConversion(IntegerData::dataInfo(),
+                                      [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                          auto imData = std::static_pointer_cast<IntegerData>(nodeData);
+                                          int val = imData->data();
+                                          return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val / 255.0f));
+                                      });
+
+        DecimalData::registerConversion(IntegerData::dataInfo(),
+                                        [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                            auto intData = std::static_pointer_cast<IntegerData>(nodeData);
+                                            return double(intData->data());
+                                        });
+
+        IntegerData::registerConversion(DecimalData::dataInfo(),
+                                        [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                            auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
+                                            return int(std::round(doubleData->data()));
+                                        });
     }
 
     void ImCoreModule::registerDocks(nitro::MainWindow *window) {
@@ -65,18 +88,20 @@ namespace nitro::ImCore {
     }
 
     void ImCoreModule::registerConvertNodes(NodeRegistry *registry) {
-        const QString category = "Convert";
+        const QString category = "Converter";
+        registry->registerNode(ImInfoOperator::creator(category)); // TODO: place elsewhere?
         registry->registerNode(MathOperator::creator(category));
-        registry->registerNode(MixOperator::creator(category));
-        registry->registerNode(ConvertOperator::creator(category));
-        registry->registerNode(GrayscaleConvertOperator::creator(category));
+        registry->registerNode(BooleanMathOperator::creator(category));
+        registry->registerNode(ReductionOperator::creator(category));
+        registry->registerNode(NormalizeOperator::creator(category));
+        registry->registerNode(InvertOperator::creator(category));
+        registry->registerNode(RgbToGrayscaleOperator::creator(category));
         registry->registerNode(SeparateOperator::creator(category));
         registry->registerNode(CombineOperator::creator(category));
     }
 
-    void ImCoreModule::registerQuantizationNodes(NodeRegistry *registry) {
-        const QString category = "Quantization";
-        registry->registerNode(FlipOperator::creator(category));
+    void ImCoreModule::registerCompressionNodes(NodeRegistry *registry) {
+        const QString category = "Compression";
         registry->registerNode(QuantizeOperator::creator(category));
         registry->registerNode(KMeansOperator::creator(category));
     }
@@ -88,16 +113,15 @@ namespace nitro::ImCore {
         registry->registerNode(ImRotateOperator::creator(category));
     }
 
-    void ImCoreModule::registerUtilNodes(NodeRegistry *registry) {
-        const QString category = "Util";
-        registry->registerNode(ImInfoOperator::creator(category));
-        registry->registerNode(NormalizeOperator::creator(category));
-        registry->registerNode(InvertOperator::creator(category));
+    void ImCoreModule::registerColorNodes(NodeRegistry *registry) {
+        const QString category = "Color";
+        registry->registerNode(MixOperator::creator(category));
+        registry->registerNode(ConvertOperator::creator(category));
         registry->registerNode(ColorMapOperator::creator(category));
     }
 
-    void ImCoreModule::registerComparisonNodes(NodeRegistry *registry) {
-        const QString category = "Compare";
+    void ImCoreModule::registerQualityMetricNodes(NodeRegistry *registry) {
+        const QString category = "Quality";
         registry->registerNode(FlipOperator::creator(category));
     }
 
@@ -113,7 +137,7 @@ namespace nitro::ImCore {
             return builder.
                     withSourcedOutputValue("Value", 0, 0, 1, BoundMode::UNCHECKED)->
                     withIcon("number.png")->
-                    withNodeColor({131, 49, 74})->
+                    withNodeColor(NITRO_INPUT_COLOR)->
                     build();
         });
 
@@ -123,22 +147,26 @@ namespace nitro::ImCore {
             return builder.
                     withSourcedOutputInteger("Integer", 128, 0, 255, BoundMode::UNCHECKED)->
                     withIcon("number.png")->
-                    withNodeColor({131, 49, 74})->
+                    withNodeColor(NITRO_INPUT_COLOR)->
                     build();
         });
+        registry->registerNode(RandomOperator::creator(category));
     }
 
     void ImCoreModule::registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer) {
         const QString category = "Output";
-        registry->registerNode(ImageViewAlgorithm::creator(category, imageViewer));
+        registry->registerNode(ImageViewOperator::creator(category, imageViewer));
     }
 
     void ImCoreModule::registerFilterNodes(NodeRegistry *registry) {
         const QString category = "Filter";
-        registry->registerNode(ThresholdOperator::creator(category));
         registry->registerNode(BoxFilterOperator::creator(category));
         registry->registerNode(GaussianBlurOperator::creator(category));
         registry->registerNode(BilateralFilterOperator::creator(category));
+    }
+
+    void ImCoreModule::registerRestorationNodes(NodeRegistry *registry) {
+        const QString category = "Restoration";
         registry->registerNode(DenoiseOperator::creator(category));
     }
 

@@ -101,7 +101,7 @@ bool nitro::NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString 
 
 QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
     auto *treeWidget = new nitro::DraggableTreeWidget(this);
-    treeWidget->setStyleSheet("QTreeView::item { padding: 5px; }");
+    treeWidget->setStyleSheet("QTreeView::item { padding: 4px; }");
     treeWidget->setHeaderHidden(true);
     auto nodeMenu = view_->initNodeMenu();
     for (auto *subMen: nodeMenu->actions()) {

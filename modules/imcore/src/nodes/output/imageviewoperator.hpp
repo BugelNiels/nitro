@@ -6,12 +6,12 @@
 
 namespace nitro {
 
-    class ImageViewAlgorithm : public NodeOperator {
+    class ImageViewOperator : public NodeOperator {
     public:
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, ImageViewer* imageViewer);
 
-        explicit ImageViewAlgorithm(ImageViewer *imViewer);
+        explicit ImageViewOperator(ImageViewer *imViewer);
 
 
         void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;

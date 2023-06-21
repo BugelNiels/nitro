@@ -32,6 +32,7 @@ namespace nitro {
         void wheelEvent(QWheelEvent *event) override;
 
         void keyPressEvent(QKeyEvent *event) override;
+        void keyReleaseEvent(QKeyEvent *event) override;
 
         void resetImScale();
 
@@ -44,6 +45,8 @@ namespace nitro {
         void resizeEvent(QResizeEvent *event) override;
 
         void removeImage();
+
+        void mouseMoveEvent(QMouseEvent *event) override;
 
         const double minScaleFactor = 0.2;
         const double maxScaleFactor = 20;
@@ -61,6 +64,7 @@ namespace nitro {
 
         void scaleChanged(double scale);
         void imageUpdated(const ImageInfo& img);
+        void mousePosUpdated(const QPoint& pos, QColor color);
 
     private:
 
@@ -77,6 +81,7 @@ namespace nitro {
         QAction *saveAction_;
         QAction *resetAction_;
         bool removalDue_ = false;
+        bool crossHairMode_ = false;
 
         void setScaleRange(double minimum = 0, double maximum = 0);
 

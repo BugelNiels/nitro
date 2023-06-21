@@ -30,11 +30,11 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::
         return builder.
                 withOperator(std::make_unique<nitro::GaussianBlurOperator>())->
                 withIcon("blur.png")->
-                withNodeColor({71, 47, 189})->
+                withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
                 withInputPort<ImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_SIZE, 64, 1)->
-                withInputValue(INPUT_SIGMA, 32, 0)->
+                withInputInteger(INPUT_SIZE, 64, 1, 256, BoundMode::LOWER_ONLY)->
+                withInputValue(INPUT_SIGMA, 32, 0, 128, BoundMode::LOWER_ONLY)->
                 withOutputPort<ImageData>(OUTPUT_IMAGE)->
                 build();
     };
