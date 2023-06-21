@@ -2,12 +2,15 @@
 
 #include "nodes/noderegistry.hpp"
 #include "gui/mainwindow.hpp"
-#include "nodes/morphology/morphology.hpp"
+#include "src/nodes/filter/morphology.hpp"
 #include "nodes/input/structuringelement.hpp"
-#include "nodes/edgedetect/canny.hpp"
-#include "nodes/fourier/fouriertransform.hpp"
-#include "nodes/fourier/fouriershift.hpp"
 #include "nodes/input/mask.hpp"
+#include "nodes/filter/canny.hpp"
+#include "nodes/filter/fouriertransform.hpp"
+#include "nodes/filter/dctransform.hpp"
+#include "nodes/filter/fouriershift.hpp"
+#include "nodes/analysis/distancetransform.hpp"
+#include "nodes/segmentation/connectedcomps.hpp"
 
 namespace nitro::ImExtra {
 
@@ -15,33 +18,31 @@ namespace nitro::ImExtra {
     }
 
     void ImExtraModule::registerNodes(NodeRegistry *registry) {
-        registerMorphologyNodes(registry);
-        registerEdgeDetectNodes(registry);
-        registerFrequencyNodes(registry);
+        registerFilterNodes(registry);
+        registerAnalysisNodes(registry);
         registerInputNodes(registry);
     }
 
     void ImExtraModule::registerInputNodes(NodeRegistry *registry) {
         const QString category = "Input";
         registry->registerNode(MaskOperator::creator(category));
-    }
-
-
-    void ImExtraModule::registerMorphologyNodes(NodeRegistry *registry) {
-        const QString category = "Morphology";
-        registry->registerNode(MorphologyOperator::creator(category));
         registry->registerNode(StructElemOperator::creator(category));
     }
 
-    void ImExtraModule::registerFrequencyNodes(NodeRegistry *registry) {
-        const QString category = "Frequency Domain";
+
+    void ImExtraModule::registerFilterNodes(NodeRegistry *registry) {
+        const QString category = "Filter";
+        registry->registerNode(CannyEdgeDetectionOperator::creator(category));
+        registry->registerNode(MorphologyOperator::creator(category));
         registry->registerNode(FFTOperator::creator(category));
-        registry->registerNode(FFTShift::creator(category));
+        registry->registerNode(DCTOperator::creator(category));
+        registry->registerNode(FFTShiftOperator::creator(category));
     }
 
-    void ImExtraModule::registerEdgeDetectNodes(NodeRegistry *registry) {
-        const QString category = "Edge Detection";
-        registry->registerNode(CannyEdgeDetectionOperator::creator(category));
+    void ImExtraModule::registerAnalysisNodes(NodeRegistry *registry) {
+        const QString category = "Analysis";
+        registry->registerNode(DistanceTransformOperator::creator(category));
+        registry->registerNode(ConnectedCompsOperator::creator(category));
     }
 
 } // ImMorph

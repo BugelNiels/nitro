@@ -3,30 +3,28 @@
 #include <utility>
 
 #include "QtNodes/NodeData"
-#include "QtNodes/DataInfo.hpp"
+#include "flexibledata.hpp"
+#include "colimagedata.hpp"
+#include "include/valueslider.hpp"
 
 namespace nitro {
-    class DecimalData : public QtNodes::NodeData {
+    class DecimalData : public FlexibleData<double> {
     public:
-        DecimalData() = default;
+        DecimalData();
 
-        explicit DecimalData(double val) : val_(val) {}
+        explicit DecimalData(double value);
 
-        static QtNodes::DataInfo dataInfo() {
-            return {"Value", "decimal", {161, 161, 161}};
+        static QString id() {
+            return id_;
         }
 
-        [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
-        }
+        static void registerConversions();
 
-        [[nodiscard]] double value() const { return val_; }
-
-        [[nodiscard]] QString getDescription() const override  {
-            return QString::number(val_, 'f', 3);
-        }
+        [[nodiscard]] QString getDescription() const override;
 
     private:
-        double val_ = 0;
+        inline static const QString name_ = "Double";
+        inline static const QString id_ = "Decimal";
+        inline static const QColor baseColor_ = {161, 161, 161};
     };
 } // nitro

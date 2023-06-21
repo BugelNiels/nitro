@@ -11,10 +11,13 @@
 		<file>icons/node_editor.png</file>
 		<file>icons/nodes/3d.png</file>
 		<file>icons/nodes/blur.png</file>
+		<file>icons/nodes/bool_math.png</file>
 		<file>icons/nodes/colormap.png</file>
 		<file>icons/nodes/compare.png</file>
+		<file>icons/nodes/connected_comps.png</file>
 		<file>icons/nodes/convert.png</file>
 		<file>icons/nodes/denoise.png</file>
+		<file>icons/nodes/distance.png</file>
 		<file>icons/nodes/filter.png</file>
 		<file>icons/nodes/flip.png</file>
 		<file>icons/nodes/frequency.png</file>
@@ -35,6 +38,7 @@
 		<file>icons/nodes/resize.png</file>
 		<file>icons/nodes/rotate.png</file>
 		<file>icons/nodes/shift.png</file>
+		<file>icons/nodes/sum.png</file>
 		<file>icons/nodes/surface.png</file>
 		<file>icons/nodes/threshold.png</file>
 		<file>icons/nodes/toggle.png</file>

@@ -15,11 +15,9 @@ namespace nitro {
 
             void registerNodes(NodeRegistry *registry) override;
 
-            void registerMorphologyNodes(NodeRegistry *registry);
+            void registerFilterNodes(NodeRegistry *registry);
 
-            void registerEdgeDetectNodes(NodeRegistry *registry);
-
-            void registerFrequencyNodes(NodeRegistry *registry);
+            void registerAnalysisNodes(NodeRegistry *registry);
 
             void registerInputNodes(NodeRegistry *registry);
         };

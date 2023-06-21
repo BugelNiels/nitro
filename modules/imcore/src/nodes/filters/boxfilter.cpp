@@ -1,5 +1,6 @@
 #include "boxfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -8,12 +9,12 @@
 #define MODE_DROPDOWN "Mode"
 #define BORDER_DROPDOWN "Border"
 
-void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIZE})) {
+void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    int kSize = nodePorts.getInputInteger(INPUT_SIZE);
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    int kSize = nodePorts.inputInteger(INPUT_SIZE);
     int option = options.at(MODE_DROPDOWN);
     int borderOption = options.at(BORDER_DROPDOWN);
 
@@ -36,7 +37,7 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QStr
 
     cv::Mat result;
     resultChar.convertTo(result, CV_32F, 1.0 / 255.0);
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::creator(const QString &category) {
@@ -45,12 +46,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::cre
         return builder.
                 withOperator(std::make_unique<nitro::BoxFilterOperator>())->
                 withIcon("blur.png")->
-                withNodeColor({71, 47, 189})->
+                withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_SIZE, 5, 1, 256)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

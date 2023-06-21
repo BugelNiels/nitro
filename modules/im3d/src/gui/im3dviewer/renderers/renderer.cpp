@@ -18,7 +18,7 @@ nitro::Renderer::Renderer(QOpenGLFunctions_4_1_Core *functions, nitro::Settings 
 nitro::Renderer::~Renderer() { }
 
 /**
- * @brief Renderer::init Initialises the renderer with an OpenGL context and
+ * @brief Renderer::updatebounds Initialises the renderer with an OpenGL context and
  * settings. Also initialises the shaders and buffers.
  * @param f OpenGL functions pointer.
  * @param s Settings.

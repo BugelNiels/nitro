@@ -1,11 +1,14 @@
 #pragma once
 
+#include <utility>
 #include <vector>
 #include <QString>
 #include <iostream>
 #include <map>
 #include <opencv2/core/mat.hpp>
 #include "QtNodes/Definitions"
+#include "nodes/datatypes/flexibledata.hpp"
+#include "portdata.hpp"
 
 namespace QtNodes {
     class NodeData;
@@ -19,10 +22,8 @@ namespace nitro {
     public:
         NodePorts();
 
-        NodePorts(std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_,
-                  std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList_,
-                  std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap_,
-                  std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_);
+        NodePorts(std::vector<PortData> inputList_,
+                  std::vector<PortData> outputList_);
 
         ~NodePorts();
 
@@ -38,52 +39,69 @@ namespace nitro {
 
         [[nodiscard]] int numOutPorts() const;
 
-        [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(QtNodes::PortIndex portIndex) const;
-
         [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(QtNodes::PortIndex portIndex);
 
         [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(const QString &name) const;
 
         [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(const QString &name);
 
-        [[nodiscard]] bool inputsPresent(std::initializer_list<QString> list);
+        [[nodiscard]] int inputInteger(const QString &name) const;
 
-        [[nodiscard]] int getInputInteger(const QString &name) const;
+        [[nodiscard]] double inputValue(const QString &name) const;
 
-        [[nodiscard]] double getInputValue(const QString &name) const;
-
-        [[nodiscard]] std::shared_ptr<cv::Mat> getInputImage(const QString &name) const;
-
-        template<class T>
-        std::shared_ptr<T> getInputData(const QString &name) const {
+        [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &inGet(const QString &name) const {
             if (inputMap_.count(name) == 0) {
-                return nullptr;
+                throw std::invalid_argument(
+                        QString("Input port with name: %1 does not exist.").arg(name).toStdString());
             }
-            auto inDat = std::dynamic_pointer_cast<T>(inputMap_.at(name));
-            if (inDat == nullptr) {
-                return nullptr;
-            }
-            return inDat;
+            return inputMap_.at(name).getData();
         }
 
-        void setOutputInteger(const QString &name, int val);
+        [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &outGet(const QString &name) const {
+            if (outputMap_.count(name) == 0) {
+                throw std::invalid_argument(
+                        QString("Output port with name: %1 does not exist.").arg(name).toStdString());
+            }
+            return outputMap_.at(name).getData();
+        }
 
-        void setOutputValue(const QString &name, double val);
+        template<class T>
+        [[nodiscard]] bool inputOfType(const QString &name) const {
+            return std::dynamic_pointer_cast<T>(inputMap_.at(name).data_) != nullptr;
+        }
 
-        void setOutputImage(const QString &name, const std::shared_ptr<cv::Mat> &im);
+        template<class T>
+        [[nodiscard]] bool allInputOfType() const {
+            for (const auto &[key, value]: inputMap_) {
+                if (std::dynamic_pointer_cast<T>(value.data_) == nullptr) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
+        template<class T, class U>
+        void output(const QString &name, const U &data) {
+            setOutputData(name, std::make_shared<T>(T(data)));
+        }
 
         void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 
-        void setOutputType(QtNodes::PortIndex port, QtNodes::NodeDataType type);
-
         void setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data);
 
+        bool allInputsPresent();
+
+        void setGlobalProperty(const QString &key, QString value);
+
+        QString getGlobalProperty(const QString &key);
+
     private:
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> inputList_;
-        std::vector<std::pair<QString, QtNodes::NodeDataType>> outputList_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> inputMap_;
-        std::map<QString, std::shared_ptr<QtNodes::NodeData>> outputMap_;
+        std::vector<QString> inputList_;
+        std::vector<QString> outputList_;
+        std::map<QString, PortData> inputMap_;
+        std::map<QString, PortData> outputMap_;
+
+        std::map<QString, QString> properties_;
 
     };
 

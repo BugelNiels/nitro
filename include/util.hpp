@@ -17,7 +17,7 @@ namespace nitro {
      * @param img
      * @return
      */
-    QImage cvMatToQImage(const std::shared_ptr<cv::Mat> &img);
+    QImage cvMatToQImage(const cv::Mat &src, cv::Mat& buffer);
 
     /**
      *
@@ -55,5 +55,5 @@ namespace nitro {
      * @param targetSize
      * @return
      */
-    cv::Mat createMask(const cv::MatSize& srcSize, const cv::MatSize &targetSize);
+    cv::Mat createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize);
 } // nitro

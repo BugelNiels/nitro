@@ -48,6 +48,11 @@ namespace nitro {
 
         void load(const QJsonObject &) override;
 
+    public Q_SLOTS:
+
+        void inputConnectionCreated(const QtNodes::ConnectionId &) override;
+    void inputConnectionDeleted(const QtNodes::ConnectionId &) override;
+
     protected:
 
         [[nodiscard]] unsigned int nPorts(QtNodes::PortType portType) const override;
@@ -71,19 +76,18 @@ namespace nitro {
         std::map<QString, int> options_; // used for dropdowns and other options
 
         QWidget *widget_ = nullptr;
+        bool sliderInputDeleted_ = false;
 
 
-        void connectInputWidget(ValueSliders::IntSlider *slider, int port);
+        void connectInputWidget(ValueSliders::IntSlider *slider, QLabel* valLabel, int port);
 
-        void connectInputWidget(ValueSliders::DoubleSlider *slider, int port);
+        void connectInputWidget(ValueSliders::DoubleSlider *slider, QLabel* valLabel, int port);
 
-        void connectLoadButton(QPushButton *button, int port);
+        void connectLoadButton(const QString &name, QPushButton *button, int port, const QString &filter);
 
         void connectComboBox(const QString &name, QComboBox *comboBox);
 
         void connectCheckBox(const QString &name, QCheckBox *checkBox);
-
-        void loadImage(QPushButton *button, int port, const QString &filePath);
 
         void connectSourceInteger(ValueSliders::IntSlider *slider, int port);
 
@@ -96,6 +100,8 @@ namespace nitro {
         void connectLabel(const QString &name, QLabel *label);
 
         friend class NitroNodeBuilder;
+
+
     };
 
 } // nitro

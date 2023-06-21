@@ -60,11 +60,8 @@ int nitro::getMaxValue(const cv::Mat &mat) {
             break;
 
         case CV_32F:  // 32-bit floating-point
-            maxValue = 1.0f;
-            break;
-
         case CV_64F:  // 64-bit floating-point
-            maxValue = 1.0;
+            maxValue = 1;
             break;
 
         default:
@@ -76,80 +73,54 @@ int nitro::getMaxValue(const cv::Mat &mat) {
 
 
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
-QImage nitro::cvMatToQImage(const std::shared_ptr<cv::Mat> &img) {
+QImage nitro::cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
 
-    switch (img->type()) {
+    switch (src.type()) {
         case CV_32F: {
-            img->convertTo(*img, CV_8U, 255);
+            src.convertTo(img, CV_8U, 255);
             break;
         }
         case CV_32FC3: {
-            img->convertTo(*img, CV_8UC3, 255);
+            src.convertTo(img, CV_8UC3, 255);
             break;
         }
+
         case CV_32FC4: {
-            img->convertTo(*img, CV_8UC4, 255);
+            src.convertTo(img, CV_8UC4, 255);
             break;
         }
         default:
+            src.copyTo(img);
             break;
     }
 
-    switch (img->type()) {
+    switch (img.type()) {
         // 8-bit, 4 channel
         case CV_8UC4: {
-            QImage image(img->data,
-                         img->cols, img->rows,
-                         static_cast<int>(img->step),
-                         QImage::Format_ARGB32);
-
-            return image;
+            return QImage(img.data,
+                          img.cols, img.rows,
+                          static_cast<int>(img.step),
+                          QImage::Format_ARGB32);
         }
 
             // 8-bit, 3 channel
         case CV_8UC3: {
-            QImage image(img->data,
-                         img->cols, img->rows,
-                         static_cast<int>(img->step),
-                         QImage::Format_RGB888);
-
-            return image.rgbSwapped();
+            return QImage(img.data,
+                          img.cols, img.rows,
+                          static_cast<int>(img.step),
+                          QImage::Format_RGB888);
         }
 
             // 8-bit, 1 channel
         case CV_8UC1: {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-            QImage image(img->data,
-                         img->cols, img->rows,
-                         static_cast<int>(img->step),
-                         QImage::Format_Grayscale8);
-#else
-            static QVector<QRgb>  sColorTable;
-
-            // only create our color table the first time
-            if ( sColorTable.isEmpty() )
-            {
-               sColorTable.resize( 256 );
-
-               for ( int i = 0; i < 256; ++i )
-               {
-                  sColorTable[i] = qRgb( i, i, i );
-               }
-            }
-
-            QImage image( img->data,
-                          img->cols, img->rows,
-                          static_cast<int>(img->step),
-                          QImage::Format_Indexed8 );
-
-            image.setColorTable( sColorTable );
-#endif
-
-            return image;
+            return QImage(img.data,
+                          img.cols, img.rows,
+                          static_cast<int>(img.step),
+                          QImage::Format_Grayscale8);
         }
 
         default:
-            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << img->type();
+            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << img.type();
             break;
     }
 
@@ -266,7 +237,7 @@ cv::Mat nitro::cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetIma
     return canvas;
 }
 
-cv::Mat nitro::createMask(const cv::MatSize& srcSize, const cv::MatSize &targetSize) {
+cv::Mat nitro::createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize) {
     int targetWidth = targetSize[1];
     int targetHeight = targetSize[0];
 

@@ -7,8 +7,7 @@ namespace nitro {
 
     class DraggableTreeWidget : public QTreeWidget {
     public:
-        explicit DraggableTreeWidget(QWidget *parent = nullptr)
-                : QTreeWidget(parent) {}
+        explicit DraggableTreeWidget(QWidget *parent = nullptr);
 
         void registerAction(const QString& key, QAction* action);
 

@@ -2,7 +2,6 @@
 #include "util.hpp"
 
 #include <QColorSpace>
-#include <QGuiApplication>
 #include <QImage>
 #include <QImageReader>
 #include <QMessageBox>
@@ -15,10 +14,10 @@
 #include <QGraphicsPixmapItem>
 #include <QFileDialog>
 #include <QTimer>
+#include <QApplication>
 
 nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
-    currentImg_ = std::make_shared<cv::Mat>();
 
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
@@ -29,7 +28,6 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-//    setBackgroundBrush(bGroundCol_);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     setScaleRange(minScaleFactor, maxScaleFactor);
@@ -57,30 +55,30 @@ void nitro::ImageViewer::initActions() {
 }
 
 void nitro::ImageViewer::saveImage() {
-    {
-        if (displayImg_ != nullptr) {
-            QString filePath = QFileDialog::getSaveFileName(
-                    this, "Save Image", "../data/",
-                    tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
-            if (filePath == "") {
-                return;
-            }
-            if (displayImg_->save(filePath)) {
-                QMessageBox::information(this, tr("Save Successful"),
-                                         QString("File saved to\n %1").arg(filePath));
-            } else {
-                QMessageBox::warning(this, tr("Could not save"),
-                                     QString("Something went wrong while trying to save to\n %1").arg(filePath));
-            }
+
+    if (displayImg_.sizeInBytes() > 0) {
+        QString filePath = QFileDialog::getSaveFileName(
+                this, "Save Image", "../data/",
+                tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
+        if (filePath == "") {
+            return;
+        }
+        if (displayImg_.save(filePath)) {
+            QMessageBox::information(this, tr("Save Successful"),
+                                     QString("File saved to\n %1").arg(filePath));
+        } else {
+            QMessageBox::warning(this, tr("Could not save"),
+                                 QString("Something went wrong while trying to save to\n %1").arg(filePath));
         }
     }
+
 }
 
 
 void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
 
     const QColor dotColor_ = palette().color(QPalette::Button);
-    const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled,QPalette::AlternateBase);
+    const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled, QPalette::AlternateBase);
     const QColor bGroundCol_ = palette().color(QPalette::Base);
     const QColor imgOutlineCol_ = palette().color(QPalette::Disabled, QPalette::Button);
     const QColor imgGridCol_ = palette().color(QPalette::Base);
@@ -129,6 +127,7 @@ void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
     QBrush brush(Qt::transparent);
     painter->setBrush(brush);
     painter->drawRect(gridRect);
+
 }
 
 void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {
@@ -213,7 +212,7 @@ QMenu *nitro::ImageViewer::createContextMenu() {
     auto *menu = new QMenu();
     menu->addAction(resetAction_);
     menu->addAction(saveAction_);
-    if (displayImg_ == nullptr) {
+    if (displayImg_.sizeInBytes() == 0) {
         saveAction_->setEnabled(false);
     }
     return menu;
@@ -228,32 +227,33 @@ void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
     QGraphicsView::resizeEvent(event);
 }
 
-void nitro::ImageViewer::setImage(const cv::Mat &img) {
-    if (img.empty()) {
+void nitro::ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
+    if (img->empty()) {
         removeImage();
         return;
     }
     removalDue_ = false;
-    img.copyTo(*currentImg_);
-    auto qImg = new QImage(cvMatToQImage(currentImg_));
+
+    int oldDisplayWidth = displayImg_.width();
+    int oldDisplayHeight = displayImg_.height();
+
+    displayImg_ = cvMatToQImage(*img, currentImg_); // TODO fix memory leak
     if (imgDisplayItem_ == nullptr) {
-        imgDisplayItem_ = new QGraphicsPixmapItem(QPixmap::fromImage(*qImg));
+        imgDisplayItem_ = new QGraphicsPixmapItem(QPixmap::fromImage(displayImg_));
         scene()->addItem(imgDisplayItem_);
         QRectF rect = scene()->itemsBoundingRect();
         scene()->setSceneRect(rect);
         resetImScale();
-        emit imageUpdated(img);
     } else {
-        imgDisplayItem_->setPixmap(QPixmap::fromImage(*qImg));
-        if (imgDisplayItem_->boundingRect().width() != displayImg_->width() ||
-            imgDisplayItem_->boundingRect().height() != displayImg_->height()) {
+        imgDisplayItem_->setPixmap(QPixmap::fromImage(displayImg_));
+        if (imgDisplayItem_->boundingRect().width() != oldDisplayWidth ||
+            imgDisplayItem_->boundingRect().height() != oldDisplayHeight) {
             QRectF rect = scene()->itemsBoundingRect();
             scene()->setSceneRect(rect);
             resetImScale();
         }
-        emit imageUpdated(img);
     }
-    displayImg_ = qImg;
+    emit imageUpdated({img->cols, img->rows, img->channels()});
     repaint();
 }
 
@@ -269,7 +269,7 @@ void nitro::ImageViewer::removeImage() {
                 imgDisplayItem_ = nullptr;
             }
             resetImScale();
-            emit imageUpdated(cv::Mat());
+            emit imageUpdated({0, 0, 0});
             repaint();
         }
         timer->deleteLater();
@@ -304,11 +304,45 @@ void nitro::ImageViewer::resetImScale() {
 }
 
 void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
-    QGraphicsView::keyPressEvent(event);
     if (event->key() == Qt::Key_R) {
         resetImScale();
+        event->accept();
+        return;
     } else if (event->key() == Qt::Key_S && event->modifiers().testFlag(Qt::AltModifier)) {
+        QApplication::restoreOverrideCursor();
         saveImage();
+        event->accept();
+        return;
     }
 
+    if (event->key() == Qt::Key_Control) {
+        QPoint mousePos = mapFromGlobal(QCursor::pos());
+        if (rect().contains(mousePos)) {
+            crossHairMode_ = true;
+            QApplication::setOverrideCursor(Qt::CrossCursor);
+        }
+    }
+}
+
+void nitro::ImageViewer::keyReleaseEvent(QKeyEvent *event) {
+    QGraphicsView::keyReleaseEvent(event);
+    if (event->key() == Qt::Key_Control) {
+        crossHairMode_ = false;
+        QApplication::restoreOverrideCursor();
+    }
+}
+
+
+void nitro::ImageViewer::mouseMoveEvent(QMouseEvent *event) {
+    QGraphicsView::mouseMoveEvent(event);
+    if (imgDisplayItem_ != nullptr && crossHairMode_) {
+        QPointF scenePos = mapToScene(event->pos());
+        if (!imgDisplayItem_->contains(scenePos)) {
+            return;
+        }
+        QPoint itemPos = imgDisplayItem_->mapFromScene(scenePos).toPoint();
+        emit mousePosUpdated(itemPos, displayImg_.pixelColor(itemPos));
+        repaint();
+
+    }
 }

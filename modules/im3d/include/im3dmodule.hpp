@@ -13,8 +13,6 @@ namespace nitro {
         public:
             Im3DModule();
 
-            void registerDataTypes(NodeRegistry *registry) override;
-
             void registerDocks(MainWindow *window) override;
 
             void registerNodes(NodeRegistry *registry) override;
@@ -26,6 +24,8 @@ namespace nitro {
             void registerImageNodes(NodeRegistry *registry);
 
             RenderView *renderViewer_;
+
+            void registerRestorationNodes(NodeRegistry *registry);
         };
     }
 

@@ -1,6 +1,7 @@
 #include "imresize.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -9,15 +10,14 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::ResizeOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
-
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_WIDTH, INPUT_HEIGHT})) {
+void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+    if(!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
-    int width = nodePorts.getInputInteger(INPUT_WIDTH);
-    int height = nodePorts.getInputInteger(INPUT_HEIGHT);
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    int width = nodePorts.inputInteger(INPUT_WIDTH);
+    int height = nodePorts.inputInteger(INPUT_HEIGHT);
 
     cv::InterpolationFlags mode;
     if (option == 0) {
@@ -29,7 +29,7 @@ void nitro::ResizeOperator::execute(nitro::NodePorts &nodePorts, const std::map<
     cv::Mat result;
     cv::resize(*im1, result, cv::Size(width, height), mode);
 
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creator(const QString &category) {
@@ -38,12 +38,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
         return builder.
                 withOperator(std::make_unique<nitro::ResizeOperator>())->
                 withIcon("resize.png")->
-                withNodeColor({60, 60, 131})->
+                withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Cubic", "Nearest-Neighbour"})->
-                withInputImage(INPUT_IMAGE)->
-                withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
-                withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
+                withInputInteger(INPUT_WIDTH, 256, 1, 2048, BoundMode::LOWER_ONLY)->
+                withInputInteger(INPUT_HEIGHT, 256, 1, 2048, BoundMode::LOWER_ONLY)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

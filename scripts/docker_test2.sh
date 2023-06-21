@@ -9,3 +9,5 @@ xhost + local:docker
 docker run -it --rm -device /dev/fuse --cap-add SYS_ADMIN build_image
 xhost - local:docker
 cd scripts || exit
+
+ docker run --rm --device=/dev/fuse --privileged test_image

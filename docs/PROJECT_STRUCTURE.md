@@ -83,7 +83,7 @@ namespace nitro {
          * @param nodePorts Port data containing the current input and output information.
          * @param options Options for passing additional parameters to the algorithm. Currently unused.
          */
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) const override;
+        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
 
     };
 } // nitro
@@ -104,23 +104,19 @@ namespace nitro {
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) const {
-    // Verifying that all the required inputs are there
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_SIGMA_C, INPUT_SIGMA_S, INPUT_D})) {
-        return;
-    }
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
     // Get the input data
-    auto inputImg = nodePorts.getInputImage(INPUT_IMAGE);
-    double sigmaCol = nodePorts.getInputValue(INPUT_SIGMA_C);
-    double sigmaSpace = nodePorts.getInputValue(INPUT_SIGMA_S);
-    int d = nodePorts.getInputInteger(INPUT_D);
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
+    double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
+    int d = nodePorts.inputInteger(INPUT_D);
 
     // Perform filtering
     cv::Mat result;
     cv::bilateralFilter(*inputImg, result, d, sigmaCol, sigmaSpace);
 
     // Store the result
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
@@ -130,11 +126,11 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
                 withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
                 withIcon("blur.png")->
                 withNodeColor({71, 47, 189})->
-                withInputImage(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_D, 9, 1, 64)->
                 withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
                 withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
-                withOutputImage(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }
@@ -151,9 +147,9 @@ namespace nitro {
     public:
         IntegerData() = default;
 
-        explicit IntegerData(int val) : val_(val) {}
+        explicit IntegerData(int val) : data_(data) {}
 
-        static QtNodes::DataInfo dataInfo() {
+        static nitro::DataInfo dataInfo() {
             return {"Value", "integer", {89, 140, 92}};
         }
 
@@ -161,10 +157,10 @@ namespace nitro {
             return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
         }
 
-        int value() const { return val_; }
+        int value() const { return data_; }
 
     private:
-        int val_;
+        int data_;
     };
 } // nitro
 ```

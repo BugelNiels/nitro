@@ -10,7 +10,6 @@
 #include "QtNodes/InvalidData.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/imagedata.hpp"
 #include <opencv2/imgcodecs.hpp>
 #include "external/qt-value-slider/include/doubleslider.hpp"
 #include "external/qt-value-slider/include/intslider.hpp"
@@ -20,7 +19,12 @@
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
 
+
+#define LABEL_SUFFIX "_1"
+#define DEFAULT_BUTTON_TEXT "Open"
+
 namespace nitro {
+
 
     NitroNode::~NitroNode() = default;
 
@@ -82,24 +86,36 @@ namespace nitro {
 
 
     void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
-        QString key = getInPortKey(portIndex);
-        if (widgets_.count(key) > 0) {
-            widgets_[key]->setEnabled(data == nullptr);
-            if (auto slider = dynamic_cast<DoubleSlider *>(widgets_[key])) {
-                if (auto val = dynamic_cast<DecimalData *>(data.get())) {
-                    slider->setVal(val->value());
-                }
+        if (data == nullptr && sliderInputDeleted_) {
+            // Give the input back to the slider widgets after the connection was deleted
+            if (nodePorts_.inDataType(portIndex).id == DecimalData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
+                data = std::make_shared<DecimalData>(slider->getVal());
+            } else if (nodePorts_.inDataType(portIndex).id == IntegerData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<IntSlider *>(widgets_[key]);
+                data = std::make_shared<IntegerData>(slider->getVal());
             }
-            if (auto slider = dynamic_cast<IntSlider *>(widgets_[key])) {
-                if (auto val = dynamic_cast<IntegerData *>(data.get())) {
-                    slider->setVal(val->value());
-                }
+            sliderInputDeleted_ = false;
+        } else if (data != nullptr) {
+            // Verifies that integers and doubles don't go out of the bounds of the sliders
+            // Probably a cleaner solution for this, but this will have to do for now
+            if (data->type().id == DecimalData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
+                double newVal = std::dynamic_pointer_cast<DecimalData>(data)->data();
+                data = std::make_shared<DecimalData>(slider->boundVal(newVal));
+            } else if (data->type().id == IntegerData().type().id) {
+                QString key = getInPortKey(portIndex);
+                auto const *slider = dynamic_cast<IntSlider *>(widgets_[key]);
+                int newVal = std::dynamic_pointer_cast<IntegerData>(data)->data();
+                data = std::make_shared<IntegerData>(slider->boundVal(newVal));
             }
         }
-        // TODO: check if the data changed
+        // TODO: notify which part of the data changed
         nodePorts_.setInData(portIndex, data);
         if (algo_) {
-
             algo_->execute(nodePorts_, options_);
 
             for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
@@ -118,49 +134,76 @@ namespace nitro {
         return info_;
     }
 
-    void NitroNode::connectInputWidget(IntSlider *slider, int port) {
+    void NitroNode::connectInputWidget(IntSlider *slider, QLabel *valLabel, int port) {
         QString key = getInPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
+        widgets_[key + LABEL_SUFFIX] = valLabel;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toInt());
             slider->setEnabled(true);
         };
-        connect(slider, &IntSlider::valueChanged, this, [this, key, port](int value) {
+        connect(slider, &IntSlider::valueUpdated, this, [this, key, port](int value) {
             setInData(std::make_shared<IntegerData>(value), port);
             propJson_[key] = value;
         });
     }
 
-    void NitroNode::connectInputWidget(DoubleSlider *slider, int port) {
+    void NitroNode::connectInputWidget(DoubleSlider *slider, QLabel *valLabel, int port) {
         QString key = getInPortKey(port);
         propJson_[key] = slider->getVal();
         widgets_[key] = slider;
+        widgets_[key + LABEL_SUFFIX] = valLabel;
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toDouble());
             slider->setEnabled(true);
         };
-        connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
-            double actualVal = value / 100.0f;
-            setInData(std::make_shared<DecimalData>(actualVal), port);
-            propJson_[key] = actualVal;
+        connect(slider, &DoubleSlider::valueUpdated, this, [this, key, port](double value) {
+            setInData(std::make_shared<DecimalData>(value), port);
+            propJson_[key] = value;
         });
     }
 
-    void NitroNode::connectLoadButton(QPushButton *button, int port) {
-        QString key = QString("Load %1").arg(port);
+    void NitroNode::connectLoadButton(const QString &name, QPushButton *button, int port, const QString &filter) {
+        button->setText(DEFAULT_BUTTON_TEXT);
+        QString key = getOutPortKey(port);
         widgets_[key] = button;
-        widgetsJson_[key] = [this, button, port](const QJsonValue &val) {
-            loadImage(button, port, val.toString());
+        widgetsJson_[key] = [this, button, name, port](const QJsonValue &val) {
+            QString filePath = val.toString();
+            nodePorts_.setGlobalProperty(name, filePath);
+            algo_->execute(nodePorts_, options_);
+
+            if (filePath == "") {
+                filePath = DEFAULT_BUTTON_TEXT;
+            }
+            QFontMetrics fontMetrics(button->font());
+            QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
+                                                        button->width() - 30);
+            button->setText(elidedText);
+            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                // Emit that everything has been updated
+                Q_EMIT dataUpdated(i);
+            }
         };
-        // TODO: extract this into general load button; pass lambda as parameter
-        connect(button, &QPushButton::pressed, this, [this, port, button]() {
+        connect(button, &QPushButton::pressed, this, [this, key, button, name, filter, port]() {
             QString filePath = QFileDialog::getOpenFileName(
-                    nullptr, "Load Image", "../data/",
-                    tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
+                    nullptr, "NITRO File View", "../data/", filter);
+            nodePorts_.setGlobalProperty(name, filePath);
+            algo_->execute(nodePorts_, options_);
 
-            loadImage(button, port, filePath);
+            propJson_[key] = filePath;
+            if (filePath == "") {
+                filePath = DEFAULT_BUTTON_TEXT;
+            }
 
+            QFontMetrics fontMetrics(button->font());
+            QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
+                                                        button->width() - 30);
+            button->setText(elidedText);
+            for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
+                // Emit that everything has been updated
+                Q_EMIT dataUpdated(i);
+            }
         });
     }
 
@@ -171,7 +214,7 @@ namespace nitro {
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toInt());
         };
-        connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](int value) {
+        connect(slider, &IntSlider::valueUpdated, this, [this, key, port](int value) {
             QString portName = nodePorts_.outPortName(port);
             nodePorts_.setOutputData(portName, std::make_shared<IntegerData>(value));
             propJson_[key] = value;
@@ -186,46 +229,14 @@ namespace nitro {
         widgetsJson_[key] = [slider](const QJsonValue &val) {
             slider->setVal(val.toDouble());
         };
-        connect(slider, &DoubleSlider::valueChanged, this, [this, key, port](double value) {
-            double actualVal = value / 100.0f;
+        connect(slider, &DoubleSlider::valueUpdated, this, [this, key, port](double value) {
             QString portName = nodePorts_.outPortName(port);
-            nodePorts_.setOutputData(portName, std::make_shared<DecimalData>(actualVal));
-            propJson_[key] = actualVal;
+            nodePorts_.setOutputData(portName, std::make_shared<DecimalData>(value));
+            propJson_[key] = value;
             Q_EMIT dataUpdated(port);
         });
     }
 
-    void NitroNode::loadImage(QPushButton *button, int port, const QString &filePath) {
-        cv::Mat inputImg = cv::imread(filePath.toStdString());
-
-        QString portName = nodePorts_.outPortName(port);
-        QString key = QString("Load %1").arg(port);
-
-        if (inputImg.empty()) {
-            return;
-        } else {
-
-            if (inputImg.channels() > 1 && isGrayscale(inputImg)) {
-                cv::Mat gray;
-                cvtColor(inputImg, gray, cv::COLOR_RGB2GRAY);
-                inputImg = gray;
-            }
-            cv::Mat floatImg;
-            float max = nitro::getMaxValue(inputImg);
-            inputImg.convertTo(floatImg, CV_32F, 1.0 / max);
-            inputImg = floatImg;
-
-            QFontMetrics fontMetrics(button->font());
-            QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
-                                                        button->width() - 30);
-            button->setText(elidedText);
-            propJson_[key] = filePath;
-            auto ptrImg = std::make_shared<cv::Mat>(inputImg);
-            nodePorts_.setOutputType(port, ImageData().type());
-            nodePorts_.setOutputData(portName, std::make_shared<ImageData>(ptrImg));
-        }
-        Q_EMIT dataUpdated(port);
-    }
 
     void NitroNode::load(const QJsonObject &loadJ) {
         propJson_ = loadJ["properties"].toObject();
@@ -282,6 +293,32 @@ namespace nitro {
         widgetsJson_[name] = [label](const QJsonValue &val) {
             label->setText(val.toString());
         };
+    }
+
+    void NitroNode::inputConnectionCreated(const QtNodes::ConnectionId &connectionId) {
+        QtNodes::PortIndex idx = connectionId.inPortIndex;
+        if (nodePorts_.inDataType(idx).id == DecimalData().type().id ||
+            nodePorts_.inDataType(idx).id == IntegerData().type().id) {
+            QString key = getInPortKey(idx);
+            widgets_[key]->setHidden(true);
+            widgets_[key + LABEL_SUFFIX]->setHidden(false);
+        }
+    }
+
+    void NitroNode::inputConnectionDeleted(const QtNodes::ConnectionId &connectionId) {
+        QtNodes::PortIndex idx = connectionId.inPortIndex;
+
+        if (nodePorts_.inDataType(idx).id == DecimalData().type().id) {
+            QString key = getInPortKey(idx);
+            widgets_[key]->setHidden(false);
+            widgets_[key + LABEL_SUFFIX]->setHidden(true);
+            sliderInputDeleted_ = true;
+        } else if (nodePorts_.inDataType(idx).id == IntegerData().type().id) {
+            QString key = getInPortKey(idx);
+            widgets_[key]->setHidden(false);
+            widgets_[key + LABEL_SUFFIX]->setHidden(true);
+            sliderInputDeleted_ = true;
+        }
     }
 
 } // nitro
