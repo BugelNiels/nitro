@@ -41,6 +41,13 @@ ENV QT_PLUGIN_PATH /lib/qt/${QT}/gcc_64/plugins/
 ENV QML_IMPORT_PATH /lib/qt/${QT}/gcc_64/qml/
 ENV QML2_IMPORT_PATH /lib/qt/${QT}/gcc_64/qml/
 
+RUN apt-get install -y \
+    libx11-xcb-dev  \
+    libglu1-mesa-dev  \
+    libxrender-dev libxi-dev \
+    libxkbcommon-dev  \
+    libxkbcommon-x11-dev
+
 # Set the working directory
 WORKDIR /app/scripts
 
