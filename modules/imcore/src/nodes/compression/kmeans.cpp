@@ -1,6 +1,6 @@
 #include "kmeans.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -42,12 +42,12 @@ nitro::KMeansOperator::execute(NodePorts &nodePorts, const std::map<QString, int
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int k = nodePorts.inputInteger(INPUT_K);
 
     cv::Mat kMeansDat = kMeansColors(*inputImg, k);
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, kMeansDat);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, kMeansDat);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creator(const QString &category) {
@@ -57,9 +57,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creato
                 withOperator(std::make_unique<nitro::KMeansOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_K, 8, 2, 255)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

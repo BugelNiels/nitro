@@ -126,6 +126,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
     newAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     connect(newAction, &QAction::triggered, [this]() {
         if (nodeDock_) {
+            QApplication::restoreOverrideCursor();
             if (!nodeDock_->canQuitSafely()) {
                 return;
             }
@@ -139,6 +140,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
     openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     connect(openAction, &QAction::triggered, [this]() {
         if (nodeDock_) {
+            QApplication::restoreOverrideCursor();
             nodeDock_->loadModel();
             fileNameLabel_->setText(nodeDock_->getFileName());
         }
@@ -150,6 +152,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
     saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     connect(saveAction, &QAction::triggered, [this]() {
         if (nodeDock_) {
+            QApplication::restoreOverrideCursor();
             nodeDock_->saveModel();
             fileNameLabel_->setText(nodeDock_->getFileName());
         }
@@ -160,6 +163,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
     saveAsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
     connect(saveAsAction, &QAction::triggered, [this]() {
         if (nodeDock_) {
+            QApplication::restoreOverrideCursor();
             nodeDock_->saveModel(true);
             fileNameLabel_->setText(nodeDock_->getFileName());
         }
@@ -172,6 +176,7 @@ QMenu *nitro::MainWindow::getFileMenu() {
     quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     connect(quitAction, &QAction::triggered, [this]() {
         if (nodeDock_) {
+            QApplication::restoreOverrideCursor();
             if (!nodeDock_->canQuitSafely()) {
                 return;
             }
@@ -187,10 +192,6 @@ QLabel *nitro::MainWindow::buildDockIcon(const QString &path) {
     auto *nodeIcon = new QLabel();
     nodeIcon->setPixmap(ImResourceReader::getPixMap(path, {icSize_, icSize_}, icColor_));
     return nodeIcon;
-}
-
-nitro::NodeDockWidget *nitro::MainWindow::getNodeDock() const {
-    return nodeDock_;
 }
 
 void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {

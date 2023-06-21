@@ -2,7 +2,6 @@
 
 #include "nitronodebuilder.hpp"
 #include "QtNodes/NodeDelegateModelRegistry"
-#include "datainfo.hpp"
 #include "QtNodes/NodeInfo.hpp"
 
 namespace nitro {
@@ -15,9 +14,7 @@ namespace nitro {
 
         [[nodiscard]] std::vector<std::pair<QString, std::vector<QtNodes::NodeInfo>>> getCategories() const;
 
-        void registerNode(const std::function<std::unique_ptr<NitroNode>()>& buildFunction);
-
-        void registerDataType(const nitro::DataInfo &info);
+        void registerNode(const std::function<std::unique_ptr<NitroNode>()> &buildFunction);
 
     private:
         int catIdx_ = 0;

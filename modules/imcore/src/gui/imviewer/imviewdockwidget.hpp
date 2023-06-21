@@ -17,7 +17,7 @@ namespace nitro {
         ~ImViewDockWidget() override;
 
     private:
-
+        const int spacing_ = 40;
         ImageViewer *imageViewer_;
 
         QWidget *initStatusBar();
@@ -34,6 +34,10 @@ namespace nitro {
         QLabel *lLabel_;
         QPixmap colLabelPixMap_;
         QLabel *hexLabel_;
+
+        void updateFooterLabels(const QPoint &pos, const QColor &color);
+
+        QWidget *initTitleBarWidget(MainWindow *window) const;
     };
 
 } // nitro

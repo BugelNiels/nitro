@@ -1,6 +1,6 @@
 #include "bilateralfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -15,7 +15,7 @@ void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::ma
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
     int d = nodePorts.inputInteger(INPUT_D);
@@ -25,7 +25,7 @@ void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::ma
     cv::bilateralFilter(*inputImg, result, d, sigmaCol, sigmaSpace);
 
     // Store the result
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
@@ -35,11 +35,11 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
                 withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
                 withIcon("blur.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_D, 9, 1, 64)->
                 withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
                 withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

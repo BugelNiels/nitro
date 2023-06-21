@@ -31,6 +31,3 @@ void nitro::NodeRegistry::registerNode(const std::function<std::unique_ptr<Nitro
     }
     registry_->registerModel<nitro::NitroNode>(buildFunction);
 }
-
-void nitro::NodeRegistry::registerDataType(const nitro::DataInfo &info) {
-}

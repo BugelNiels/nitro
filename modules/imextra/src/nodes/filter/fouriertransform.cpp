@@ -1,6 +1,6 @@
 #include "fouriertransform.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -12,21 +12,14 @@ void nitro::FFTOperator::execute(NodePorts &nodePorts, const std::map<QString, i
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int inverse = options.at(OPTION_INVERSE);
 
-    cv::Mat imIn;
-    if (inputImg->channels() > 1) {
-        cvtColor(*inputImg, imIn, cv::COLOR_RGB2GRAY);
-    } else {
-        imIn = *inputImg;
-    }
-
     cv::Mat result;
-    cv::dft(imIn, result, inverse);
+    cv::dft(*inputImg, result, inverse);
 
     // Store the result
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTOperator::creator(const QString &category) {
@@ -36,9 +29,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTOperator::creator(c
                 withOperator(std::make_unique<nitro::FFTOperator>())->
                 withIcon("frequency.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withCheckBox(OPTION_INVERSE, false)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

@@ -306,22 +306,27 @@ void nitro::ImageViewer::resetImScale() {
 }
 
 void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
-    QGraphicsView::keyPressEvent(event);
+//    QGraphicsView::keyPressEvent(event);
 
-    if (event->key() == Qt::Key_Control) {
-        QPoint mousePos = mapFromGlobal(QCursor::pos());
-        qDebug() << "test" << QCursor::pos();
-        if (rect().contains(mousePos)) {
-            qDebug() << "pressed" << QCursor::pos();
-            crossHairMode_ = true;
-            QApplication::setOverrideCursor(Qt::CrossCursor);
-        }
-    }
 
     if (event->key() == Qt::Key_R) {
         resetImScale();
+        event->accept();
+        return;
     } else if (event->key() == Qt::Key_S && event->modifiers().testFlag(Qt::AltModifier)) {
+        QApplication::restoreOverrideCursor();
         saveImage();
+        event->accept();
+        return;
+    }
+
+    if (event->key() == Qt::Key_Control) {
+        QPoint mousePos = mapFromGlobal(QCursor::pos());
+        if (rect().contains(mousePos)) {
+            crossHairMode_ = true;
+            QApplication::setOverrideCursor(Qt::CrossCursor);
+            event->accept();
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 #include "imrotate.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -13,7 +13,7 @@ void nitro::ImRotateOperator::execute(NodePorts &nodePorts, const std::map<QStri
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
 
     cv::RotateFlags mode;
     switch (option) {
@@ -31,7 +31,7 @@ void nitro::ImRotateOperator::execute(NodePorts &nodePorts, const std::map<QStri
     cv::Mat result;
     cv::rotate(*im1, result, mode);
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImRotateOperator::creator(const QString &category) {
@@ -42,8 +42,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImRotateOperator::crea
                 withIcon("rotate.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"90 (CW)", "90 (CCw)", "180"})->
-                withInputPort<ImageData>(INPUT_IMAGE)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

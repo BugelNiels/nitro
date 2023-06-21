@@ -1,6 +1,6 @@
 #include "fouriershift.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -33,13 +33,13 @@ void nitro::FFTShiftOperator::execute(NodePorts &nodePorts, const std::map<QStri
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
 
     cv::Mat result;
     fftShift(*inputImg, result);
 
     // Store the result
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShiftOperator::creator(const QString &category) {
@@ -49,8 +49,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShiftOperator::crea
                 withOperator(std::make_unique<nitro::FFTShiftOperator>())->
                 withIcon("shift.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<GrayImageData>(INPUT_IMAGE)->
+                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

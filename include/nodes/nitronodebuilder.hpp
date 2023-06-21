@@ -6,7 +6,6 @@
 #include <QLabel>
 #include "nodeoperator.hpp"
 #include "nitronode.hpp"
-#include "datainfo.hpp"
 #include "include/valueslider.hpp"
 
 class QVBoxLayout;
@@ -31,19 +30,17 @@ namespace nitro {
 
         template<class T>
         NitroNodeBuilder *withInputPort(const QString &name) {
-            nitro::DataInfo info = T::dataInfo();
-            QtNodes::NodeDataType imDataType = {info.getDataId(), info.getDataName(), info.getDataColor()};
+            QtNodes::NodeDataType imDataType = T().type();
             inputList_.emplace_back(name, imDataType);
             addInPortWidget(new QLabel(name));
             return this;
         }
 
         template<class T>
-        NitroNodeBuilder *withInputPort(const QString &name, std::initializer_list<DataInfo> allowedConversions) {
-            nitro::DataInfo info = T::dataInfo();
-            QtNodes::NodeDataType imDataType = {info.getDataId(), info.getDataName(), info.getDataColor()};
+        NitroNodeBuilder *withInputPort(const QString &name, std::initializer_list<QString> allowedConversions) {
+            QtNodes::NodeDataType imDataType = T().type();
             for (auto &type: allowedConversions) {
-                imDataType.allowedFromConversions.insert(type.getDataId());
+                imDataType.allowedFromConversions.insert(type);
             }
             inputList_.emplace_back(name, imDataType);
             addInPortWidget(new QLabel(name));
@@ -54,17 +51,16 @@ namespace nitro {
 
         NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int min, int max,
                                            BoundMode boundMode = BoundMode::UPPER_LOWER,
-                                           std::initializer_list<QtNodes::NodeDataType> allowedConversions = {});
+                                           std::initializer_list<QString> allowedConversions = {});
 
         NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double min, double max,
                                          BoundMode boundMode = BoundMode::UPPER_LOWER,
-                                         std::initializer_list<QtNodes::NodeDataType> allowedConversions = {});
+                                         std::initializer_list<QString> allowedConversions = {});
 
         // Output
         template<class T>
         NitroNodeBuilder *withOutputPort(const QString &name) {
-            nitro::DataInfo info = T::dataInfo();
-            QtNodes::NodeDataType imDataType = {info.getDataId(), info.getDataName(), info.getDataColor()};
+            QtNodes::NodeDataType imDataType = T().type();
             outputList_.emplace_back(name, imDataType);
             addOutPortWidget(new QLabel(name));
             return this;
@@ -125,10 +121,10 @@ namespace nitro {
 
 
         void initInputValue(const QString &name, ValueSliders::IntSlider *slider,
-                            std::initializer_list<QtNodes::NodeDataType> list);
+                            std::initializer_list<QString> list);
 
         void initInputVal(const QString &name, ValueSliders::DoubleSlider *slider,
-                          std::initializer_list<QtNodes::NodeDataType> list);
+                          std::initializer_list<QString> list);
 
     };
 

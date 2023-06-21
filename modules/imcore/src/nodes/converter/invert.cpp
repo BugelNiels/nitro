@@ -1,6 +1,6 @@
 #include "invert.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -11,7 +11,7 @@ void nitro::InvertOperator::execute(NodePorts &nodePorts, const std::map<QString
         return;
     }
 
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     cv::Mat result;
     result = cv::abs(1 - *inputImg);
     if (inputImg->channels() == 1) {
@@ -26,7 +26,7 @@ void nitro::InvertOperator::execute(NodePorts &nodePorts, const std::map<QString
         }
         cv::merge(outChannels, result);
     }
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::InvertOperator::creator(const QString &category) {
@@ -36,8 +36,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::InvertOperator::creato
                 withOperator(std::make_unique<nitro::InvertOperator>())->
                 withIcon("invert.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

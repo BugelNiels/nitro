@@ -1,5 +1,5 @@
 #include "surfaceviewoperator.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
 
@@ -13,7 +13,7 @@ void nitro::SurfaceViewOperator::execute(NodePorts &nodePorts, const std::map<QS
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto img = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     surfViewer_->updateBuffers(cvMatToQImage(*img, currentImg_));
 }
 
@@ -25,7 +25,7 @@ nitro::SurfaceViewOperator::creator(const QString &category, RenderView *renderV
                 withOperator(std::make_unique<nitro::SurfaceViewOperator>(renderViewer))->
                 withIcon("3d.png")->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 build();
     };
 }

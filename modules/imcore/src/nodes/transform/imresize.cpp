@@ -1,7 +1,7 @@
 #include "imresize.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -15,7 +15,7 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int width = nodePorts.inputInteger(INPUT_WIDTH);
     int height = nodePorts.inputInteger(INPUT_HEIGHT);
 
@@ -29,7 +29,7 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString
     cv::Mat result;
     cv::resize(*im1, result, cv::Size(width, height), mode);
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creator(const QString &category) {
@@ -40,10 +40,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
                 withIcon("resize.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Cubic", "Nearest-Neighbour"})->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_WIDTH, 256, 1, 2048, BoundMode::LOWER_ONLY)->
                 withInputInteger(INPUT_HEIGHT, 256, 1, 2048, BoundMode::LOWER_ONLY)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

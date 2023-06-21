@@ -1,8 +1,9 @@
 #include "immath.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_FAC "Fac"
@@ -74,9 +75,9 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 
 // ensures the images all have the same size and number of channels
 void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
-    auto fac = *ImageData::from(nodePorts.inGet(INPUT_FAC));
-    auto in1 = *ImageData::from(nodePorts.inGet(INPUT_VALUE_1));
-    auto in2 = *ImageData::from(nodePorts.inGet(INPUT_VALUE_2));
+    auto fac = *ColImageData::from(nodePorts.inGet(INPUT_FAC));
+    auto in1 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_1));
+    auto in2 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_2));
 
     int numChannels = std::max({fac.channels(), in1.channels(), in2.channels()});
     cv::Size size;
@@ -129,7 +130,6 @@ void nitro::MathOperator::execute(NodePorts &nodePorts, const std::map<QString, 
     switch (option) {
         case 0: {
             cv::add(in1_, in2_, result);
-            qDebug() << result.channels() << in1_.channels() << in2_.channels() << fac_.channels();
             break;
         }
         case 1: {
@@ -174,13 +174,21 @@ void nitro::MathOperator::execute(NodePorts &nodePorts, const std::map<QString, 
     }
     cv::blendLinear(result, in1_, fac_, 1 - fac_, result);
 
-    if(options.at(OPTION_CLAMP)) {
-qDebug() << result.channels();
-        result = cv::min(result, cv::Scalar(1));
-        result = cv::max(result, cv::Scalar(0));
+    if (options.at(OPTION_CLAMP)) {
+        cv::Scalar upper;
+        cv::Scalar lower;
+        if (result.channels() == 3) {
+            upper = {1, 1, 1};
+            lower = {0, 0, 0};
+        } else {
+            upper = {1};
+            lower = {0};
+        }
+        result = cv::min(result, upper);
+        result = cv::max(result, lower);
     }
 
-    nodePorts.output<ImageData>(OUTPUT_VALUE, result);
+    nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(const QString &category) {
@@ -192,9 +200,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Pow", "Log", "Abs",
                                              "Square Root"})->
-                withInputValue(INPUT_FAC, 0.5, 0, 1, BoundMode::UPPER_LOWER, {ImageData().type()})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED, {ImageData().type()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED, {ImageData().type()})->
+                withInputValue(INPUT_FAC, 0.5, 0, 1, BoundMode::UPPER_LOWER,
+                               {ColImageData::id(), GrayImageData::id()})->
+                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
+                               {ColImageData::id(), GrayImageData::id()})->
+                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
+                               {ColImageData::id(), GrayImageData::id()})->
                 withOutputValue(OUTPUT_VALUE)->
                 withCheckBox(OPTION_CLAMP, false)->
                 build();

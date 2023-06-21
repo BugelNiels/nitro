@@ -1,7 +1,6 @@
 #pragma once
 
 #include "QtNodes/NodeData"
-#include "nodes/datainfo.hpp"
 #include <opencv2/imgproc.hpp>
 #include <QImage>
 #include <QDebug>
@@ -13,9 +12,9 @@ namespace nitro {
     public:
         FlexibleData() = default;
 
-        explicit FlexibleData(T val, const DataInfo &info, QColor color)
+        explicit FlexibleData(T val, const QString &id, const QString &name, QColor color)
                 : data_(val),
-                  type_({info.getDataId(), info.getDataName(), color}) {}
+                  type_({id, name, color}) {}
 
         [[nodiscard]] QString getDescription() const override {
             return "";
@@ -34,7 +33,7 @@ namespace nitro {
                 return flexDat->data();
             }
 
-            QString id = data->type().name;
+            QString id = data->type().id;
             if (conversions.count(id) == 0) {
                 throw std::invalid_argument(
                         QString("Conversion from %1 is not supported. Id %2 not found.\n").arg(data->type().name,
@@ -43,15 +42,15 @@ namespace nitro {
             return conversions[id](data);
         }
 
-        static void registerConversion(const DataInfo &info,
+        static void registerConversion(const QString &id,
                                        std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
-            conversions[info.getDataName()] = std::move(conversion);
+            conversions[id] = std::move(conversion);
         }
 
         [[nodiscard]] bool empty() const override { return false; }
 
-        void allowConversionFrom(const QtNodes::NodeDataType &type) override {
-            type_.allowedFromConversions.insert(type.id);
+        void allowConversionFrom(const QString &id) final {
+            type_.allowedFromConversions.insert(id);
         }
 
         [[nodiscard]] QtNodes::NodeDataType type() const override {

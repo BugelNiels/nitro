@@ -8,6 +8,35 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
         : QDockWidget(window), imageViewer_(imageViewer) {
     setWindowTitle("Image Viewer");
 
+    QWidget *imViewTitleWrapper = initTitleBarWidget(window);
+
+
+    QObject::connect(imageViewer_, &nitro::ImageViewer::mousePosUpdated, window,
+                     [this](const QPoint &pos, QColor color) {
+                         updateFooterLabels(pos, color);
+                     });
+
+
+    setTitleBarWidget(imViewTitleWrapper);
+
+    QWidget *wrapper = new QWidget();
+
+    auto mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(imageViewer_);
+    imageViewer_->adjustSize();
+    mainLayout->addWidget(initStatusBar());
+    wrapper->setLayout(mainLayout);
+
+
+    setWidget(wrapper);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+
+    colLabel_->adjustSize();
+    updateFooterLabels({0, 0}, {0, 0, 0});
+}
+
+QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) const {
     auto imViewTitleWrapper = new QWidget();
     auto imHLayout = new QHBoxLayout();
 
@@ -18,65 +47,51 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
     auto sizeLabel = new QLabel("0 x 0");
     sizeLabel->setFixedWidth(100);
     auto channelsLabel = new QLabel("-");
-    channelsLabel->setFixedWidth(20);
+    channelsLabel->setFixedWidth(spacing_);
     zoomBar->setMaximumWidth(200);
     auto zoomLabel = new QLabel("zoom:");
     imHLayout->addStretch();
     imHLayout->addWidget(zoomLabel);
     imHLayout->addWidget(zoomBar);
+    imHLayout->addSpacing(spacing_);
     imHLayout->addWidget(new QLabel("size: "));
     imHLayout->addWidget(sizeLabel);
-    imHLayout->addSpacing(20);
+    imHLayout->addSpacing(spacing_);
     imHLayout->addWidget(new QLabel("channels: "));
     imHLayout->addWidget(channelsLabel);
 
 
-    QObject::connect(imageViewer_, &nitro::ImageViewer::scaleChanged, window,
-                     [zoomBar](double scale) {
-                         zoomBar->setZoom(scale);
-                     });
-    QObject::connect(imageViewer_, &nitro::ImageViewer::imageUpdated, window,
-                     [sizeLabel, channelsLabel](const ImageInfo &img) {
-                         sizeLabel->setText(QString("%1 x %2").arg(img.width).arg(img.height));
-                         channelsLabel->setText(QString("%1").arg(img.channels));
-                     });
-
-    QObject::connect(imageViewer_, &nitro::ImageViewer::mousePosUpdated, window,
-                     [this](const QPoint &pos, QColor color) {
-                         xLabel_->setText(QString::number(pos.x()));
-                         yLabel_->setText(QString::number(pos.y()));
-                         rLabel_->setText(QString::number(color.redF(), 'f', 3));
-                         gLabel_->setText(QString::number(color.greenF(), 'f', 3));
-                         bLabel_->setText(QString::number(color.blueF(), 'f', 3));
-                         hLabel_->setText(QString::number(color.hueF(), 'f', 3));
-                         sLabel_->setText(QString::number(color.saturationF(), 'f', 3));
-                         vLabel_->setText(QString::number(color.valueF(), 'f', 3));
-                         lLabel_->setText(QString::number(color.lightnessF(), 'f', 3));
-                         hexLabel_->setText(color.name());
-
-                         if (colLabelPixMap_.size() != colLabel_->size()) {
-                             colLabelPixMap_ = QPixmap(colLabel_->width(), colLabel_->height());
-                         }
-                         colLabelPixMap_.fill(color);
-                         colLabel_->setPixmap(colLabelPixMap_);
-
-                     });
-
+    connect(imageViewer_, &nitro::ImageViewer::scaleChanged, window,
+            [zoomBar](double scale) {
+                zoomBar->setZoom(scale);
+            });
+    connect(imageViewer_, &nitro::ImageViewer::imageUpdated, window,
+            [sizeLabel, channelsLabel](const ImageInfo &img) {
+                sizeLabel->setText(QString("%1 x %2").arg(img.width).arg(img.height));
+                channelsLabel->setText(QString("%1").arg(img.channels));
+            });
 
     imViewTitleWrapper->setLayout(imHLayout);
-    setTitleBarWidget(imViewTitleWrapper);
+    return imViewTitleWrapper;
+}
 
-    QWidget *wrapper = new QWidget();
+void nitro::ImViewDockWidget::updateFooterLabels(const QPoint &pos, const QColor &color) {
+    xLabel_->setText(QString::number(pos.x()));
+    yLabel_->setText(QString::number(pos.y()));
+    rLabel_->setText(QString::number(color.redF(), 'f', 3));
+    gLabel_->setText(QString::number(color.greenF(), 'f', 3));
+    bLabel_->setText(QString::number(color.blueF(), 'f', 3));
+    hLabel_->setText(QString::number(color.hueF(), 'f', 3));
+    sLabel_->setText(QString::number(color.saturationF(), 'f', 3));
+    vLabel_->setText(QString::number(color.valueF(), 'f', 3));
+    lLabel_->setText(QString::number(color.lightnessF(), 'f', 3));
+    hexLabel_->setText(color.name());
 
-    auto mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(imageViewer_);
-    mainLayout->addWidget(initStatusBar());
-    wrapper->setLayout(mainLayout);
-
-
-    setWidget(wrapper);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    if (colLabelPixMap_.size() != colLabel_->size()) {
+        colLabelPixMap_ = QPixmap(colLabel_->width(), colLabel_->height());
+    }
+    colLabelPixMap_.fill(color);
+    colLabel_->setPixmap(colLabelPixMap_);
 }
 
 QWidget *nitro::ImViewDockWidget::initStatusBar() {
@@ -84,12 +99,8 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     auto *statusBar = new QWidget(this);
     auto *layout = new QHBoxLayout();
 
-    const int coordWidth = 40;
-    const int decimalWidth = 40;
-    const int spacing = 40;
-
     colLabel_ = new QLabel();
-    colLabel_->setFixedWidth(coordWidth);
+    colLabel_->setFixedWidth(spacing_);
     xLabel_ = new QLabel("-");
     yLabel_ = new QLabel("-");
     rLabel_ = new QLabel("-");
@@ -102,21 +113,21 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     hexLabel_ = new QLabel("-");
 
 
-    xLabel_->setFixedWidth(coordWidth);
-    yLabel_->setFixedWidth(coordWidth);
-    rLabel_->setFixedWidth(decimalWidth);
-    gLabel_->setFixedWidth(decimalWidth);
-    bLabel_->setFixedWidth(decimalWidth);
-    hLabel_->setFixedWidth(decimalWidth);
-    sLabel_->setFixedWidth(decimalWidth);
-    vLabel_->setFixedWidth(decimalWidth);
-    lLabel_->setFixedWidth(decimalWidth);
+    xLabel_->setFixedWidth(spacing_);
+    yLabel_->setFixedWidth(spacing_);
+    rLabel_->setFixedWidth(spacing_);
+    gLabel_->setFixedWidth(spacing_);
+    bLabel_->setFixedWidth(spacing_);
+    hLabel_->setFixedWidth(spacing_);
+    sLabel_->setFixedWidth(spacing_);
+    vLabel_->setFixedWidth(spacing_);
+    lLabel_->setFixedWidth(spacing_);
     hexLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-    layout->addSpacing(spacing);
+    layout->addSpacing(spacing_);
     layout->addWidget(new QLabel("Color: "));
     layout->addWidget(colLabel_);
-    layout->addSpacing(spacing);
+    layout->addSpacing(spacing_);
 
 
     layout->addWidget(new QLabel("X: "));
@@ -124,7 +135,7 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(new QLabel("Y: "));
     layout->addWidget(yLabel_);
 
-    layout->addSpacing(spacing);
+    layout->addSpacing(spacing_);
 
     layout->addWidget(new QLabel("R: "));
     layout->addWidget(rLabel_);
@@ -133,7 +144,7 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(new QLabel("B: "));
     layout->addWidget(bLabel_);
 
-    layout->addSpacing(spacing);
+    layout->addSpacing(spacing_);
 
     layout->addWidget(new QLabel("H: "));
     layout->addWidget(hLabel_);
@@ -145,13 +156,13 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(lLabel_);
 
 
-    layout->addSpacing(spacing);
+    layout->addSpacing(spacing_);
 
     layout->addWidget(new QLabel("Hex: "));
     layout->addWidget(hexLabel_);
 
     layout->addStretch();
-//    statusBar->setStyleSheet("color: grey;");
+    statusBar->setStyleSheet("color: grey;");
     statusBar->setLayout(layout);
     return statusBar;
 }

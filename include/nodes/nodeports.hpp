@@ -16,7 +16,6 @@ namespace QtNodes {
     class NodeDataType;
 }
 
-
 namespace nitro {
 
     class NodePorts {
@@ -67,61 +66,14 @@ namespace nitro {
         }
 
         template<class T>
-        [[nodiscard]] const T &inGet(const QString &name) const {
-            if (inputMap_.count(name) == 0) {
-                throw std::invalid_argument(
-                        QString("Input port with name: %1 does not exist.").arg(name).toStdString());
-            }
-            auto inDat = inputMap_.at(name).data_;
-            if (inDat == nullptr) {
-                throw std::invalid_argument(QString("Attempting to retrieve nullptr: %1.").arg(name).toStdString());
-            }
-            auto dat = std::dynamic_pointer_cast<T>(inDat);
-            if (dat == nullptr) {
-                throw std::invalid_argument(
-                        QString("Failed to retrieve input port of type %1 for input port  \"%2\".\n"
-                                "\tItem is of type: %3").arg(T::dataInfo().getDataName(),
-                                                             name, inDat->type().name).toStdString());
-            }
-            return *dat;
-        }
-
-        template<class T>
-        [[nodiscard]] const T &outGet(const QString &name) {
-            if (outputMap_.count(name) == 0) {
-                throw std::invalid_argument(
-                        QString("Output port with name: %1 does not exist.").arg(name).toStdString());
-            }
-            auto inDat = outputMap_.at(name).data_;
-            if (inDat == nullptr) {
-                // TODO: this probs don't work
-                outputMap_[name] = std::make_shared<T>();
-                inDat =  outputMap_.at(name).data_;
-            }
-            auto dat = std::dynamic_pointer_cast<T>(inDat);
-            if (dat == nullptr) {
-                throw std::invalid_argument(
-                        QString("Failed to retrieve input port of type %1 for input port  \"%2\".\n"
-                                "\tItem is of type: %3").arg(T::dataInfo().getDataName(),
-                                                             name, inDat->type().name).toStdString());
-            }
-            return *dat;
-        }
-
-        template<class T>
-        [[nodiscard]] bool inputOfType(const std::shared_ptr<QtNodes::NodeData> &t) const {
-            return dynamic_cast<std::shared_ptr<T>>(t) != nullptr;
-        }
-
-        template<class T>
-        [[nodiscard]] bool inputOfType(const QString& name) const {
+        [[nodiscard]] bool inputOfType(const QString &name) const {
             return std::dynamic_pointer_cast<T>(inputMap_.at(name).data_) != nullptr;
         }
 
         template<class T>
         [[nodiscard]] bool allInputOfType() const {
-            for(const auto& [key, value] : inputMap_) {
-                if(std::dynamic_pointer_cast<T>(value.data_) == nullptr) {
+            for (const auto &[key, value]: inputMap_) {
+                if (std::dynamic_pointer_cast<T>(value.data_) == nullptr) {
                     return false;
                 }
             }
@@ -135,15 +87,13 @@ namespace nitro {
 
         void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 
-        void setOutputType(QtNodes::PortIndex port, QtNodes::NodeDataType type);
-
         void setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data);
 
         bool allInputsPresent();
 
-        void setGlobalProperty(const QString& key, QString value);
+        void setGlobalProperty(const QString &key, QString value);
 
-        QString getGlobalProperty(const QString& key);
+        QString getGlobalProperty(const QString &key);
 
     private:
         std::vector<QString> inputList_;

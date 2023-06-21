@@ -1,6 +1,6 @@
 #include "boxfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -13,7 +13,7 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QStr
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
     int option = options.at(MODE_DROPDOWN);
     int borderOption = options.at(BORDER_DROPDOWN);
@@ -37,7 +37,7 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QStr
 
     cv::Mat result;
     resultChar.convertTo(result, CV_32F, 1.0 / 255.0);
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::creator(const QString &category) {
@@ -49,9 +49,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BoxFilterOperator::cre
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_SIZE, 5, 1, 256)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

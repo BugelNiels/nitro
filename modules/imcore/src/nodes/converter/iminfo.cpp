@@ -1,7 +1,7 @@
 #include "iminfo.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include <opencv2/imgproc.hpp>
 
@@ -22,7 +22,7 @@ nitro::ImInfoOperator::execute(NodePorts &nodePorts, const std::map<QString, int
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     nodePorts.output<IntegerData>(OUTPUT_WIDTH, im1->cols);
     nodePorts.output<IntegerData>(OUTPUT_HEIGHT, im1->rows);
     nodePorts.output<IntegerData>(OUTPUT_NUM_PIXELS, im1->cols * im1->rows);
@@ -68,7 +68,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creato
                 withOperator(std::make_unique<nitro::ImInfoOperator>(typeLabel))->
                 withIcon("info.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withDisplayWidget(OUTPUT_TYPE, typeLabel)->
                 withOutputInteger(OUTPUT_WIDTH)->
                 withOutputInteger(OUTPUT_HEIGHT)->

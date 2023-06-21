@@ -3,7 +3,8 @@
 #include "FLIP.h"
 #include "color.h"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 
 #include <QDebug>
 
@@ -88,8 +89,8 @@ nitro::FlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> 
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE_1).data();
-    auto im2 = nodePorts.inGet<ImageData>(INPUT_IMAGE_2).data();
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
+    auto im2 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
     double screenWidth = nodePorts.inputValue(INPUT_WIDTH);
     int resX = nodePorts.inputInteger(INPUT_RES);
     double dist = nodePorts.inputValue(INPUT_DIST);
@@ -108,8 +109,8 @@ nitro::FlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> 
     FLIP::image<FLIP::color3> magmaMap(FLIP::MapMagma, 256);
     colResult.colorMap(errMap, magmaMap);
 
-    nodePorts.output<ImageData>(OUTPUT_RESULT, flipImgToCvMat(colResult));
-    nodePorts.output<ImageData>(OUTPUT_ERROR_MAP, flipImgFloatToGrayMat(errMap));
+    nodePorts.output<ColImageData>(OUTPUT_RESULT, flipImgToCvMat(colResult));
+    nodePorts.output<GrayImageData>(OUTPUT_ERROR_MAP, flipImgFloatToGrayMat(errMap));
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(const QString &category) {
@@ -119,13 +120,13 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(
                 withOperator(std::make_unique<nitro::FlipOperator>())->
                 withIcon("compare.png")->
                 withNodeColor({118, 185, 0})->
-                withInputPort<ImageData>(INPUT_IMAGE_1)->
-                withInputPort<ImageData>(INPUT_IMAGE_2)->
+                withInputPort<ColImageData>(INPUT_IMAGE_1)->
+                withInputPort<ColImageData>(INPUT_IMAGE_2)->
                 withInputValue(INPUT_WIDTH, 0.7, 0.1, 2, BoundMode::LOWER_ONLY)->
                 withInputInteger(INPUT_RES, 1920, 256, 4096, BoundMode::LOWER_ONLY)->
                 withInputValue(INPUT_DIST, 0.7, 0, 3, BoundMode::LOWER_ONLY)->
-                withOutputPort<ImageData>(OUTPUT_RESULT)->
-                withOutputPort<ImageData>(OUTPUT_ERROR_MAP)->
+                withOutputPort<ColImageData>(OUTPUT_RESULT)->
+                withOutputPort<GrayImageData>(OUTPUT_ERROR_MAP)->
                 build();
     };
 }

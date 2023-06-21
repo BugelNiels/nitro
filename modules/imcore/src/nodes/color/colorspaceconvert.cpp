@@ -1,6 +1,6 @@
 #include "colorspaceconvert.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 #include <utility>
 
@@ -17,7 +17,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
         return;
     }
     cv::ColorConversionCodes codec = codes_[options.at(MODE_DROPDOWN)];
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     cv::Mat img;
     if (inputImg->channels() == 1) {
         cv::cvtColor(*inputImg, img, cv::COLOR_GRAY2RGB);
@@ -82,7 +82,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QStrin
     }
 
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, img);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
 }
 
 
@@ -130,8 +130,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
                 withIcon("convert.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withDropDown(MODE_DROPDOWN, colorNames)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

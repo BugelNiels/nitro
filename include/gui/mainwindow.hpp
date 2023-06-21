@@ -22,8 +22,6 @@ namespace nitro {
 
         void finalizeSetup();
 
-        [[nodiscard]] NodeDockWidget *getNodeDock() const;
-
         void registerDock(QDockWidget *widget);
 
         void registerNodeDock(NodeDockWidget *widget);

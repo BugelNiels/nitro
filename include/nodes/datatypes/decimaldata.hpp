@@ -3,26 +3,21 @@
 #include <utility>
 
 #include "QtNodes/NodeData"
-#include "nodes/datainfo.hpp"
 #include "flexibledata.hpp"
-#include "imagedata.hpp"
+#include "colimagedata.hpp"
 
 namespace nitro {
     class DecimalData : public FlexibleData<double> {
     public:
-        DecimalData() : FlexibleData<double>(0, dataInfo(), baseColor_) {}
+        DecimalData();
 
-        explicit DecimalData(double value) : FlexibleData<double>(value, dataInfo(), baseColor_) {}
+        explicit DecimalData(double value);
 
-        static nitro::DataInfo dataInfo() {
-            return {name_, id_, baseColor_};
+        static QString id() {
+            return id_;
         }
 
-        [[nodiscard]] double value() const { return data(); }
-
-        [[nodiscard]] QString getDescription() const override {
-            return QString::number(data(), 'f', 3);
-        }
+        [[nodiscard]] QString getDescription() const override;
 
     private:
         inline static const QString name_ = "Double";

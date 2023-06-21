@@ -1,7 +1,7 @@
 #include "reduction.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include <opencv2/imgproc.hpp>
@@ -90,7 +90,7 @@ nitro::ReductionOperator::execute(NodePorts &nodePorts, const std::map<QString, 
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = *nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto img = *ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int option = options.at(MODE_DROPDOWN);
     switch (option) {
         case 0:
@@ -119,7 +119,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ReductionOperator::cre
                 withIcon("sum.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Count Unique"})->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withOutputValue(OUTPUT_VALUE)->
                 build();
     };

@@ -1,6 +1,6 @@
 #include "distancetransform.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_THRESH "Threshold"
@@ -36,17 +36,11 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts, const std::
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
     double threshold = nodePorts.inputValue(INPUT_THRESH);
     int mode = options.at(MODE_DROPDOWN);
     int signedDf = options.at(OPTION_SIGNED);
 
-    cv::Mat imIn;
-    if (inputImg->channels() > 1) {
-        cvtColor(*inputImg, imIn, cv::COLOR_RGB2GRAY);
-    } else {
-        inputImg->copyTo(imIn);
-    }
     cv::DistanceTypes type;
     switch (mode) {
         case 0:
@@ -72,9 +66,9 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts, const std::
 
     }
 
-    cv::Mat result = distanceField(imIn, threshold, type, signedDf);
+    cv::Mat result = distanceField(*inputImg, threshold, type, signedDf);
     // Store the result
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DistanceTransformOperator::creator(const QString &category) {
@@ -85,10 +79,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DistanceTransformOpera
                 withIcon("distance.png")->
                 withNodeColor(NITRO_ANALYSIS_COLOR)->
                 withInputValue(INPUT_THRESH, 0.5, 0, 1)->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withDropDown(MODE_DROPDOWN, {"Euclidean", "Manhattan", "Chessboard"})->
                 withCheckBox(OPTION_SIGNED, false)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

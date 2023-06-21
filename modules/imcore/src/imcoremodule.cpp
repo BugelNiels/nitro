@@ -1,6 +1,6 @@
 #include "imcoremodule.hpp"
 
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 
@@ -35,6 +35,7 @@
 #include "nodes/color/colorspaceconvert.hpp"
 #include "nodes/color/colormap.hpp"
 #include "nodes/quality/flip.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 
 namespace nitro::ImCore {
 
@@ -55,27 +56,58 @@ namespace nitro::ImCore {
     }
 
     void ImCoreModule::registerDataTypes(NodeRegistry *registry) {
-        ImageData::registerConversion(DecimalData::dataInfo(),
-                                      [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                          auto imData = std::static_pointer_cast<DecimalData>(nodeData);
-                                          double val = imData->data();
-                                          return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
-                                      });
+        ColImageData::registerConversion(DecimalData::id(),
+                                         [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                             auto imData = std::static_pointer_cast<DecimalData>(nodeData);
+                                             double val = imData->data();
+                                             return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val, val, val));
+                                         });
 
-        ImageData::registerConversion(IntegerData::dataInfo(),
-                                      [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                          auto imData = std::static_pointer_cast<IntegerData>(nodeData);
-                                          int val = imData->data();
-                                          return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val / 255.0f));
-                                      });
+        ColImageData::registerConversion(IntegerData::id(),
+                                         [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                             auto imData = std::static_pointer_cast<IntegerData>(nodeData);
+                                             double val = imData->data() / 255.0;
+                                             return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val, val, val));
+                                         });
 
-        DecimalData::registerConversion(IntegerData::dataInfo(),
+        ColImageData::registerConversion(GrayImageData::id(),
+                                         [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                             auto imData = std::static_pointer_cast<GrayImageData>(nodeData);
+                                             cv::Mat res;
+                                             cv::cvtColor(*imData->data(), res, cv::COLOR_RGB2GRAY);
+                                             return std::make_shared<cv::Mat>(res);
+                                         });
+
+        GrayImageData::registerConversion(DecimalData::id(),
+                                          [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                              auto imData = std::static_pointer_cast<DecimalData>(nodeData);
+                                              double val = imData->data();
+                                              return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
+                                          });
+
+        GrayImageData::registerConversion(IntegerData::id(),
+                                          [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                              auto imData = std::static_pointer_cast<IntegerData>(nodeData);
+                                              int val = imData->data();
+                                              return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val / 255.0f));
+                                          });
+
+        GrayImageData::registerConversion(ColImageData::id(),
+                                          [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                              auto imData = std::static_pointer_cast<ColImageData>(nodeData);
+                                              cv::Mat res;
+                                              cv::cvtColor(*imData->data(), res, cv::COLOR_GRAY2RGB);
+                                              return std::make_shared<cv::Mat>(res);
+                                          });
+
+
+        DecimalData::registerConversion(IntegerData::id(),
                                         [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
                                             auto intData = std::static_pointer_cast<IntegerData>(nodeData);
                                             return double(intData->data());
                                         });
 
-        IntegerData::registerConversion(DecimalData::dataInfo(),
+        IntegerData::registerConversion(DecimalData::id(),
                                         [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
                                             auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
                                             return int(std::round(doubleData->data()));

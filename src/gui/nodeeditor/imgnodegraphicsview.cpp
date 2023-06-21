@@ -12,7 +12,7 @@
 #include "QtNodes/Definitions"
 #include <QAction>
 #include "QtNodes/BasicGraphicsScene"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "QtNodes/internal/UndoCommands.hpp"
 #include <QMenu>
 #include <QUndoStack>

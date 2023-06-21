@@ -11,7 +11,7 @@
 
 
 #include "src/util/imgresourcereader.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/nitronode.hpp"
@@ -124,18 +124,17 @@ void NitroNodeBuilder::addOutPortWidget(QLabel *label) {
 NitroNodeBuilder *
 NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min, int max,
                                    BoundMode boundMode,
-                                   std::initializer_list<QtNodes::NodeDataType> conversionTypes) {
+                                   std::initializer_list<QString> conversionTypes) {
     initInputValue(name, new IntSlider(name, defaultVal, min, max, boundMode), conversionTypes);
     return this;
 }
 
 void NitroNodeBuilder::initInputValue(const QString &name, ValueSliders::IntSlider *slider,
-                                      std::initializer_list<QtNodes::NodeDataType> cTypes) {
+                                      std::initializer_list<QString> cTypes) {
     auto data = std::make_shared<IntegerData>(slider->getVal());
     for (auto &cType: cTypes) {
         data->allowConversionFrom(cType);
     }
-    data->allowConversionFrom(DecimalData().type());
     inputList_.emplace_back(name, data);
 
     auto valueLabel = new QLabel(name);
@@ -148,12 +147,11 @@ void NitroNodeBuilder::initInputValue(const QString &name, ValueSliders::IntSlid
 }
 
 void NitroNodeBuilder::initInputVal(const QString &name, ValueSliders::DoubleSlider *slider,
-                                    std::initializer_list<QtNodes::NodeDataType> cTypes) {
+                                    std::initializer_list<QString> cTypes) {
     auto data = std::make_shared<DecimalData>(slider->getVal());
     for (auto &cType: cTypes) {
         data->allowConversionFrom(cType);
     }
-    data->allowConversionFrom(IntegerData().type());
     inputList_.emplace_back(name, data);
 
 
@@ -169,13 +167,13 @@ void NitroNodeBuilder::initInputVal(const QString &name, ValueSliders::DoubleSli
 NitroNodeBuilder *
 NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double min, double max,
                                  BoundMode boundMode,
-                                 std::initializer_list<QtNodes::NodeDataType> conversionTypes) {
+                                 std::initializer_list<QString> conversionTypes) {
     initInputVal(name, new DoubleSlider(name, defaultVal, min, max, boundMode), conversionTypes);
     return this;
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withLoadButton(const QString &name, const QString &filters) {
-    outputList_.emplace_back(name, std::make_shared<ImageData>());
+    outputList_.emplace_back(name, std::make_shared<ColImageData>());
     // TODO: align icon
     auto *loadButton = new QPushButton();
     loadButton->setIcon(nitro::ImResourceReader::getPixMap(":/icons/folder_open.png"));

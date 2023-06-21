@@ -1,8 +1,9 @@
 #include "booleanmath.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_VALUE_1 "Value 1"
@@ -55,8 +56,8 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 
 // ensures the images all have the same size and number of channels
 void nitro::BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
-    auto in1 = *ImageData::from(nodePorts.inGet(INPUT_VALUE_1));
-    auto in2 = *ImageData::from(nodePorts.inGet(INPUT_VALUE_2));
+    auto in1 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_1));
+    auto in2 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_2));
 
     int numChannels = std::max(in1.channels(), in2.channels());
     cv::Size size;
@@ -125,7 +126,7 @@ void nitro::BooleanMathOperator::execute(NodePorts &nodePorts, const std::map<QS
             break;
 
     }
-    nodePorts.output<ImageData>(OUTPUT_VALUE, result);
+    nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BooleanMathOperator::creator(const QString &category) {
@@ -136,8 +137,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BooleanMathOperator::c
                 withIcon("bool_math.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"<", "<=", ">", ">=", "==", "AND", "OR", "XOR"})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED, {ImageData().type()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED, {ImageData().type()})->
+                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
+                               {ColImageData::id(), GrayImageData::id()})->
+                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
+                               {ColImageData::id(), GrayImageData::id()})->
                 withOutputValue(OUTPUT_VALUE)->
                 build();
     };

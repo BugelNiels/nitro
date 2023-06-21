@@ -1,6 +1,6 @@
 #include "gaussianblur.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -14,14 +14,14 @@ void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts, const std::map<Q
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int borderOption = options.at(BORDER_DROPDOWN);
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
     double sigma = nodePorts.inputValue(INPUT_SIGMA);
     cv::Mat result;
     kSize = kSize % 2 == 0 ? std::max(kSize - 1, 1) : kSize;
     cv::GaussianBlur(*inputImg, result, cv::Size(kSize, kSize), sigma, sigma, borderOption);
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::creator(const QString &category) {
@@ -32,10 +32,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::
                 withIcon("blur.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
-                withInputPort<ImageData>(INPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_SIZE, 64, 1, 256, BoundMode::LOWER_ONLY)->
                 withInputValue(INPUT_SIGMA, 32, 0, 128, BoundMode::LOWER_ONLY)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

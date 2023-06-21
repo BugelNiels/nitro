@@ -77,13 +77,6 @@ namespace nitro {
         return getOutData(outPortName(portIndex));
     }
 
-    void NodePorts::setOutputType(QtNodes::PortIndex port, QtNodes::NodeDataType type) {
-        if (port == QtNodes::InvalidPortIndex || port >= numOutPorts()) {
-            return;
-        }
-        outputMap_[outputList_[port]].type_ = std::move(type);
-    }
-
     void NodePorts::setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data) {
         if (port == QtNodes::InvalidPortIndex || port >= numInPorts()) {
             return;
@@ -99,7 +92,7 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
-        return inputValDat->value();
+        return inputValDat->data();
     }
 
     double NodePorts::inputValue(const QString &name) const {
@@ -110,7 +103,7 @@ namespace nitro {
         if (inputValDat == nullptr) {
             return 0;
         }
-        return inputValDat->value();
+        return inputValDat->data();
     }
 
     bool NodePorts::allInputsPresent() {

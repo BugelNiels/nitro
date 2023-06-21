@@ -1,7 +1,7 @@
 #include "structuringelement.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_WIDTH "Width"
@@ -36,7 +36,7 @@ void nitro::StructElemOperator::execute(NodePorts &nodePorts, const std::map<QSt
     cv::Mat result;
     kernel.convertTo(result, CV_32F);
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::creator(const QString &category) {
@@ -49,7 +49,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::cr
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
                 withInputInteger(INPUT_WIDTH, 3, 1, 15)->
                 withInputInteger(INPUT_HEIGHT, 3, 1, 15)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

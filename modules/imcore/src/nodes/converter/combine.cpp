@@ -1,6 +1,7 @@
 #include "combine.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define OUTPUT_IMAGE "Image"
@@ -15,7 +16,7 @@ nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QString, in
     channels.resize(3);
     for (int i = 0; i < channels.size(); i++) {
         QString name = QString("Channel %1").arg(i + 1);
-        auto inputImg = nodePorts.inGet<ImageData>(name).data();
+        auto inputImg = GrayImageData::from(nodePorts.inGet(name));
         channels[i] = *inputImg;
     }
     for (int i = 1; i < channels.size(); i++) {
@@ -25,7 +26,7 @@ nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QString, in
     }
     cv::Mat result;
     cv::merge(channels, result);
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 
 }
 
@@ -36,10 +37,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CombineOperator::creat
                 withOperator(std::make_unique<nitro::CombineOperator>())->
                 withIcon("layers.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ImageData>("Channel 1")->
-                withInputPort<ImageData>("Channel 2")->
-                withInputPort<ImageData>("Channel 3")->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<GrayImageData>("Channel 1")->
+                withInputPort<GrayImageData>("Channel 2")->
+                withInputPort<GrayImageData>("Channel 3")->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

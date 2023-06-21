@@ -3,7 +3,8 @@
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include "util.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 
 #define INPUT_IMAGE_1 "Image"
 #define INPUT_IMAGE_2 "Kernel"
@@ -14,8 +15,8 @@ void nitro::MorphologyOperator::execute(NodePorts &nodePorts, const std::map<QSt
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGet<ImageData>(INPUT_IMAGE_1).data();
-    auto im2 = nodePorts.inGet<ImageData>(INPUT_IMAGE_2).data();
+    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
+    auto im2 = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
 
 
     cv::Mat kernel;
@@ -50,7 +51,7 @@ void nitro::MorphologyOperator::execute(NodePorts &nodePorts, const std::map<QSt
 
     result.convertTo(result, CV_32F);
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::creator(const QString &category) {
@@ -62,9 +63,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::cr
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(MODE_DROPDOWN,
                              {"Dilate", "Erode", "Open", "Close", "Top Hat", "Black Hat"})->
-                withInputPort<ImageData>(INPUT_IMAGE_1)->
-                withInputPort<ImageData>(INPUT_IMAGE_2)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withInputPort<ColImageData>(INPUT_IMAGE_1)->
+                withInputPort<GrayImageData>(INPUT_IMAGE_2)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

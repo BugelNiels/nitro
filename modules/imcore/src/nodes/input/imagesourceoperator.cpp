@@ -1,7 +1,8 @@
 #include "imagesourceoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "util.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 
 #include <QDebug>
 #include <opencv2/imgcodecs.hpp>
@@ -38,15 +39,15 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts, const std::map<QS
     cv::Mat alpha;
     loadImage(filePath, img, alpha);
     if (img.empty()) {
-        nodePorts.output<ImageData>(OUTPUT_IMAGE, blankImg_);
-        nodePorts.output<ImageData>(OUTPUT_ALPHA, blankImg_);
+        nodePorts.output<ColImageData>(OUTPUT_IMAGE, blankImg_);
+        nodePorts.output<GrayImageData>(OUTPUT_ALPHA, blankImg_);
     } else {
-        nodePorts.output<ImageData>(OUTPUT_IMAGE, img);
+        nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
         if (alpha.empty()) {
             alpha = {img.rows, img.cols, CV_32FC1, cv::Scalar(0)};
-            nodePorts.output<ImageData>(OUTPUT_ALPHA, alpha);
+            nodePorts.output<GrayImageData>(OUTPUT_ALPHA, alpha);
         } else {
-            nodePorts.output<ImageData>(OUTPUT_ALPHA, alpha);
+            nodePorts.output<GrayImageData>(OUTPUT_ALPHA, alpha);
         }
     }
 
@@ -62,9 +63,9 @@ nitro::ImageSourceOperator::creator(const QString &category) {
         return builder.
                 withOperator(std::make_unique<nitro::ImageSourceOperator>())->
                 withLoadButton(OUTPUT_IMAGE, "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")->
-                withOutputPort<ImageData>(OUTPUT_ALPHA)->
                 withIcon("image_source.png")->
                 withNodeColor(NITRO_IMAGE_COLOR)->
+                withOutputPort<GrayImageData>(OUTPUT_ALPHA)->
                 build();
     };
 }

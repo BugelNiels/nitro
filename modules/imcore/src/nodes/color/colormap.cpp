@@ -1,7 +1,8 @@
 #include "colormap.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
@@ -26,7 +27,7 @@ static cv::Mat createGradientImage(int width, int height) {
 nitro::ColorMapOperator::ColorMapOperator(QLabel *displayLabel) : displayLabel_(displayLabel) {}
 
 void nitro::ColorMapOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
 
@@ -36,7 +37,7 @@ void nitro::ColorMapOperator::execute(NodePorts &nodePorts, const std::map<QStri
     cv::applyColorMap(mapLabel, mapLabel, colormapType);
     displayLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(mapLabel, displayImage_)));
 
-    auto img = nodePorts.inGet<ImageData>(INPUT_IMAGE).data();
+    auto img = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
     cv::Mat result;
 
     cv::Mat imIn;
@@ -46,7 +47,7 @@ void nitro::ColorMapOperator::execute(NodePorts &nodePorts, const std::map<QStri
     result.convertTo(result, CV_32F, 1 / 255.0);
 
 
-    nodePorts.output<ImageData>(OUTPUT_IMAGE, result);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::creator(const QString &category) {
@@ -57,33 +58,34 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::crea
                 .withOperator(std::make_unique<nitro::ColorMapOperator>(displayLabel))->
                 withIcon("colormap.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
-                withInputPort<ImageData>(INPUT_IMAGE)->withDropDown(OPTION_DROPDOWN,
-                                                                    {
-                                                                            "Autumn",
-                                                                            "Bone",
-                                                                            "Jet",
-                                                                            "Winter",
-                                                                            "Rainbow",
-                                                                            "Ocean",
-                                                                            "Summer",
-                                                                            "Spring",
-                                                                            "Cool",
-                                                                            "Hsv",
-                                                                            "Pink",
-                                                                            "Hot",
-                                                                            "Parula",
-                                                                            "Magma",
-                                                                            "Inferno",
-                                                                            "Plasma",
-                                                                            "Viridis",
-                                                                            "Cividis",
-                                                                            "Twilight",
-                                                                            "Twilight Shifted",
-                                                                            "Turbo",
-                                                                            "Deep green"
-                                                                    })->
+                withInputPort<GrayImageData>(INPUT_IMAGE)->
+                withDropDown(OPTION_DROPDOWN,
+                             {
+                                     "Autumn",
+                                     "Bone",
+                                     "Jet",
+                                     "Winter",
+                                     "Rainbow",
+                                     "Ocean",
+                                     "Summer",
+                                     "Spring",
+                                     "Cool",
+                                     "Hsv",
+                                     "Pink",
+                                     "Hot",
+                                     "Parula",
+                                     "Magma",
+                                     "Inferno",
+                                     "Plasma",
+                                     "Viridis",
+                                     "Cividis",
+                                     "Twilight",
+                                     "Twilight Shifted",
+                                     "Turbo",
+                                     "Deep green"
+                             })->
                 withDisplayWidget(DISPLAY_LABEL, displayLabel)->
-                withOutputPort<ImageData>(OUTPUT_IMAGE)->
+                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
 }

@@ -1,6 +1,6 @@
 #include "randomoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/imagedata.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include <opencv2/imgproc.hpp>
 #include <random>
