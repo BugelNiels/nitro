@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(NITRO_VERSION 1.1.1)
+set(NITRO_VERSION 1.2.0)
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
 

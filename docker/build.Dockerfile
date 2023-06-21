@@ -21,6 +21,8 @@ RUN apt-get -y update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     build-essential  \
     patchelf \
     libfuse2 \
+    libxkbcommon-x11-0 \
+    libxcb-*    \
     libgl1-mesa-dev -y
 
 RUN apt-get upgrade -y
@@ -41,3 +43,9 @@ ENV QML2_IMPORT_PATH /lib/qt/${QT}/gcc_64/qml/
 
 # Set the working directory
 WORKDIR /app/scripts
+
+RUN chmod +x clean.sh
+RUN ./clean.sh
+
+RUN chmod +x build-image.sh
+ENTRYPOINT ["./build-image.sh"]
