@@ -9,9 +9,10 @@
 #define INPUT_HEIGHT "Height"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
+#define INTERPOL_METHOD_LABEL "Interpolation Method"
 
 void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     int option = options.at(MODE_DROPDOWN);
@@ -39,6 +40,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
                 withOperator(std::make_unique<nitro::ResizeOperator>())->
                 withIcon("resize.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
+                withDisplayWidget(INTERPOL_METHOD_LABEL, new QLabel("Interpolation Method:"))->
                 withDropDown(MODE_DROPDOWN, {"Cubic", "Nearest-Neighbour"})->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_WIDTH, 256, 1, 2048, BoundMode::LOWER_ONLY)->

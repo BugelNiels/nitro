@@ -9,7 +9,10 @@
 #include <QImageReader>
 
 #define OUTPUT_IMAGE "Image"
+#define DISPLAY_IMAGE "Display Img"
 #define OUTPUT_ALPHA "Alpha"
+
+nitro::ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel) : displayImgLabel_(displayImgLabel) {}
 
 void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     cv::Mat inputImg = cv::imread(filePath.toStdString(), -1);
@@ -39,6 +42,7 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts, const std::map<QS
     cv::Mat alpha;
     loadImage(filePath, img, alpha);
     if (img.empty()) {
+        img = blankImg_;
         nodePorts.output<ColImageData>(OUTPUT_IMAGE, blankImg_);
         nodePorts.output<GrayImageData>(OUTPUT_ALPHA, blankImg_);
     } else {
@@ -50,6 +54,9 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts, const std::map<QS
             nodePorts.output<GrayImageData>(OUTPUT_ALPHA, alpha);
         }
     }
+    int size = displayImgLabel_->width();
+    displayImgLabel_->setFixedHeight(size);
+    displayImgLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(img, displayBuf_)).scaled(size, size, Qt::KeepAspectRatio));
 
 }
 
@@ -59,13 +66,16 @@ nitro::ImageSourceOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Image Source", "ImageSource", category);
 
-
+        auto *imgDisplayLabel = new QLabel();
+        imgDisplayLabel->setAlignment(Qt::AlignCenter);
         return builder.
-                withOperator(std::make_unique<nitro::ImageSourceOperator>())->
+                withOperator(std::make_unique<nitro::ImageSourceOperator>(imgDisplayLabel))->
                 withLoadButton(OUTPUT_IMAGE, "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")->
+                withDisplayWidget(DISPLAY_IMAGE, imgDisplayLabel)->
                 withIcon("image_source.png")->
                 withNodeColor(NITRO_IMAGE_COLOR)->
                 withOutputPort<GrayImageData>(OUTPUT_ALPHA)->
                 build();
     };
 }
+
