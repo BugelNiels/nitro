@@ -13,6 +13,8 @@
 #define OPTION_CLAMP "Clamp"
 #define MODE_DROPDOWN "Mode"
 
+// TODO: add support for pow, abs and sqrt
+
 double regularBoolMath(double fac, double a, double b, int option) {
     double result;
     switch (option) {
@@ -37,16 +39,7 @@ double regularBoolMath(double fac, double a, double b, int option) {
             result = std::max(a, b);
             break;
         case 6:
-            result = std::pow(a, b);
-            break;
-        case 7:
             result = std::log(a) / std::log(b);
-            break;
-        case 8:
-            result = std::abs(a);
-            break;
-        case 9:
-            result = std::sqrt(a);
             break;
         default:
             result = a * b;
@@ -86,7 +79,6 @@ void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     int area2 = in1.cols * in1.rows;
     int area3 = in2.cols * in2.rows;
 
-    // Find the maximum area among the three images
     int maxArea = std::max({area1, area2, area3});
 
     if (maxArea == area1) {
@@ -148,25 +140,13 @@ void nitro::MathOperator::execute(NodePorts &nodePorts, const std::map<QString, 
         case 5:
             result = cv::max(in1_, in2_);
             break;
-        case 6:
-            // TODO: implement manually
-//            cv::pow(*im1, *im2, result);
-            break;
-        case 7: {
+        case 6: {
             cv::Mat temp;
             cv::log(in1_, result);
             cv::log(in1_, temp);
             cv::divide(result, temp, result);
             break;
         }
-        case 8:
-            // TODO: disable port
-            result = cv::abs(in1_);
-            break;
-        case 9:
-            // TODO: disable port
-            cv::sqrt(in1_, result);
-            break;
         default:
             cv::multiply(in1_, in2_, result);
             break;
@@ -198,8 +178,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 withOperator(std::make_unique<nitro::MathOperator>())->
                 withIcon("math.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Pow", "Log", "Abs",
-                                             "Square Root"})->
+                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})->
                 withInputValue(INPUT_FAC, 0.5, 0, 1, BoundMode::UPPER_LOWER,
                                {ColImageData::id(), GrayImageData::id()})->
                 withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
