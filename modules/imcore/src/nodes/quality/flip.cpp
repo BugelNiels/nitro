@@ -10,7 +10,7 @@
 
 #define INPUT_IMAGE_1 "Image 1"
 #define INPUT_IMAGE_2 "Image 2"
-#define INPUT_WIDTH "Width (m)"
+#define INPUT_X "Width (m)"
 #define INPUT_RES "Res (x)"
 #define INPUT_DIST "Dist (m)"
 #define OUTPUT_RESULT "Result"
@@ -91,7 +91,7 @@ nitro::FlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> 
     }
     auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
     auto im2 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
-    double screenWidth = nodePorts.inputValue(INPUT_WIDTH);
+    double screenWidth = nodePorts.inputValue(INPUT_X);
     int resX = nodePorts.inputInteger(INPUT_RES);
     double dist = nodePorts.inputValue(INPUT_DIST);
 
@@ -122,7 +122,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(
                 withNodeColor({118, 185, 0})->
                 withInputPort<ColImageData>(INPUT_IMAGE_1)->
                 withInputPort<ColImageData>(INPUT_IMAGE_2)->
-                withInputValue(INPUT_WIDTH, 0.7, 0.1, 2, BoundMode::LOWER_ONLY)->
+                withInputValue(INPUT_X, 0.7, 0.1, 2, BoundMode::LOWER_ONLY)->
                 withInputInteger(INPUT_RES, 1920, 256, 4096, BoundMode::LOWER_ONLY)->
                 withInputValue(INPUT_DIST, 0.7, 0, 3, BoundMode::LOWER_ONLY)->
                 withOutputPort<ColImageData>(OUTPUT_RESULT)->

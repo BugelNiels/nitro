@@ -36,6 +36,8 @@
 #include "nodes/color/colormap.hpp"
 #include "nodes/quality/flip.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
+#include "nodes/transform/imtranslate.hpp"
+#include "nodes/transform/mathsize.hpp"
 
 namespace nitro::ImCore {
 
@@ -91,6 +93,8 @@ namespace nitro::ImCore {
         registry->registerNode(ResizeOperator::creator(category));
         registry->registerNode(ImFlipOperator::creator(category));
         registry->registerNode(ImRotateOperator::creator(category));
+        registry->registerNode(TranslateOperator::creator(category));
+        registry->registerNode(MatchSizeOperator::creator(category));
     }
 
     void ImCoreModule::registerColorNodes(NodeRegistry *registry) {

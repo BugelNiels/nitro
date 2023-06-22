@@ -1,28 +1,27 @@
-#include "imresize.hpp"
-#include "util.hpp"
+#include "mathsize.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
+#include "util.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
-#define INPUT_X "Width"
-#define INPUT_Y "Height"
+#define INPUT_IMAGE_TARGET "Target"
+#define OPTION_ASPECT_RATIO "Keep Aspect Ratio"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
-#define OPTION_ASPECT_RATIO "Keep Aspect Ratio"
 #define INTERPOL_METHOD_LABEL "Interpolation Method"
 
-void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::MatchSizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
     int maintainAspectRatio = options.at(OPTION_ASPECT_RATIO);
-    int option = options.at(MODE_DROPDOWN);
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int width = nodePorts.inputInteger(INPUT_X);
-    int height = nodePorts.inputInteger(INPUT_Y);
+    auto imIn = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto imTarget = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_TARGET));
 
+
+    int option = options.at(MODE_DROPDOWN);
     cv::InterpolationFlags mode;
     if (option == 0) {
         mode = cv::INTER_LINEAR;
@@ -31,23 +30,25 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString
     } else {
         mode = cv::INTER_NEAREST;
     }
-    cv::Mat result = nitro::resize(*im1, cv::Size(width, height), mode, maintainAspectRatio);
+    cv::Mat result = nitro::resize(*imIn, imTarget->size(), mode, maintainAspectRatio);
+
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
+
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creator(const QString &category) {
+
+std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Resize", "resize", category);
+        nitro::NitroNodeBuilder builder("Math Size", "matchSize", category);
         return builder.
-                withOperator(std::make_unique<nitro::ResizeOperator>())->
-                withIcon("resize.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
+                withOperator(std::make_unique<nitro::MatchSizeOperator>())->
+                withIcon("layers.png")->
+                withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDisplayWidget(INTERPOL_METHOD_LABEL, new QLabel("Interpolation Method:"))->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})->
                 withCheckBox(OPTION_ASPECT_RATIO, true)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_X, 256, 1, 2048, BoundMode::LOWER_ONLY)->
-                withInputInteger(INPUT_Y, 256, 1, 2048, BoundMode::LOWER_ONLY)->
+                withInputPort<ColImageData>(INPUT_IMAGE_TARGET)->
                 withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };

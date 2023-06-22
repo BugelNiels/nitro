@@ -250,3 +250,36 @@ cv::Mat nitro::createMask(const cv::MatSize &srcSize, const cv::MatSize &targetS
     mask(croppedRect).setTo(cv::Scalar(1));
     return mask;
 }
+
+
+cv::Mat nitro::resize(const cv::Mat &imIn,
+                      const cv::Size &targetSize,
+                      const cv::InterpolationFlags mode, bool maintainAspectRatio) {
+    cv::Mat result;
+    if (maintainAspectRatio) {
+        int inWidth = imIn.cols;
+        int inHeight = imIn.rows;
+        double aspectRatio = double(inWidth) / double(inHeight);
+        int targetWidth = targetSize.width;
+        int targetHeight = targetSize.height;
+        double targetRatio = double(targetWidth) / double(targetHeight);
+
+        int cropWidth = inWidth;
+        int cropHeight = inHeight;
+        if (aspectRatio > targetRatio) {
+            // need to crop the width
+            cropWidth = targetRatio * inHeight;
+        } else {
+            // need to crop the height
+            cropHeight = inWidth / targetRatio;
+        }
+        cropWidth = std::max(cropWidth, 1);
+        cropHeight = std::max(cropHeight, 1);
+        cv::Rect croppedRect(0, 0, cropWidth, cropHeight);
+        cv::resize(imIn(croppedRect), result, targetSize, 0,0,mode);
+
+    } else {
+        cv::resize(imIn, result, targetSize, 0,0,mode);
+    }
+    return result;
+}

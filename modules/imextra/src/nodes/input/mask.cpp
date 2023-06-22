@@ -6,8 +6,8 @@
 
 #define INPUT_MASK_WIDTH "Scale X"
 #define INPUT_MASK_HEIGHT "Scale Y"
-#define INPUT_WIDTH "Width"
-#define INPUT_HEIGHT "Height"
+#define INPUT_X "Width"
+#define INPUT_Y "Height"
 #define INPUT_POS_X "X"
 #define INPUT_POS_Y "Y"
 #define OUTPUT_IMAGE "Mask"
@@ -19,8 +19,8 @@ void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, 
         return;
     }
     int option = options.at(MODE_DROPDOWN);
-    int width = nodePorts.inputInteger(INPUT_WIDTH);
-    int height = nodePorts.inputInteger(INPUT_HEIGHT);
+    int width = nodePorts.inputInteger(INPUT_X);
+    int height = nodePorts.inputInteger(INPUT_Y);
     double innerWidth = nodePorts.inputValue(INPUT_MASK_WIDTH);
     double innerHeight = nodePorts.inputValue(INPUT_MASK_HEIGHT);
     double posX = nodePorts.inputValue(INPUT_POS_X);
@@ -70,8 +70,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MaskOperator::creator(
                 withIcon("mask.png")->
                 withNodeColor(NITRO_INPUT_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Ellipse", "Rectangle"})->
-                withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
-                withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->
+                withInputInteger(INPUT_X, 256, 1, 4096)->
+                withInputInteger(INPUT_Y, 256, 1, 4096)->
                 withInputValue(INPUT_MASK_WIDTH, 1, 0, 2, BoundMode::LOWER_ONLY)->
                 withInputValue(INPUT_MASK_HEIGHT, 1, 0, 2, BoundMode::LOWER_ONLY)->
                 withInputValue(INPUT_POS_X, 0.5, 0, 1, BoundMode::UNCHECKED)->

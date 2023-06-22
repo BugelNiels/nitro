@@ -248,9 +248,9 @@ void nitro::ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
         imgDisplayItem_->setPixmap(QPixmap::fromImage(displayImg_));
         if (imgDisplayItem_->boundingRect().width() != oldDisplayWidth ||
             imgDisplayItem_->boundingRect().height() != oldDisplayHeight) {
-            QRectF rect = scene()->itemsBoundingRect();
-            scene()->setSceneRect(rect);
-            resetImScale();
+//            QRectF rect = scene()->itemsBoundingRect();
+//            scene()->setSceneRect(rect);
+//            resetImScale();
         }
     }
     emit imageUpdated({img->cols, img->rows, img->channels()});
