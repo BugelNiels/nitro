@@ -95,7 +95,7 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QStri
         return;
     }
     int bits = nodePorts.inputInteger(INPUT_BITS);
-    auto imIn = *GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto imIn = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
     int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
     int mode = options.at(MODE_DROPDOWN);
@@ -111,12 +111,12 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QStri
             sampler = std::make_unique<Sampler>();
             break;
     }
-    cv::Mat colTable = getUniqueColors(imIn);
+    cv::Mat colTable = getUniqueColors(*imIn);
     int numLevels = colTable.rows;
-    std::vector<cv::Mat> dfs = getDfs(imIn, colTable, numLevels, offset);
+    std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels, offset);
 
     int numDesiredLevels = int(std::pow(2, bits));
-    cv::Mat nextLabels = getNextLabels(imIn, colTable, numDesiredLevels);
+    cv::Mat nextLabels = getNextLabels(*imIn, colTable, numDesiredLevels);
     cv::Mat result = sampler->resample(nextLabels, colTable, dfs, int(std::pow(2, bits)));
 
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);

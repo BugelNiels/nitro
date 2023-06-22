@@ -68,6 +68,7 @@ nitro::ImageSourceOperator::creator(const QString &category) {
 
         auto *imgDisplayLabel = new QLabel();
         imgDisplayLabel->setAlignment(Qt::AlignCenter);
+        imgDisplayLabel->setStyleSheet("border: 1px solid grey;");
         return builder.
                 withOperator(std::make_unique<nitro::ImageSourceOperator>(imgDisplayLabel))->
                 withLoadButton(OUTPUT_IMAGE, "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")->

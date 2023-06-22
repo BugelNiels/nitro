@@ -28,10 +28,6 @@ namespace nitro {
             if (data == nullptr) {
                 throw std::invalid_argument("Data is null.\n");
             }
-            auto flexDat = std::dynamic_pointer_cast<FlexibleData<T>>(data);
-            if (flexDat != nullptr) {
-                return flexDat->data();
-            }
 
             QString id = data->type().id;
             if (conversions.count(id) == 0) {

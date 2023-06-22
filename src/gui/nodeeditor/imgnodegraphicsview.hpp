@@ -28,11 +28,15 @@ namespace nitro {
 
     public Q_SLOTS:
 
+        void dragMoveEvent(QDragMoveEvent *event) override;
+
+        void dragEnterEvent(QDragEnterEvent *event) override;
+
+        void dropEvent(QDropEvent *event) override;
 
     private:
         QtNodes::NodeId nodeBeingViewed_;
         QtNodes::PortIndex currentPort_ = 0;
-        QtNodes::AbstractNodeGeometry &nodeGeometry_;
         NodeRegistry *nodes_;
 
 

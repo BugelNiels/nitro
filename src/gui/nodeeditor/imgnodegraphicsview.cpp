@@ -12,14 +12,15 @@
 #include "QtNodes/Definitions"
 #include <QAction>
 #include "QtNodes/BasicGraphicsScene"
-#include "nodes/datatypes/colimagedata.hpp"
 #include "QtNodes/internal/UndoCommands.hpp"
 #include <QMenu>
+#include <QMimeData>
 #include <QUndoStack>
+#include <QApplication>
 
 #include <QKeyEvent>
 #include <QLineEdit>
-#include <QWidgetAction>
+#include <QFileInfo>
 
 
 nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
@@ -27,8 +28,9 @@ nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
                                                     QtNodes::DataFlowGraphModel *model, QWidget *parent)
         : NodeGraphicsView(scene, model, parent),
           nodeBeingViewed_(QtNodes::InvalidNodeId),
-          nodeGeometry_(scene->nodeGeometry()),
-          nodes_(nodes) {}
+          nodes_(nodes) {
+    setAcceptDrops(true);
+}
 
 QAction *
 nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
@@ -54,7 +56,7 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
 QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
     const int padding = 12;
-    menu->setContentsMargins(padding,padding,padding,padding);
+    menu->setContentsMargins(padding, padding, padding, padding);
 
     QAction *sectionTitle = menu->addSection("Add");
     QFont font;
@@ -108,6 +110,8 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
             QtNodes::NodeId viewerNodeId = QtNodes::InvalidNodeId;
             auto allNodes = dataModel_->allNodeIds();
             //TODO extract this magic string
+            // TODO: Extract global map somewhere that supports all viewers
+            // Loop over the ports and check if there is a viewer node available for said port
             QString viewerNodeName = "ImageViewer";
             for (auto id: allNodes) {
                 if (viewerNodeName == dataModel_->nodeData(id, QtNodes::NodeRole::Type).value<QString>()) {
@@ -115,13 +119,15 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                     break;
                 }
             }
+            QtNodes::CreateCommand *createCommand = nullptr;
             if (!dataModel_->nodeExists(viewerNodeId)) {
                 // Spawn viewer node
-                QtNodes::NodeId const newId = dataModel_->addNode(viewerNodeName);
-                viewerNodeId = newId;
                 QPointF posView(c->pos().x() + c->boundingRect().width() * 2,
                                 c->pos().y() + c->boundingRect().height() / 4);
-                dataModel_->setNodeData(viewerNodeId, QtNodes::NodeRole::Position, posView);
+                createCommand = new QtNodes::CreateCommand(scene_, viewerNodeName, posView);
+                scene_->undoStack().push(createCommand);
+                viewerNodeId = createCommand->getNodeId();
+
             }
             auto viewerType = dataModel_->portData(viewerNodeId, QtNodes::PortType::In, 0,
                                                    QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
@@ -156,6 +162,8 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 }
                 dataModel_->addConnection(connectionId);
                 nodeBeingViewed_ = cid;
+            } else if (createCommand != nullptr) {
+                createCommand->undo();
             }
         }
     }
@@ -178,4 +186,40 @@ void nitro::ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
         return;
     }
     QGraphicsView::mouseDoubleClickEvent(event);
+}
+
+void nitro::ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+        if (!urls.isEmpty()) {
+            QString filePath = urls.first().toLocalFile();
+            // Process the file path as needed
+            QPointF posView = mapToScene(mapFromGlobal(QCursor::pos()));
+            //TODO: definitely refactor this; quite hardcoded at the moment
+            QString sourceNodeName = "ImageSource";
+            auto createCommand = new QtNodes::CreateCommand(scene_, sourceNodeName, posView);
+            scene_->undoStack().push(createCommand);
+            auto sourceNodeId = createCommand->getNodeId();
+            auto json = dataModel_->saveNode(sourceNodeId);
+            QJsonObject internalData = json["internal-data"].toObject();
+            QJsonObject properties = internalData["properties"].toObject();
+            properties["Out 0"] = filePath;
+            internalData["properties"] = properties;
+            json["internal-data"] = internalData;
+            dataModel_->deleteNode(sourceNodeId);
+            dataModel_->loadNode(json);
+
+            QApplication::restoreOverrideCursor();
+        }
+    }
+}
+
+void nitro::ImageNodeGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
+    event->acceptProposedAction();
+
+}
+
+void nitro::ImageNodeGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
+    QGraphicsView::dragMoveEvent(event);
+    event->acceptProposedAction();
 }
