@@ -4,8 +4,8 @@
 #include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_MASK_WIDTH "Inner Width"
-#define INPUT_MASK_HEIGHT "Inner Height"
+#define INPUT_MASK_WIDTH "Scale X"
+#define INPUT_MASK_HEIGHT "Scale Y"
 #define INPUT_WIDTH "Width"
 #define INPUT_HEIGHT "Height"
 #define INPUT_POS_X "X"
@@ -13,6 +13,7 @@
 #define OUTPUT_IMAGE "Mask"
 #define MODE_DROPDOWN "Mode"
 
+// TODO: rotation
 void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
     if (!nodePorts.allInputsPresent()) {
         return;
@@ -37,13 +38,21 @@ void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, 
             shape = cv::MORPH_ELLIPSE;
             break;
     }
-    int kernelWidth = int(std::round(innerWidth * width));
-    int kernelHeight = int(std::round(innerHeight * height));
+    int kernelWidth = int(std::round(innerWidth * width / 2.0));
+    int kernelHeight = int(std::round(innerHeight * height / 2.0));
     cv::Mat image(height, width, CV_8UC1, cv::Scalar(0));
     if (kernelHeight > 0 && kernelWidth > 0) {
         int centerX = int(std::round(width * posX));
         int centerY = int(std::round(height * posY));
-        cv::ellipse(image, {centerX, centerY}, {kernelWidth, kernelHeight}, 0, 0, 360, cv::Scalar(255), -1);
+        if(option == 0) {
+            cv::ellipse(image, {centerX, centerY}, {kernelWidth, kernelHeight}, 0, 0, 360, cv::Scalar(255), -1);
+        } else {
+            cv::Point v1 = {centerX - kernelWidth, centerY - kernelHeight};
+            cv::Point v2 = {centerX + kernelWidth, centerY + kernelHeight};
+
+            cv::rectangle(image, v1, v2, cv::Scalar(255), -1);
+        }
+
 
     }
 
@@ -63,10 +72,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MaskOperator::creator(
                 withDropDown(MODE_DROPDOWN, {"Ellipse", "Rectangle"})->
                 withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
                 withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->
-                withInputValue(INPUT_MASK_WIDTH, 1, 0, 2)->
-                withInputValue(INPUT_MASK_HEIGHT, 1, 0, 2)->
-                withInputValue(INPUT_POS_X, 0.5, 0, 1, BoundMode::UPPER_LOWER)->
-                withInputValue(INPUT_POS_Y, 0.5, 0, 1, BoundMode::UPPER_LOWER)->
+                withInputValue(INPUT_MASK_WIDTH, 1, 0, 2, BoundMode::LOWER_ONLY)->
+                withInputValue(INPUT_MASK_HEIGHT, 1, 0, 2, BoundMode::LOWER_ONLY)->
+                withInputValue(INPUT_POS_X, 0.5, 0, 1, BoundMode::UNCHECKED)->
+                withInputValue(INPUT_POS_Y, 0.5, 0, 1, BoundMode::UNCHECKED)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
