@@ -104,13 +104,17 @@ namespace nitro {
             if (data->type().id == DecimalData().type().id) {
                 QString key = getInPortKey(portIndex);
                 auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
-                double newVal = std::dynamic_pointer_cast<DecimalData>(data)->data();
-                data = std::make_shared<DecimalData>(slider->boundVal(newVal));
+                if(slider) {
+                    double newVal = std::dynamic_pointer_cast<DecimalData>(data)->data();
+                    data = std::make_shared<DecimalData>(slider->boundVal(newVal));
+                }
             } else if (data->type().id == IntegerData().type().id) {
                 QString key = getInPortKey(portIndex);
                 auto const *slider = dynamic_cast<IntSlider *>(widgets_[key]);
-                int newVal = std::dynamic_pointer_cast<IntegerData>(data)->data();
-                data = std::make_shared<IntegerData>(slider->boundVal(newVal));
+                if(slider) {
+                    int newVal = std::dynamic_pointer_cast<IntegerData>(data)->data();
+                    data = std::make_shared<IntegerData>(slider->boundVal(newVal));
+                }
             }
         }
         // TODO: notify which part of the data changed
