@@ -11,17 +11,17 @@
 #define MODE_DROPDOWN "Mode"
 #define INTERPOL_METHOD_LABEL "Interpolation Method"
 
-void nitro::MatchSizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
-    int maintainAspectRatio = options.at(OPTION_ASPECT_RATIO);
-    auto imIn = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    auto imTarget = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_TARGET));
+    int maintainAspectRatio = nodePorts.getOption(OPTION_ASPECT_RATIO);
+    auto imIn = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
+    auto imTarget = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_TARGET);
 
 
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     cv::InterpolationFlags mode;
     if (option == 0) {
         mode = cv::INTER_LINEAR;

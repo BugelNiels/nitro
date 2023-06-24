@@ -7,14 +7,23 @@
 
 namespace nitro {
 
-    template<class T>
+    /**
+     *
+     * @tparam T Type of the data it contains
+     * @tparam U Type of the derived class. Used to ensure each derived class gets its own conversion map, regardless of the type of T.
+     */
+    template<class T, class U>
     class FlexibleData : public QtNodes::NodeData {
     public:
+        using DataType = T;
+
         FlexibleData() = default;
 
         explicit FlexibleData(T val, const QString &id, const QString &name, QColor color)
                 : data_(val),
-                  type_({id, name, color}) {}
+                  type_({id, name, color}) {
+
+        }
 
         [[nodiscard]] QString getDescription() const override {
             return "";
@@ -50,18 +59,20 @@ namespace nitro {
         }
 
     protected:
-        static void registerConversionFrom(const QString &id,
-                                           std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
+        template<class V>
+        static void registerConversionFrom(std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
+            QString id = V::id();
+            if (conversions.count(id) > 0) {
+            }
             conversions[id] = std::move(conversion);
         }
 
     private:
-        static std::map<QString, std::function<T(const std::shared_ptr<QtNodes::NodeData> &)>> conversions;
+        // TODO: T matches for certain subclasses
+        inline static std::unordered_map<QString, std::function<T(
+                const std::shared_ptr<QtNodes::NodeData> &)>> conversions;
 
         T data_;
         QtNodes::NodeDataType type_;
     };
-
-    template<class T>
-    std::map<QString, std::function<T(const std::shared_ptr<QtNodes::NodeData> &)>> FlexibleData<T>::conversions;
 } // nitro

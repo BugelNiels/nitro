@@ -8,11 +8,11 @@
 #define INPUT_MAX "Max"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::NormalizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::NormalizeOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     double min = nodePorts.inputValue(INPUT_MIN);
     double max = nodePorts.inputValue(INPUT_MAX);
     cv::Mat result;

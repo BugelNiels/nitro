@@ -9,14 +9,14 @@
 #define MODE_DROPDOWN "Mode"
 #define BORDER_DROPDOWN "Border"
 
-void nitro::BoxFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::BoxFilterOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
-    int option = options.at(MODE_DROPDOWN);
-    int borderOption = options.at(BORDER_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
+    int borderOption = nodePorts.getOption(BORDER_DROPDOWN);
 
     cv::Mat charImg;
     inputImg->convertTo(charImg, CV_8U, 255);

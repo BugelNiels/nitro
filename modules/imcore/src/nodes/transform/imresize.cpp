@@ -12,14 +12,14 @@
 #define OPTION_ASPECT_RATIO "Keep Aspect Ratio"
 #define INTERPOL_METHOD_LABEL "Interpolation Method"
 
-void nitro::ResizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
-    int maintainAspectRatio = options.at(OPTION_ASPECT_RATIO);
-    int option = options.at(MODE_DROPDOWN);
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    int maintainAspectRatio = nodePorts.getOption(OPTION_ASPECT_RATIO);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     int width = nodePorts.inputInteger(INPUT_X);
     int height = nodePorts.inputInteger(INPUT_Y);
 

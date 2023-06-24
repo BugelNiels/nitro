@@ -8,7 +8,7 @@
 
 namespace nitro {
 
-    class GrayImageData : public FlexibleData<std::shared_ptr<cv::Mat>> {
+    class GrayImageData : public FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData> {
     public:
         GrayImageData();
 

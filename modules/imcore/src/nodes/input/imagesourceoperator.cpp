@@ -36,7 +36,7 @@ void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     inputImg.convertTo(dest, CV_32F, 1.0 / nitro::getMaxValue(inputImg));
 }
 
-void nitro::ImageSourceOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
     QString filePath = nodePorts.getGlobalProperty(OUTPUT_IMAGE);
     cv::Mat img;
     cv::Mat alpha;

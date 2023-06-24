@@ -7,11 +7,11 @@
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     cv::Mat result;
     if (inputImg->channels() == 1) {
         inputImg->copyTo(result);

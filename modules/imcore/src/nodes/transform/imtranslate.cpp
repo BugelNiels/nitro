@@ -32,16 +32,16 @@ static cv::Mat translateImage(const cv::Mat &image, int dx, int dy) {
     return translatedImage;
 }
 
-void nitro::TranslateOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::TranslateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     double offsetRatioX = nodePorts.inputValue(INPUT_X);
     double offsetRatioY = nodePorts.inputValue(INPUT_Y);
     int offsetX = int(std::round(offsetRatioX * im1->cols));
     int offsetY = int(std::round(offsetRatioY * im1->rows));
-    int option = options.at(OPTION_PAD);
+    int option = nodePorts.getOption(OPTION_PAD);
 
 
     cv::Mat result;

@@ -10,11 +10,11 @@
 #define INPUT_K "K"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::QuantizeOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::QuantizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto img = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     int k = nodePorts.inputInteger(INPUT_K) - 1;
 
     cv::Mat result = *img * k;

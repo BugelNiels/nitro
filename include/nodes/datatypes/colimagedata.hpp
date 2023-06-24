@@ -8,7 +8,7 @@
 
 namespace nitro {
 
-    class ColImageData : public FlexibleData<std::shared_ptr<cv::Mat>> {
+    class ColImageData : public FlexibleData<std::shared_ptr<cv::Mat>, ColImageData> {
     public:
         ColImageData();
 

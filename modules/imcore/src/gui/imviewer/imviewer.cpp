@@ -316,8 +316,7 @@ void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
     }
 
     if (event->key() == Qt::Key_Control) {
-        QPoint mousePos = mapFromGlobal(QCursor::pos());
-        if (rect().contains(mousePos)) {
+        if (!crossHairMode_ && rect().contains(mapFromGlobal(QCursor::pos()))) {
             crossHairMode_ = true;
             QApplication::setOverrideCursor(Qt::CrossCursor);
         }
@@ -344,5 +343,19 @@ void nitro::ImageViewer::mouseMoveEvent(QMouseEvent *event) {
         emit mousePosUpdated(itemPos, displayImg_.pixelColor(itemPos));
         repaint();
 
+    }
+}
+
+void nitro::ImageViewer::leaveEvent(QEvent *event) {
+    QWidget::leaveEvent(event);
+    if(crossHairMode_) {
+        QApplication::restoreOverrideCursor();
+        crossHairMode_ = false;
+    }
+}
+
+void nitro::ImageViewer::mousePressEvent(QMouseEvent *event) {
+    if(!crossHairMode_) {
+        QGraphicsView::mousePressEvent(event);
     }
 }

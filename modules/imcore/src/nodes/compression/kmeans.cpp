@@ -7,18 +7,21 @@
 
 #define INPUT_IMAGE "Image"
 #define INPUT_K "K"
+#define INPUT_MAX_ITER "Max Iter"
+#define INPUT_EPSILON "Eps."
+#define INPUT_MAX_ATTEMPTS "Max Attempts"
 #define OUTPUT_IMAGE "Image"
 
-static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
+static cv::Mat kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon, int maxAttempts) {
     cv::Mat labels;
     cv::Mat centers;
     cv::Mat samples = image.reshape(1, image.rows * image.cols);
     cv::kmeans(samples,
                numColors,
                labels,
-               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 0.001),
-               1,
-               cv::KMEANS_RANDOM_CENTERS, centers);
+               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 20, 0.001),
+               2,
+               cv::KMEANS_PP_CENTERS, centers);
 
     cv::Mat quantImg(image.size(), image.type());
     for (int y = 0; y < image.rows; y++) {
@@ -38,14 +41,17 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors) {
 }
 
 void
-nitro::KMeansOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if(!nodePorts.allInputsPresent()) {
+nitro::KMeansOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int k = nodePorts.inputInteger(INPUT_K);
+    int maxIter = nodePorts.inputInteger(INPUT_MAX_ITER);
+    double epsilon = nodePorts.inputValue(INPUT_EPSILON);
+    int maxAttempts = nodePorts.inputInteger(INPUT_MAX_ATTEMPTS);
 
-    cv::Mat kMeansDat = kMeansColors(*inputImg, k);
+    cv::Mat kMeansDat = kMeansColors(*inputImg, k, maxIter, epsilon, maxAttempts);
 
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, kMeansDat);
 }
@@ -58,6 +64,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creato
                 withIcon("quantize.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
+                withInputInteger(INPUT_MAX_ITER, 20, 1, 50, BoundMode::LOWER_ONLY)->
+                withInputValue(INPUT_EPSILON, .001, 0, 1, BoundMode::UPPER_LOWER)->
+                withInputInteger(INPUT_MAX_ATTEMPTS, 2, 1, 10, BoundMode::LOWER_ONLY)->
                 withInputInteger(INPUT_K, 8, 2, 255)->
                 withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();

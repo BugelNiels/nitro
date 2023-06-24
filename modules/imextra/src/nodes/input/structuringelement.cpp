@@ -9,11 +9,11 @@
 #define OUTPUT_IMAGE "Kernel"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::StructElemOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::StructElemOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     int width = nodePorts.inputInteger(INPUT_X);
     int height = nodePorts.inputInteger(INPUT_Y);
 

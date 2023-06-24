@@ -31,15 +31,15 @@ static cv::Mat distanceField(cv::Mat const &src, double threshold, cv::DistanceT
 }
 
 
-void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
     double threshold = nodePorts.inputValue(INPUT_THRESH);
-    int mode = options.at(MODE_DROPDOWN);
-    int signedDf = options.at(OPTION_SIGNED);
+    int mode = nodePorts.getOption(MODE_DROPDOWN);
+    int signedDf = nodePorts.getOption(OPTION_SIGNED);
 
     cv::DistanceTypes type;
     switch (mode) {

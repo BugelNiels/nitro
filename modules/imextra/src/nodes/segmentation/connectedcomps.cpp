@@ -8,13 +8,13 @@
 #define OUTPUT_IMAGE "Image"
 #define OPTION_INVERSE "Inverse"
 
-void nitro::ConnectedCompsOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ConnectedCompsOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int option = options.at(OPTION_INVERSE);
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    int option = nodePorts.getOption(OPTION_INVERSE);
     int connectivity = option == 0 ? 4 : 8;
 
     double threshold = nodePorts.inputValue(INPUT_THRESH);

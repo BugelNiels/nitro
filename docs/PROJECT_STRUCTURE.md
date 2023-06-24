@@ -83,7 +83,7 @@ namespace nitro {
          * @param nodePorts Port data containing the current input and output information.
          * @param options Options for passing additional parameters to the algorithm. Currently unused.
          */
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
+        void execute(NodePorts &nodePorts) override;
 
     };
 } // nitro
@@ -104,9 +104,9 @@ namespace nitro {
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
     // Get the input data
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
     int d = nodePorts.inputInteger(INPUT_D);

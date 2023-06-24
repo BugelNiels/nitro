@@ -5,7 +5,7 @@ nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
           curZoom_(100),
           minZoom_(minZoom),
           maxZoom_(maxZoom) {
-    setValue(50);
+    setValue(minimum());
 }
 
 QString nitro::ZoomBar::text() const {
@@ -18,9 +18,6 @@ void nitro::ZoomBar::setZoom(int zoom) {
     double logMin = log10(minZoom_);
     double logMax = log10(maxZoom_);
     double logPercent = (logValue - logMin) / (logMax - logMin);
-
-    int percent = logPercent * 100;
-    setValue(percent);
     update();
 }
 

@@ -23,7 +23,7 @@ namespace nitro {
          * @param nodePorts Port data containing the current input and output information.
          * @param options Options for passing additional parameters to the algorithm. Currently unused.
          */
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
+        void execute(NodePorts &nodePorts) override;
 
     };
 } // nitro

@@ -28,12 +28,12 @@ bool fftShift(const cv::Mat &src, cv::Mat &dst) {
     return false;
 }
 
-void nitro::FFTShiftOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::FFTShiftOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
 
     cv::Mat result;
     fftShift(*inputImg, result);

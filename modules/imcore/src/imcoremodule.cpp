@@ -38,6 +38,7 @@
 #include "nodes/datatypes/grayimagedata.hpp"
 #include "nodes/transform/imtranslate.hpp"
 #include "nodes/transform/matchsize.hpp"
+#include "nodes/output/valueviewoperator.hpp"
 
 namespace nitro::ImCore {
 
@@ -140,6 +141,7 @@ namespace nitro::ImCore {
     void ImCoreModule::registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer) {
         const QString category = "Output";
         registry->registerNode(ImageViewOperator::creator(category, imageViewer));
+        registry->registerNode(ValueViewOperator::creator(category));
     }
 
     void ImCoreModule::registerFilterNodes(NodeRegistry *registry) {

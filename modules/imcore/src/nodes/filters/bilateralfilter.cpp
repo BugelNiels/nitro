@@ -10,12 +10,12 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
     int d = nodePorts.inputInteger(INPUT_D);

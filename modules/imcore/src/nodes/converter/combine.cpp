@@ -7,8 +7,8 @@
 #define OUTPUT_IMAGE "Image"
 
 void
-nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if(!nodePorts.allInputsPresent()) {
+nitro::CombineOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
 
@@ -16,7 +16,7 @@ nitro::CombineOperator::execute(NodePorts &nodePorts, const std::map<QString, in
     channels.resize(3);
     for (int i = 0; i < channels.size(); i++) {
         QString name = QString("Channel %1").arg(i + 1);
-        auto inputImg = GrayImageData::from(nodePorts.inGet(name));
+        auto inputImg = nodePorts.inGetAs<GrayImageData>(name);
         channels[i] = *inputImg;
     }
     for (int i = 1; i < channels.size(); i++) {

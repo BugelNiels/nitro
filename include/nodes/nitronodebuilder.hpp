@@ -104,6 +104,7 @@ namespace nitro {
 
         std::vector<PortData> inputList_;
         std::vector<PortData> outputList_;
+        std::unordered_map<QString, int> options_;
         QVBoxLayout *inLayout_;
         QVBoxLayout *outLayout_;
         QVBoxLayout *optionLayout_;

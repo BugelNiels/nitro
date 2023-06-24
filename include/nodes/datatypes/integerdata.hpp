@@ -6,7 +6,7 @@
 #include "flexibledata.hpp"
 
 namespace nitro {
-    class IntegerData : public FlexibleData<int> {
+    class IntegerData : public FlexibleData<int, IntegerData> {
     public:
         IntegerData();
 

@@ -4,23 +4,28 @@
 #include "nodes/datatypes/integerdata.hpp"
 
 namespace nitro {
-    GrayImageData::GrayImageData() : FlexibleData<std::shared_ptr<cv::Mat>>(std::make_shared<cv::Mat>(), id_, name_,
-                                                                            baseColor_) {
+    GrayImageData::GrayImageData()
+            : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(),
+                                                                    id_,
+                                                                    name_,
+                                                                    baseColor_) {
         allowConversionFrom(ColImageData::id());
     }
 
 
     GrayImageData::GrayImageData(std::shared_ptr<cv::Mat> img)
-            : FlexibleData<std::shared_ptr<cv::Mat>>(std::move(img),
-                                                     id_, name_,
-                                                     baseColor_) {
+            : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::move(img),
+                                                                    id_,
+                                                                    name_,
+                                                                    baseColor_) {
         allowConversionFrom(ColImageData::id());
     }
 
     GrayImageData::GrayImageData(const cv::Mat &img)
-            : FlexibleData<std::shared_ptr<cv::Mat>>(std::make_shared<cv::Mat>(img),
-                                                     id_, name_,
-                                                     baseColor_) {
+            : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(img),
+                                                                    id_,
+                                                                    name_,
+                                                                    baseColor_) {
         allowConversionFrom(ColImageData::id());
     }
 
@@ -32,41 +37,38 @@ namespace nitro {
 
     void GrayImageData::registerConversions() {
 
+        // Every type needs a "conversion" to itself
+        GrayImageData::registerConversionFrom<GrayImageData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    return std::static_pointer_cast<GrayImageData>(nodeData)->data();
+                });
 
-        GrayImageData::registerConversionFrom(GrayImageData::id(),
-                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+        GrayImageData::registerConversionFrom<DecimalData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    auto imData = std::static_pointer_cast<DecimalData>(nodeData);
+                    double val = imData->data();
+                    return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
+                });
 
-                                                  qDebug() << "From gray to gray";
-                                                  return std::static_pointer_cast<GrayImageData>(nodeData)->data();
-                                              });
+        GrayImageData::registerConversionFrom<IntegerData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    auto imData = std::static_pointer_cast<IntegerData>(nodeData);
+                    int val = imData->data();
+                    return std::make_shared<cv::Mat>(1, 1, CV_32F,
+                                                     cv::Scalar(val / 255.0f));
+                });
 
-        GrayImageData::registerConversionFrom(DecimalData::id(),
-                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                                  auto imData = std::static_pointer_cast<DecimalData>(nodeData);
-                                                  double val = imData->data();
-                                                  return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val));
-                                              });
-
-        GrayImageData::registerConversionFrom(IntegerData::id(),
-                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                                  auto imData = std::static_pointer_cast<IntegerData>(nodeData);
-                                                  int val = imData->data();
-                                                  return std::make_shared<cv::Mat>(1, 1, CV_32F,
-                                                                                   cv::Scalar(val / 255.0f));
-                                              });
-
-        GrayImageData::registerConversionFrom(ColImageData::id(),
-                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                                  qDebug() << "From color to gray";
-                                                  auto imData = std::static_pointer_cast<ColImageData>(nodeData);
-                                                  if(imData->data()->channels() == 1) {
-                                                      return std::make_shared<cv::Mat>(*imData->data());
-                                                  }
-                                                  cv::Mat res;
-                                                  cv::cvtColor(*imData->data(), res, cv::COLOR_RGB2GRAY);
-                                                  res.convertTo(res, CV_32FC1);
-                                                  return std::make_shared<cv::Mat>(res);
-                                              });
+        GrayImageData::registerConversionFrom<ColImageData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    auto imData = std::static_pointer_cast<ColImageData>(nodeData);
+                    if (imData->data()->channels() == 1) {
+                        return std::make_shared<cv::Mat>(*imData->data());
+                    }
+                    cv::Mat res;
+                    cv::cvtColor(*imData->data(), res, cv::COLOR_RGB2GRAY);
+                    res.convertTo(res, CV_32FC1);
+                    return std::make_shared<cv::Mat>(res);
+                });
     }
 
 } // nitro

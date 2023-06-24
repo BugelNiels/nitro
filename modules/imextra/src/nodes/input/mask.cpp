@@ -14,11 +14,11 @@
 #define MODE_DROPDOWN "Mode"
 
 // TODO: rotation
-void nitro::MaskOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::MaskOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     int width = nodePorts.inputInteger(INPUT_X);
     int height = nodePorts.inputInteger(INPUT_Y);
     double innerWidth = nodePorts.inputValue(INPUT_MASK_WIDTH);

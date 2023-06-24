@@ -10,12 +10,12 @@
 #define MODE_DROPDOWN "Mode"
 #define BORDER_DROPDOWN "Border"
 
-void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int borderOption = options.at(BORDER_DROPDOWN);
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    int borderOption = nodePorts.getOption(BORDER_DROPDOWN);
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
     double sigma = nodePorts.inputValue(INPUT_SIGMA);
     cv::Mat result;

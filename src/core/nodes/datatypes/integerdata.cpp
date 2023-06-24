@@ -2,12 +2,12 @@
 #include "nodes/datatypes/decimaldata.hpp"
 
 namespace nitro {
-    IntegerData::IntegerData() : FlexibleData<int>(0, id_, name_, baseColor_) {
+    IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {
         allowConversionFrom(DecimalData::id());
     }
 
 
-    IntegerData::IntegerData(int value) : FlexibleData<int>(value, id_, name_, baseColor_) {
+    IntegerData::IntegerData(int value) : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
         allowConversionFrom(DecimalData::id());
     }
 
@@ -19,16 +19,15 @@ namespace nitro {
     void IntegerData::registerConversions() {
 
         // Every type needs a "conversion" to itself
-        IntegerData::registerConversionFrom(IntegerData::id(),
-                                            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                                return std::static_pointer_cast<IntegerData>(nodeData)->data();
-                                            });
+        IntegerData::registerConversionFrom<IntegerData>([](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+            return std::static_pointer_cast<IntegerData>(nodeData)->data();
+        });
 
-        IntegerData::registerConversionFrom(DecimalData::id(),
-                                            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                                                auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
-                                                return int(std::round(doubleData->data()));
-                                            });
+        IntegerData::registerConversionFrom<DecimalData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
+                    return int(std::round(doubleData->data()));
+                });
     }
 
 

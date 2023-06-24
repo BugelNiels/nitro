@@ -56,8 +56,8 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 
 // ensures the images all have the same size and number of channels
 void nitro::BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
-    auto in1 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_1));
-    auto in2 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_2));
+    auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
+    auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
 
     int numChannels = std::max(in1.channels(), in2.channels());
     cv::Size size;
@@ -70,13 +70,13 @@ void nitro::BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::BooleanMathOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::BooleanMathOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
     // TODO: only update when changed
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     if (nodePorts.allInputOfType<DecimalData>()) {
         double in1 = nodePorts.inputValue(INPUT_VALUE_1);
         double in2 = nodePorts.inputValue(INPUT_VALUE_2);

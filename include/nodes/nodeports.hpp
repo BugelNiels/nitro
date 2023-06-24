@@ -23,7 +23,8 @@ namespace nitro {
         NodePorts();
 
         NodePorts(std::vector<PortData> inputList_,
-                  std::vector<PortData> outputList_);
+                  std::vector<PortData> outputList_,
+                  std::unordered_map<QString, int> options);
 
         ~NodePorts();
 
@@ -57,12 +58,13 @@ namespace nitro {
             return inputMap_.at(name).getData();
         }
 
-        [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &outGet(const QString &name) const {
-            if (outputMap_.count(name) == 0) {
+        template<typename T>
+        [[nodiscard]] typename T::DataType inGetAs(const QString& name) const {
+            if (inputMap_.count(name) == 0) {
                 throw std::invalid_argument(
-                        QString("Output port with name: %1 does not exist.").arg(name).toStdString());
+                        QString("Input port with name: %1 does not exist.").arg(name).toStdString());
             }
-            return outputMap_.at(name).getData();
+            return T::from(inputMap_.at(name).getData());
         }
 
         template<class T>
@@ -85,6 +87,11 @@ namespace nitro {
             setOutputData(name, std::make_shared<T>(T(data)));
         }
 
+        int getOption(const QString& optionName);
+
+        bool optionEnabled(const QString& optionName);
+        void setOption(const QString& optionName, int val);
+
         void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 
         void setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data);
@@ -98,10 +105,11 @@ namespace nitro {
     private:
         std::vector<QString> inputList_;
         std::vector<QString> outputList_;
-        std::map<QString, PortData> inputMap_;
-        std::map<QString, PortData> outputMap_;
+        std::unordered_map<QString, PortData> inputMap_;
+        std::unordered_map<QString, PortData> outputMap_;
 
-        std::map<QString, QString> properties_;
+        std::unordered_map<QString, QString> properties_;
+        std::unordered_map<QString, int> options_; // used for dropdowns and other options
 
     };
 

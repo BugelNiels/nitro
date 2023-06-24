@@ -8,8 +8,8 @@
 
 #include <QDebug>
 
-#define INPUT_IMAGE_1 "Image 1"
-#define INPUT_IMAGE_2 "Image 2"
+#define INPUT_IMAGE_1 "Image"
+#define INPUT_IMAGE_2 "Reference"
 #define INPUT_X "Width (m)"
 #define INPUT_RES "Res (x)"
 #define INPUT_DIST "Dist (m)"
@@ -85,12 +85,12 @@ inline static float calculatePPD(const double dist, const double resolutionX,
 
 
 void
-nitro::FlipOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+nitro::FlipOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
-    auto im2 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);;
+    auto im2 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_2);
     double screenWidth = nodePorts.inputValue(INPUT_X);
     int resX = nodePorts.inputInteger(INPUT_RES);
     double dist = nodePorts.inputValue(INPUT_DIST);

@@ -6,12 +6,12 @@
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::InvertOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::InvertOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
 
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     cv::Mat result;
     result = cv::abs(1 - *inputImg);
     if (inputImg->channels() == 1) {

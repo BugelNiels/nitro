@@ -60,7 +60,7 @@ std::unique_ptr<NitroNode> NitroNodeBuilder::build() {
     QtNodes::NodeInfo info(name_, id_, category_, nodeColor_, iconPath_);
     QtNodes::NodeColors::registerColor(info);
 
-    NodePorts nodePorts(inputList_, outputList_);
+    NodePorts nodePorts(inputList_, outputList_, options_);
 
     auto *displayWrapper = new QWidget();
     displayWrapper->setAttribute(Qt::WA_TranslucentBackground);
@@ -235,6 +235,7 @@ NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString &name, const QStr
     comboBox->addItems(options);
 
     // TODO: ensure scrollbar for too many items
+    options_[name] = comboBox->currentIndex();
     node_->connectComboBox(name, comboBox);
     addOptionWidget(comboBox);
     return this;
@@ -243,6 +244,7 @@ NitroNodeBuilder *NitroNodeBuilder::withDropDown(const QString &name, const QStr
 NitroNodeBuilder *NitroNodeBuilder::withCheckBox(const QString &name, bool checked) {
     auto *checkBox = new QCheckBox(name);
     checkBox->setChecked(checked);
+    options_[name] = checkBox->isChecked();
     node_->connectCheckBox(name, checkBox);
     addOptionWidget(checkBox);
     return this;

@@ -8,7 +8,7 @@
 #include "include/valueslider.hpp"
 
 namespace nitro {
-    class DecimalData : public FlexibleData<double> {
+    class DecimalData : public FlexibleData<double, DecimalData> {
     public:
         DecimalData();
 

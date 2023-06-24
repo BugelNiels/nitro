@@ -18,11 +18,11 @@ nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
 }
 
 void
-nitro::ImInfoOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
     nodePorts.output<IntegerData>(OUTPUT_WIDTH, im1->cols);
     nodePorts.output<IntegerData>(OUTPUT_HEIGHT, im1->rows);
     nodePorts.output<IntegerData>(OUTPUT_NUM_PIXELS, im1->cols * im1->rows);

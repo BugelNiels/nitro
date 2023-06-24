@@ -104,14 +104,14 @@ namespace nitro {
             if (data->type().id == DecimalData().type().id) {
                 QString key = getInPortKey(portIndex);
                 auto const *slider = dynamic_cast<DoubleSlider *>(widgets_[key]);
-                if(slider) {
+                if (slider) {
                     double newVal = std::dynamic_pointer_cast<DecimalData>(data)->data();
                     data = std::make_shared<DecimalData>(slider->boundVal(newVal));
                 }
             } else if (data->type().id == IntegerData().type().id) {
                 QString key = getInPortKey(portIndex);
                 auto const *slider = dynamic_cast<IntSlider *>(widgets_[key]);
-                if(slider) {
+                if (slider) {
                     int newVal = std::dynamic_pointer_cast<IntegerData>(data)->data();
                     data = std::make_shared<IntegerData>(slider->boundVal(newVal));
                 }
@@ -120,7 +120,7 @@ namespace nitro {
         // TODO: notify which part of the data changed
         nodePorts_.setInData(portIndex, data);
         if (algo_) {
-            algo_->execute(nodePorts_, options_);
+            algo_->execute(nodePorts_);
 
             for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
                 // Emit that everything has been updated
@@ -172,10 +172,10 @@ namespace nitro {
         button->setText(DEFAULT_BUTTON_TEXT);
         QString key = getOutPortKey(port);
         widgets_[key] = button;
-        widgetsJson_[key] = [this, button, name, port](const QJsonValue &val) {
+        widgetsJson_[key] = [this, button, name](const QJsonValue &val) {
             QString filePath = val.toString();
             nodePorts_.setGlobalProperty(name, filePath);
-            algo_->execute(nodePorts_, options_);
+            algo_->execute(nodePorts_);
 
             if (filePath == "") {
                 filePath = DEFAULT_BUTTON_TEXT;
@@ -189,11 +189,11 @@ namespace nitro {
                 Q_EMIT dataUpdated(i);
             }
         };
-        connect(button, &QPushButton::pressed, this, [this, key, button, name, filter, port]() {
+        connect(button, &QPushButton::pressed, this, [this, key, button, name, filter]() {
             QString filePath = QFileDialog::getOpenFileName(
                     nullptr, "NITRO File View", "../data/", filter);
             nodePorts_.setGlobalProperty(name, filePath);
-            algo_->execute(nodePorts_, options_);
+            algo_->execute(nodePorts_);
 
             propJson_[key] = filePath;
             if (filePath == "") {
@@ -258,15 +258,14 @@ namespace nitro {
 
     void NitroNode::connectComboBox(const QString &name, QComboBox *comboBox) {
         propJson_[name] = comboBox->currentIndex();
-        options_[name] = comboBox->currentIndex();
         widgetsJson_[name] = [comboBox](const QJsonValue &val) {
             comboBox->setCurrentIndex(val.toInt());
         };
         connect(comboBox, &QComboBox::currentIndexChanged, this, [this, name](int idx) {
-            options_[name] = idx;
+            nodePorts_.setOption(name, idx);
             propJson_[name] = idx;
             if (algo_) {
-                algo_->execute(nodePorts_, options_);
+                algo_->execute(nodePorts_);
                 for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
                     Q_EMIT dataUpdated(i);
                 }
@@ -276,15 +275,14 @@ namespace nitro {
 
     void NitroNode::connectCheckBox(const QString &name, QCheckBox *checkBox) {
         propJson_[name] = checkBox->isChecked();
-        options_[name] = checkBox->isChecked();
         widgetsJson_[name] = [checkBox](const QJsonValue &val) {
             checkBox->setChecked(val.toBool());
         };
         connect(checkBox, &QCheckBox::toggled, this, [this, name](bool checked) {
-            options_[name] = checked;
+            nodePorts_.setOption(name, checked);
             propJson_[name] = checked;
             if (algo_) {
-                algo_->execute(nodePorts_, options_);
+                algo_->execute(nodePorts_);
                 for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
                     Q_EMIT dataUpdated(i);
                 }
@@ -301,9 +299,10 @@ namespace nitro {
 
     void NitroNode::inputConnectionCreated(const QtNodes::ConnectionId &connectionId) {
         QtNodes::PortIndex idx = connectionId.inPortIndex;
-        if (nodePorts_.inDataType(idx).id == DecimalData().type().id ||
+        QString key = getInPortKey(idx);
+        if (widgets_[key] &&
+            nodePorts_.inDataType(idx).id == DecimalData().type().id ||
             nodePorts_.inDataType(idx).id == IntegerData().type().id) {
-            QString key = getInPortKey(idx);
             widgets_[key]->setHidden(true);
             widgets_[key + LABEL_SUFFIX]->setHidden(false);
         }
@@ -312,13 +311,10 @@ namespace nitro {
     void NitroNode::inputConnectionDeleted(const QtNodes::ConnectionId &connectionId) {
         QtNodes::PortIndex idx = connectionId.inPortIndex;
 
-        if (nodePorts_.inDataType(idx).id == DecimalData().type().id) {
-            QString key = getInPortKey(idx);
-            widgets_[key]->setHidden(false);
-            widgets_[key + LABEL_SUFFIX]->setHidden(true);
-            sliderInputDeleted_ = true;
-        } else if (nodePorts_.inDataType(idx).id == IntegerData().type().id) {
-            QString key = getInPortKey(idx);
+        QString key = getInPortKey(idx);
+        if (widgets_[key] &&
+            nodePorts_.inDataType(idx).id == DecimalData().type().id ||
+            nodePorts_.inDataType(idx).id == IntegerData().type().id) {
             widgets_[key]->setHidden(false);
             widgets_[key + LABEL_SUFFIX]->setHidden(true);
             sliderInputDeleted_ = true;

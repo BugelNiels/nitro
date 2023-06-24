@@ -7,11 +7,11 @@
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Image"
 
-void nitro::DenoiseOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::DenoiseOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
 
     cv::Mat grayImage;
     inputImg->convertTo(grayImage, CV_8U, 255);

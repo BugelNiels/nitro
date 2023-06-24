@@ -11,7 +11,9 @@ namespace nitro {
     NodePorts::NodePorts() = default;
 
     NodePorts::NodePorts(std::vector<PortData> inputList,
-                         std::vector<PortData> outputList) {
+                         std::vector<PortData> outputList,
+                         std::unordered_map<QString, int> options) : options_(
+            std::move(options)) {
         for (auto &portData: inputList) {
             inputList_.push_back(portData.name_);
             inputMap_[portData.name_] = std::move(portData);
@@ -135,5 +137,27 @@ namespace nitro {
             return properties_[key];
         }
         return "";
+    }
+
+    int NodePorts::getOption(const QString &optionName) {
+        if (options_.count(optionName) == 0) {
+            throw std::invalid_argument(
+                    QString("Attempting to retrieve option with name %1, but this option does not exist.\n").arg(
+                            optionName).toStdString());
+        }
+        return options_[optionName];
+    }
+
+    bool NodePorts::optionEnabled(const QString &optionName) {
+        if (options_.count(optionName) == 0) {
+            throw std::invalid_argument(
+                    QString("Attempting to retrieve option with name %1, but this option does not exist.\n").arg(
+                            optionName).toStdString());
+        }
+        return options_[optionName];
+    }
+
+    void NodePorts::setOption(const QString &optionName, int val) {
+        options_[optionName] = val;
     }
 } // nitro

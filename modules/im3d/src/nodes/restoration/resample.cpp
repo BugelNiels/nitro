@@ -90,15 +90,15 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     return df;
 }
 
-void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     int bits = nodePorts.inputInteger(INPUT_BITS);
-    auto imIn = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
     int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
-    int mode = options.at(MODE_DROPDOWN);
+    int mode = nodePorts.getOption(MODE_DROPDOWN);
     std::unique_ptr<Sampler> sampler;
     switch (mode) {
         case 0:

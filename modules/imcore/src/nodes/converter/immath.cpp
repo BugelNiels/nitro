@@ -68,9 +68,9 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 
 // ensures the images all have the same size and number of channels
 void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
-    auto fac = *ColImageData::from(nodePorts.inGet(INPUT_FAC));
-    auto in1 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_1));
-    auto in2 = *ColImageData::from(nodePorts.inGet(INPUT_VALUE_2));
+    auto fac = *nodePorts.inGetAs<GrayImageData>(INPUT_FAC);
+    auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
+    auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
 
     int numChannels = std::max({fac.channels(), in1.channels(), in2.channels()});
     cv::Size size;
@@ -93,20 +93,17 @@ void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     if (fac_.size() != size) {
         cv::resize(fac_, fac_, size);
     }
-    if (fac_.channels() != 1) {
-        cv::cvtColor(fac_, fac_, cv::COLOR_RGB2GRAY);
-    }
     match(in1, in1_, size, numChannels);
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::MathOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::MathOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
     // TODO: only update when changed
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     if (nodePorts.allInputOfType<DecimalData>()) {
         double facDouble = nodePorts.inputValue(INPUT_FAC);
         double in1 = nodePorts.inputValue(INPUT_VALUE_1);
@@ -154,7 +151,7 @@ void nitro::MathOperator::execute(NodePorts &nodePorts, const std::map<QString, 
     }
     cv::blendLinear(result, in1_, fac_, 1 - fac_, result);
 
-    if (options.at(OPTION_CLAMP)) {
+    if (nodePorts.optionEnabled(OPTION_CLAMP)) {
         cv::Scalar upper;
         cv::Scalar lower;
         if (result.channels() == 3) {

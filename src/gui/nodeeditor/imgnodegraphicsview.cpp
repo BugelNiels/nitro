@@ -20,7 +20,6 @@
 
 #include <QKeyEvent>
 #include <QLineEdit>
-#include <QFileInfo>
 
 
 nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
