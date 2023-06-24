@@ -140,8 +140,8 @@ void nitro::MathOperator::execute(NodePorts &nodePorts) {
         case 6: {
             cv::Mat temp;
             cv::log(in1_, result);
-            cv::log(in1_, temp);
-            cv::divide(result, temp, result);
+            cv::log(in2_, temp);
+            cv::divide(result, result, temp);
             break;
         }
         default:
@@ -176,7 +176,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 withIcon("math.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})->
-                withInputValue(INPUT_FAC, 0.5, 0, 1, BoundMode::UPPER_LOWER,
+                withInputValue(INPUT_FAC, 1, 0, 1, BoundMode::UPPER_LOWER,
                                {ColImageData::id(), GrayImageData::id()})->
                 withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
                                {ColImageData::id(), GrayImageData::id()})->

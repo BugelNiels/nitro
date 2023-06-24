@@ -37,6 +37,7 @@ nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *wi
     setTitleBarWidget(surfViewTitleWrapper);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+    setHidden(true);
 }
 
 nitro::RenderDockWidget::~RenderDockWidget() = default;

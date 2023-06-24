@@ -95,7 +95,7 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
         return;
     }
     int bits = nodePorts.inputInteger(INPUT_BITS);
-    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
     int mode = nodePorts.getOption(MODE_DROPDOWN);

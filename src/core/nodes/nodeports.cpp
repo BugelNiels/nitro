@@ -16,6 +16,7 @@ namespace nitro {
             std::move(options)) {
         for (auto &portData: inputList) {
             inputList_.push_back(portData.name_);
+            origInTypes_[portData.name_] = portData.type_;
             inputMap_[portData.name_] = std::move(portData);
         }
         for (auto &portData: outputList) {
@@ -41,7 +42,7 @@ namespace nitro {
         if (port >= numInPorts()) {
             return QtNodes::InvalidData().type();
         }
-        return inputMap_.at(inputList_[port]).type_;
+        return origInTypes_.at(inputList_[port]);
     }
 
     QtNodes::NodeDataType NodePorts::outDataType(QtNodes::PortIndex port) const {
@@ -82,6 +83,11 @@ namespace nitro {
     void NodePorts::setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data) {
         if (port == QtNodes::InvalidPortIndex || port >= numInPorts()) {
             return;
+        }
+        if (data == nullptr) {
+            inputMap_[inPortName(port)].type_ = origInTypes_[inPortName(port)];
+        } else {
+            inputMap_[inPortName(port)].type_ = data->type();
         }
         inputMap_[inPortName(port)].data_ = std::move(data);
     }

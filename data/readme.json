@@ -3,25 +3,19 @@
         {
             "inPortIndex": 0,
             "intNodeId": 5,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 3,
             "outNodeId": 4,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 1,
-            "intNodeId": 4,
-            "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 4,
-            "outNodeId": 3,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
             "intNodeId": 3,
-            "outNodeId": 2,
+            "outNodeId": 0,
             "outPortIndex": 0
         },
         {
@@ -38,6 +32,12 @@
         },
         {
             "inPortIndex": 0,
+            "intNodeId": 4,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
             "intNodeId": 1,
             "outNodeId": 0,
             "outPortIndex": 0
@@ -49,12 +49,13 @@
             "internal-data": {
                 "model-name": "ImageSource",
                 "properties": {
-                    "Load 0": "/home/niels/Downloads/niels-bugel-earth2-shopped.jpeg"
+                    "Display Img": "",
+                    "Out 0": ""
                 }
             },
             "position": {
-                "x": -701,
-                "y": -148
+                "x": -573,
+                "y": -114
             }
         },
         {
@@ -66,8 +67,8 @@
                 }
             },
             "position": {
-                "x": -445.4,
-                "y": -50.00000000000001
+                "x": -246,
+                "y": -42
             }
         },
         {
@@ -75,45 +76,50 @@
             "internal-data": {
                 "model-name": "mask",
                 "properties": {
-                    "In 0": 1920,
-                    "In 1": 480,
+                    "In 0": 256,
+                    "In 1": 256,
                     "In 2": 1,
                     "In 3": 1,
+                    "In 4": 0.5,
+                    "In 5": 0.5,
                     "Mode": 0
                 }
             },
             "position": {
-                "x": -87.39999999999999,
-                "y": -29
+                "x": 45,
+                "y": -36
             }
         },
         {
             "id": 3,
             "internal-data": {
-                "model-name": "gaussianFilter",
+                "model-name": "math",
                 "properties": {
-                    "Border": 0,
-                    "In 1": 256,
-                    "In 2": 221.17
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 2
                 }
             },
             "position": {
-                "x": 201.79999999999998,
-                "y": 5.600000000000017
+                "x": 637,
+                "y": -223
             }
         },
         {
             "id": 4,
             "internal-data": {
-                "model-name": "mix",
+                "model-name": "gaussianFilter",
                 "properties": {
-                    "In 0": 0.29,
-                    "Mode": 3
+                    "Border": 0,
+                    "In 1": 247,
+                    "In 2": 116.47999999999995
                 }
             },
             "position": {
-                "x": 479.19999999999993,
-                "y": -210.8
+                "x": 357,
+                "y": -13
             }
         },
         {
@@ -124,8 +130,8 @@
                 }
             },
             "position": {
-                "x": 782.8,
-                "y": -163.7999999999999
+                "x": 946,
+                "y": -117.5
             }
         }
     ]

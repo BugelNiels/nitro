@@ -28,7 +28,7 @@ namespace nitro {
         [[nodiscard]] bool empty() const override;
 
     private:
-        inline static const QString name_ = "Image";
+        inline static const QString name_ = "ColImage";
         inline static const QString id_ = "ColImage";
         inline static const QColor baseColor_ = {199, 199, 41};
     };

@@ -5,4 +5,4 @@ Comment=Node Editor for building Image Processing Routines
 Exec=nitro
 Icon=logo
 Categories=Graphics;
-X-AppImage-Version=
+Version=1.3.0

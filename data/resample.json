@@ -3,8 +3,26 @@
         {
             "inPortIndex": 0,
             "intNodeId": 3,
-            "outNodeId": 18,
+            "outNodeId": 20,
             "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 20,
+            "outNodeId": 21,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 19,
+            "outNodeId": 17,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 21,
+            "outNodeId": 17,
+            "outPortIndex": 2
         },
         {
             "inPortIndex": 1,
@@ -77,24 +95,6 @@
             "intNodeId": 14,
             "outNodeId": 17,
             "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 21,
-            "outNodeId": 17,
-            "outPortIndex": 2
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 19,
-            "outNodeId": 17,
-            "outPortIndex": 1
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 20,
-            "outNodeId": 21,
-            "outPortIndex": 0
         }
     ],
     "nodes": [
@@ -104,7 +104,7 @@
                 "model-name": "ImageSource",
                 "properties": {
                     "Display Img": "",
-                    "Out 0": "/home/niels/Documents/repos/nitro/data/kodim04.png"
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/kodim21.png"
                 }
             },
             "position": {
@@ -132,7 +132,8 @@
             "internal-data": {
                 "model-name": "kMeans",
                 "properties": {
-                    "In 1": 16
+                    "In 1": 16,
+                    "In 2": 0.02
                 }
             },
             "position": {
@@ -150,8 +151,8 @@
                 }
             },
             "position": {
-                "x": -316.9599999999999,
-                "y": 43.27999999999999
+                "x": -351.51999999999987,
+                "y": 118.15999999999998
             }
         },
         {

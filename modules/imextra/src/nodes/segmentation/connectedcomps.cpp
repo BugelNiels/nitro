@@ -13,7 +13,7 @@ void nitro::ConnectedCompsOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int option = nodePorts.getOption(OPTION_INVERSE);
     int connectivity = option == 0 ? 4 : 8;
 

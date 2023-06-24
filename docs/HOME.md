@@ -41,11 +41,11 @@ name NITRO: Niels' Image-processing Thesis on Reconstruction Operations.
 
 To get a local copy up and running, download the [latest release](https://github.com/BugelNiels/nitro/releases/latest).
 Once downloaded, you should have a file
-called `nitro-x86_64.AppImage`. You can run this using:
+called `NITRO-<version>-x86_64.AppImage`. You can run this using:
 
 ```shell
-chmod u+x nitro-x86_64.AppImage
-./nitro-x86_64.AppImage
+chmod u+x NITRO-<version>-x86_64.AppImage
+./NITRO-<version>-x86_64.AppImage
 ```
 
 Alternatively, you can read through the [Installation Instructions](INSTALL.md) to build the project from the source code.
@@ -70,6 +70,7 @@ bugs and adding new features. If you encounter any, please feel free to create a
 ## Controls
 
 Nodes can be spawned via the side menu (drag and drop). Connections can be made between nodes via drag and drop as well.
+Right mouse click in the dock widgets will spawn relevant context menus.
 
 A few useful shortcuts:
 

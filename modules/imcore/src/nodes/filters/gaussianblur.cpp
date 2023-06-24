@@ -14,7 +14,7 @@ void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int borderOption = nodePorts.getOption(BORDER_DROPDOWN);
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
     double sigma = nodePorts.inputValue(INPUT_SIGMA);

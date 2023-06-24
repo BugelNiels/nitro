@@ -15,7 +15,7 @@ void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
     int d = nodePorts.inputInteger(INPUT_D);

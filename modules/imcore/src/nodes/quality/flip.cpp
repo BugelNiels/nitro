@@ -89,7 +89,7 @@ nitro::FlipOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);;
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
     auto im2 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_2);
     double screenWidth = nodePorts.inputValue(INPUT_X);
     int resX = nodePorts.inputInteger(INPUT_RES);

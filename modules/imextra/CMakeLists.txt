@@ -1,4 +1,4 @@
-set(MODULE_NAME imextra)
+set(MODULE_NAME imExtra)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 

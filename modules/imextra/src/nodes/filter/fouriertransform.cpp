@@ -12,7 +12,7 @@ void nitro::FFTOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int inverse = nodePorts.getOption(OPTION_INVERSE);
 
     cv::Mat result;

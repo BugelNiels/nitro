@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=NITRO
-Comment=Node Editor for building Image Processing Routines
-Exec=nitro
-Icon=logo
-Terminal=false
-Categories=Graphics;
-Version=@NITRO_VERSION@

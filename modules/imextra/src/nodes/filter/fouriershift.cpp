@@ -33,7 +33,7 @@ void nitro::FFTShiftOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
 
     cv::Mat result;
     fftShift(*inputImg, result);

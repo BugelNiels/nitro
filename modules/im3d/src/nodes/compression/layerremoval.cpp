@@ -256,7 +256,7 @@ nitro::LayerRemovalOperator::execute(NodePorts &nodePorts) {
         return;
     }
     int k = nodePorts.inputInteger(INPUT_K);
-    auto img = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto img = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int cumulative = nodePorts.getOption(OPTION_CUMULATIVE);
 
     cv::Mat byteImg;

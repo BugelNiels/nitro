@@ -99,7 +99,7 @@ nitro::ReductionOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = *nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto img = *nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int option = nodePorts.getOption(MODE_DROPDOWN);
     switch (option) {
         case 0:

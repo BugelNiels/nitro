@@ -15,7 +15,7 @@ void nitro::CannyEdgeDetectionOperator::execute(NodePorts &nodePorts) {
     }
 
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     double thresh1 = nodePorts.inputValue(INPUT_THRESH_1);
     double thresh2 = nodePorts.inputValue(INPUT_THRESH_2);
     int aperture = nodePorts.inputInteger(INPUT_APERTURE);

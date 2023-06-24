@@ -6,11 +6,9 @@ namespace nitro {
         allowConversionFrom(DecimalData::id());
     }
 
-
     IntegerData::IntegerData(int value) : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
         allowConversionFrom(DecimalData::id());
     }
-
 
     QString IntegerData::getDescription() const {
         return QString::number(data());
@@ -19,9 +17,10 @@ namespace nitro {
     void IntegerData::registerConversions() {
 
         // Every type needs a "conversion" to itself
-        IntegerData::registerConversionFrom<IntegerData>([](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-            return std::static_pointer_cast<IntegerData>(nodeData)->data();
-        });
+        IntegerData::registerConversionFrom<IntegerData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    return std::static_pointer_cast<IntegerData>(nodeData)->data();
+                });
 
         IntegerData::registerConversionFrom<DecimalData>(
                 [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
@@ -29,6 +28,4 @@ namespace nitro {
                     return int(std::round(doubleData->data()));
                 });
     }
-
-
 } // nitro

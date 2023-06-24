@@ -9,7 +9,6 @@
 #define OUTPUT_WIDTH "Width"
 #define OUTPUT_HEIGHT "Height"
 #define OUTPUT_NUM_PIXELS "Num Pixels"
-#define OUTPUT_CHANNELS "Channels"
 #define OUTPUT_TYPE "Type"
 
 nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
@@ -22,11 +21,10 @@ nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     nodePorts.output<IntegerData>(OUTPUT_WIDTH, im1->cols);
     nodePorts.output<IntegerData>(OUTPUT_HEIGHT, im1->rows);
     nodePorts.output<IntegerData>(OUTPUT_NUM_PIXELS, im1->cols * im1->rows);
-    nodePorts.output<IntegerData>(OUTPUT_CHANNELS, im1->channels());
 
     QString type;
     switch (im1->depth()) {
@@ -73,7 +71,6 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creato
                 withOutputInteger(OUTPUT_WIDTH)->
                 withOutputInteger(OUTPUT_HEIGHT)->
                 withOutputInteger(OUTPUT_NUM_PIXELS)->
-                withOutputInteger(OUTPUT_CHANNELS)->
                 build();
     };
 }

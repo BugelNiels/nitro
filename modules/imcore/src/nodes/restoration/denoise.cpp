@@ -11,7 +11,7 @@ void nitro::DenoiseOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     cv::Mat grayImage;
     inputImg->convertTo(grayImage, CV_8U, 255);

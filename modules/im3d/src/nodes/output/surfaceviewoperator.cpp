@@ -13,7 +13,7 @@ void nitro::SurfaceViewOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto img = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     surfViewer_->updateBuffers(cvMatToQImage(*img, currentImg_));
 }
 

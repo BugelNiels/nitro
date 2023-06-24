@@ -9,7 +9,7 @@ void nitro::SeparateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     std::vector<cv::Mat> channels;
     if (inputImg->channels() == 1) {

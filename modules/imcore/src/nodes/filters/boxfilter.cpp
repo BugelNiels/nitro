@@ -13,7 +13,7 @@ void nitro::BoxFilterOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int kSize = nodePorts.inputInteger(INPUT_SIZE);
     int option = nodePorts.getOption(MODE_DROPDOWN);
     int borderOption = nodePorts.getOption(BORDER_DROPDOWN);

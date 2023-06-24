@@ -11,7 +11,7 @@ void nitro::InvertOperator::execute(NodePorts &nodePorts) {
         return;
     }
 
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     cv::Mat result;
     result = cv::abs(1 - *inputImg);
     if (inputImg->channels() == 1) {

@@ -56,7 +56,9 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
     }
     int size = displayImgLabel_->width();
     displayImgLabel_->setFixedHeight(size);
-    displayImgLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(img, displayBuf_)).scaled(size, size, Qt::KeepAspectRatio));
+    displayImgLabel_->setPixmap(
+            QPixmap::fromImage(cvMatToQImage(img, displayBuf_))
+                    .scaled(size, size, Qt::KeepAspectRatio));
 
 }
 

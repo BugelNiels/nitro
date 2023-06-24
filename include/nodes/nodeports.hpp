@@ -107,6 +107,7 @@ namespace nitro {
         std::vector<QString> outputList_;
         std::unordered_map<QString, PortData> inputMap_;
         std::unordered_map<QString, PortData> outputMap_;
+        std::unordered_map<QString, QtNodes::NodeDataType> origInTypes_;
 
         std::unordered_map<QString, QString> properties_;
         std::unordered_map<QString, int> options_; // used for dropdowns and other options

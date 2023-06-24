@@ -36,7 +36,7 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     double threshold = nodePorts.inputValue(INPUT_THRESH);
     int mode = nodePorts.getOption(MODE_DROPDOWN);
     int signedDf = nodePorts.getOption(OPTION_SIGNED);

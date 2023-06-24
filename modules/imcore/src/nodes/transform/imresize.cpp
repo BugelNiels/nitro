@@ -19,7 +19,7 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
 
     int maintainAspectRatio = nodePorts.getOption(OPTION_ASPECT_RATIO);
     int option = nodePorts.getOption(MODE_DROPDOWN);
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int width = nodePorts.inputInteger(INPUT_X);
     int height = nodePorts.inputInteger(INPUT_Y);
 

@@ -12,7 +12,6 @@ namespace nitro {
 
         explicit IntegerData(int value);
 
-        // TODO: check if we can do without this being static
         static QString id() {
             return id_;
         }

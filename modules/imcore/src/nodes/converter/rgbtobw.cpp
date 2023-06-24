@@ -8,10 +8,10 @@
 #define OUTPUT_IMAGE "Image"
 
 void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     cv::Mat result;
     if (inputImg->channels() == 1) {
         inputImg->copyTo(result);
@@ -23,7 +23,7 @@ void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::RgbToGrayscaleOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Grayscale Convert", "grayscaleConvert", category);
+        nitro::NitroNodeBuilder builder("RGB to Grayscale", "grayscaleConvert", category);
         return builder.
                 withOperator(std::make_unique<nitro::RgbToGrayscaleOperator>())->
                 withIcon("greyscale.png")->

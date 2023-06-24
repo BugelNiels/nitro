@@ -57,7 +57,7 @@ void nitro::MaskOperator::execute(NodePorts &nodePorts) {
     }
 
     cv::Mat result;
-    image.convertTo(result, CV_32F);
+    image.convertTo(result, CV_32FC1, 1 / 255.0);
 
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }

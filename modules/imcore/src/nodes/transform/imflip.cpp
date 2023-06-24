@@ -13,7 +13,7 @@ void nitro::ImFlipOperator::execute(NodePorts &nodePorts) {
         return;
     }
     int option = nodePorts.getOption(MODE_DROPDOWN);
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     int mode;
     switch (option) {

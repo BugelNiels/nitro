@@ -16,7 +16,7 @@ void nitro::ImageViewOperator::execute(NodePorts &nodePorts) {
         imViewer_->removeImage();
         return;
     }
-    auto im = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto im = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     if(im->rows == 1 && im->cols == 1) {
         cv::resize(*im, *im, {256, 256});

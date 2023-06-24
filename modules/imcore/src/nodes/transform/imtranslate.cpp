@@ -36,7 +36,7 @@ void nitro::TranslateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);;
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     double offsetRatioX = nodePorts.inputValue(INPUT_X);
     double offsetRatioY = nodePorts.inputValue(INPUT_Y);
     int offsetX = int(std::round(offsetRatioX * im1->cols));
