@@ -37,7 +37,7 @@
 #include "nodes/quality/flip.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
 #include "nodes/transform/imtranslate.hpp"
-#include "nodes/transform/mathsize.hpp"
+#include "nodes/transform/matchsize.hpp"
 
 namespace nitro::ImCore {
 

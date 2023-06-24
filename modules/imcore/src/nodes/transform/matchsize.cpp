@@ -1,4 +1,4 @@
-#include "mathsize.hpp"
+#include "matchsize.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
 #include "util.hpp"
@@ -39,11 +39,11 @@ void nitro::MatchSizeOperator::execute(NodePorts &nodePorts, const std::map<QStr
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Math Size", "matchSize", category);
+        nitro::NitroNodeBuilder builder("Size Match", "matchSize", category);
         return builder.
                 withOperator(std::make_unique<nitro::MatchSizeOperator>())->
-                withIcon("layers.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
+                withIcon("match_size.png")->
+                withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDisplayWidget(INTERPOL_METHOD_LABEL, new QLabel("Interpolation Method:"))->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})->
                 withCheckBox(OPTION_ASPECT_RATIO, true)->
