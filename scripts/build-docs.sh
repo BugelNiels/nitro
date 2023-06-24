@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Builds the documentation and pushes it to the gh-pages branch
+
 cd ..
 
 doxygen docs/Doxyfile

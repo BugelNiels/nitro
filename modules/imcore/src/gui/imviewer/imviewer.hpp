@@ -48,6 +48,10 @@ namespace nitro {
 
         void mouseMoveEvent(QMouseEvent *event) override;
 
+        void leaveEvent(QEvent *event) override;
+
+        void mousePressEvent(QMouseEvent *event) override;
+
         const double minScaleFactor = 0.2;
         const double maxScaleFactor = 20;
     protected:

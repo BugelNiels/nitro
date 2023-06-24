@@ -8,7 +8,7 @@
 #include "include/valueslider.hpp"
 
 namespace nitro {
-    class DecimalData : public FlexibleData<double> {
+    class DecimalData : public FlexibleData<double, DecimalData> {
     public:
         DecimalData();
 
@@ -23,7 +23,7 @@ namespace nitro {
         [[nodiscard]] QString getDescription() const override;
 
     private:
-        inline static const QString name_ = "Double";
+        inline static const QString name_ = "Decimal";
         inline static const QString id_ = "Decimal";
         inline static const QColor baseColor_ = {161, 161, 161};
     };

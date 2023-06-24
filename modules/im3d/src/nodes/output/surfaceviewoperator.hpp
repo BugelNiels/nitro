@@ -14,7 +14,7 @@ namespace nitro {
 
         explicit SurfaceViewOperator(RenderView *surfViewer);
 
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
+        void execute(NodePorts &nodePorts) override;
 
     private:
         RenderView *surfViewer_;

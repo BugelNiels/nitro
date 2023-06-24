@@ -8,7 +8,7 @@
 
 namespace nitro {
 
-    class GrayImageData : public FlexibleData<std::shared_ptr<cv::Mat>> {
+    class GrayImageData : public FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData> {
     public:
         GrayImageData();
 
@@ -27,7 +27,7 @@ namespace nitro {
         [[nodiscard]] bool empty() const override;
 
     private:
-        inline static const QString name_ = "2Image";
+        inline static const QString name_ = "GrayImage";
         inline static const QString id_ = "GrayImage";
         inline static const QColor baseColor_ = {161, 161, 161};
     };

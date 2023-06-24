@@ -6,13 +6,12 @@
 #include "flexibledata.hpp"
 
 namespace nitro {
-    class IntegerData : public FlexibleData<int> {
+    class IntegerData : public FlexibleData<int, IntegerData> {
     public:
         IntegerData();
 
         explicit IntegerData(int value);
 
-        // TODO: check if we can do without this being static
         static QString id() {
             return id_;
         }

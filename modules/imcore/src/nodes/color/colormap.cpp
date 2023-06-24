@@ -26,18 +26,18 @@ static cv::Mat createGradientImage(int width, int height) {
 
 nitro::ColorMapOperator::ColorMapOperator(QLabel *displayLabel) : displayLabel_(displayLabel) {}
 
-void nitro::ColorMapOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if (!nodePorts.allInputsPresent()) {
-        return;
-    }
+void nitro::ColorMapOperator::execute(NodePorts &nodePorts) {
 
-    int option = options.at(OPTION_DROPDOWN);
+    int option = nodePorts.getOption(OPTION_DROPDOWN);
     auto colormapType = static_cast<cv::ColormapTypes>(option);
     cv::Mat mapLabel = createGradientImage(200, 20);
     cv::applyColorMap(mapLabel, mapLabel, colormapType);
     displayLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(mapLabel, displayImage_)));
 
-    auto img = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    if (!nodePorts.allInputsPresent()) {
+        return;
+    }
+    auto img = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     cv::Mat result;
 
     cv::Mat imIn;

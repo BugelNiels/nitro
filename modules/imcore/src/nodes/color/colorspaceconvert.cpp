@@ -12,12 +12,12 @@ nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> co
 
 }
 
-void nitro::ConvertOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    cv::ColorConversionCodes codec = codes_[options.at(MODE_DROPDOWN)];
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    cv::ColorConversionCodes codec = codes_[nodePorts.getOption(MODE_DROPDOWN)];
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     cv::Mat img;
     if (inputImg->channels() == 1) {
         cv::cvtColor(*inputImg, img, cv::COLOR_GRAY2RGB);

@@ -38,15 +38,15 @@ static cv::Mat multiplyBlend(const cv::Mat &image1, const cv::Mat &image2) {
 }
 
 void
-nitro::MixOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
-    if(!nodePorts.allInputsPresent()) {
+nitro::MixOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
-    auto im2 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
+    auto im2 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_2);
     double fac = nodePorts.inputValue(INPUT_FAC);
 
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
 
     cv::Mat in1;
     cv::Mat in2;

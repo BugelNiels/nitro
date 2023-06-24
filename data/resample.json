@@ -2,347 +2,157 @@
     "connections": [
         {
             "inPortIndex": 0,
-            "intNodeId": 27,
-            "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 26,
-            "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 25,
-            "outNodeId": 24,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 27,
-            "outNodeId": 25,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 22,
-            "outNodeId": 21,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 22,
+            "intNodeId": 3,
             "outNodeId": 20,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
+            "intNodeId": 20,
+            "outNodeId": 21,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 19,
+            "outNodeId": 17,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 2,
             "intNodeId": 21,
-            "outNodeId": 24,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 20,
-            "outNodeId": 18,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 24,
-            "outNodeId": 18,
-            "outPortIndex": 0
+            "outNodeId": 17,
+            "outPortIndex": 2
         },
         {
             "inPortIndex": 1,
-            "intNodeId": 11,
-            "outNodeId": 2,
-            "outPortIndex": 0
+            "intNodeId": 21,
+            "outNodeId": 17,
+            "outPortIndex": 1
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 13,
-            "outNodeId": 15,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 25,
-            "outNodeId": 22,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 17,
+            "intNodeId": 21,
             "outNodeId": 15,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 3,
-            "outNodeId": 25,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 10,
-            "outNodeId": 8,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 11,
-            "outNodeId": 10,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 16,
-            "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 8,
-            "outNodeId": 6,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 26,
-            "outNodeId": 11,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 20,
-            "outNodeId": 23,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
             "intNodeId": 13,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 18,
+            "outNodeId": 19,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 12,
             "outNodeId": 0,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 8,
-            "outNodeId": 2,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 5,
-            "outNodeId": 7,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 5,
-            "outNodeId": 6,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
             "intNodeId": 15,
-            "outNodeId": 4,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 10,
-            "outNodeId": 5,
+            "outNodeId": 14,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 14,
-            "outNodeId": 0,
+            "intNodeId": 16,
+            "outNodeId": 12,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 2,
+            "intNodeId": 19,
+            "outNodeId": 17,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
             "intNodeId": 17,
             "outNodeId": 16,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 4,
-            "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 16,
-            "outNodeId": 11,
+            "intNodeId": 19,
+            "outNodeId": 13,
             "outPortIndex": 0
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 28,
-            "outNodeId": 11,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 2,
-            "outNodeId": 15,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 8,
-            "outNodeId": 7,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 5,
-            "outNodeId": 15,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 18,
+            "intNodeId": 1,
             "outNodeId": 17,
             "outPortIndex": 0
         },
         {
-            "inPortIndex": 2,
-            "intNodeId": 15,
-            "outNodeId": 14,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 20,
-            "outNodeId": 19,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 21,
-            "outNodeId": 19,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 21,
-            "outNodeId": 23,
+            "inPortIndex": 0,
+            "intNodeId": 14,
+            "outNodeId": 17,
             "outPortIndex": 0
         }
     ],
     "nodes": [
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/kodim21.png"
+                }
+            },
+            "position": {
+                "x": -1629.9184,
+                "y": -65.56800000000001
+            }
+        },
+        {
+            "id": 13,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "In 2": 10,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 55.99999999999996,
+                "y": -221.67999999999995
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 16,
+                    "In 2": 0.02
+                }
+            },
+            "position": {
+                "x": -349.67999999999995,
+                "y": -126.19199999999995
+            }
+        },
         {
             "id": 14,
             "internal-data": {
                 "model-name": "layerRemoval",
                 "properties": {
                     "Cumulative": true,
-                    "In 1": 8
+                    "In 1": 16
                 }
             },
             "position": {
-                "x": -320.12800000000004,
-                "y": -147.61599999999999
-            }
-        },
-        {
-            "id": 11,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 1
-                }
-            },
-            "position": {
-                "x": 1353.5911111111109,
-                "y": -103.2622222222222
-            }
-        },
-        {
-            "id": 10,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 2
-                }
-            },
-            "position": {
-                "x": 1102.3039999999999,
-                "y": 97.29599999999996
-            }
-        },
-        {
-            "id": 8,
-            "internal-data": {
-                "model-name": "gaussianFilter",
-                "properties": {
-                    "In 1": 22,
-                    "In 2": 6
-                }
-            },
-            "position": {
-                "x": 832.7999999999998,
-                "y": 250.08000000000004
-            }
-        },
-        {
-            "id": 7,
-            "internal-data": {
-                "model-name": "IntegerSource",
-                "properties": {
-                    "Out 0": 22
-                }
-            },
-            "position": {
-                "x": -526.2879999999999,
-                "y": 119.20000000000002
-            }
-        },
-        {
-            "id": 6,
-            "internal-data": {
-                "model-name": "ValueSource",
-                "properties": {
-                    "Out 0": 6
-                }
-            },
-            "position": {
-                "x": -539.3440000000002,
-                "y": 255.99999999999994
-            }
-        },
-        {
-            "id": 5,
-            "internal-data": {
-                "model-name": "gaussianFilter",
-                "properties": {
-                    "In 1": 22,
-                    "In 2": 6
-                }
-            },
-            "position": {
-                "x": 421.4143999999999,
-                "y": 66.29279999999999
-            }
-        },
-        {
-            "id": 4,
-            "internal-data": {
-                "model-name": "kMeans",
-                "properties": {
-                    "In 1": 8
-                }
-            },
-            "position": {
-                "x": -302.3360000000001,
-                "y": -341.73600000000005
+                "x": -351.51999999999987,
+                "y": 118.15999999999998
             }
         },
         {
@@ -353,257 +163,110 @@
                 }
             },
             "position": {
-                "x": 4894.730303999998,
-                "y": 48.41468800000003
-            }
-        },
-        {
-            "id": 2,
-            "internal-data": {
-                "model-name": "resample",
-                "properties": {
-                    "In 1": 8,
-                    "Mode": 0
-                }
-            },
-            "position": {
-                "x": 401.84799999999984,
-                "y": -160.47359999999998
-            }
-        },
-        {
-            "id": 13,
-            "internal-data": {
-                "model-name": "nvidiaFlip",
-                "properties": {
-                    "In 2": 0.7,
-                    "In 3": 1920,
-                    "In 4": 0.7
-                }
-            },
-            "position": {
-                "x": 1586.88,
-                "y": 156.96
-            }
-        },
-        {
-            "id": 0,
-            "internal-data": {
-                "model-name": "ImageSource",
-                "properties": {
-                    "Load 0": "/home/niels/Documents/repos/nitro/data/lena.pgm"
-                }
-            },
-            "position": {
-                "x": -635.2,
-                "y": -126.20000000000003
-            }
-        },
-        {
-            "id": 29,
-            "internal-data": {
-                "model-name": "ImageViewer3D",
-                "properties": {
-                }
-            },
-            "position": {
-                "x": 4825.888888888889,
-                "y": 262.44444444444446
-            }
-        },
-        {
-            "id": 15,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 0
-                }
-            },
-            "position": {
-                "x": 87.67999999999994,
-                "y": -323.76
-            }
-        },
-        {
-            "id": 28,
-            "internal-data": {
-                "model-name": "math",
-                "properties": {
-                    "In 1": 0,
-                    "Mode": 0
-                }
-            },
-            "position": {
-                "x": 4099.037037037037,
-                "y": -432.52160493827165
-            }
-        },
-        {
-            "id": 27,
-            "internal-data": {
-                "model-name": "nvidiaFlip",
-                "properties": {
-                    "In 2": 0.7,
-                    "In 3": 1920,
-                    "In 4": 0.7
-                }
-            },
-            "position": {
-                "x": 4716.666666666667,
-                "y": -320.00000000000006
-            }
-        },
-        {
-            "id": 26,
-            "internal-data": {
-                "model-name": "nvidiaFlip",
-                "properties": {
-                    "In 2": 0.7,
-                    "In 3": 1920,
-                    "In 4": 0.7
-                }
-            },
-            "position": {
-                "x": 4615.887615999999,
-                "y": -602.079808
-            }
-        },
-        {
-            "id": 25,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 1
-                }
-            },
-            "position": {
-                "x": 4301.7620036402095,
-                "y": -116.81245663492061
-            }
-        },
-        {
-            "id": 24,
-            "internal-data": {
-                "model-name": "resample",
-                "properties": {
-                    "In 1": 8,
-                    "Mode": 0
-                }
-            },
-            "position": {
-                "x": 3158.352225862433,
-                "y": -252.72753811640214
-            }
-        },
-        {
-            "id": 23,
-            "internal-data": {
-                "model-name": "ValueSource",
-                "properties": {
-                    "Out 0": 6
-                }
-            },
-            "position": {
-                "x": 2194.0120777142847,
-                "y": 173.0053211428574
-            }
-        },
-        {
-            "id": 22,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 2
-                }
-            },
-            "position": {
-                "x": 3835.660077714285,
-                "y": 14.30132114285722
-            }
-        },
-        {
-            "id": 21,
-            "internal-data": {
-                "model-name": "gaussianFilter",
-                "properties": {
-                    "In 1": 22,
-                    "In 2": 6
-                }
-            },
-            "position": {
-                "x": 3566.156077714285,
-                "y": 167.08532114285745
-            }
-        },
-        {
-            "id": 20,
-            "internal-data": {
-                "model-name": "gaussianFilter",
-                "properties": {
-                    "In 1": 22,
-                    "In 2": 6
-                }
-            },
-            "position": {
-                "x": 3154.770477714285,
-                "y": -16.701878857142773
-            }
-        },
-        {
-            "id": 19,
-            "internal-data": {
-                "model-name": "IntegerSource",
-                "properties": {
-                    "Out 0": 22
-                }
-            },
-            "position": {
-                "x": 2207.068077714285,
-                "y": 36.20532114285736
-            }
-        },
-        {
-            "id": 18,
-            "internal-data": {
-                "model-name": "kMeans",
-                "properties": {
-                    "In 1": 8
-                }
-            },
-            "position": {
-                "x": 2442.700799999999,
-                "y": -275.7887999999999
-            }
-        },
-        {
-            "id": 17,
-            "internal-data": {
-                "model-name": "mix",
-                "properties": {
-                    "In 0": 1,
-                    "Mode": 1
-                }
-            },
-            "position": {
-                "x": 2073.6,
-                "y": -333.8495999999999
+                "x": 992.06656,
+                "y": -31.94799999999999
             }
         },
         {
             "id": 16,
             "internal-data": {
-                "model-name": "mix",
+                "model-name": "convert",
                 "properties": {
-                    "In 0": 1,
-                    "Mode": 2
+                    "Mode": 6
                 }
             },
             "position": {
-                "x": 1880.7551999999994,
-                "y": 101.6064
+                "x": -1013.9199999999998,
+                "y": -53.19999999999997
+            }
+        },
+        {
+            "id": 12,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -1308.0079999999996,
+                "y": -2.728000000000023
+            }
+        },
+        {
+            "id": 15,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "In 2": 6,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 95.03999999999999,
+                "y": 25.919999999999973
+            }
+        },
+        {
+            "id": 17,
+            "internal-data": {
+                "model-name": "separateChannels",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -761.92,
+                "y": -45.99999999999999
+            }
+        },
+        {
+            "id": 18,
+            "internal-data": {
+                "model-name": "convert",
+                "properties": {
+                    "Mode": 7
+                }
+            },
+            "position": {
+                "x": 650.8800000000001,
+                "y": -188.63999999999996
+            }
+        },
+        {
+            "id": 19,
+            "internal-data": {
+                "model-name": "combineChannels",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 395.8399999999999,
+                "y": -184.23999999999992
+            }
+        },
+        {
+            "id": 20,
+            "internal-data": {
+                "model-name": "convert",
+                "properties": {
+                    "Mode": 7
+                }
+            },
+            "position": {
+                "x": 627.1999999999999,
+                "y": 33.79999999999997
+            }
+        },
+        {
+            "id": 21,
+            "internal-data": {
+                "model-name": "combineChannels",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 372.15999999999974,
+                "y": 38.2
             }
         }
     ]

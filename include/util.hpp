@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QImage>
+#include <opencv2/opencv.hpp>
 
 namespace nitro {
 
@@ -17,7 +18,7 @@ namespace nitro {
      * @param img
      * @return
      */
-    QImage cvMatToQImage(const cv::Mat &src, cv::Mat& buffer);
+    QImage cvMatToQImage(const cv::Mat &src, cv::Mat &buffer);
 
     /**
      *
@@ -56,4 +57,16 @@ namespace nitro {
      * @return
      */
     cv::Mat createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize);
+
+    /**
+     *
+     * @param imIn
+     * @param targetSize
+     * @param mode
+     * @param maintainAspectRatio
+     * @return
+     */
+    cv::Mat resize(const cv::Mat &imIn,
+                   const cv::Size &targetSize,
+                   const cv::InterpolationFlags mode, bool maintainAspectRatio);
 } // nitro

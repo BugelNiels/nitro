@@ -17,7 +17,6 @@ namespace nitro {
         ~ImViewDockWidget() override;
 
     private:
-        const int spacing_ = 40;
         ImageViewer *imageViewer_;
 
         QWidget *initStatusBar();

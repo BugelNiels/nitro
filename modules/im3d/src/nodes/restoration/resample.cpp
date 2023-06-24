@@ -90,15 +90,15 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     return df;
 }
 
-void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     int bits = nodePorts.inputInteger(INPUT_BITS);
-    auto imIn = *GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
-    int mode = options.at(MODE_DROPDOWN);
+    int mode = nodePorts.getOption(MODE_DROPDOWN);
     std::unique_ptr<Sampler> sampler;
     switch (mode) {
         case 0:
@@ -111,12 +111,12 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts, const std::map<QStri
             sampler = std::make_unique<Sampler>();
             break;
     }
-    cv::Mat colTable = getUniqueColors(imIn);
+    cv::Mat colTable = getUniqueColors(*imIn);
     int numLevels = colTable.rows;
-    std::vector<cv::Mat> dfs = getDfs(imIn, colTable, numLevels, offset);
+    std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels, offset);
 
     int numDesiredLevels = int(std::pow(2, bits));
-    cv::Mat nextLabels = getNextLabels(imIn, colTable, numDesiredLevels);
+    cv::Mat nextLabels = getNextLabels(*imIn, colTable, numDesiredLevels);
     cv::Mat result = sampler->resample(nextLabels, colTable, dfs, int(std::pow(2, bits)));
 
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);

@@ -9,11 +9,11 @@ nitro::SurfaceViewOperator::SurfaceViewOperator(nitro::RenderView *surfViewer)
         : surfViewer_(surfViewer) {
 }
 
-void nitro::SurfaceViewOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::SurfaceViewOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto img = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     surfViewer_->updateBuffers(cvMatToQImage(*img, currentImg_));
 }
 

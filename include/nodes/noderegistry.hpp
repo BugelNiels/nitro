@@ -19,8 +19,8 @@ namespace nitro {
     private:
         int catIdx_ = 0;
         std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry_;
-        std::map<QString, std::vector<QtNodes::NodeInfo>> categories_;
-        std::map<QString, int> categoryOrder_;
+        std::unordered_map<QString, std::vector<QtNodes::NodeInfo>> categories_;
+        std::unordered_map<QString, int> categoryOrder_;
     };
 }
 

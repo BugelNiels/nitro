@@ -12,6 +12,6 @@ namespace nitro {
     public:
         virtual ~NodeOperator() = default;
 
-        virtual void execute(NodePorts &nodePorts, const std::map<QString, int> &options) = 0;
+        virtual void execute(NodePorts &nodePorts) = 0;
     };
 }

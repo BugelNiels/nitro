@@ -56,6 +56,7 @@ void nitro::RenderView::initializeGL() {
     updateMatrices();
 
     resetOrientation();
+#ifndef  NDEBUG
     int w = 256;
     int h = 256;
     QImage img(w, h, QImage::Format_Grayscale8);
@@ -66,6 +67,7 @@ void nitro::RenderView::initializeGL() {
         }
     }
     updateBuffers(img);
+#endif
 }
 
 

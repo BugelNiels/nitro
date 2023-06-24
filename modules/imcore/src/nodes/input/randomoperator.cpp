@@ -14,7 +14,7 @@ static double generateRandomDouble(int seed) {
     return distribution(generator);
 }
 
-void nitro::RandomOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::RandomOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }

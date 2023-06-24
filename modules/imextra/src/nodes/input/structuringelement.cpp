@@ -4,18 +4,18 @@
 #include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_WIDTH "Width"
-#define INPUT_HEIGHT "Height"
+#define INPUT_X "Width"
+#define INPUT_Y "Height"
 #define OUTPUT_IMAGE "Kernel"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::StructElemOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::StructElemOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    int option = options.at(MODE_DROPDOWN);
-    int width = nodePorts.inputInteger(INPUT_WIDTH);
-    int height = nodePorts.inputInteger(INPUT_HEIGHT);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
+    int width = nodePorts.inputInteger(INPUT_X);
+    int height = nodePorts.inputInteger(INPUT_Y);
 
     cv::MorphShapes shape;
     switch (option) {
@@ -47,8 +47,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::cr
                 withIcon("kernel.png")->
                 withNodeColor(NITRO_INPUT_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
-                withInputInteger(INPUT_WIDTH, 3, 1, 15)->
-                withInputInteger(INPUT_HEIGHT, 3, 1, 15)->
+                withInputInteger(INPUT_X, 3, 1, 15)->
+                withInputInteger(INPUT_Y, 3, 1, 15)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };

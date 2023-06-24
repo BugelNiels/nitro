@@ -57,7 +57,7 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
 
     texture = std::make_unique<QOpenGLTexture>(image.mirrored());
     texture->setWrapMode(QOpenGLTexture::ClampToEdge);
-    texture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+    texture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Nearest);
     texture->bind();
 
     shader->bind();

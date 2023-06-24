@@ -5,11 +5,11 @@
 
 #define INPUT_IMAGE "Image"
 
-void nitro::SeparateOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::SeparateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     std::vector<cv::Mat> channels;
     if (inputImg->channels() == 1) {

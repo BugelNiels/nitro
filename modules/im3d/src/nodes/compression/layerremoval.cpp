@@ -251,13 +251,13 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
 }
 
 void
-nitro::LayerRemovalOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+nitro::LayerRemovalOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     int k = nodePorts.inputInteger(INPUT_K);
-    auto img = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int cumulative = options.at(OPTION_CUMULATIVE);
+    auto img = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
+    int cumulative = nodePorts.getOption(OPTION_CUMULATIVE);
 
     cv::Mat byteImg;
     img->convertTo(byteImg, CV_8U, MAX_GRAY - 1);

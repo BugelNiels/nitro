@@ -50,13 +50,22 @@ static double sumMat(const cv::Mat &in) {
     return sum;
 }
 
+static double averageMat(const cv::Mat &in) {
+    double sum = 0;
+    auto scalarSum = cv::sum(in);
+    for (int i = 0; i < in.channels(); i++) {
+        sum += scalarSum[i];
+    }
+    return sum / double(in.rows * in.cols * in.channels());
+}
+
 template<typename T>
-int countUniqueValues(const cv::Mat& mat) {
+int countUniqueValues(const cv::Mat &mat) {
     std::unordered_set<T> uniqueValues;
 
     // Iterate over each element in the matrix
     for (int i = 0; i < mat.rows; ++i) {
-        const T* row_ptr = mat.ptr<T>(i);
+        const T *row_ptr = mat.ptr<T>(i);
         for (int j = 0; j < mat.cols; ++j) {
             uniqueValues.insert(row_ptr[j]);
         }
@@ -86,12 +95,12 @@ static int uniqueMat(const cv::Mat &in) {
 }
 
 void
-nitro::ReductionOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+nitro::ReductionOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto img = *ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int option = options.at(MODE_DROPDOWN);
+    auto img = *nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
     switch (option) {
         case 0:
             nodePorts.output<DecimalData>(OUTPUT_VALUE, minMat(img));
@@ -103,6 +112,9 @@ nitro::ReductionOperator::execute(NodePorts &nodePorts, const std::map<QString, 
             nodePorts.output<DecimalData>(OUTPUT_VALUE, sumMat(img));
             break;
         case 3 :
+            nodePorts.output<DecimalData>(OUTPUT_VALUE, averageMat(img));
+            break;
+        case 4 :
             nodePorts.output<IntegerData>(OUTPUT_VALUE, uniqueMat(img));
             break;
         default:
@@ -118,7 +130,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ReductionOperator::cre
                 withOperator(std::make_unique<nitro::ReductionOperator>())->
                 withIcon("sum.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Count Unique"})->
+                withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Average", "Count Unique"})->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withOutputValue(OUTPUT_VALUE)->
                 build();

@@ -11,12 +11,12 @@ nitro::ImageViewOperator::ImageViewOperator(nitro::ImageViewer *imViewer)
 }
 
 
-void nitro::ImageViewOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ImageViewOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         imViewer_->removeImage();
         return;
     }
-    auto im = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto im = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     if(im->rows == 1 && im->cols == 1) {
         cv::resize(*im, *im, {256, 256});

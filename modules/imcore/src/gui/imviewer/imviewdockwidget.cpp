@@ -4,11 +4,21 @@
 #include "gui/mainwindow.hpp"
 #include "gui/zoombar.hpp"
 
+#define SPACING 20
+
+static QWidget* spacing() {
+    auto label = new QLabel("|");
+    label->setContentsMargins(SPACING, 0, SPACING, 0);
+    return label;
+}
+
 nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window)
         : QDockWidget(window), imageViewer_(imageViewer) {
     setWindowTitle("Image Viewer");
 
     QWidget *imViewTitleWrapper = initTitleBarWidget(window);
+
+
 
 
     QObject::connect(imageViewer_, &nitro::ImageViewer::mousePosUpdated, window,
@@ -47,16 +57,16 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
     auto sizeLabel = new QLabel("0 x 0");
     sizeLabel->setFixedWidth(100);
     auto channelsLabel = new QLabel("-");
-    channelsLabel->setFixedWidth(spacing_);
+    channelsLabel->setFixedWidth(40);
     zoomBar->setMaximumWidth(200);
     auto zoomLabel = new QLabel("zoom:");
     imHLayout->addStretch();
     imHLayout->addWidget(zoomLabel);
     imHLayout->addWidget(zoomBar);
-    imHLayout->addSpacing(spacing_);
+    imHLayout->addWidget(spacing());
     imHLayout->addWidget(new QLabel("size: "));
     imHLayout->addWidget(sizeLabel);
-    imHLayout->addSpacing(spacing_);
+    imHLayout->addWidget(spacing());
     imHLayout->addWidget(new QLabel("channels: "));
     imHLayout->addWidget(channelsLabel);
 
@@ -94,40 +104,37 @@ void nitro::ImViewDockWidget::updateFooterLabels(const QPoint &pos, const QColor
     colLabel_->setPixmap(colLabelPixMap_);
 }
 
+static QLabel* emptyLabel(bool selectable = false) {
+    auto* label = new QLabel("-");
+    label->setFixedWidth(40);
+    label->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    label->setContentsMargins(0,0,0,0);
+    if(selectable) {
+        label->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    }
+    return label;
+}
+
 QWidget *nitro::ImViewDockWidget::initStatusBar() {
 
     auto *statusBar = new QWidget(this);
     auto *layout = new QHBoxLayout();
 
-    colLabel_ = new QLabel();
-    colLabel_->setFixedWidth(spacing_);
-    xLabel_ = new QLabel("-");
-    yLabel_ = new QLabel("-");
-    rLabel_ = new QLabel("-");
-    gLabel_ = new QLabel("-");
-    bLabel_ = new QLabel("-");
-    hLabel_ = new QLabel("-");
-    sLabel_ = new QLabel("-");
-    vLabel_ = new QLabel("-");
-    lLabel_ = new QLabel("-");
-    hexLabel_ = new QLabel("-");
-
-
-    xLabel_->setFixedWidth(spacing_);
-    yLabel_->setFixedWidth(spacing_);
-    rLabel_->setFixedWidth(spacing_);
-    gLabel_->setFixedWidth(spacing_);
-    bLabel_->setFixedWidth(spacing_);
-    hLabel_->setFixedWidth(spacing_);
-    sLabel_->setFixedWidth(spacing_);
-    vLabel_->setFixedWidth(spacing_);
-    lLabel_->setFixedWidth(spacing_);
-    hexLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-
-    layout->addSpacing(spacing_);
+    colLabel_ = emptyLabel();
+    xLabel_ = emptyLabel();
+    yLabel_ = emptyLabel();
+    rLabel_ = emptyLabel();
+    gLabel_ = emptyLabel();
+    bLabel_ = emptyLabel();
+    hLabel_ = emptyLabel();
+    sLabel_ = emptyLabel();
+    vLabel_ = emptyLabel();
+    lLabel_ = emptyLabel();
+    hexLabel_ = emptyLabel(true);
+    layout->addWidget(spacing());
     layout->addWidget(new QLabel("Color: "));
     layout->addWidget(colLabel_);
-    layout->addSpacing(spacing_);
+    layout->addWidget(spacing());
 
 
     layout->addWidget(new QLabel("X: "));
@@ -135,7 +142,7 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(new QLabel("Y: "));
     layout->addWidget(yLabel_);
 
-    layout->addSpacing(spacing_);
+    layout->addWidget(spacing());
 
     layout->addWidget(new QLabel("R: "));
     layout->addWidget(rLabel_);
@@ -144,7 +151,7 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(new QLabel("B: "));
     layout->addWidget(bLabel_);
 
-    layout->addSpacing(spacing_);
+    layout->addWidget(spacing());
 
     layout->addWidget(new QLabel("H: "));
     layout->addWidget(hLabel_);
@@ -156,10 +163,11 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     layout->addWidget(lLabel_);
 
 
-    layout->addSpacing(spacing_);
+    layout->addWidget(spacing());
 
     layout->addWidget(new QLabel("Hex: "));
     layout->addWidget(hexLabel_);
+    layout->addWidget(spacing());
 
     layout->addStretch();
     statusBar->setStyleSheet("color: grey;");

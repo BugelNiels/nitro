@@ -44,11 +44,11 @@ name NITRO: Niels' Image-processing Thesis on Reconstruction Operations.
 
 To get a local copy up and running, download the [latest release](https://github.com/BugelNiels/nitro/releases/latest).
 Once downloaded, you should have a file
-called `nitro-x86_64.AppImage`. You can run this using:
+called `NITRO-<version>-x86_64.AppImage`. You can run this using:
 
 ```shell
-chmod u+x nitro-x86_64.AppImage
-./nitro-x86_64.AppImage
+chmod u+x NITRO-<version>-x86_64.AppImage
+./NITRO-<version>-x86_64.AppImage
 ```
 
 Alternatively, you can read through the [Installation Instructions](docs/INSTALL.md) to build the project from the source code.

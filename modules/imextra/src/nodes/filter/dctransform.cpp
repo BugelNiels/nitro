@@ -7,13 +7,13 @@
 #define OUTPUT_IMAGE "Image"
 #define OPTION_INVERSE "Inverse"
 
-void nitro::DCTOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::DCTOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
-    auto inputImg = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE));
-    int inverse = options.at(OPTION_INVERSE);
+    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
+    int inverse = nodePorts.getOption(OPTION_INVERSE);
 
     cv::Mat imIn;
     if (inputImg->channels() > 1) {

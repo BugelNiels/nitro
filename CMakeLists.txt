@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(NITRO_VERSION 1.2.0)
+set(NITRO_VERSION_MAJOR 1)
+set(NITRO_VERSION_MINOR 3)
+set(NITRO_VERSION_PATCH 0)
+
+set(NITRO_VERSION "${NITRO_VERSION_MAJOR}.${NITRO_VERSION_MINOR}.${NITRO_VERSION_PATCH}")
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
 
@@ -42,7 +46,7 @@ file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc src/core/nodes/datatypes/colimagedata.cpp)
+        resources/resources.qrc)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

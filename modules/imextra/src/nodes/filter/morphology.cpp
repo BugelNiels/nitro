@@ -11,17 +11,17 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::MorphologyOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::MorphologyOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE_1));
-    auto im2 = GrayImageData::from(nodePorts.inGet(INPUT_IMAGE_2));
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
+    auto im2 = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE_2);
 
 
     cv::Mat kernel;
     im2->convertTo(kernel, CV_8UC1, 255);
-    int option = options.at(MODE_DROPDOWN);
+    int option = nodePorts.getOption(MODE_DROPDOWN);
 
     cv::Mat result;
     switch (option) {

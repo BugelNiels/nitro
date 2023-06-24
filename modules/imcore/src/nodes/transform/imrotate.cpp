@@ -8,12 +8,12 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::ImRotateOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::ImRotateOperator::execute(NodePorts &nodePorts) {
     if(!nodePorts.allInputsPresent()) {
         return;
     }
-    int option = options.at(MODE_DROPDOWN);
-    auto im1 = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    int option = nodePorts.getOption(MODE_DROPDOWN);
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
     cv::RotateFlags mode;
     switch (option) {

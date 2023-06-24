@@ -30,6 +30,7 @@ Adding new modules can be done by following a similar structure to the existing 
 - Add any nodes, data types or widgets as needed (see below).
 
 The basic directory structure will then look as follows:
+
 ```shell
 └── modules
     ├── im3d
@@ -83,11 +84,10 @@ namespace nitro {
          * @param nodePorts Port data containing the current input and output information.
          * @param options Options for passing additional parameters to the algorithm. Currently unused.
          */
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
+        void execute(NodePorts &nodePorts) override;
 
     };
 } // nitro
-
 ```
 
 [Source file](../modules/imcore/src/nodes/filters/bilateralfilter.cpp)
@@ -95,6 +95,7 @@ namespace nitro {
 ```c++
 #include "bilateralfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -104,9 +105,12 @@ namespace nitro {
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts, const std::map<QString, int> &options) {
+void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
+    if(!nodePorts.allInputsPresent()) {
+        return;
+    }
     // Get the input data
-    auto inputImg = ColImageData::from(nodePorts.inGet(INPUT_IMAGE));
+    auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     double sigmaCol = nodePorts.inputValue(INPUT_SIGMA_C);
     double sigmaSpace = nodePorts.inputValue(INPUT_SIGMA_S);
     int d = nodePorts.inputInteger(INPUT_D);
@@ -125,7 +129,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
         return builder.
                 withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
                 withIcon("blur.png")->
-                withNodeColor({71, 47, 189})->
+                withNodeColor(NITRO_FILTER_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_D, 9, 1, 64)->
                 withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
@@ -141,29 +145,78 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
 New data types can be added by creating an implementation of `QtNodes::NodeData`. For example,
 the [integer data type](../include/nodes/datatypes/integerdata.hpp) has the following structure:
 
+[Header file](../include/nodes/datatypes/integerdata.hpp)
+
 ```c++
+#pragma once
+
+#include <utility>
+
+#include "QtNodes/NodeData"
+#include "flexibledata.hpp"
+
 namespace nitro {
-    class IntegerData : public QtNodes::NodeData {
+    class IntegerData : public FlexibleData<int, IntegerData> {
     public:
-        IntegerData() = default;
+        IntegerData();
 
-        explicit IntegerData(int val) : data_(data) {}
+        explicit IntegerData(int value);
 
-        static nitro::DataInfo dataInfo() {
-            return {"Value", "integer", {89, 140, 92}};
+        static QString id() {
+            return id_;
         }
 
-        QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
-        }
+        static void registerConversions();
 
-        int value() const { return data_; }
+        [[nodiscard]] QString getDescription() const override;
 
     private:
-        int data_;
+        inline static const QString name_ = "Integer";
+        inline static const QString id_ = "Integer";
+        inline static const QColor baseColor_ = {89, 140, 92};
     };
 } // nitro
 ```
 
-Note that, while not required, each data type should ideally have a method for retrieving its data info. This way, the
-data type can be registered properly.
+[Source file](../src/core/nodes/datatypes/integerdata.cpp)
+
+```c++
+#include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
+
+namespace nitro {
+    IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {
+        // By default, always allow conversions from doubles
+        allowConversionFrom(DecimalData::id());
+    }
+
+    IntegerData::IntegerData(int value) : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
+        // By default, always allow conversions from doubles
+        allowConversionFrom(DecimalData::id());
+    }
+
+    QString IntegerData::getDescription() const {
+        return QString::number(data());
+    }
+
+    void IntegerData::registerConversions() {
+
+        // Every type needs a "conversion" to itself
+        IntegerData::registerConversionFrom<IntegerData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    return std::static_pointer_cast<IntegerData>(nodeData)->data();
+                });
+
+        IntegerData::registerConversionFrom<DecimalData>(
+                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                    auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
+                    return int(std::round(doubleData->data()));
+                });
+    }
+} // nitro
+```
+
+Data types allow for custom conversions. These are defined in the `registerConversions()` function. Note that not all
+the conversions. By default, only the conversions registered in the constructor are enabled. If more conversions should
+be supported, then these should be specified in the node builder (see
+e.g. [immath.cpp](../modules/imcore/src/nodes/converter/immath.cpp)).
