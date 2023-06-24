@@ -35,6 +35,8 @@ namespace nitro {
 
         GrayImageData::registerConversionFrom(GrayImageData::id(),
                                               [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+
+                                                  qDebug() << "From gray to gray";
                                                   return std::static_pointer_cast<GrayImageData>(nodeData)->data();
                                               });
 
@@ -55,6 +57,7 @@ namespace nitro {
 
         GrayImageData::registerConversionFrom(ColImageData::id(),
                                               [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                  qDebug() << "From color to gray";
                                                   auto imData = std::static_pointer_cast<ColImageData>(nodeData);
                                                   if(imData->data()->channels() == 1) {
                                                       return std::make_shared<cv::Mat>(*imData->data());

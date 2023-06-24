@@ -36,11 +36,13 @@ namespace nitro {
         // Every type needs a "conversion" to itself
         ColImageData::registerConversionFrom(ColImageData::id(),
                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+            qDebug() << "From color to color";
                                                  return std::static_pointer_cast<ColImageData>(nodeData)->data();
                                              });
 
         ColImageData::registerConversionFrom(DecimalData::id(),
                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                 qDebug() << "From decimal to color";
                                                  auto imData = std::static_pointer_cast<DecimalData>(nodeData);
                                                  double val = imData->data();
                                                  return std::make_shared<cv::Mat>(1, 1, CV_32F,
@@ -49,6 +51,7 @@ namespace nitro {
 
         ColImageData::registerConversionFrom(IntegerData::id(),
                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                 qDebug() << "From integer to color";
                                                  auto imData = std::static_pointer_cast<IntegerData>(nodeData);
                                                  double val = imData->data() / 255.0;
                                                  return std::make_shared<cv::Mat>(1, 1, CV_32F,
@@ -57,6 +60,7 @@ namespace nitro {
 
         ColImageData::registerConversionFrom(GrayImageData::id(),
                                              [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                                                 qDebug() << "From gray to color";
                                                  auto imData = std::static_pointer_cast<GrayImageData>(nodeData);
                                                  cv::Mat res;
                                                  cv::cvtColor(*imData->data(), res, cv::COLOR_GRAY2RGB);

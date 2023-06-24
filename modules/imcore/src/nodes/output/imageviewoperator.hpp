@@ -14,7 +14,7 @@ namespace nitro {
         explicit ImageViewOperator(ImageViewer *imViewer);
 
 
-        void execute(NodePorts &nodePorts, const std::map<QString, int> &options) override;
+        void execute(NodePorts &nodePorts) override;
 
     private:
         ImageViewer *imViewer_;
