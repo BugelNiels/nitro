@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Builds the AppImage in a specific container to ensure that versions are met
+
 cd ..
 docker build -t build_image -f docker/build.Dockerfile .
 docker run --device=/dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined build_image
