@@ -134,9 +134,12 @@ Signals</h2></td></tr>
 <tr class="memitem:a41530ca545c1e2419153bc0221b3daae"><td class="memItemLeft" align="right" valign="top"><a id="a41530ca545c1e2419153bc0221b3daae"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>scaleChanged</b> (double scale)</td></tr>
 <tr class="separator:a41530ca545c1e2419153bc0221b3daae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87178a7d641ef5778c73f24170c77584"><td class="memItemLeft" align="right" valign="top"><a id="a87178a7d641ef5778c73f24170c77584"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>imageUpdated</b> (const cv::Mat &amp;img)</td></tr>
-<tr class="separator:a87178a7d641ef5778c73f24170c77584"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f26dc34bfcab8bdcec213d5ca2ae3ca"><td class="memItemLeft" align="right" valign="top"><a id="a1f26dc34bfcab8bdcec213d5ca2ae3ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>imageUpdated</b> (const <a class="el" href="../../dc/de4/structnitro_1_1ImageInfo.html">ImageInfo</a> &amp;img)</td></tr>
+<tr class="separator:a1f26dc34bfcab8bdcec213d5ca2ae3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a720e245c5ce565485a99c38704832307"><td class="memItemLeft" align="right" valign="top"><a id="a720e245c5ce565485a99c38704832307"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mousePosUpdated</b> (const QPoint &amp;pos, QColor color)</td></tr>
+<tr class="separator:a720e245c5ce565485a99c38704832307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -149,12 +152,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>wheelEvent</b> (QWhee
 <tr class="memitem:a70b54c0c35ab6a5e242d8a9969652039"><td class="memItemLeft" align="right" valign="top"><a id="a70b54c0c35ab6a5e242d8a9969652039"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>keyPressEvent</b> (QKeyEvent *event) override</td></tr>
 <tr class="separator:a70b54c0c35ab6a5e242d8a9969652039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a4113eab2c500546d42bd2a3fa915dc"><td class="memItemLeft" align="right" valign="top"><a id="a8a4113eab2c500546d42bd2a3fa915dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>keyReleaseEvent</b> (QKeyEvent *event) override</td></tr>
+<tr class="separator:a8a4113eab2c500546d42bd2a3fa915dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a751369917109b27bc6f0e89af1698362"><td class="memItemLeft" align="right" valign="top"><a id="a751369917109b27bc6f0e89af1698362"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>resetImScale</b> ()</td></tr>
 <tr class="separator:a751369917109b27bc6f0e89af1698362"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae13586f2c737b4e82f9ff4d49eb1dac0"><td class="memItemLeft" align="right" valign="top"><a id="ae13586f2c737b4e82f9ff4d49eb1dac0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setImage</b> (const cv::Mat &amp;img)</td></tr>
-<tr class="separator:ae13586f2c737b4e82f9ff4d49eb1dac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5704bc7ff11be692bdae640856b1cf91"><td class="memItemLeft" align="right" valign="top"><a id="a5704bc7ff11be692bdae640856b1cf91"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setImage</b> (const std::shared_ptr&lt; cv::Mat &gt; &amp;img)</td></tr>
+<tr class="separator:a5704bc7ff11be692bdae640856b1cf91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a22bc9becf1cdaf792a4f00a2ccc316"><td class="memItemLeft" align="right" valign="top"><a id="a3a22bc9becf1cdaf792a4f00a2ccc316"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>drawBackground</b> (QPainter *painter, const QRectF &amp;r) override</td></tr>
 <tr class="separator:a3a22bc9becf1cdaf792a4f00a2ccc316"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,6 +173,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resizeEvent</b> (QRes
 <tr class="memitem:a196e1c65e30838ae8d1e432aac911a1f"><td class="memItemLeft" align="right" valign="top"><a id="a196e1c65e30838ae8d1e432aac911a1f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>removeImage</b> ()</td></tr>
 <tr class="separator:a196e1c65e30838ae8d1e432aac911a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4210231f8e92a9e4269ab4ce4a41720"><td class="memItemLeft" align="right" valign="top"><a id="aa4210231f8e92a9e4269ab4ce4a41720"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mouseMoveEvent</b> (QMouseEvent *event) override</td></tr>
+<tr class="separator:aa4210231f8e92a9e4269ab4ce4a41720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b5e7d890340621df60e31b58a61a08"><td class="memItemLeft" align="right" valign="top"><a id="aa1b5e7d890340621df60e31b58a61a08"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>leaveEvent</b> (QEvent *event) override</td></tr>
+<tr class="separator:aa1b5e7d890340621df60e31b58a61a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d69970d4070c2399b1014a963504335"><td class="memItemLeft" align="right" valign="top"><a id="a5d69970d4070c2399b1014a963504335"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mousePressEvent</b> (QMouseEvent *event) override</td></tr>
+<tr class="separator:a5d69970d4070c2399b1014a963504335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zoombar_139',['ZoomBar',['../dc/d18/classnitro_1_1ZoomBar.html',1,'nitro']]]
+  ['translateoperator_171',['TranslateOperator',['../d4/dcd/classnitro_1_1TranslateOperator.html',1,'nitro']]]
 ];

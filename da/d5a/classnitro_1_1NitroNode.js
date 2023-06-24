@@ -8,6 +8,8 @@ var classnitro_1_1NitroNode =
     [ "embeddedWidget", "da/d5a/classnitro_1_1NitroNode.html#abc0ce214a70204d899a2d19862d0ea1a", null ],
     [ "getInfo", "da/d5a/classnitro_1_1NitroNode.html#a67e7577c09609529f227519de584c4c0", null ],
     [ "init", "da/d5a/classnitro_1_1NitroNode.html#af7de3600bf88cca683ff90ab95059e07", null ],
+    [ "inputConnectionCreated", "da/d5a/classnitro_1_1NitroNode.html#a7c927eccb58f11f9c0778145c682e765", null ],
+    [ "inputConnectionDeleted", "da/d5a/classnitro_1_1NitroNode.html#a67d38baeec430bd84dcc69bdb1316fb6", null ],
     [ "load", "da/d5a/classnitro_1_1NitroNode.html#a4838c8bc3c60a6ca4ed8dc06f621651a", null ],
     [ "name", "da/d5a/classnitro_1_1NitroNode.html#a628705da711d37b21bb75e98f19110c2", null ],
     [ "nPorts", "da/d5a/classnitro_1_1NitroNode.html#a14814a3b9e0e96264826d7151cba6af2", null ],

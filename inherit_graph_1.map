@@ -1,4 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,111,32"/>
-<area shape="rect" id="node2" href="$d5/d71/classnitro_1_1DraggableTreeWidget.html" title=" " alt="" coords="159,5,359,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,159,156,185"/>
+<area shape="rect" id="node2" href="$d8/dac/classnitro_1_1FlexibleData.html" title=" " alt="" coords="209,5,395,61"/>
+<area shape="rect" id="node4" href="$d8/dac/classnitro_1_1FlexibleData.html" title=" " alt="" coords="207,86,397,127"/>
+<area shape="rect" id="node6" href="$d8/dac/classnitro_1_1FlexibleData.html" title=" " alt="" coords="225,151,379,193"/>
+<area shape="rect" id="node8" href="$d8/dac/classnitro_1_1FlexibleData.html" title=" " alt="" coords="204,217,400,273"/>
+<area shape="rect" id="node10" href="$d8/dac/classnitro_1_1FlexibleData.html" title=" " alt="" coords="231,298,373,339"/>
+<area shape="rect" id="node3" href="$d8/da4/classnitro_1_1ColImageData.html" title=" " alt="" coords="453,20,606,47"/>
+<area shape="rect" id="node5" href="$d9/dad/classnitro_1_1DecimalData.html" title=" " alt="" coords="457,93,602,120"/>
+<area shape="rect" id="node7" href="$d2/d9f/classnitro_1_1IntegerData.html" title=" " alt="" coords="461,159,598,185"/>
+<area shape="rect" id="node9" href="$d1/dad/classnitro_1_1GrayImageData.html" title=" " alt="" coords="448,232,611,259"/>
 </map>

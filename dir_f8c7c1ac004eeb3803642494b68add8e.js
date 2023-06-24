@@ -1,7 +1,7 @@
 var dir_f8c7c1ac004eeb3803642494b68add8e =
 [
-    [ "edgedetect", "dir_9bc0e6264d7fddc53129ca17f00147d5.html", "dir_9bc0e6264d7fddc53129ca17f00147d5" ],
-    [ "fourier", "dir_3006ffe3106e64b0e2dd75f48ed8bbb1.html", "dir_3006ffe3106e64b0e2dd75f48ed8bbb1" ],
+    [ "analysis", "dir_a4ba644889b8234c4befda5c5fc253c9.html", "dir_a4ba644889b8234c4befda5c5fc253c9" ],
+    [ "filter", "dir_82a7d90e90cefb9585b00b3b9405f389.html", "dir_82a7d90e90cefb9585b00b3b9405f389" ],
     [ "input", "dir_9ac0a4e317d46967e64babde025ea310.html", "dir_9ac0a4e317d46967e64babde025ea310" ],
-    [ "morphology", "dir_d2f0352b28edabc9b97bfaddda3304b7.html", "dir_d2f0352b28edabc9b97bfaddda3304b7" ]
+    [ "segmentation", "dir_99ac43a870a8e04e6f205ab022de9665.html", "dir_99ac43a870a8e04e6f205ab022de9665" ]
 ];

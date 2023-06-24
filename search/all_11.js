@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zoombar_78',['ZoomBar',['../dc/d18/classnitro_1_1ZoomBar.html',1,'nitro::ZoomBar'],['../dc/d18/classnitro_1_1ZoomBar.html#a1a5feff829ac088c501763474c1f1819',1,'nitro::ZoomBar::ZoomBar()']]]
+  ['wheelevent_94',['wheelEvent',['../db/d5a/classnitro_1_1RenderView.html#a98729f2545f9d9cb5bde0a407495fb8f',1,'nitro::RenderView']]]
 ];

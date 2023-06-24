@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "nitro::ImageInfo", "dc/de4/structnitro_1_1ImageInfo.html", null ],
     [ "nitro::ImResourceReader", "d9/d52/classnitro_1_1ImResourceReader.html", null ],
     [ "nitro::NitroModule", "d7/d57/classnitro_1_1NitroModule.html", [
       [ "nitro::Im3D::Im3DModule", "d2/df1/classnitro_1_1Im3D_1_1Im3DModule.html", null ],
@@ -8,9 +9,19 @@ var hierarchy =
     ] ],
     [ "nitro::NitroNodeBuilder", "da/dd1/classnitro_1_1NitroNodeBuilder.html", null ],
     [ "QtNodes::NodeData", null, [
-      [ "nitro::DecimalData", "d9/dad/classnitro_1_1DecimalData.html", null ],
-      [ "nitro::ImageData", "dd/dfb/classnitro_1_1ImageData.html", null ],
-      [ "nitro::IntegerData", "d2/d9f/classnitro_1_1IntegerData.html", null ]
+      [ "nitro::FlexibleData< std::shared_ptr< cv::Mat >, ColImageData >", "d8/dac/classnitro_1_1FlexibleData.html", [
+        [ "nitro::ColImageData", "d8/da4/classnitro_1_1ColImageData.html", null ]
+      ] ],
+      [ "nitro::FlexibleData< double, DecimalData >", "d8/dac/classnitro_1_1FlexibleData.html", [
+        [ "nitro::DecimalData", "d9/dad/classnitro_1_1DecimalData.html", null ]
+      ] ],
+      [ "nitro::FlexibleData< int, IntegerData >", "d8/dac/classnitro_1_1FlexibleData.html", [
+        [ "nitro::IntegerData", "d2/d9f/classnitro_1_1IntegerData.html", null ]
+      ] ],
+      [ "nitro::FlexibleData< std::shared_ptr< cv::Mat >, GrayImageData >", "d8/dac/classnitro_1_1FlexibleData.html", [
+        [ "nitro::GrayImageData", "d1/dad/classnitro_1_1GrayImageData.html", null ]
+      ] ],
+      [ "nitro::FlexibleData< T, U >", "d8/dac/classnitro_1_1FlexibleData.html", null ]
     ] ],
     [ "QtNodes::NodeDelegateModel", null, [
       [ "nitro::NitroNode", "da/d5a/classnitro_1_1NitroNode.html", null ]
@@ -20,39 +31,49 @@ var hierarchy =
     ] ],
     [ "nitro::NodeOperator", "d0/d72/classnitro_1_1NodeOperator.html", [
       [ "nitro::BilateralFilterOperator", "dc/d51/classnitro_1_1BilateralFilterOperator.html", null ],
+      [ "nitro::BooleanMathOperator", "d5/d10/classnitro_1_1BooleanMathOperator.html", null ],
       [ "nitro::BoxFilterOperator", "d7/dd4/classnitro_1_1BoxFilterOperator.html", null ],
       [ "nitro::CannyEdgeDetectionOperator", "d9/d11/classnitro_1_1CannyEdgeDetectionOperator.html", null ],
       [ "nitro::ColorMapOperator", "d5/d4a/classnitro_1_1ColorMapOperator.html", null ],
       [ "nitro::CombineOperator", "d6/dae/classnitro_1_1CombineOperator.html", null ],
+      [ "nitro::ConnectedCompsOperator", "d8/d2f/classnitro_1_1ConnectedCompsOperator.html", null ],
       [ "nitro::ConvertOperator", "da/d3b/classnitro_1_1ConvertOperator.html", null ],
+      [ "nitro::DCTOperator", "d4/d49/classnitro_1_1DCTOperator.html", null ],
       [ "nitro::DenoiseOperator", "df/d2c/classnitro_1_1DenoiseOperator.html", null ],
+      [ "nitro::DistanceTransformOperator", "d0/d04/classnitro_1_1DistanceTransformOperator.html", null ],
       [ "nitro::FFTOperator", "d7/dd3/classnitro_1_1FFTOperator.html", null ],
-      [ "nitro::FFTShift", "dc/d1a/classnitro_1_1FFTShift.html", null ],
+      [ "nitro::FFTShiftOperator", "d0/dab/classnitro_1_1FFTShiftOperator.html", null ],
       [ "nitro::FlipOperator", "dd/dd4/classnitro_1_1FlipOperator.html", null ],
       [ "nitro::GaussianBlurOperator", "da/da2/classnitro_1_1GaussianBlurOperator.html", null ],
-      [ "nitro::GrayscaleConvertOperator", "da/df4/classnitro_1_1GrayscaleConvertOperator.html", null ],
       [ "nitro::ImFlipOperator", "de/d2a/classnitro_1_1ImFlipOperator.html", null ],
       [ "nitro::ImInfoOperator", "d5/d72/classnitro_1_1ImInfoOperator.html", null ],
       [ "nitro::ImRotateOperator", "d6/dbf/classnitro_1_1ImRotateOperator.html", null ],
-      [ "nitro::ImageViewAlgorithm", "d8/d90/classnitro_1_1ImageViewAlgorithm.html", null ],
+      [ "nitro::ImageSourceOperator", "d0/db5/classnitro_1_1ImageSourceOperator.html", null ],
+      [ "nitro::ImageViewOperator", "dd/d5e/classnitro_1_1ImageViewOperator.html", null ],
       [ "nitro::InvertOperator", "dc/da1/classnitro_1_1InvertOperator.html", null ],
       [ "nitro::KMeansOperator", "d9/d71/classnitro_1_1KMeansOperator.html", null ],
       [ "nitro::LayerRemovalOperator", "d6/d67/classnitro_1_1LayerRemovalOperator.html", null ],
       [ "nitro::MaskOperator", "d9/da6/classnitro_1_1MaskOperator.html", null ],
+      [ "nitro::MatchSizeOperator", "db/ddd/classnitro_1_1MatchSizeOperator.html", null ],
       [ "nitro::MathOperator", "d5/d7e/classnitro_1_1MathOperator.html", null ],
       [ "nitro::MixOperator", "da/d0a/classnitro_1_1MixOperator.html", null ],
       [ "nitro::MorphologyOperator", "d7/d54/classnitro_1_1MorphologyOperator.html", null ],
       [ "nitro::NormalizeOperator", "d3/d08/classnitro_1_1NormalizeOperator.html", null ],
       [ "nitro::QuantizeOperator", "d9/df2/classnitro_1_1QuantizeOperator.html", null ],
+      [ "nitro::RandomOperator", "db/df7/classnitro_1_1RandomOperator.html", null ],
+      [ "nitro::ReductionOperator", "d9/d9d/classnitro_1_1ReductionOperator.html", null ],
       [ "nitro::ResampleOperator", "d0/dfb/classnitro_1_1ResampleOperator.html", null ],
       [ "nitro::ResizeOperator", "d4/dd3/classnitro_1_1ResizeOperator.html", null ],
+      [ "nitro::RgbToGrayscaleOperator", "df/d70/classnitro_1_1RgbToGrayscaleOperator.html", null ],
       [ "nitro::SeparateOperator", "da/d88/classnitro_1_1SeparateOperator.html", null ],
       [ "nitro::StructElemOperator", "dd/d91/classnitro_1_1StructElemOperator.html", null ],
-      [ "nitro::SurfaceViewAlgorithm", "df/d6a/classnitro_1_1SurfaceViewAlgorithm.html", null ],
-      [ "nitro::ThresholdOperator", "d4/dc2/classnitro_1_1ThresholdOperator.html", null ]
+      [ "nitro::SurfaceViewOperator", "d0/d69/classnitro_1_1SurfaceViewOperator.html", null ],
+      [ "nitro::TranslateOperator", "d4/dcd/classnitro_1_1TranslateOperator.html", null ],
+      [ "nitro::ValueViewOperator", "d4/d8b/classnitro_1_1ValueViewOperator.html", null ]
     ] ],
     [ "nitro::NodePorts", "da/da7/classnitro_1_1NodePorts.html", null ],
     [ "nitro::NodeRegistry", "df/dd2/classnitro_1_1NodeRegistry.html", null ],
+    [ "nitro::PortData", "d9/d6d/classnitro_1_1PortData.html", null ],
     [ "QDockWidget", null, [
       [ "nitro::ImViewDockWidget", "d4/dba/classnitro_1_1ImViewDockWidget.html", null ],
       [ "nitro::NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html", null ],

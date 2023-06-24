@@ -94,9 +94,9 @@ $(document).ready(function(){initNavTree('da/da7/classnitro_1_1NodePorts.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aff42661024a32dd5a40bf4f2a10de866"><td class="memItemLeft" align="right" valign="top"><a id="aff42661024a32dd5a40bf4f2a10de866"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b> (std::vector&lt; std::pair&lt; QString, QtNodes::NodeDataType &gt;&gt; inputList_, std::vector&lt; std::pair&lt; QString, QtNodes::NodeDataType &gt;&gt; outputList_, std::map&lt; QString, std::shared_ptr&lt; QtNodes::NodeData &gt;&gt; inputMap_, std::map&lt; QString, std::shared_ptr&lt; QtNodes::NodeData &gt;&gt; outputMap_)</td></tr>
-<tr class="separator:aff42661024a32dd5a40bf4f2a10de866"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8747fa1f04ad7eca2801020458adc682"><td class="memItemLeft" align="right" valign="top"><a id="a8747fa1f04ad7eca2801020458adc682"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b> (std::vector&lt; <a class="el" href="../../d9/d6d/classnitro_1_1PortData.html">PortData</a> &gt; inputList_, std::vector&lt; <a class="el" href="../../d9/d6d/classnitro_1_1PortData.html">PortData</a> &gt; outputList_, std::unordered_map&lt; QString, int &gt; options)</td></tr>
+<tr class="separator:a8747fa1f04ad7eca2801020458adc682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bac08b6e8cbba240eff63df4838cb48"><td class="memItemLeft" align="right" valign="top"><a id="a1bac08b6e8cbba240eff63df4838cb48"></a>
 const QString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>inPortName</b> (QtNodes::PortIndex port) const</td></tr>
 <tr class="separator:a1bac08b6e8cbba240eff63df4838cb48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,9 +115,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numInPorts</b> () cons
 <tr class="memitem:a1802f1b75c5f3e9474845061d41063ec"><td class="memItemLeft" align="right" valign="top"><a id="a1802f1b75c5f3e9474845061d41063ec"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>numOutPorts</b> () const</td></tr>
 <tr class="separator:a1802f1b75c5f3e9474845061d41063ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0a07df0d9e95980ac6810267a2b6916"><td class="memItemLeft" align="right" valign="top"><a id="ab0a07df0d9e95980ac6810267a2b6916"></a>
-std::shared_ptr&lt; QtNodes::NodeData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInData</b> (QtNodes::PortIndex portIndex) const</td></tr>
-<tr class="separator:ab0a07df0d9e95980ac6810267a2b6916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab45dbf2c52a02e2b753c46767e68a492"><td class="memItemLeft" align="right" valign="top"><a id="ab45dbf2c52a02e2b753c46767e68a492"></a>
 std::shared_ptr&lt; QtNodes::NodeData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getOutData</b> (QtNodes::PortIndex portIndex)</td></tr>
 <tr class="separator:ab45dbf2c52a02e2b753c46767e68a492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,40 +124,55 @@ std::shared_ptr&lt; QtNodes::NodeData &gt;&#160;</td><td class="memItemRight" va
 <tr class="memitem:a846de18644e97a7a6b3e2bd53f531a9f"><td class="memItemLeft" align="right" valign="top"><a id="a846de18644e97a7a6b3e2bd53f531a9f"></a>
 std::shared_ptr&lt; QtNodes::NodeData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getOutData</b> (const QString &amp;name)</td></tr>
 <tr class="separator:a846de18644e97a7a6b3e2bd53f531a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcea1fac3a0281088e64a099e1dc09bc"><td class="memItemLeft" align="right" valign="top"><a id="adcea1fac3a0281088e64a099e1dc09bc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>inputsPresent</b> (std::initializer_list&lt; QString &gt; list)</td></tr>
-<tr class="separator:adcea1fac3a0281088e64a099e1dc09bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a1994f7ca3e9e90fef6e8b06a7aa91b"><td class="memItemLeft" align="right" valign="top"><a id="a1a1994f7ca3e9e90fef6e8b06a7aa91b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getInputInteger</b> (const QString &amp;name) const</td></tr>
-<tr class="separator:a1a1994f7ca3e9e90fef6e8b06a7aa91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afff8b89c48f5ab14bacf2cecad524ae8"><td class="memItemLeft" align="right" valign="top"><a id="afff8b89c48f5ab14bacf2cecad524ae8"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>getInputValue</b> (const QString &amp;name) const</td></tr>
-<tr class="separator:afff8b89c48f5ab14bacf2cecad524ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7432e628ad728bfbbed027198c0b0fb1"><td class="memItemLeft" align="right" valign="top"><a id="a7432e628ad728bfbbed027198c0b0fb1"></a>
-std::shared_ptr&lt; cv::Mat &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInputImage</b> (const QString &amp;name) const</td></tr>
-<tr class="separator:a7432e628ad728bfbbed027198c0b0fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adafdcfa3cb136b2123bcbb9dda85f442"><td class="memTemplParams" colspan="2"><a id="adafdcfa3cb136b2123bcbb9dda85f442"></a>
+<tr class="memitem:a73e9e18c9c93c6e0c90003d2c298d4dd"><td class="memItemLeft" align="right" valign="top"><a id="a73e9e18c9c93c6e0c90003d2c298d4dd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>inputInteger</b> (const QString &amp;name) const</td></tr>
+<tr class="separator:a73e9e18c9c93c6e0c90003d2c298d4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef8649ec53cdf8dfa1a7df47877185e"><td class="memItemLeft" align="right" valign="top"><a id="aeef8649ec53cdf8dfa1a7df47877185e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>inputValue</b> (const QString &amp;name) const</td></tr>
+<tr class="separator:aeef8649ec53cdf8dfa1a7df47877185e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef8ff414e2fbf14b3a0b5696fc46ea2a"><td class="memItemLeft" align="right" valign="top"><a id="aef8ff414e2fbf14b3a0b5696fc46ea2a"></a>
+const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>inGet</b> (const QString &amp;name) const</td></tr>
+<tr class="separator:aef8ff414e2fbf14b3a0b5696fc46ea2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c4d81740fb73bdaba3cfd465a5184f"><td class="memTemplParams" colspan="2"><a id="af7c4d81740fb73bdaba3cfd465a5184f"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:af7c4d81740fb73bdaba3cfd465a5184f"><td class="memTemplItemLeft" align="right" valign="top">T::DataType&#160;</td><td class="memTemplItemRight" valign="bottom"><b>inGetAs</b> (const QString &amp;name) const</td></tr>
+<tr class="separator:af7c4d81740fb73bdaba3cfd465a5184f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b4e586b1415bff6c9f3b5442286190"><td class="memTemplParams" colspan="2"><a id="ae1b4e586b1415bff6c9f3b5442286190"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:adafdcfa3cb136b2123bcbb9dda85f442"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getInputData</b> (const QString &amp;name) const</td></tr>
-<tr class="separator:adafdcfa3cb136b2123bcbb9dda85f442"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9de4d867b29e31b86370c0b74eecea"><td class="memItemLeft" align="right" valign="top"><a id="aec9de4d867b29e31b86370c0b74eecea"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOutputInteger</b> (const QString &amp;name, int val)</td></tr>
-<tr class="separator:aec9de4d867b29e31b86370c0b74eecea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5f1381c6a6e2622a4991d0cb2ef1cf4"><td class="memItemLeft" align="right" valign="top"><a id="ac5f1381c6a6e2622a4991d0cb2ef1cf4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOutputValue</b> (const QString &amp;name, double val)</td></tr>
-<tr class="separator:ac5f1381c6a6e2622a4991d0cb2ef1cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ad923529531bbc9b56d5bf7503c96aa"><td class="memItemLeft" align="right" valign="top"><a id="a2ad923529531bbc9b56d5bf7503c96aa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOutputImage</b> (const QString &amp;name, const std::shared_ptr&lt; cv::Mat &gt; &amp;im)</td></tr>
-<tr class="separator:a2ad923529531bbc9b56d5bf7503c96aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b4e586b1415bff6c9f3b5442286190"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>inputOfType</b> (const QString &amp;name) const</td></tr>
+<tr class="separator:ae1b4e586b1415bff6c9f3b5442286190"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeb69c9ad7ef973abb3dcb86cd0b0535"><td class="memTemplParams" colspan="2"><a id="afeb69c9ad7ef973abb3dcb86cd0b0535"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:afeb69c9ad7ef973abb3dcb86cd0b0535"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>allInputOfType</b> () const</td></tr>
+<tr class="separator:afeb69c9ad7ef973abb3dcb86cd0b0535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83db68de4c9d2633bc4ad1091c01042d"><td class="memTemplParams" colspan="2"><a id="a83db68de4c9d2633bc4ad1091c01042d"></a>
+template&lt;class T , class U &gt; </td></tr>
+<tr class="memitem:a83db68de4c9d2633bc4ad1091c01042d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>output</b> (const QString &amp;name, const U &amp;data)</td></tr>
+<tr class="separator:a83db68de4c9d2633bc4ad1091c01042d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6603c00091284bd41c11d98c2ef2bae"><td class="memItemLeft" align="right" valign="top"><a id="ae6603c00091284bd41c11d98c2ef2bae"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getOption</b> (const QString &amp;optionName)</td></tr>
+<tr class="separator:ae6603c00091284bd41c11d98c2ef2bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30e3231e383727a3a651110b7d26a40"><td class="memItemLeft" align="right" valign="top"><a id="af30e3231e383727a3a651110b7d26a40"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>optionEnabled</b> (const QString &amp;optionName)</td></tr>
+<tr class="separator:af30e3231e383727a3a651110b7d26a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1220677bcb4b7cc5a9cfe9b8d715abb0"><td class="memItemLeft" align="right" valign="top"><a id="a1220677bcb4b7cc5a9cfe9b8d715abb0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setOption</b> (const QString &amp;optionName, int val)</td></tr>
+<tr class="separator:a1220677bcb4b7cc5a9cfe9b8d715abb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5eccc4a993d52485a80dd464b87d22d"><td class="memItemLeft" align="right" valign="top"><a id="ac5eccc4a993d52485a80dd464b87d22d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setOutputData</b> (const QString &amp;name, std::shared_ptr&lt; QtNodes::NodeData &gt; data)</td></tr>
 <tr class="separator:ac5eccc4a993d52485a80dd464b87d22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a0faf41d6627335a64b83e99f04e630"><td class="memItemLeft" align="right" valign="top"><a id="a3a0faf41d6627335a64b83e99f04e630"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOutputType</b> (QtNodes::PortIndex port, QtNodes::NodeDataType type)</td></tr>
-<tr class="separator:a3a0faf41d6627335a64b83e99f04e630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e2731b82bca4c3cc975d2eb0f05784d"><td class="memItemLeft" align="right" valign="top"><a id="a0e2731b82bca4c3cc975d2eb0f05784d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setInData</b> (QtNodes::PortIndex port, std::shared_ptr&lt; QtNodes::NodeData &gt; data)</td></tr>
 <tr class="separator:a0e2731b82bca4c3cc975d2eb0f05784d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad69d8df769f46dba5f99015f9e4ed4a5"><td class="memItemLeft" align="right" valign="top"><a id="ad69d8df769f46dba5f99015f9e4ed4a5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>allInputsPresent</b> ()</td></tr>
+<tr class="separator:ad69d8df769f46dba5f99015f9e4ed4a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a877b58acd508f55f6f928e8e5a353f22"><td class="memItemLeft" align="right" valign="top"><a id="a877b58acd508f55f6f928e8e5a353f22"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setGlobalProperty</b> (const QString &amp;key, QString value)</td></tr>
+<tr class="separator:a877b58acd508f55f6f928e8e5a353f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a997b09411153ec7539af2157e75cc77e"><td class="memItemLeft" align="right" valign="top"><a id="a997b09411153ec7539af2157e75cc77e"></a>
+QString&#160;</td><td class="memItemRight" valign="bottom"><b>getGlobalProperty</b> (const QString &amp;key)</td></tr>
+<tr class="separator:a997b09411153ec7539af2157e75cc77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/nodes/<a class="el" href="../../de/d40/nodeports_8hpp_source.html">nodeports.hpp</a></li>
