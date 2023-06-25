@@ -15,7 +15,7 @@ git clone --recurse-submodules git@github.com:BugelNiels/nitro.git
 In case `--recurse-submodules` was not used, you can initialize the submodules using:
 
 ```shell
-git submodule updatebounds
+git submodule init
 git submodule update
 ```
 
@@ -85,11 +85,13 @@ installed.
 
 ## 3. Building & Running
 
-To build the project, can execute the `build.sh` script and run the resulting binary:
+To build the project, can execute the `build.sh` script in the `scripts/` directory and run the resulting binary:
 
-```shellell
-sh build.sh
-./bin/nitro
+```shell
+cd scripts
+bash build.sh
+cd ..
+./bin/nitro 
 ```
 
 Alternatively, you can manually build and run the program:

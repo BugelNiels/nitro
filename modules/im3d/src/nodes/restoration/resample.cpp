@@ -53,16 +53,15 @@ static cv::Mat getNextLabels(const cv::Mat &src, const cv::Mat &colTable, int nu
 cv::Mat distanceField(const cv::Mat &src, float t) {
 
     int thresh = int((t * 255)) - 1;
-    cv::Mat binaryImOutside;
-    cv::Mat binaryImInside;
-    cv::threshold(src, binaryImOutside, thresh, 255, cv::THRESH_BINARY_INV);
-    cv::threshold(src, binaryImInside, thresh, 255, cv::THRESH_BINARY);
+    cv::Mat binaryIm;
+    cv::threshold(src, binaryIm, thresh, 255, cv::THRESH_BINARY_INV);
 
     // Calculate the distance transform
-    cv::Mat dfIn;
     cv::Mat df;
-    cv::distanceTransform(binaryImInside, dfIn, cv::DIST_L2, cv::DIST_MASK_PRECISE);
-    cv::distanceTransform(binaryImOutside, df, cv::DIST_L2, cv::DIST_MASK_PRECISE);
+    cv::distanceTransform(binaryIm, df, cv::DIST_L2, cv::DIST_MASK_PRECISE);
+    cv::Mat dfIn;
+    cv::threshold(src, binaryIm, thresh, 255, cv::THRESH_BINARY);
+    cv::distanceTransform(binaryIm, dfIn, cv::DIST_L2, cv::DIST_MASK_PRECISE);
 
     cv::subtract(df, dfIn, df);
 
@@ -76,17 +75,17 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
     src.convertTo(grayImage, CV_8U, 255);
 
 #pragma omp parallel for default(none) shared(df, grayImage, colTable) firstprivate(numLevels)
-    for (int d = 1; d < numLevels; d++) {
+    for (int d = 0; d < numLevels; d++) {
         float threshold = colTable.at<float>(d, 0);
         df[d] = distanceField(grayImage, threshold);
     }
 
-    if (numLevels > 1) {
-        df[1].copyTo(df[0]);
-        df[0] -= offset;
-    } else {
-        df[0] = distanceField(grayImage, 1);
-    }
+//    if (numLevels > 1) {
+//        df[1].copyTo(df[0]);
+//        df[0] -= offset;
+//    } else {
+//        df[0] = distanceField(grayImage, 1);
+//    }
     return df;
 }
 
@@ -114,6 +113,7 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
     cv::Mat colTable = getUniqueColors(*imIn);
     int numLevels = colTable.rows;
     std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels, offset);
+    // TODO: append and prepend darkest/lightest color
 
     int numDesiredLevels = int(std::pow(2, bits));
     cv::Mat nextLabels = getNextLabels(*imIn, colTable, numDesiredLevels);

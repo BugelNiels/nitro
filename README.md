@@ -73,6 +73,7 @@ bugs and adding new features. If you encounter any, please feel free to create a
 ## Controls
 
 Nodes can be spawned via the side menu (drag and drop). Connections can be made between nodes via drag and drop as well.
+Right mouse click in the dock widgets will spawn relevant context menus.
 
 A few useful shortcuts:
 
