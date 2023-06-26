@@ -3,11 +3,13 @@
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
 #define OUTPUT_WIDTH "Width"
 #define OUTPUT_HEIGHT "Height"
+#define OUTPUT_AR "Aspect Ratio"
 #define OUTPUT_NUM_PIXELS "Num Pixels"
 #define OUTPUT_TYPE "Type"
 
@@ -18,13 +20,14 @@ nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
 
 void
 nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     nodePorts.output<IntegerData>(OUTPUT_WIDTH, im1->cols);
     nodePorts.output<IntegerData>(OUTPUT_HEIGHT, im1->rows);
     nodePorts.output<IntegerData>(OUTPUT_NUM_PIXELS, im1->cols * im1->rows);
+    nodePorts.output<DecimalData>(OUTPUT_AR, double(im1->cols) / double(im1->rows));
 
     QString type;
     switch (im1->depth()) {
@@ -71,6 +74,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creato
                 withOutputInteger(OUTPUT_WIDTH)->
                 withOutputInteger(OUTPUT_HEIGHT)->
                 withOutputInteger(OUTPUT_NUM_PIXELS)->
+                withOutputValue(OUTPUT_AR)->
                 build();
     };
 }

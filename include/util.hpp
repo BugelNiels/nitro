@@ -5,6 +5,11 @@
 
 namespace nitro {
 
+    enum class AspectRatioMode {
+        IGNORE, KEEP_CROP, KEEP_SHRINK, KEEP_GROW
+    };
+
+
     /**
      *
      * @param color
@@ -63,10 +68,10 @@ namespace nitro {
      * @param imIn
      * @param targetSize
      * @param mode
-     * @param maintainAspectRatio
+     * @param arMode
      * @return
      */
     cv::Mat resize(const cv::Mat &imIn,
                    const cv::Size &targetSize,
-                   const cv::InterpolationFlags mode, bool maintainAspectRatio);
+                   const cv::InterpolationFlags mode, AspectRatioMode arMode);
 } // nitro

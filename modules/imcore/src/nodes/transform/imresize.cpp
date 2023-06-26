@@ -9,15 +9,16 @@
 #define INPUT_Y "Height"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
-#define OPTION_ASPECT_RATIO "Keep Aspect Ratio"
+#define ASPECT_RATIO_DROPDOWN "Keep Aspect Ratio"
 #define INTERPOL_METHOD_LABEL "Interpolation Method"
+#define AR_METHOD_LABEL "Aspect Ratio Method"
 
 void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
-    int maintainAspectRatio = nodePorts.getOption(OPTION_ASPECT_RATIO);
+    AspectRatioMode arMode = static_cast<AspectRatioMode>(nodePorts.getOption(ASPECT_RATIO_DROPDOWN));
     int option = nodePorts.getOption(MODE_DROPDOWN);
     auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int width = nodePorts.inputInteger(INPUT_X);
@@ -31,7 +32,7 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
     } else {
         mode = cv::INTER_NEAREST;
     }
-    cv::Mat result = nitro::resize(*im1, cv::Size(width, height), mode, maintainAspectRatio);
+    cv::Mat result = nitro::resize(*im1, cv::Size(width, height), mode, arMode);
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
@@ -42,9 +43,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
                 withOperator(std::make_unique<nitro::ResizeOperator>())->
                 withIcon("resize.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDisplayWidget(INTERPOL_METHOD_LABEL, new QLabel("Interpolation Method:"))->
+                withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})->
-                withCheckBox(OPTION_ASPECT_RATIO, true)->
+                withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")->
+                withDropDown(ASPECT_RATIO_DROPDOWN, {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_X, 256, 1, 2048, BoundMode::LOWER_ONLY)->
                 withInputInteger(INPUT_Y, 256, 1, 2048, BoundMode::LOWER_ONLY)->
