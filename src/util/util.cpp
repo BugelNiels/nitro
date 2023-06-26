@@ -288,11 +288,19 @@ cv::Mat nitro::resize(const cv::Mat &imIn,
         case AspectRatioMode::KEEP_SHRINK: {
             cv::Size newSize = targetSize;
             double arIn = double(imIn.cols) / double(imIn.rows);
-            double arTarget = double(imIn.cols) / double(imIn.rows);
-            if (arIn > arTarget) {
-                newSize.height = int(std::round(newSize.width / arIn));
+            double arTarget = double(targetSize.width) / double(targetSize.height);
+            if(arIn > 1) {
+                if (arIn > arTarget) {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                } else {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                }
             } else {
-                newSize.width = int(std::round(newSize.height * arIn));
+                if (arIn > arTarget) {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                } else {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                }
             }
             cv::resize(imIn, result, newSize, 0, 0, mode);
         }
@@ -301,11 +309,20 @@ cv::Mat nitro::resize(const cv::Mat &imIn,
         case AspectRatioMode::KEEP_GROW: {
             cv::Size newSize = targetSize;
             double arIn = double(imIn.cols) / double(imIn.rows);
-            double arTarget = double(imIn.cols) / double(imIn.rows);
-            if (arIn > arTarget) {
-                newSize.width = int(std::round(newSize.height * arIn));
+            double arTarget = double(targetSize.width) / double(targetSize.height);
+            if(arIn > 1) {
+                if (arIn > arTarget) {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                } else {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                }
             } else {
-                newSize.height = int(std::round(newSize.width / arIn));
+                if (arIn > arTarget) {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                } else {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                }
+
             }
             cv::resize(imIn, result, newSize, 0, 0, mode);
         }

@@ -48,8 +48,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
                 withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")->
                 withDropDown(ASPECT_RATIO_DROPDOWN, {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_X, 256, 1, 2048, BoundMode::LOWER_ONLY)->
-                withInputInteger(INPUT_Y, 256, 1, 2048, BoundMode::LOWER_ONLY)->
+                withInputInteger(INPUT_X, 256, 2, 2048, BoundMode::LOWER_ONLY)->
+                withInputInteger(INPUT_Y, 256, 2, 2048, BoundMode::LOWER_ONLY)->
                 withOutputPort<ColImageData>(OUTPUT_IMAGE)->
                 build();
     };
