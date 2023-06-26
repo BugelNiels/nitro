@@ -18,7 +18,7 @@ if [[ $? -eq 0 ]]; then
     chmod u+x linuxdeployqt-continuous-x86_64.AppImage
   fi
   # TODO save this version elsewhere
-  export VERSION="1.3.0"
+  export VERSION="1.3.1"
   ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
   mkdir bin/
   echo "Copying to bin"
