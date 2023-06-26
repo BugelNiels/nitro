@@ -1,6 +1,7 @@
 #pragma once
 
 #define NITRO_VERSION "@NITRO_VERSION@"
+#define NITRO_NAME "@NITRO_NAME"
 
 #include <memory>
 #include <vector>

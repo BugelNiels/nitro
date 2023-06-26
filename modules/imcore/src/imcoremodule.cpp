@@ -39,6 +39,9 @@
 #include "nodes/transform/imtranslate.hpp"
 #include "nodes/transform/matchsize.hpp"
 #include "nodes/output/valueviewoperator.hpp"
+#include "nodes/input/rgbinput.hpp"
+#include "nodes/converter/maprange.hpp"
+#include "nodes/color/uniformconvert.hpp"
 
 namespace nitro::ImCore {
 
@@ -76,6 +79,7 @@ namespace nitro::ImCore {
         registry->registerNode(MathOperator::creator(category));
         registry->registerNode(BooleanMathOperator::creator(category));
         registry->registerNode(ReductionOperator::creator(category));
+        registry->registerNode(MapRangeOperator::creator(category));
         registry->registerNode(NormalizeOperator::creator(category));
         registry->registerNode(InvertOperator::creator(category));
         registry->registerNode(RgbToGrayscaleOperator::creator(category));
@@ -102,6 +106,7 @@ namespace nitro::ImCore {
         const QString category = "Color";
         registry->registerNode(MixOperator::creator(category));
         registry->registerNode(ConvertOperator::creator(category));
+        registry->registerNode(UniformConvertOperator::creator(category));
         registry->registerNode(ColorMapOperator::creator(category));
     }
 
@@ -136,6 +141,7 @@ namespace nitro::ImCore {
                     build();
         });
         registry->registerNode(RandomOperator::creator(category));
+        registry->registerNode(RgbOperator::creator(category));
     }
 
     void ImCoreModule::registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer) {

@@ -13,7 +13,7 @@ nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> co
 }
 
 void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     cv::ColorConversionCodes codec = codes_[nodePorts.getOption(MODE_DROPDOWN)];
@@ -52,10 +52,6 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
     // Hard coded, but necessary unfortunately
     switch (codec) {
         case cv::COLOR_RGB2Lab: {
-            // Temp fix to clamp number of gray levels
-            cv::Mat temp;
-            img.convertTo(temp, CV_8U);
-            temp.convertTo(img, CV_32F);
             std::vector<cv::Mat> channels;
             cv::split(img, channels);
             channels[0] = channels[0] / 100.0;
@@ -65,9 +61,6 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
             break;
         }
         case cv::COLOR_RGB2Luv: {
-            cv::Mat temp;
-            img.convertTo(temp, CV_8U);
-            temp.convertTo(img, CV_32F);
             std::vector<cv::Mat> channels;
             cv::split(img, channels);
             channels[0] = channels[0] / 100.0;
@@ -124,10 +117,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
         std::vector<cv::ColorConversionCodes> codes;
         getConversions(colorNames, codes);
 
-        nitro::NitroNodeBuilder builder("Color Space Convert", "convert", category);
+        nitro::NitroNodeBuilder builder("Convert Color Space", "convert", category);
         return builder.
                 withOperator(std::make_unique<nitro::ConvertOperator>(codes))->
-                withIcon("convert.png")->
+                withIcon("color.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withDropDown(MODE_DROPDOWN, colorNames)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->

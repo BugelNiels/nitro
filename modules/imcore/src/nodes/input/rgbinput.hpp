@@ -1,21 +1,23 @@
 #pragma once
 
+#include <opencv2/imgproc.hpp>
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
 namespace nitro {
 
-    class MixOperator : public NodeOperator {
+    class RgbOperator : public NodeOperator {
+
     public:
+        explicit RgbOperator(QLabel *colLabel);
+
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
         void execute(NodePorts &nodePorts) override;
-
     private:
-        cv::Mat fac_;
-        cv::Mat in1_;
-        cv::Mat in2_;
+        QLabel *colLabel_;
+        QPixmap colLabelPixMap_;
 
-        void initUnifiedInputs(NodePorts &nodePorts);
     };
+
 } // nitro

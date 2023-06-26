@@ -187,15 +187,15 @@ static std::vector<double> calculateImportance(const cv::Mat &img, bool cumulati
     for (int i = 0; i < img.rows; i++) {
         for (int j = 0; j < img.cols; j++) {
             int pixelValue = img.at<uchar>(i, j);
-            min_elem = MIN(min_elem, pixelValue);
-            max_elem = MAX(max_elem, pixelValue);
+            min_elem = std::min(min_elem, pixelValue);
+            max_elem = std::max(max_elem, pixelValue);
             importance[pixelValue]++; // histogram
         }
     }
 
     int clear_color = min_elem;
     upperLevelSet[0] = importance[0];
-    for (int i = 0; i < MAX_GRAY; i++) {
+    for (int i = 0; i < MAX_GRAY - 1; i++) {
         upperLevelSet[i + 1] = importance[i + 1] + upperLevelSet[i];
     }
 
@@ -262,23 +262,8 @@ nitro::LayerRemovalOperator::execute(NodePorts &nodePorts) {
     cv::Mat byteImg;
     img->convertTo(byteImg, CV_8U, MAX_GRAY - 1);
 
-    cv::Mat res;
-    if (byteImg.channels() == 1) {
-        std::vector<double> importance = calculateImportance(byteImg, cumulative, k - 1);
-        res = removeLayers(byteImg, importance);
-    } else {
-        std::vector<cv::Mat> channels;
-        std::vector<cv::Mat> outChannels;
-        cv::split(byteImg, channels);
-        outChannels.resize(channels.size());
-        for (int i = 0; i < channels.size(); i++) {
-            auto const &channelImg = channels[i];
-            std::vector<double> importance = calculateImportance(channelImg, cumulative, k - 1);
-            outChannels[i] = removeLayers(channelImg, importance);
-        }
-        cv::merge(outChannels, res);
-    }
-
+    std::vector<double> importance = calculateImportance(byteImg, cumulative, k - 1);
+    cv::Mat res = removeLayers(byteImg, importance);
 
     cv::Mat result;
     res.convertTo(result, CV_32F, 1.0 / double(MAX_GRAY - 1));

@@ -14,7 +14,6 @@ nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setMouseTracking(true);
     resetOrientation();
     setFocusPolicy(Qt::StrongFocus);
-
 }
 
 nitro::RenderView::~RenderView() { makeCurrent(); }

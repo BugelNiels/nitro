@@ -4,55 +4,29 @@
 #include "nodes/datatypes/grayimagedata.hpp"
 #include "nodes/restoration/resampler/sampler.hpp"
 #include "nodes/restoration/resampler/cubicsampler.hpp"
+#include "nodes/restoration/resampler/smoothstepsampler.hpp"
+#include "nodes/restoration/resampler/easeinsampler.hpp"
+#include "nodes/restoration/resampler/easeoutsampler.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
 
 #define INPUT_IMAGE "Image"
 #define INPUT_BITS "Bits"
-#define INPUT_LOWER_OFFSET "Offset L0"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 
-static cv::Mat getUniqueColors(const cv::Mat &src) {
-
-    cv::Mat reshapedImage = src.reshape(1, 1);
+static std::vector<float> getUniqueColors(const cv::Mat &src) {
     std::vector<float> uniqueColors;
-    std::set<float> uniqueColorsSet(reshapedImage.begin<float>(), reshapedImage.end<float>());
+    std::set<float> uniqueColorsSet(src.begin<float>(), src.end<float>());
     uniqueColors.assign(uniqueColorsSet.begin(), uniqueColorsSet.end());
-
-    cv::Mat colTable;
-    colTable.create(static_cast<int>(uniqueColors.size()), 1, CV_32FC1);
-    for (int i = 0; i < uniqueColors.size(); ++i) {
-        colTable.at<float>(i) = uniqueColors[i];
-    }
-
-
-    return colTable;
-}
-
-static cv::Mat getNextLabels(const cv::Mat &src, const cv::Mat &colTable, int numDesiredLevels) {
-    cv::Mat nextLabels(src.rows, src.cols, CV_32SC1);
-    for (int y = 0; y < src.rows; y++) {
-        for (int x = 0; x < src.cols; x++) {
-            float val = src.at<float>(y, x);
-            int next = numDesiredLevels - 1;
-            for (int i = 0; i < colTable.rows - 1; ++i) {
-                if (val == colTable.at<float>(i)) {
-                    next = colTable.at<float>(i + 1) * (numDesiredLevels - 1.0f);
-                    break;
-                }
-            }
-            nextLabels.at<int>(y, x) = next;
-        }
-    }
-    return nextLabels;
+    return uniqueColors;
 }
 
 // TODO: extract mats to reuse the buffers
-cv::Mat distanceField(const cv::Mat &src, float t) {
+static cv::Mat distanceField(const cv::Mat &src, float t) {
 
-    int thresh = int((t * 255)) - 1;
+    int thresh = std::max(int((t * 255)) - 1, 0);
     cv::Mat binaryIm;
     cv::threshold(src, binaryIm, thresh, 255, cv::THRESH_BINARY_INV);
 
@@ -68,7 +42,7 @@ cv::Mat distanceField(const cv::Mat &src, float t) {
     return df;
 }
 
-std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int numLevels, int offset) {
+static std::vector<cv::Mat> getDfs(const cv::Mat &src, const std::vector<float> &colTable, int numLevels) {
     std::vector<cv::Mat> df(numLevels);
 
     cv::Mat grayImage;
@@ -76,16 +50,12 @@ std::vector<cv::Mat> getDfs(const cv::Mat &src, const cv::Mat &colTable, int num
 
 #pragma omp parallel for default(none) shared(df, grayImage, colTable) firstprivate(numLevels)
     for (int d = 0; d < numLevels; d++) {
-        float threshold = colTable.at<float>(d, 0);
-        df[d] = distanceField(grayImage, threshold);
+        df[d] = distanceField(grayImage, colTable[d]);
     }
 
-//    if (numLevels > 1) {
-//        df[1].copyTo(df[0]);
-//        df[0] -= offset;
-//    } else {
-//        df[0] = distanceField(grayImage, 1);
-//    }
+    if (!cv::norm(df[1], df[0], cv::NORM_L1)) {
+        df[0] -= 10;
+    }
     return df;
 }
 
@@ -95,7 +65,6 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
     }
     int bits = nodePorts.inputInteger(INPUT_BITS);
     auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
-    int offset = nodePorts.inputInteger(INPUT_LOWER_OFFSET);
 
     int mode = nodePorts.getOption(MODE_DROPDOWN);
     std::unique_ptr<Sampler> sampler;
@@ -104,20 +73,30 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
             sampler = std::make_unique<Sampler>();
             break;
         case 1:
+            sampler = std::make_unique<SmoothSampler>();
+            break;
+        case 2:
+            sampler = std::make_unique<EaseInSampler>();
+            break;
+        case 3:
+            sampler = std::make_unique<EaseOutSampler>();
+            break;
+        case 4:
             sampler = std::make_unique<CubicSampler>();
             break;
         default:
             sampler = std::make_unique<Sampler>();
             break;
     }
-    cv::Mat colTable = getUniqueColors(*imIn);
-    int numLevels = colTable.rows;
-    std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels, offset);
-    // TODO: append and prepend darkest/lightest color
+    auto colTable = getUniqueColors(*imIn);
+    int numLevels = colTable.size();
+    std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels);
+    float brightness = std::min(colTable[colTable.size() - 1] + 0.1f, 1.0f);
+    colTable.push_back(brightness);
+    dfs.push_back(dfs[dfs.size() - 1] + 100);
 
     int numDesiredLevels = int(std::pow(2, bits));
-    cv::Mat nextLabels = getNextLabels(*imIn, colTable, numDesiredLevels);
-    cv::Mat result = sampler->resample(nextLabels, colTable, dfs, int(std::pow(2, bits)));
+    cv::Mat result = sampler->resample(*imIn, colTable, dfs, numDesiredLevels);
 
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
@@ -129,10 +108,9 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 withOperator(std::make_unique<nitro::ResampleOperator>())->
                 withIcon("resample.png")->
                 withNodeColor(NITRO_RESTORATION_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Linear", "Cubic"})->
+                withDropDown(MODE_DROPDOWN, {"Linear", "Smooth", "Ease In", "Ease Out", "Cubic"})->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 8, 1, 16)->
-                withInputInteger(INPUT_LOWER_OFFSET, 10, 0, 100)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };

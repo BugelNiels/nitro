@@ -29,7 +29,7 @@ namespace nitro {
     private:
         const int icSize_ = 16;
         const QColor icColor_ = {148, 148, 148};
-        QSet<QDockWidget *> widgets_;
+        std::vector<QDockWidget *> widgets_;
         QLabel *fileNameLabel_ = nullptr;
         NodeDockWidget *nodeDock_ = nullptr;
         QSplitter *dockLayout_ = nullptr;

@@ -2,32 +2,8 @@
     "connections": [
         {
             "inPortIndex": 0,
-            "intNodeId": 5,
-            "outNodeId": 3,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 2,
-            "intNodeId": 3,
-            "outNodeId": 4,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 3,
+            "intNodeId": 1,
             "outNodeId": 0,
-            "outPortIndex": 0
-        },
-        {
-            "inPortIndex": 1,
-            "intNodeId": 2,
-            "outNodeId": 1,
-            "outPortIndex": 1
-        },
-        {
-            "inPortIndex": 0,
-            "intNodeId": 2,
-            "outNodeId": 1,
             "outPortIndex": 0
         },
         {
@@ -38,8 +14,32 @@
         },
         {
             "inPortIndex": 0,
-            "intNodeId": 1,
+            "intNodeId": 2,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 2,
+            "outNodeId": 1,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 3,
             "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 3,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 5,
+            "outNodeId": 3,
             "outPortIndex": 0
         }
     ],

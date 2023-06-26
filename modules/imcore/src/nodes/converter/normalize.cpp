@@ -26,7 +26,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::NormalizeOperator::cre
         nitro::NitroNodeBuilder builder("Normalize", "normalize", category);
         return builder.
                 withOperator(std::make_unique<nitro::NormalizeOperator>())->
-                withIcon("normalize.png")->
+                withIcon("map_range.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputValue(INPUT_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
