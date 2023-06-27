@@ -22,7 +22,7 @@ if [[ $? -eq 0 ]]; then
   ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
   mkdir bin/
   echo "Copying to bin"
-  cp NITRO-*-x86_64.AppImage bin/
+  cp NITRO-${VERSION}-x86_64.AppImage bin/
   cd scripts || exit
 else
   cd .. || exit

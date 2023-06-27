@@ -46,7 +46,8 @@ RUN apt-get install -y \
     libglu1-mesa-dev  \
     libxrender-dev libxi-dev \
     libxkbcommon-dev  \
-    libxkbcommon-x11-dev
+    libxkbcommon-x11-dev \
+    wget
 
 # Set the working directory
 WORKDIR /app/scripts
