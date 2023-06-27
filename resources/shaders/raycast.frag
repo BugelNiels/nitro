@@ -18,8 +18,10 @@ uniform int imHeight;
 
 uniform bool enableImageColors;
 uniform bool enableOrthographic;
+uniform bool minecraft;
 
 const vec3 backgroundCol = vec3(0.2, 0.2, 0.22);
+
 
 float sdBox(vec3 p, vec3 b) {
     vec3 q = abs(p) - b;
@@ -78,6 +80,50 @@ vec3 getVoxelCol(bvec3 mask, ivec3 pos) {
     return color;
 }
 
+// I don't know why I did this
+vec3 getMinecraftCol(bvec3 mask, ivec3 pos) {
+    vec2 texUv =  pos.xy / vec2(imWidth, imHeight);
+    int z = int(vec3(texture(image, texUv)).r * 255 + 1);
+    vec3 color;
+    int distFromSurface = abs(pos.z - z);
+    if(distFromSurface <= 1) {
+        vec3 grassCol = vec3(0.27, 0.41, 0.235);
+        if (mask.x) {
+            color = grassCol * 0.5;
+        }
+        if (mask.y) {
+            color = grassCol;
+        }
+        if (mask.z) {
+            color = grassCol * 0.75;
+        }
+    } else if(distFromSurface < z / 16) {
+        vec3 dirtCol = vec3(0.39, 0.27, 0.19);
+        if (mask.x) {
+            color = dirtCol * 0.5;
+        }
+        if (mask.y) {
+            color = dirtCol;
+        }
+        if (mask.z) {
+            color = dirtCol * 0.75;
+        }
+    } else {
+        vec3 stoneCol = vec3(0.39, 0.39, 0.39);
+        if (mask.x) {
+            color = stoneCol * 0.5;
+        }
+        if (mask.y) {
+            color = stoneCol;
+        }
+        if (mask.z) {
+            color = stoneCol * 0.75;
+        }
+
+    }
+    return color;
+}
+
 // Render image as blocks
 void main() {
     float aspectRatio = projectionMatrix[1][1] / projectionMatrix[0][0];
@@ -111,7 +157,11 @@ void main() {
         int maxSteps = imWidth + imHeight + 256;
         for (int i = 0; i < maxSteps; i++) {
             if (getVoxel(mapPos)) {
-                fColor = vec4(getVoxelCol(mask, mapPos), 1.0);
+                if(minecraft) {
+                    fColor = vec4(getMinecraftCol(mask, mapPos), 1.0);
+                } else {
+                    fColor = vec4(getVoxelCol(mask, mapPos), 1.0);
+                }
                 return;
             }
             mask = lessThanEqual(sideDist.xyz, min(sideDist.yzx, sideDist.zxy));
@@ -122,5 +172,9 @@ void main() {
             }
         }
     }
-    fColor = vec4(backgroundCol, 1.0);
+    if(minecraft) {
+        fColor = vec4(0.54, 0.67, 1.0, 1.0);
+    } else {
+        fColor = vec4(backgroundCol, 1.0);
+    }
 }

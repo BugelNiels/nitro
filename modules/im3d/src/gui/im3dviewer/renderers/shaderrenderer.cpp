@@ -76,6 +76,7 @@ void nitro::ShaderRenderer::updateUniforms() {
     shader->setUniformValue("toWorldMatrix", settings->cameraMatrix);
     shader->setUniformValue("enableImageColors", settings->imageColors);
     shader->setUniformValue("enableOrthographic", settings->orthographic);
+    shader->setUniformValue("minecraft", settings->minecraft);
 }
 
 void nitro::ShaderRenderer::draw() {

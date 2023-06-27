@@ -1,0 +1,273 @@
+{
+    "connections": [
+        {
+            "inPortIndex": 0,
+            "intNodeId": 5,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 18,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 9,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 6,
+            "outNodeId": 18,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 2,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 4,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 7,
+            "outNodeId": 6,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 7,
+            "outNodeId": 8,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 8,
+            "outNodeId": 18,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 3,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 4,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 11,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 17,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 1,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/trui.pgm"
+                }
+            },
+            "position": {
+                "x": -483,
+                "y": -65
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 17,
+                "y": 53
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+                "model-name": "ImageViewer3D",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 1501.0608,
+                "y": -68.17600000000002
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 0.001,
+                    "In 3": 2,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": -242,
+                "y": -65
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+                "model-name": "mixRgb",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 313,
+                "y": -136
+            }
+        },
+        {
+            "id": 17,
+            "internal-data": {
+                "model-name": "booleanMath",
+                "properties": {
+                    "In 0": 0.5,
+                    "In 1": 0.5066666666666667,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 887.5007999999996,
+                "y": 360.80639999999994
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+                "model-name": "ImageViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 630,
+                "y": -185.5
+            }
+        },
+        {
+            "id": 18,
+            "internal-data": {
+                "model-name": "invert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 247.92319999999992,
+                "y": 186.30079999999992
+            }
+        },
+        {
+            "id": 6,
+            "internal-data": {
+                "model-name": "distanceTransform",
+                "properties": {
+                    "In 0": 0.6800000000000002,
+                    "Mode": 0,
+                    "Signed": true
+                }
+            },
+            "position": {
+                "x": 500,
+                "y": 36
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "model-name": "mixRgb",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 1069.9775999999997,
+                "y": -11.059200000000025
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+                "model-name": "distanceTransform",
+                "properties": {
+                    "In 0": 0.5866666666666669,
+                    "Mode": 0,
+                    "Signed": true
+                }
+            },
+            "position": {
+                "x": 522.5471999999999,
+                "y": 293.6217599999999
+            }
+        },
+        {
+            "id": 9,
+            "internal-data": {
+                "model-name": "booleanMath",
+                "properties": {
+                    "In 0": 0.5,
+                    "In 1": 0,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 1408.7372799999996,
+                "y": 16.662186666666628
+            }
+        },
+        {
+            "id": 11,
+            "internal-data": {
+                "model-name": "reduction",
+                "properties": {
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 89.40799999999999,
+                "y": 362.09599999999995
+            }
+        }
+    ]
+}

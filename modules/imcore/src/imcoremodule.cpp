@@ -42,6 +42,9 @@
 #include "nodes/input/rgbinput.hpp"
 #include "nodes/converter/maprange.hpp"
 #include "nodes/color/uniformconvert.hpp"
+#include "nodes/quality/mse.hpp"
+#include "nodes/quality/psnr.hpp"
+#include "nodes/compression/compressionsize.hpp"
 
 namespace nitro::ImCore {
 
@@ -91,6 +94,7 @@ namespace nitro::ImCore {
         const QString category = "Compression";
         registry->registerNode(QuantizeOperator::creator(category));
         registry->registerNode(KMeansOperator::creator(category));
+        registry->registerNode(CompressionSizeOperator::creator(category));
     }
 
     void ImCoreModule::registerTransformNodes(NodeRegistry *registry) {
@@ -112,6 +116,8 @@ namespace nitro::ImCore {
 
     void ImCoreModule::registerQualityMetricNodes(NodeRegistry *registry) {
         const QString category = "Quality";
+        registry->registerNode(MseOperator::creator(category));
+        registry->registerNode(PsnrOperator::creator(category));
         registry->registerNode(FlipOperator::creator(category));
     }
 

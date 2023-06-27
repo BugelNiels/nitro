@@ -29,6 +29,8 @@ namespace nitro {
 
         void toggleImageColors();
 
+        void toggleMinecraft();
+
     protected:
         void initializeGL() override;
 

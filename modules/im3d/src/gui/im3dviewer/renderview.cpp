@@ -495,3 +495,9 @@ void nitro::RenderView::onMessageLogged(QOpenGLDebugMessage message) {
     }
     qDebug() << " → Log:" << message;
 }
+
+void nitro::RenderView::toggleMinecraft() {
+    settings.minecraft = !settings.minecraft;
+    settings.uniformUpdateRequired = true;
+    update();
+}
