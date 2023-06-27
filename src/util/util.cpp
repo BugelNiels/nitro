@@ -254,32 +254,79 @@ cv::Mat nitro::createMask(const cv::MatSize &srcSize, const cv::MatSize &targetS
 
 cv::Mat nitro::resize(const cv::Mat &imIn,
                       const cv::Size &targetSize,
-                      const cv::InterpolationFlags mode, bool maintainAspectRatio) {
+                      const cv::InterpolationFlags mode, AspectRatioMode arMode) {
     cv::Mat result;
-    if (maintainAspectRatio) {
-        int inWidth = imIn.cols;
-        int inHeight = imIn.rows;
-        double aspectRatio = double(inWidth) / double(inHeight);
-        int targetWidth = targetSize.width;
-        int targetHeight = targetSize.height;
-        double targetRatio = double(targetWidth) / double(targetHeight);
 
-        int cropWidth = inWidth;
-        int cropHeight = inHeight;
-        if (aspectRatio > targetRatio) {
-            // need to crop the width
-            cropWidth = targetRatio * inHeight;
-        } else {
-            // need to crop the height
-            cropHeight = inWidth / targetRatio;
+    switch (arMode) {
+
+        case AspectRatioMode::IGNORE:
+            cv::resize(imIn, result, targetSize, 0, 0, mode);
+            break;
+        case AspectRatioMode::KEEP_CROP: {
+            int inWidth = imIn.cols;
+            int inHeight = imIn.rows;
+            double aspectRatio = double(inWidth) / double(inHeight);
+            int targetWidth = targetSize.width;
+            int targetHeight = targetSize.height;
+            double targetRatio = double(targetWidth) / double(targetHeight);
+
+            int cropWidth = inWidth;
+            int cropHeight = inHeight;
+            if (aspectRatio > targetRatio) {
+                // need to crop the width
+                cropWidth = targetRatio * inHeight;
+            } else {
+                // need to crop the height
+                cropHeight = inWidth / targetRatio;
+            }
+            cropWidth = std::max(cropWidth, 1);
+            cropHeight = std::max(cropHeight, 1);
+            cv::Rect croppedRect(0, 0, cropWidth, cropHeight);
+            cv::resize(imIn(croppedRect), result, targetSize, 0, 0, mode);
+            break;
         }
-        cropWidth = std::max(cropWidth, 1);
-        cropHeight = std::max(cropHeight, 1);
-        cv::Rect croppedRect(0, 0, cropWidth, cropHeight);
-        cv::resize(imIn(croppedRect), result, targetSize, 0,0,mode);
+        case AspectRatioMode::KEEP_SHRINK: {
+            cv::Size newSize = targetSize;
+            double arIn = double(imIn.cols) / double(imIn.rows);
+            double arTarget = double(targetSize.width) / double(targetSize.height);
+            if(arIn > 1) {
+                if (arIn > arTarget) {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                } else {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                }
+            } else {
+                if (arIn > arTarget) {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                } else {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                }
+            }
+            cv::resize(imIn, result, newSize, 0, 0, mode);
+        }
+            break;
 
-    } else {
-        cv::resize(imIn, result, targetSize, 0,0,mode);
+        case AspectRatioMode::KEEP_GROW: {
+            cv::Size newSize = targetSize;
+            double arIn = double(imIn.cols) / double(imIn.rows);
+            double arTarget = double(targetSize.width) / double(targetSize.height);
+            if(arIn > 1) {
+                if (arIn > arTarget) {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                } else {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                }
+            } else {
+                if (arIn > arTarget) {
+                    newSize.width = int(std::round(newSize.height * arIn));
+                } else {
+                    newSize.height = int(std::round(newSize.width / arIn));
+                }
+
+            }
+            cv::resize(imIn, result, newSize, 0, 0, mode);
+        }
+            break;
     }
     return result;
 }

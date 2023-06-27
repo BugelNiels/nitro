@@ -16,11 +16,14 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors, int maxIter, do
     cv::Mat labels;
     cv::Mat centers;
     cv::Mat samples = image.reshape(1, image.rows * image.cols);
+    if(samples.rows < numColors) {
+        return {};
+    }
     cv::kmeans(samples,
                numColors,
                labels,
-               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 20, 0.001),
-               2,
+               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, maxIter, epsilon),
+               maxAttempts,
                cv::KMEANS_PP_CENTERS, centers);
 
     cv::Mat quantImg(image.size(), image.type());

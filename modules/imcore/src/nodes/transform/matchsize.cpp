@@ -6,17 +6,18 @@
 
 #define INPUT_IMAGE "Image"
 #define INPUT_IMAGE_TARGET "Target"
-#define OPTION_ASPECT_RATIO "Keep Aspect Ratio"
+#define ASPECT_RATIO_DROPDOWN "Keep Aspect Ratio"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 #define INTERPOL_METHOD_LABEL "Interpolation Method"
+#define AR_METHOD_LABEL "Aspect Ratio Method"
 
 void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
 
-    int maintainAspectRatio = nodePorts.getOption(OPTION_ASPECT_RATIO);
+    AspectRatioMode arMode = static_cast<AspectRatioMode>(nodePorts.getOption(ASPECT_RATIO_DROPDOWN));
     auto imIn = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     auto imTarget = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_TARGET);
 
@@ -30,7 +31,7 @@ void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
     } else {
         mode = cv::INTER_NEAREST;
     }
-    cv::Mat result = nitro::resize(*imIn, imTarget->size(), mode, maintainAspectRatio);
+    cv::Mat result = nitro::resize(*imIn, imTarget->size(), mode, arMode);
 
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 
@@ -44,9 +45,10 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::cre
                 withOperator(std::make_unique<nitro::MatchSizeOperator>())->
                 withIcon("match_size.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDisplayWidget(INTERPOL_METHOD_LABEL, new QLabel("Interpolation Method:"))->
+                withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})->
-                withCheckBox(OPTION_ASPECT_RATIO, true)->
+                withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")->
+                withDropDown(ASPECT_RATIO_DROPDOWN, {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 withInputPort<ColImageData>(INPUT_IMAGE_TARGET)->
                 withOutputPort<ColImageData>(OUTPUT_IMAGE)->

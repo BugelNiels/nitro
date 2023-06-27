@@ -6,7 +6,7 @@
 
 #define SPACING 20
 
-static QWidget* spacing() {
+static QWidget *spacing() {
     auto label = new QLabel("|");
     label->setContentsMargins(SPACING, 0, SPACING, 0);
     return label;
@@ -16,9 +16,7 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
         : QDockWidget(window), imageViewer_(imageViewer) {
     setWindowTitle("Image Viewer");
 
-    QWidget *imViewTitleWrapper = initTitleBarWidget(window);
-
-
+    QWidget * imViewTitleWrapper = initTitleBarWidget(window);
 
 
     QObject::connect(imageViewer_, &nitro::ImageViewer::mousePosUpdated, window,
@@ -29,12 +27,14 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
 
     setTitleBarWidget(imViewTitleWrapper);
 
-    QWidget *wrapper = new QWidget();
+    auto *wrapper = new QWidget();
+    wrapper->setContentsMargins(0, 0, 0, 0);
 
     auto mainLayout = new QVBoxLayout();
     mainLayout->addWidget(imageViewer_);
     imageViewer_->adjustSize();
     mainLayout->addWidget(initStatusBar());
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     wrapper->setLayout(mainLayout);
 
 
@@ -56,8 +56,6 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
     zoomBar->setEnabled(false);
     auto sizeLabel = new QLabel("0 x 0");
     sizeLabel->setFixedWidth(100);
-    auto channelsLabel = new QLabel("-");
-    channelsLabel->setFixedWidth(40);
     zoomBar->setMaximumWidth(200);
     auto zoomLabel = new QLabel("zoom:");
     imHLayout->addStretch();
@@ -67,8 +65,6 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
     imHLayout->addWidget(new QLabel("size: "));
     imHLayout->addWidget(sizeLabel);
     imHLayout->addWidget(spacing());
-    imHLayout->addWidget(new QLabel("channels: "));
-    imHLayout->addWidget(channelsLabel);
 
 
     connect(imageViewer_, &nitro::ImageViewer::scaleChanged, window,
@@ -76,9 +72,8 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
                 zoomBar->setZoom(scale);
             });
     connect(imageViewer_, &nitro::ImageViewer::imageUpdated, window,
-            [sizeLabel, channelsLabel](const ImageInfo &img) {
+            [sizeLabel](const ImageInfo &img) {
                 sizeLabel->setText(QString("%1 x %2").arg(img.width).arg(img.height));
-                channelsLabel->setText(QString("%1").arg(img.channels));
             });
 
     imViewTitleWrapper->setLayout(imHLayout);
@@ -104,12 +99,12 @@ void nitro::ImViewDockWidget::updateFooterLabels(const QPoint &pos, const QColor
     colLabel_->setPixmap(colLabelPixMap_);
 }
 
-static QLabel* emptyLabel(bool selectable = false) {
-    auto* label = new QLabel("-");
+static QLabel *emptyLabel(bool selectable = false) {
+    auto *label = new QLabel("-");
     label->setFixedWidth(40);
     label->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-    label->setContentsMargins(0,0,0,0);
-    if(selectable) {
+    label->setContentsMargins(0, 0, 0, 0);
+    if (selectable) {
         label->setTextInteractionFlags(Qt::TextSelectableByMouse);
     }
     return label;

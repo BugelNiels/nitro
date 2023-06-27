@@ -1,0 +1,1300 @@
+{
+    "connections": [
+        {
+            "inPortIndex": 0,
+            "intNodeId": 2,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 7,
+            "outNodeId": 61,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 60,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 57,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 60,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 63,
+            "outNodeId": 58,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 57,
+            "outNodeId": 55,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 63,
+            "outNodeId": 41,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 45,
+            "outNodeId": 61,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 12,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 63,
+            "outNodeId": 15,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 52,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 8,
+            "outNodeId": 61,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 18,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 4,
+            "outNodeId": 61,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 38,
+            "outNodeId": 61,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 64,
+            "outNodeId": 63,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 43,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 62,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 54,
+            "outNodeId": 61,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 52,
+            "outNodeId": 54,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 51,
+            "outNodeId": 48,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 59,
+            "outNodeId": 52,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 48,
+            "outNodeId": 53,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 43,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 10,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 60,
+            "outNodeId": 48,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 45,
+            "outNodeId": 59,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 49,
+            "outNodeId": 60,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 31,
+            "outNodeId": 43,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 44,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 28,
+            "outNodeId": 61,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 20,
+            "outNodeId": 13,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 20,
+            "outNodeId": 19,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 19,
+            "outNodeId": 18,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 17,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 44,
+            "outNodeId": 53,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 15,
+            "outNodeId": 14,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 30,
+            "outNodeId": 36,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 9,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 12,
+            "outNodeId": 8,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 58,
+            "outNodeId": 46,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 15,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 14,
+            "outNodeId": 20,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 53,
+            "outNodeId": 57,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 44,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 7,
+            "outNodeId": 5,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 27,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 8,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 40,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 13,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 10,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 36,
+            "outNodeId": 40,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 19,
+            "outNodeId": 17,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 5,
+            "outNodeId": 10,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 42,
+            "outNodeId": 34,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 17,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 61,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 41,
+            "outNodeId": 29,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 55,
+            "outNodeId": 61,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 37,
+            "outNodeId": 61,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 51,
+            "outNodeId": 49,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 49,
+            "outNodeId": 44,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 18,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 58,
+            "outNodeId": 45,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 4,
+            "intNodeId": 34,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 38,
+            "outNodeId": 28,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 18,
+            "outNodeId": 13,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 28,
+            "outNodeId": 42,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 43,
+            "outNodeId": 30,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 29,
+            "outNodeId": 33,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 27,
+            "outNodeId": 36,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 46,
+            "outNodeId": 51,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 33,
+            "outNodeId": 30,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 41,
+            "outNodeId": 28,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 40,
+            "outNodeId": 38,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 17,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 33,
+            "outNodeId": 31,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 31,
+            "outNodeId": 27,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 34,
+            "outNodeId": 37,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 27,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 55,
+            "outNodeId": 45,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 62,
+            "internal-data": {
+                "model-name": "convert",
+                "properties": {
+                    "Mode": 2
+                }
+            },
+            "position": {
+                "x": -1250.7657750342937,
+                "y": 32.86694101508917
+            }
+        },
+        {
+            "id": 58,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 3429.5764830210596,
+                "y": 767.3556897603487
+            }
+        },
+        {
+            "id": 57,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 108,
+                    "In 2": 0.001,
+                    "In 3": 4,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 1280.7048030210603,
+                "y": 682.9601697603488
+            }
+        },
+        {
+            "id": 55,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 942.5634696877271,
+                "y": 679.6907653159044
+            }
+        },
+        {
+            "id": 54,
+            "internal-data": {
+                "model-name": "resize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "In 1": 32,
+                    "In 2": 32,
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 3,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": -210.52079697893942,
+                "y": 1020.0328097603485
+            }
+        },
+        {
+            "id": 53,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": -1,
+                    "In 2": 1,
+                    "In 3": 0,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 1583.7166430210605,
+                "y": 740.3521697603487
+            }
+        },
+        {
+            "id": 52,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 0.001,
+                    "In 3": 2,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 129.63920302106044,
+                "y": 1109.9368097603488
+            }
+        },
+        {
+            "id": 51,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2832.7944030210597,
+                "y": 798.8744097603487
+            }
+        },
+        {
+            "id": 49,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2588.1096030210597,
+                "y": 1012.4552097603485
+            }
+        },
+        {
+            "id": 48,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 1968.0238430210602,
+                "y": 767.3089697603486
+            }
+        },
+        {
+            "id": 46,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": 0,
+                    "In 2": 1,
+                    "In 3": -1,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 3050.8680030210603,
+                "y": 771.2264097603486
+            }
+        },
+        {
+            "id": 45,
+            "internal-data": {
+                "model-name": "matchSize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 0,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 703.3352030210604,
+                "y": 897.3928097603488
+            }
+        },
+        {
+            "id": 44,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 1886.32400302106,
+                "y": 1226.4040097603488
+            }
+        },
+        {
+            "id": 43,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 32
+                }
+            },
+            "position": {
+                "x": 2271.759036049382,
+                "y": -517.7147823965141
+            }
+        },
+        {
+            "id": 42,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 1,
+                    "In 1": 3,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 507.6893175308644,
+                "y": -601.7705157298475
+            }
+        },
+        {
+            "id": 41,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 3482.7625975308647,
+                "y": -825.1196357298475
+            }
+        },
+        {
+            "id": 40,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 108,
+                    "In 2": 0.001,
+                    "In 3": 4,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 1333.8909175308647,
+                "y": -909.5151557298475
+            }
+        },
+        {
+            "id": 39,
+            "internal-data": {
+                "model-name": "IntegerSource",
+                "properties": {
+                    "Out 0": 8
+                }
+            },
+            "position": {
+                "x": -1029.8604355555553,
+                "y": 380.23857068990554
+            }
+        },
+        {
+            "id": 38,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 1054.0829175308643,
+                "y": -918.3401157298475
+            }
+        },
+        {
+            "id": 37,
+            "internal-data": {
+                "model-name": "resize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "In 1": 32,
+                    "In 2": 32,
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 3,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": -157.3346824691355,
+                "y": -572.4425157298475
+            }
+        },
+        {
+            "id": 36,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": -1,
+                    "In 2": 1,
+                    "In 3": 0,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 1636.9027575308635,
+                "y": -852.1231557298474
+            }
+        },
+        {
+            "id": 34,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 0.001,
+                    "In 3": 2,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 182.82531753086437,
+                "y": -482.5385157298475
+            }
+        },
+        {
+            "id": 29,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": 0,
+                    "In 2": 1,
+                    "In 3": -1,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 3104.0541175308645,
+                "y": -821.2489157298476
+            }
+        },
+        {
+            "id": 17,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 1929.6127999999994,
+                "y": 367.3951999999999
+            }
+        },
+        {
+            "id": 18,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 32
+                }
+            },
+            "position": {
+                "x": 2305.8431999999993,
+                "y": 194.91839999999993
+            }
+        },
+        {
+            "id": 19,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2631.3983999999987,
+                "y": 153.44639999999993
+            }
+        },
+        {
+            "id": 20,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2876.083199999999,
+                "y": -60.13439999999997
+            }
+        },
+        {
+            "id": 14,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": 0,
+                    "In 2": 1,
+                    "In 3": -1,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 3094.1567999999993,
+                "y": -87.78240000000002
+            }
+        },
+        {
+            "id": 27,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 1939.510117530864,
+                "y": -366.07131572984764
+            }
+        },
+        {
+            "id": 15,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 3472.865279999999,
+                "y": -91.65311999999997
+            }
+        },
+        {
+            "id": 28,
+            "internal-data": {
+                "model-name": "matchSize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 0,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 889.6231693827161,
+                "y": -619.8510342483661
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 1,
+                    "In 1": 3,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 497.7919999999998,
+                "y": 131.69599999999997
+            }
+        },
+        {
+            "id": 64,
+            "internal-data": {
+                "model-name": "convert",
+                "properties": {
+                    "Mode": 3
+                }
+            },
+            "position": {
+                "x": 4292,
+                "y": -180
+            }
+        },
+        {
+            "id": 26,
+            "internal-data": {
+                "model-name": "ValueSource",
+                "properties": {
+                    "Out 0": 0
+                }
+            },
+            "position": {
+                "x": -1079.512345679012,
+                "y": 634.2901234567902
+            }
+        },
+        {
+            "id": 65,
+            "internal-data": {
+                "model-name": "IntegerSource",
+                "properties": {
+                    "Out 0": 16
+                }
+            },
+            "position": {
+                "x": -1003.0864197530865,
+                "y": 478.39506172839515
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "model-name": "matchSize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 0,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 746.6239999999998,
+                "y": 38.383999999999986
+            }
+        },
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/roses.ppm"
+                }
+            },
+            "position": {
+                "x": -1535.2591303155007,
+                "y": -31.677548010973915
+            }
+        },
+        {
+            "id": 59,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 1,
+                    "In 1": 3,
+                    "In 2": 0
+                }
+            },
+            "position": {
+                "x": 454.5032030210605,
+                "y": 990.7048097603486
+            }
+        },
+        {
+            "id": 30,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 2021.209957530864,
+                "y": -825.1663557298475
+            }
+        },
+        {
+            "id": 13,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "In 1": 8,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 2011.3126399999996,
+                "y": -91.69983999999997
+            }
+        },
+        {
+            "id": 60,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 16,
+                    "In 2": 32
+                }
+            },
+            "position": {
+                "x": 2262.55440302106,
+                "y": 1053.927209760349
+            }
+        },
+        {
+            "id": 31,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2641.295717530863,
+                "y": -580.0201157298476
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+                "model-name": "ImageViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 4736.187306666666,
+                "y": -127.99895604938271
+            }
+        },
+        {
+            "id": 61,
+            "internal-data": {
+                "model-name": "separateChannels",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -1013.6580075445817,
+                "y": -27.414694787379975
+            }
+        },
+        {
+            "id": 63,
+            "internal-data": {
+                "model-name": "combineChannels",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 3965.333333333333,
+                "y": -250.00000000000003
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+                "model-name": "resize",
+                "properties": {
+                    "Aspect Ratio Method": "Aspect Ratio:",
+                    "In 1": 32,
+                    "In 2": 32,
+                    "Interpolation Method": "Interpolation Method:",
+                    "Keep Aspect Ratio": 3,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": -167.2319999999999,
+                "y": 161.02399999999997
+            }
+        },
+        {
+            "id": 33,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 2885.980517530864,
+                "y": -793.6009157298475
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 1,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 1
+                }
+            },
+            "position": {
+                "x": 1044.1855999999998,
+                "y": -184.87359999999995
+            }
+        },
+        {
+            "id": 9,
+            "internal-data": {
+                "model-name": "mapRange",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.5,
+                    "In 1": -1,
+                    "In 2": 1,
+                    "In 3": 0,
+                    "In 4": 1
+                }
+            },
+            "position": {
+                "x": 1627.0054399999995,
+                "y": -118.65663999999995
+            }
+        },
+        {
+            "id": 10,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 0.001,
+                    "In 3": 2,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 172.92799999999988,
+                "y": 250.92799999999994
+            }
+        },
+        {
+            "id": 12,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 108,
+                    "In 2": 0.001,
+                    "In 3": 4,
+                    "In 4": 8
+                }
+            },
+            "position": {
+                "x": 1323.9935999999998,
+                "y": -176.04863999999998
+            }
+        }
+    ]
+}

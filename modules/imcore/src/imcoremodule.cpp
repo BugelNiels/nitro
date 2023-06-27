@@ -39,6 +39,12 @@
 #include "nodes/transform/imtranslate.hpp"
 #include "nodes/transform/matchsize.hpp"
 #include "nodes/output/valueviewoperator.hpp"
+#include "nodes/input/rgbinput.hpp"
+#include "nodes/converter/maprange.hpp"
+#include "nodes/color/uniformconvert.hpp"
+#include "nodes/quality/mse.hpp"
+#include "nodes/quality/psnr.hpp"
+#include "nodes/compression/compressionsize.hpp"
 
 namespace nitro::ImCore {
 
@@ -76,6 +82,7 @@ namespace nitro::ImCore {
         registry->registerNode(MathOperator::creator(category));
         registry->registerNode(BooleanMathOperator::creator(category));
         registry->registerNode(ReductionOperator::creator(category));
+        registry->registerNode(MapRangeOperator::creator(category));
         registry->registerNode(NormalizeOperator::creator(category));
         registry->registerNode(InvertOperator::creator(category));
         registry->registerNode(RgbToGrayscaleOperator::creator(category));
@@ -87,6 +94,7 @@ namespace nitro::ImCore {
         const QString category = "Compression";
         registry->registerNode(QuantizeOperator::creator(category));
         registry->registerNode(KMeansOperator::creator(category));
+        registry->registerNode(CompressionSizeOperator::creator(category));
     }
 
     void ImCoreModule::registerTransformNodes(NodeRegistry *registry) {
@@ -102,11 +110,14 @@ namespace nitro::ImCore {
         const QString category = "Color";
         registry->registerNode(MixOperator::creator(category));
         registry->registerNode(ConvertOperator::creator(category));
+        registry->registerNode(UniformConvertOperator::creator(category));
         registry->registerNode(ColorMapOperator::creator(category));
     }
 
     void ImCoreModule::registerQualityMetricNodes(NodeRegistry *registry) {
         const QString category = "Quality";
+        registry->registerNode(MseOperator::creator(category));
+        registry->registerNode(PsnrOperator::creator(category));
         registry->registerNode(FlipOperator::creator(category));
     }
 
@@ -136,6 +147,7 @@ namespace nitro::ImCore {
                     build();
         });
         registry->registerNode(RandomOperator::creator(category));
+        registry->registerNode(RgbOperator::creator(category));
     }
 
     void ImCoreModule::registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer) {

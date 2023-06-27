@@ -39,7 +39,8 @@ void setupApplication() {
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-
+    QApplication::setApplicationName(NITRO_NAME);
+    QApplication::setApplicationVersion(NITRO_VERSION);
     setupApplication();
 
     std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();

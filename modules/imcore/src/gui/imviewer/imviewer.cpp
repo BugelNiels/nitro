@@ -58,11 +58,12 @@ void nitro::ImageViewer::saveImage() {
 
     if (displayImg_.sizeInBytes() > 0) {
         QString filePath = QFileDialog::getSaveFileName(
-                this, "Save Image", "../data/",
+                this, "Save Image", lastFilePath_,
                 tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
         if (filePath == "") {
             return;
         }
+        lastFilePath_ = filePath;
         if (displayImg_.save(filePath)) {
             QMessageBox::information(this, tr("Save Successful"),
                                      QString("File saved to\n %1").arg(filePath));

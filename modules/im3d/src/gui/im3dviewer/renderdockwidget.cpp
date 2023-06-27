@@ -5,6 +5,8 @@
 #include "renderview.hpp"
 #include "gui/mainwindow.hpp"
 
+#define EASTER_EGG_MODE
+
 nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
         : QDockWidget(window),
           renderView_(renderView) {
@@ -18,6 +20,14 @@ nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *wi
     auto *surfHLayout = new QHBoxLayout();
     surfHLayout->addWidget(window->buildDockIcon(":/icons/surface_visualizer.png"));
     surfHLayout->addStretch();
+
+#ifdef EASTER_EGG_MODE
+    auto *minecraftCheckBox = new QCheckBox("Minecraft");
+    QObject::connect(minecraftCheckBox, &QCheckBox::toggled, window, [&] {
+        renderView_->toggleMinecraft();
+    });
+    surfHLayout->addWidget(minecraftCheckBox);
+#endif
 
     auto *surfPerspectiveCheckBox = new QCheckBox("Orthographic");
     QObject::connect(surfPerspectiveCheckBox, &QCheckBox::toggled, window, [&] {
@@ -37,7 +47,6 @@ nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *wi
     setTitleBarWidget(surfViewTitleWrapper);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
-    setHidden(true);
 }
 
 nitro::RenderDockWidget::~RenderDockWidget() = default;

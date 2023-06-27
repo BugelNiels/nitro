@@ -14,7 +14,6 @@ nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setMouseTracking(true);
     resetOrientation();
     setFocusPolicy(Qt::StrongFocus);
-
 }
 
 nitro::RenderView::~RenderView() { makeCurrent(); }
@@ -495,4 +494,10 @@ void nitro::RenderView::onMessageLogged(QOpenGLDebugMessage message) {
         return;
     }
     qDebug() << " → Log:" << message;
+}
+
+void nitro::RenderView::toggleMinecraft() {
+    settings.minecraft = !settings.minecraft;
+    settings.uniformUpdateRequired = true;
+    update();
 }

@@ -30,5 +30,6 @@ namespace nitro {
         bool imageColors = true;
         bool orthographic = false;
 
+        bool minecraft = false;
     } Settings;
 }  // namespace nitro

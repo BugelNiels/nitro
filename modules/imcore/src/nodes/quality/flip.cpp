@@ -5,6 +5,7 @@
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 
 #include <QDebug>
 
@@ -15,6 +16,7 @@
 #define INPUT_DIST "Dist (m)"
 #define OUTPUT_RESULT "Result"
 #define OUTPUT_ERROR_MAP "Errors"
+#define OUTPUT_AVG_ERROR "Avg. Error"
 #define MODE_DROPDOWN "Mode"
 
 static FLIP::image<FLIP::color3> cvMatToFlipImg(const cv::Mat &img) {
@@ -86,7 +88,7 @@ inline static float calculatePPD(const double dist, const double resolutionX,
 
 void
 nitro::FlipOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
@@ -109,8 +111,10 @@ nitro::FlipOperator::execute(NodePorts &nodePorts) {
     FLIP::image<FLIP::color3> magmaMap(FLIP::MapMagma, 256);
     colResult.colorMap(errMap, magmaMap);
 
+    cv::Mat cvErrMap = flipImgFloatToGrayMat(errMap);
     nodePorts.output<ColImageData>(OUTPUT_RESULT, flipImgToCvMat(colResult));
     nodePorts.output<GrayImageData>(OUTPUT_ERROR_MAP, flipImgFloatToGrayMat(errMap));
+    nodePorts.output<DecimalData>(OUTPUT_AVG_ERROR, cv::mean(cvErrMap)[0]);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(const QString &category) {
@@ -127,6 +131,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(
                 withInputValue(INPUT_DIST, 0.7, 0, 3, BoundMode::LOWER_ONLY)->
                 withOutputPort<ColImageData>(OUTPUT_RESULT)->
                 withOutputPort<GrayImageData>(OUTPUT_ERROR_MAP)->
+                withOutputPort<DecimalData>(OUTPUT_AVG_ERROR)->
                 build();
     };
 }

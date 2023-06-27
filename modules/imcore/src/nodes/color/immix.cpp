@@ -1,99 +1,103 @@
 #include "immix.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include <opencv2/imgproc.hpp>
-#include <QDebug>
 #include "util.hpp"
+#include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/colimagedata.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
+#include "nodes/datatypes/grayimagedata.hpp"
+#include "nodes/datatypes/integerdata.hpp"
+#include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE_1 "Image 1"
-#define INPUT_IMAGE_2 "Image 2"
 #define INPUT_FAC "Fac"
-#define OUTPUT_IMAGE "Image"
+#define INPUT_VALUE_1 "Value 1"
+#define INPUT_VALUE_2 "Value 2"
+#define OUTPUT_VALUE "Value"
+#define OPTION_CLAMP "Clamp"
 #define MODE_DROPDOWN "Mode"
 
-static cv::Mat blendImages(const cv::Mat &image1, const cv::Mat &image2, double alpha, double beta) {
-    cv::Mat blendedImage;
-    cv::addWeighted(image1, beta, image2, alpha, 0.0, blendedImage);
-    return blendedImage;
+// Note this function doesn't support alpha images
+static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int numChannels) {
+    src.copyTo(dest);
+    if (dest.size() != size) {
+        cv::resize(dest, dest, size);
+    }
+    if (dest.channels() != numChannels) {
+        int conversionCode = 0;
+        if (numChannels == 1 && dest.channels() == 3) {
+            conversionCode = cv::COLOR_RGB2GRAY;
+        } else if (numChannels == 3 && dest.channels() == 1) {
+            conversionCode = cv::COLOR_GRAY2RGB;
+        }
+        cv::cvtColor(dest, dest, conversionCode);
+    }
 }
 
-static cv::Mat addBlend(const cv::Mat &image1, const cv::Mat &image2, const cv::Mat &mask) {
-    cv::Mat blendedImage;
-    image1.copyTo(blendedImage);
-    cv::add(image1, image2, blendedImage, mask);
-    return blendedImage;
+// ensures the images all have the same size and number of channels
+void nitro::MixOperator::initUnifiedInputs(NodePorts &nodePorts) {
+    auto fac = *nodePorts.inGetAs<GrayImageData>(INPUT_FAC);
+    auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
+    auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
+
+    int numChannels = std::max({fac.channels(), in1.channels(), in2.channels()});
+    cv::Size size;
+
+    int area1 = fac.cols * fac.rows;
+    int area2 = in1.cols * in1.rows;
+    int area3 = in2.cols * in2.rows;
+
+    int maxArea = std::max({area1, area2, area3});
+
+    if (maxArea == area1) {
+        size = fac.size();
+    } else if (maxArea == area2) {
+        size = in1.size();
+    } else {
+        size = in2.size();
+    }
+
+    fac.copyTo(fac_);
+    if (fac_.size() != size) {
+        cv::resize(fac_, fac_, size);
+    }
+    match(in1, in1_, size, numChannels);
+    match(in2, in2_, size, numChannels);
 }
 
-static cv::Mat subtractBlend(const cv::Mat &image1, const cv::Mat &image2, const cv::Mat &mask) {
-    cv::Mat blendedImage;
-    image1.copyTo(blendedImage);
-    cv::subtract(image1, image2, blendedImage, mask);
-    return blendedImage;
-}
-
-static cv::Mat multiplyBlend(const cv::Mat &image1, const cv::Mat &image2) {
-    cv::Mat blendedImage;
-    cv::multiply(image1, image2, blendedImage);
-    return blendedImage;
-}
-
-void
-nitro::MixOperator::execute(NodePorts &nodePorts) {
+void nitro::MixOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
-    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
-    auto im2 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_2);
-    double fac = nodePorts.inputValue(INPUT_FAC);
-
     int option = nodePorts.getOption(MODE_DROPDOWN);
 
-    cv::Mat in1;
-    cv::Mat in2;
-    im1->copyTo(in1);
-    im2->copyTo(in2);
-
-    if (im1->channels() == 1 && im2->channels() == 3) {
-        cv::cvtColor(in1, in1, cv::COLOR_GRAY2BGR);
-    }
-    if (im1->channels() == 3 && im2->channels() == 1) {
-        cv::cvtColor(in2, in2, cv::COLOR_GRAY2BGR);
-    }
-    in2 = cropToMatchSize(in2, in1);
-
-
+    initUnifiedInputs(nodePorts);
     cv::Mat result;
     switch (option) {
-        case 0:
-            result = blendImages(in1, in2, fac, 1 - fac);
-            break;
-        case 1: {
-            cv::Mat mask = createMask(im2->size, in1.size);
-            result = blendImages(in1, addBlend(in1, in2, mask), 1 - fac, fac);
+        case 0: {
+            cv::blendLinear(in1_, in2_, fac_, 1 - fac_, result);
             break;
         }
-        case 2: {
-            cv::Mat mask = createMask(im2->size, in1.size);
-            result = blendImages(in1, subtractBlend(in1, in2, mask), 1 - fac, fac);
-            break;
-        }
-        case 3:
-            result = blendImages(in1, multiplyBlend(in1, in2), 1 - fac, fac);
-            break;
-        case 4:
-            result = blendImages(in1, cv::min(in1, in2), 1 - fac, fac);
-            break;
-        case 5:
-            result = blendImages(in1, cv::max(in1, in2), 1 - fac, fac);
-            break;
         default:
-            result = blendImages(in1, in2, fac, 1 - fac);
+            cv::blendLinear(in1_, in2_, fac_, 1 - fac_, result);
             break;
+
     }
-    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
+
+    if (nodePorts.optionEnabled(OPTION_CLAMP)) {
+        cv::Scalar upper;
+        cv::Scalar lower;
+        if (result.channels() == 3) {
+            upper = {1, 1, 1};
+            lower = {0, 0, 0};
+        } else {
+            upper = {1};
+            lower = {0};
+        }
+        result = cv::min(result, upper);
+        result = cv::max(result, lower);
+    }
+
+    nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
-// TODO: add blend modes
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(const QString &category) {
     return [category]() {
         nitro::NitroNodeBuilder builder("Mix RGB", "mixRgb", category);
@@ -102,10 +106,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(c
                 withIcon("mix.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Mix"})->
-                withInputValue(INPUT_FAC, 0.5, 0, 1)->
-                withInputPort<ColImageData>(INPUT_IMAGE_1)->
-                withInputPort<ColImageData>(INPUT_IMAGE_2)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
+                withInputValue(INPUT_FAC, 1, 0, 1, BoundMode::UPPER_LOWER,
+                               {ColImageData::id(), GrayImageData::id()})->
+                withInputPort<ColImageData>(INPUT_VALUE_1, {IntegerData::id(), DecimalData::id()})->
+                withInputPort<ColImageData>(INPUT_VALUE_2, {IntegerData::id(), DecimalData::id()})->
+                withOutputValue(OUTPUT_VALUE)->
+                withCheckBox(OPTION_CLAMP, false)->
                 build();
     };
 }

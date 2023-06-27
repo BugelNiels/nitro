@@ -9,34 +9,15 @@ nitro::CubicSampler::CubicSampler() = default;
 
 nitro::CubicSampler::~CubicSampler() = default;
 
-static inline float get(const cv::Mat &colorTable, int i) {
-    return colorTable.at<float>(i, 0);
-}
-
-static std::vector<double> colTableToVector(const cv::Mat &colorTable) {
-    std::vector<double> colorTableVector;
-    int numRows = colorTable.rows;
-    colorTableVector.resize(numRows);
-
-    for (int i = 0; i < numRows; ++i) {
-        float colorValue = colorTable.at<float>(i, 0);
-        colorTableVector[i] = static_cast<double>(colorValue);
-    }
-
-    return colorTableVector;
-}
-
-cv::Mat nitro::CubicSampler::resample(const cv::Mat &img, const cv::Mat &colTable,
+cv::Mat nitro::CubicSampler::resample(const cv::Mat &img, const std::vector<float> &colTable,
                                       const std::vector<cv::Mat> &df,
                                       int numDesiredLevels) {
     int width = df[0].cols;
     int height = df[0].rows;
 
     cv::Mat resampled = cv::Mat::zeros(height, width, CV_32FC1);
-
-    auto cols = colTableToVector(colTable);
     int numLevelsInput = df.size();
-
+    std::vector<double> cols(std::begin(colTable), std::end(colTable));
 
 #pragma omp parallel default(none) firstprivate(height, width, numDesiredLevels, numLevelsInput) shared(df, resampled, cols, img)
     {
@@ -48,9 +29,17 @@ cv::Mat nitro::CubicSampler::resample(const cv::Mat &img, const cv::Mat &colTabl
                 for (int i = 0; i < numLevelsInput; ++i) {
                     values[i] = static_cast<double>(df[i].at<float>(y, x));
                 }
+
+                float val = img.at<float>(y, x);
+                int start = numDesiredLevels - 1;
+                for (int i = 0; i < cols.size() - 1; ++i) {
+                    if (val == cols[i]) {
+                        start = cols[i + 1] * (numDesiredLevels - 1.0f);
+                        break;
+                    }
+                }
                 // TODO: fix the end point tangents
                 tk::spline s(cols, values, tk::spline::cspline, true);
-                int start = img.at<int>(y, x);
                 // Compute interpolation tangents
                 for (int d = start; d >= 0; d--) {
                     double p = double(d) / (double(numDesiredLevels) - 1.0);

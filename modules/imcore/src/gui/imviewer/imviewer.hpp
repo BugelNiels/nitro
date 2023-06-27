@@ -98,6 +98,7 @@ namespace nitro {
 
         void initActions();
 
+        QString lastFilePath_ = "../data/";
     };
 
 } // nitro

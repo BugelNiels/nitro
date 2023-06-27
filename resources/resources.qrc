@@ -13,20 +13,22 @@
 		<file>icons/nodes/blur.png</file>
 		<file>icons/nodes/bool_math.png</file>
 		<file>icons/nodes/colormap.png</file>
+		<file>icons/nodes/color.png</file>
 		<file>icons/nodes/compare.png</file>
 		<file>icons/nodes/connected_comps.png</file>
-		<file>icons/nodes/convert.png</file>
 		<file>icons/nodes/denoise.png</file>
 		<file>icons/nodes/distance.png</file>
 		<file>icons/nodes/filter.png</file>
 		<file>icons/nodes/flip.png</file>
 		<file>icons/nodes/frequency.png</file>
+		<file>icons/nodes/gradient.png</file>
 		<file>icons/nodes/greyscale.png</file>
 		<file>icons/nodes/image_source.png</file>
 		<file>icons/nodes/info.png</file>
 		<file>icons/nodes/invert.png</file>
 		<file>icons/nodes/kernel.png</file>
 		<file>icons/nodes/layers.png</file>
+		<file>icons/nodes/map_range.png</file>
 		<file>icons/nodes/mask.png</file>
 		<file>icons/nodes/match_size.png</file>
 		<file>icons/nodes/math.png</file>
@@ -42,7 +44,6 @@
 		<file>icons/nodes/shift.png</file>
 		<file>icons/nodes/sum.png</file>
 		<file>icons/nodes/surface.png</file>
-		<file>icons/nodes/threshold.png</file>
 		<file>icons/nodes/toggle.png</file>
 		<file>icons/nodes/viewer.png</file>
 		<file>icons/search.png</file>

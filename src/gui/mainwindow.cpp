@@ -200,6 +200,6 @@ void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {
 }
 
 void nitro::MainWindow::registerDock(QDockWidget *widget) {
-    widgets_.insert(widget);
+    widgets_.push_back(widget);
     dockLayout_->addWidget(widget);
 }

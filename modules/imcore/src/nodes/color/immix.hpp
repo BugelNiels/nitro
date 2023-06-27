@@ -11,5 +11,11 @@ namespace nitro {
 
         void execute(NodePorts &nodePorts) override;
 
+    private:
+        cv::Mat fac_;
+        cv::Mat in1_;
+        cv::Mat in2_;
+
+        void initUnifiedInputs(NodePorts &nodePorts);
     };
 } // nitro

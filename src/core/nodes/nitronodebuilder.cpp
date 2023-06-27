@@ -257,6 +257,13 @@ NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, QLabe
     return this;
 }
 
+NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, const QString& text) {
+    auto* label = new QLabel(text);
+    node_->connectLabel(name, label);
+    addOptionWidget(label);
+    return this;
+}
+
 NitroNodeBuilder *NitroNodeBuilder::withNodeColor(const QColor &color) {
     nodeColor_ = color;
     return this;

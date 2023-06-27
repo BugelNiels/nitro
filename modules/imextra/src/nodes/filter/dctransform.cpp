@@ -12,18 +12,12 @@ void nitro::DCTOperator::execute(NodePorts &nodePorts) {
         return;
     }
     // Get the input data
-    auto inputImg = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
+    auto inputImg = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int inverse = nodePorts.getOption(OPTION_INVERSE);
 
-    cv::Mat imIn;
-    if (inputImg->channels() > 1) {
-        cvtColor(*inputImg, imIn, cv::COLOR_RGB2GRAY);
-    } else {
-        imIn = *inputImg;
-    }
-
+    // Evaluate
     cv::Mat result;
-    cv::dct(imIn, result, inverse);
+    cv::dct(inputImg, result, inverse);
 
     // Store the result
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
