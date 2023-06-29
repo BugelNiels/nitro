@@ -15,6 +15,7 @@
 		<file>icons/nodes/colormap.png</file>
 		<file>icons/nodes/color.png</file>
 		<file>icons/nodes/compare.png</file>
+		<file>icons/nodes/compress.png</file>
 		<file>icons/nodes/connected_comps.png</file>
 		<file>icons/nodes/denoise.png</file>
 		<file>icons/nodes/distance.png</file>

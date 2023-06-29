@@ -15,6 +15,7 @@
 #define INPUT_BITS "Bits"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
+#define OPTION_BRIGHTNESS_CORRECT "Correct Luminance"
 
 static std::vector<float> getUniqueColors(const cv::Mat &src) {
     std::vector<float> uniqueColors;
@@ -53,20 +54,13 @@ static std::vector<cv::Mat> getDfs(const cv::Mat &src, const std::vector<float> 
         df[d] = distanceField(grayImage, colTable[d]);
     }
 
-    if (!cv::norm(df[1], df[0], cv::NORM_L1)) {
-        df[0] -= 10;
-    }
+//    if (!cv::norm(df[1], df[0], cv::NORM_L1)) {
+//        df[0] -= 10;
+//    }
     return df;
 }
 
-void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
-    if (!nodePorts.allInputsPresent()) {
-        return;
-    }
-    int bits = nodePorts.inputInteger(INPUT_BITS);
-    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
-
-    int mode = nodePorts.getOption(MODE_DROPDOWN);
+cv::Mat nitro::resampleImage(const cv::Mat &img, int mode, int bits, bool brightnessCorrect) {
     std::unique_ptr<Sampler> sampler;
     switch (mode) {
         case 0:
@@ -88,16 +82,36 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
             sampler = std::make_unique<Sampler>();
             break;
     }
-    auto colTable = getUniqueColors(*imIn);
+    auto colTable = getUniqueColors(img);
     int numLevels = colTable.size();
-    std::vector<cv::Mat> dfs = getDfs(*imIn, colTable, numLevels);
+    std::vector<cv::Mat> dfs = getDfs(img, colTable, numLevels);
     float brightness = std::min(colTable[colTable.size() - 1] + 0.1f, 1.0f);
     colTable.push_back(brightness);
     dfs.push_back(dfs[dfs.size() - 1] + 100);
 
     int numDesiredLevels = int(std::pow(2, bits));
-    cv::Mat result = sampler->resample(*imIn, colTable, dfs, numDesiredLevels);
+    cv::Mat result = sampler->resample(img, colTable, dfs, numDesiredLevels);
+    if (brightnessCorrect) {
+        cv::Mat resIn;
+        cv::GaussianBlur(result, resIn, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
+        cv::Mat resTarget;
+        cv::GaussianBlur(img, resTarget, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
+        cv::subtract(resIn, resTarget, resTarget);
+        cv::subtract(result, resTarget, result);
+    }
+    return result;
+}
 
+void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
+        return;
+    }
+    int bits = nodePorts.inputInteger(INPUT_BITS);
+    auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
+    bool correctLum = nodePorts.optionEnabled(OPTION_BRIGHTNESS_CORRECT);
+
+    int mode = nodePorts.getOption(MODE_DROPDOWN);
+    cv::Mat result = resampleImage(*imIn, mode, bits, correctLum);
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
@@ -110,6 +124,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 withNodeColor(NITRO_RESTORATION_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Linear", "Smooth", "Ease In", "Ease Out", "Cubic"})->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
+                withCheckBox(OPTION_BRIGHTNESS_CORRECT, true)->
                 withInputInteger(INPUT_BITS, 8, 1, 16)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();

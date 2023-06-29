@@ -44,7 +44,9 @@
 #include "nodes/color/uniformconvert.hpp"
 #include "nodes/quality/mse.hpp"
 #include "nodes/quality/psnr.hpp"
-#include "nodes/compression/compressionsize.hpp"
+#include "nodes/compression/zliboperator.hpp"
+#include "nodes/compression/pngoperator.hpp"
+#include "nodes/compression/jpegoperator.hpp"
 
 namespace nitro::ImCore {
 
@@ -94,7 +96,9 @@ namespace nitro::ImCore {
         const QString category = "Compression";
         registry->registerNode(QuantizeOperator::creator(category));
         registry->registerNode(KMeansOperator::creator(category));
-        registry->registerNode(CompressionSizeOperator::creator(category));
+        registry->registerNode(ZLibOperator::creator(category));
+        registry->registerNode(PngOperator::creator(category));
+        registry->registerNode(JpegOperator::creator(category));
     }
 
     void ImCoreModule::registerTransformNodes(NodeRegistry *registry) {

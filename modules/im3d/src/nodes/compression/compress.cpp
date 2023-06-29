@@ -63,7 +63,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
     // Small image
     cv::Mat centers;
     cv::Mat smallImg = nitro::resize(uniformIm, cv::Size(size, size), cv::INTER_LINEAR, AspectRatioMode::KEEP_GROW);
-    smallImg = kMeansColors(smallImg, levels, 20, 0.0001, 1, centers);
+//    smallImg = kMeansColors(smallImg, levels, 20, 0.0001, 1, centers);
     cv::Mat largeMain;
     cv::GaussianBlur(smallImg, largeMain, cv::Size(3, 3), 0, 0, cv::BorderTypes::BORDER_REFLECT);
     largeMain = nitro::resize(largeMain, uniformIm.size(), cv::INTER_LINEAR, AspectRatioMode::IGNORE);
@@ -71,7 +71,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
     // Residual
     cv::Mat residual;
     cv::subtract(uniformIm, largeMain, residual);
-    residual = kMeansColors(residual, levels, 20, 0.0001, 1, centers);
+    residual = kMeansColors(residual, levels, 40, 0.00005, 3, centers);
     residual = (residual + 1.0) / 2.0;
     double end = cv::getTickCount();
     // Store the result
@@ -84,7 +84,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::creator(const QString &category) {
     return [category]() {
         auto *timeLabel = new QLabel("-");
-        nitro::NitroNodeBuilder builder("Compress", "compress", category);
+        nitro::NitroNodeBuilder builder("Bit Compress", "bitCompress", category);
         return builder.
                 withOperator(std::make_unique<nitro::CompressOperator>(timeLabel))->
                 withIcon("blur.png")->

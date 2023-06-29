@@ -6,10 +6,10 @@
 
 namespace nitro {
 
-    class CompressionSizeOperator : public NodeOperator {
+    class JpegOperator : public NodeOperator {
     public:
 
-        explicit CompressionSizeOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
+        explicit JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
                                          QLabel *ratioLabel);
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);

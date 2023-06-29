@@ -5,15 +5,14 @@
 
 namespace nitro {
 
-    class ResampleOperator : public NodeOperator {
-
+    class DecompressOperator : public NodeOperator {
     public:
+        explicit DecompressOperator(QLabel *timeLabel);
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
-
         void execute(NodePorts &nodePorts) override;
 
+    private:
+        QLabel* timeLabel_;
     };
-
-    cv::Mat resampleImage(const cv::Mat &img, int mode, int bits, bool brightnessCorrect);
 } // nitro

@@ -1,4 +1,4 @@
-#include "compressionsize.hpp"
+#include "zliboperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
@@ -7,6 +7,7 @@
 #define DISPLAY_LABEL_ORIG "origLabel"
 #define DISPLAY_LABEL_RATIO "ratioLabel"
 #define INPUT_IMAGE "Image"
+#define OUTPUT_IMAGE "Compressed Image"
 #define INPUT_BITS "Bits"
 
 #define OUTPUT_COMP_SIZE "Compressed"
@@ -16,22 +17,23 @@
 #include <QDebug>
 
 #include <zlib.h>
+#include <opencv2/imgcodecs.hpp>
 
-std::vector<uchar> packData(cv::Mat &data, int numBits) {
+static std::vector<uchar> packData(const cv::Mat &data, int numBits) {
     int rows = data.rows;
     int cols = data.cols;
     std::vector<uchar> packedData;
     packedData.reserve(rows * cols / (8.0 / numBits) + 0.5);
     uchar packedByte = 0;
     int bitPosition = 0;
-
+    uchar leastBitMask = ((1 << numBits) - 1);
 
     for (int row = 0; row < rows; ++row) {
-        uchar *ptr = data.ptr<uchar>(row);
+        const uchar *ptr = data.ptr<uchar>(row);
 
         for (int col = 0; col < cols; ++col) {
             uchar value = ptr[col];
-            packedByte |= (value & ((1 << numBits) - 1)) << bitPosition;
+            packedByte |= (value & leastBitMask) << bitPosition;
             bitPosition += numBits;
 
             while (bitPosition >= 8) {
@@ -45,11 +47,10 @@ std::vector<uchar> packData(cv::Mat &data, int numBits) {
     if (bitPosition > 0) {
         packedData.push_back(packedByte);
     }
-
     return packedData;
 }
 
-std::vector<uchar> compressData(const std::vector<uchar> &data) {
+static std::vector<uchar> compressData(const std::vector<uchar> &data) {
     std::vector<uchar> compressedData;
 
     uLong sourceSize = static_cast<uLong>(data.size());
@@ -67,11 +68,52 @@ std::vector<uchar> compressData(const std::vector<uchar> &data) {
     return compressedData;
 }
 
-nitro::CompressionSizeOperator::CompressionSizeOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                                        QLabel *ratioLabel)
+static cv::Mat unpackData(const std::vector<uchar> &packedData, int numBits, int rows, int cols) {
+    cv::Mat data(rows, cols, CV_8UC1);
+    int bitPosition = 0;
+    int packedIndex = 0;
+    uchar leastBitMask = ((1 << numBits) - 1);
+
+    for (int row = 0; row < rows; ++row) {
+        uchar *ptr = data.ptr<uchar>(row);
+
+        for (int col = 0; col < cols; ++col) {
+            uchar value = (packedData[packedIndex] >> bitPosition) & leastBitMask;
+            ptr[col] = value;
+
+
+            bitPosition += numBits;
+            if (bitPosition >= 8) {
+                bitPosition -= 8;
+                if (packedIndex < packedData.size()) {
+                    packedIndex++;
+                }
+            }
+        }
+    }
+
+    data.convertTo(data, CV_32F, 1.0 / (std::pow(2, numBits) - 1.0));
+    return data;
+}
+
+static std::vector<uchar> decompressData(const std::vector<uchar> &compressedData, uLong sourceSize) {
+    std::vector<uchar> decompressedData(sourceSize);
+
+
+    uLong destSize = static_cast<uLong>(decompressedData.size());
+    int result = uncompress(&decompressedData[0], &destSize, &compressedData[0], compressedData.size());
+    if (result != Z_OK) {
+        // Decompression failed
+        decompressedData.clear();
+    }
+    return decompressedData;
+}
+
+nitro::ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
+                                  QLabel *ratioLabel)
         : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
 
-void nitro::CompressionSizeOperator::execute(NodePorts &nodePorts) {
+void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -79,11 +121,15 @@ void nitro::CompressionSizeOperator::execute(NodePorts &nodePorts) {
     int bits = nodePorts.inputInteger(INPUT_BITS);
 
     cv::Mat data;
-    img.convertTo(data, CV_8U, 255);
+    img.convertTo(data, CV_8U, std::pow(2, bits) - 1);
 
-    auto packedData = packData(img, bits);
-    auto compressedData = compressData(packedData);
-    unsigned long size = compressedData.size();
+
+    auto packedData = packData(data, bits);
+    auto zlib_buffer = compressData(packedData);
+    unsigned long size = zlib_buffer.size();
+
+    auto decompressedData = decompressData(zlib_buffer, static_cast<uLong>(packedData.size()));
+    cv::Mat result = unpackData(packedData, bits, data.rows, data.cols);
 
     double compressKb = size / 1000.0;
     double originalKb = data.total() * data.elemSize() / 1000.0;
@@ -99,26 +145,28 @@ void nitro::CompressionSizeOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<DecimalData>(OUTPUT_COMP_SIZE, compressKb);
     nodePorts.output<DecimalData>(OUTPUT_ORIG_SIZE, originalKb);
     nodePorts.output<DecimalData>(OUTPUT_RATIO, originalKb / compressKb);
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::CompressionSizeOperator::creator(const QString &category) {
+nitro::ZLibOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Compression Size", "compressionSize", category);
+        nitro::NitroNodeBuilder builder("zlib  Compression", "zlib", category);
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::CompressionSizeOperator>(valueLabel, originalSizeLabel, crLabel))->
-                withIcon("number.png")->
+                withOperator(std::make_unique<nitro::ZLibOperator>(valueLabel, originalSizeLabel, crLabel))->
+                withIcon("compress.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
                 withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 8, 1, 16, BoundMode::UPPER_LOWER)->
-                withOutputValue(OUTPUT_COMP_SIZE)->
+                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 withOutputValue(OUTPUT_ORIG_SIZE)->
+                withOutputValue(OUTPUT_COMP_SIZE)->
                 withOutputValue(OUTPUT_RATIO)->
                 build();
     };

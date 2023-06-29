@@ -10,6 +10,7 @@
 #include "nodes/compression/layerremoval.hpp"
 #include "nodes/restoration/resample.hpp"
 #include "nodes/compression/compress.hpp"
+#include "nodes/compression/decompress.hpp"
 
 namespace nitro::Im3D {
 
@@ -32,6 +33,7 @@ namespace nitro::Im3D {
         const QString category = "Compression";
         registry->registerNode(LayerRemovalOperator::creator(category));
         registry->registerNode(CompressOperator::creator(category));
+        registry->registerNode(DecompressOperator::creator(category));
     }
 
     void Im3DModule::registerRestorationNodes(NodeRegistry* registry) {
