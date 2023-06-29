@@ -19,6 +19,30 @@
 #include <zlib.h>
 #include <opencv2/imgcodecs.hpp>
 
+static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {
+
+    std::vector<float> uniqueColors;
+    std::set<float> uniqueColorsSet(src.begin<float>(), src.end<float>());
+    colTable.assign(uniqueColorsSet.begin(), uniqueColorsSet.end());
+
+    std::unordered_map<int, int> colMap;
+    int numCols = colTable.size();
+    for (int i = 0; i < numCols; i++) {
+        colMap[colTable[i] * 255 + 0.5] = i;
+    }
+
+    int height = src.rows;
+    int width = src.cols;
+    dest = cv::Mat(height, width, CV_8UC1);
+    for (int y = 0; y < height; y++) {
+        uchar *rowPtr = dest.ptr<uchar>(y);
+        const float *srcPtr = src.ptr<float>(y);
+        for (int x = 0; x < width; x++) {
+            rowPtr[x] = colMap[srcPtr[x] * 255 + 0.5];
+        }
+    }
+}
+
 static std::vector<uchar> packData(const cv::Mat &data, int numBits) {
     int rows = data.rows;
     int cols = data.cols;
@@ -91,8 +115,6 @@ static cv::Mat unpackData(const std::vector<uchar> &packedData, int numBits, int
             }
         }
     }
-
-    data.convertTo(data, CV_32F, 1.0 / (std::pow(2, numBits) - 1.0));
     return data;
 }
 
@@ -120,8 +142,10 @@ void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     auto img = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int bits = nodePorts.inputInteger(INPUT_BITS);
 
+
     cv::Mat data;
-    img.convertTo(data, CV_8U, std::pow(2, bits) - 1);
+    std::vector<float> colTable;
+    toIndexed(img, data, colTable);
 
 
     auto packedData = packData(data, bits);
@@ -129,7 +153,18 @@ void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     unsigned long size = zlib_buffer.size();
 
     auto decompressedData = decompressData(zlib_buffer, static_cast<uLong>(packedData.size()));
-    cv::Mat result = unpackData(packedData, bits, data.rows, data.cols);
+    cv::Mat unpackedIndexed = unpackData(packedData, bits, data.rows, data.cols);
+
+    int height = unpackedIndexed.rows;
+    int width = unpackedIndexed.cols;
+    cv::Mat result(height, width, CV_32FC1);
+    for (int y = 0; y < height; y++) {
+        float *rowPtr = result.ptr<float>(y);
+        const uchar *srcPtr = unpackedIndexed.ptr<uchar>(y);
+        for (int x = 0; x < width; x++) {
+            rowPtr[x] = colTable[srcPtr[x]];
+        }
+    }
 
     double compressKb = size / 1000.0;
     double originalKb = data.total() * data.elemSize() / 1000.0;

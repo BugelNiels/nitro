@@ -100,6 +100,9 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
         QtNodes::NodeGraphicsObject *ngo;
         ngo = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item);
         while (!ngo) {
+            if(item == nullptr) {
+                return;
+            }
             item = item->parentItem();
             ngo = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item);
         }

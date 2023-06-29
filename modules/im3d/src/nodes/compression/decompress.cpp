@@ -8,6 +8,7 @@
 #define INPUT_IMAGE "Residual"
 #define INPUT_SMALL "Small"
 #define OUTPUT_IMAGE "Image"
+#define UNIFORM_LUM "Uniform Luminance"
 #define TIME_LABEL "Time"
 
 static cv::Mat
@@ -63,13 +64,20 @@ void nitro::DecompressOperator::execute(NodePorts &nodePorts) {
     largeMain = nitro::resize(largeMain, residual.size(), cv::INTER_LINEAR, AspectRatioMode::IGNORE);
 
     // Residual
-    cv::Mat resampled = resampleImage(residual, 0, 8, true);
+    cv::Mat resampled = resampleImage(residual, true);
     resampled = (resampled * 2.0) - 1.0;
 
     cv::add(resampled, largeMain, resampled);
 
     // Color space convert
-    cv::Mat result = toRgb(resampled);
+    cv::Mat result;
+
+    if (nodePorts.optionEnabled(UNIFORM_LUM)) {
+        result = toRgb(resampled);
+    } else {
+        result = resampled;
+    }
+
 
     double end = cv::getTickCount();
     // Store the result
@@ -86,7 +94,8 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DecompressOperator::cr
                 withOperator(std::make_unique<nitro::DecompressOperator>(timeLabel))->
                 withIcon("blur.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
-//                withDisplayWidget(TIME_LABEL, timeLabel)->
+                withDisplayWidget(TIME_LABEL, timeLabel)->
+                withCheckBox(UNIFORM_LUM, false)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputPort<GrayImageData>(INPUT_SMALL)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->

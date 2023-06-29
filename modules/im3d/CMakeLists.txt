@@ -9,7 +9,7 @@ file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
 list(APPEND MODULE_LIBS Qt::OpenGL)
 list(APPEND MODULE_LIBS Qt::OpenGLWidgets)
 
-add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES} ${MODULE_HEADERS} src/nodes/compression/decompress.cpp)
+add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES} ${MODULE_HEADERS})
 
 target_include_directories(${MODULE_NAME}
         PUBLIC
