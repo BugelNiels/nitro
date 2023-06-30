@@ -19,10 +19,13 @@ nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
     setWindowIcon(QIcon(":/icons/nitro.png"));
 
     dockLayout_ = new QSplitter(Qt::Horizontal, this);
+
+    dockLayout_->setProperty("handleWidth", 16);
     dockLayout_->setSizes({this->width() / 2, this->width() / 2}); // Temp fix for equal sizes
 
     // Node editor, visualizers split
     auto *vertLayout = new QSplitter(Qt::Vertical, this);
+    vertLayout->setProperty("handleWidth", 16);
     vertLayout->addWidget(dockLayout_);
     vertLayout->addWidget(new NodeDockWidget(registry, this));
     vertLayout->setStretchFactor(0, 1);

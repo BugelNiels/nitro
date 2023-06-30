@@ -22,7 +22,12 @@ void nitro::MseOperator::execute(NodePorts &nodePorts) {
     }
     auto imIn = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     auto imRef = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE_REF);
-    nodePorts.output<DecimalData>(OUTPUT_VALUE, mse(imIn, imRef));
+    cv::Mat imIn8bit;
+    cv::Mat imRef8bit;
+    imIn.convertTo(imIn8bit, CV_8U, 255);
+    imRef.convertTo(imRef8bit, CV_8U, 255);
+
+    nodePorts.output<DecimalData>(OUTPUT_VALUE, mse(imIn8bit, imRef8bit));
 
 }
 
