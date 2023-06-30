@@ -24,6 +24,7 @@
 		<file>icons/nodes/frequency.png</file>
 		<file>icons/nodes/gradient.png</file>
 		<file>icons/nodes/greyscale.png</file>
+		<file>icons/nodes/hist.png</file>
 		<file>icons/nodes/image_source.png</file>
 		<file>icons/nodes/info.png</file>
 		<file>icons/nodes/invert.png</file>

@@ -47,6 +47,7 @@
 #include "nodes/compression/zliboperator.hpp"
 #include "nodes/compression/pngoperator.hpp"
 #include "nodes/compression/jpegoperator.hpp"
+#include "nodes/converter/histogram.hpp"
 
 namespace nitro::ImCore {
 
@@ -90,6 +91,7 @@ namespace nitro::ImCore {
         registry->registerNode(RgbToGrayscaleOperator::creator(category));
         registry->registerNode(SeparateOperator::creator(category));
         registry->registerNode(CombineOperator::creator(category));
+        registry->registerNode(HistogramOperator::creator(category));
     }
 
     void ImCoreModule::registerCompressionNodes(NodeRegistry *registry) {

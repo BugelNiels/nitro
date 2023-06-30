@@ -40,7 +40,7 @@ void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Size Match", "matchSize", category);
+        nitro::NitroNodeBuilder builder("Match Size", "matchSize", category);
         return builder.
                 withOperator(std::make_unique<nitro::MatchSizeOperator>())->
                 withIcon("match_size.png")->
