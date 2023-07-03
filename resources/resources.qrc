@@ -19,6 +19,7 @@
 		<file>icons/nodes/connected_comps.png</file>
 		<file>icons/nodes/denoise.png</file>
 		<file>icons/nodes/distance.png</file>
+		<file>icons/nodes/expand.png</file>
 		<file>icons/nodes/filter.png</file>
 		<file>icons/nodes/flip.png</file>
 		<file>icons/nodes/frequency.png</file>
@@ -48,6 +49,7 @@
 		<file>icons/nodes/surface.png</file>
 		<file>icons/nodes/toggle.png</file>
 		<file>icons/nodes/viewer.png</file>
+		<file>icons/nodes/zip.png</file>
 		<file>icons/search.png</file>
 		<file>icons/surface_visualizer.png</file>
 		<file>icons/theme.png</file>

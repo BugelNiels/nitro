@@ -11,30 +11,6 @@
 #define UNIFORM_LUM "Uniform Luminance"
 #define TIME_LABEL "Time"
 
-static cv::Mat
-kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon, int maxAttempts, cv::Mat &centers) {
-    cv::Mat labels;
-    cv::Mat samples = image.reshape(1, image.rows * image.cols);
-    if (samples.rows < numColors) {
-        return {};
-    }
-    cv::kmeans(samples,
-               numColors,
-               labels,
-               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, maxIter, epsilon),
-               maxAttempts,
-               cv::KMEANS_RANDOM_CENTERS, centers);
-
-    cv::Mat quantImg(image.size(), image.type());
-    for (int y = 0; y < image.rows; y++) {
-        for (int x = 0; x < image.cols; x++) {
-            int cluster_idx = labels.at<int>(y * image.cols + x, 0);
-            quantImg.at<float>(y, x) = centers.at<float>(cluster_idx, 0);
-        }
-    }
-    return quantImg;
-}
-
 static cv::Mat toRgb(const cv::Mat &img) {
     cv::Mat result;
     cv::cvtColor(img, result, cv::COLOR_GRAY2RGB);
@@ -64,20 +40,11 @@ void nitro::DecompressOperator::execute(NodePorts &nodePorts) {
     largeMain = nitro::resize(largeMain, residual.size(), cv::INTER_LINEAR, AspectRatioMode::IGNORE);
 
     // Residual
-    cv::Mat resampled = resampleImage(residual, true);
-    resampled = (resampled * 2.0) - 1.0;
-
-    cv::add(resampled, largeMain, resampled);
-
-    // Color space convert
-    cv::Mat result;
+    cv::Mat result = (resampleImage(residual, true) * 2.0) - 1.0 + largeMain;
 
     if (nodePorts.optionEnabled(UNIFORM_LUM)) {
-        result = toRgb(resampled);
-    } else {
-        result = resampled;
+        result = toRgb(result);
     }
-
 
     double end = cv::getTickCount();
     // Store the result
@@ -92,7 +59,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DecompressOperator::cr
         nitro::NitroNodeBuilder builder("Bit Decompress", "bitDecompress", category);
         return builder.
                 withOperator(std::make_unique<nitro::DecompressOperator>(timeLabel))->
-                withIcon("blur.png")->
+                withIcon("expand.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withDisplayWidget(TIME_LABEL, timeLabel)->
                 withCheckBox(UNIFORM_LUM, false)->

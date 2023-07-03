@@ -3,6 +3,7 @@
 #include "util.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
+#include "util/distancefield.hpp"
 
 #include <QDebug>
 
@@ -37,27 +38,29 @@ static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &col
 
 }
 
-// TODO: extract mats to reuse the buffers
-static cv::Mat distanceField(const cv::Mat &src, int d) {
-    cv::Mat binaryIm;
-    cv::threshold(src, binaryIm, d, 1, cv::THRESH_BINARY_INV);
-    cv::Mat df;
-    cv::distanceTransform(binaryIm, df, cv::DIST_L2, cv::DIST_MASK_PRECISE);
-    cv::Mat dfIn;
-    cv::threshold(src, binaryIm, d, 1, cv::THRESH_BINARY);
-    cv::distanceTransform(binaryIm, dfIn, cv::DIST_L2, cv::DIST_MASK_PRECISE);
-    cv::subtract(df, dfIn, df);
-    return df;
-}
-
 static std::vector<cv::Mat> getDfs(const cv::Mat &src, int numLevels) {
     std::vector<cv::Mat> df(numLevels);
 
+    int rows = src.rows;
+    int cols = src.cols;
+    cv::Mat squashed(src.rows, src.cols, CV_8UC2);
+
+
+
+    for (int y = 0; y < rows; y++) {
+        const uchar *srcRow = src.ptr<uchar>(y);
+        cv::Vec2b *rowPtr = squashed.ptr<cv::Vec2b>(y);
+        for (int x = 0; x < cols; x++) {
+            rowPtr[x][0] = srcRow[x];
+            rowPtr[x][1] = srcRow[x] + 1;
+        }
+    }
+
+
 #pragma omp parallel for default(none) shared(df, src) firstprivate(numLevels)
     for (int d = 0; d < numLevels; d++) {
-        df[d] = distanceField(src, d - 1);
+        df[d] = nitro::signedDistField(src, d);
     }
-    // TODO: Think of better blending (that does not interpolate level sets and fixes the brightness issue)
     return df;
 }
 
@@ -70,12 +73,14 @@ static cv::Mat resample(const cv::Mat &img, const std::vector<float> &colTable,
 
 #pragma omp parallel for default(none) firstprivate(height, width) shared(df, resampled, colTable, img)
     for (int y = 0; y < height; y++) {
+        float *resRow = resampled.ptr<float>(y);
         for (int x = 0; x < width; x++) {
             // Calculate p from the inverse linear interpolation
             uchar idx = img.at<uchar>(y, x);
 
             float layer0Col = colTable[idx];
             float layer1Col = colTable[idx + 1];
+
             float p0 = df[idx].at<float>(y, x);
             float p1 = df[idx + 1].at<float>(y, x);
 
@@ -84,7 +89,7 @@ static cv::Mat resample(const cv::Mat &img, const std::vector<float> &colTable,
             float t = p0 / (p0 - p1);
             float p = t * delta + layer0Col;
 
-            resampled.at<float>(y, x) = p;
+            resRow[x] = p;
         }
     }
 
@@ -109,8 +114,7 @@ cv::Mat nitro::resampleImage(const cv::Mat &img, bool brightnessCorrect) {
         cv::GaussianBlur(result, resIn, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
         cv::Mat resTarget;
         cv::GaussianBlur(img, resTarget, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
-        cv::subtract(resIn, resTarget, resTarget);
-        cv::subtract(result, resTarget, result);
+        result = result - (resIn - resTarget);
     }
     return result;
 }

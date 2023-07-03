@@ -15,20 +15,22 @@
 #define TIME_LABEL "Time"
 
 static cv::Mat
-kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon, cv::Mat &centers) {
+kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon) {
     int nPixels = image.rows * image.cols;
     cv::Mat samples = image.reshape(1, nPixels);
     if (samples.rows < numColors) {
         return {};
     }
 
-    centers = cv::Mat(numColors, 1, CV_32FC1);
+    cv::Mat centers(numColors, 1, CV_32FC1);
+    float *ctrRow1 = centers.ptr<float>();
     for (int i = 0; i < numColors; i++) {
-        centers.at<float>(i, 0) = i * (1.0 / (numColors - 1.0));
+        ctrRow1[i] = i * (1.0 / (numColors - 1.0));
     }
     cv::Mat labels(nPixels, 1, CV_32SC1);
+    int *labelsRow1 = labels.ptr<int>();
     for (int i = 0; i < nPixels; i++) {
-        labels.at<int>(i, 0) = samples.at<float>(i, 0) * (numColors - 1);
+        labelsRow1[i] = samples.at<float>(i, 0) * (numColors - 1);
     }
 
 
@@ -41,10 +43,14 @@ kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon, c
                centers);
 
     cv::Mat quantImg(image.size(), image.type());
+
     for (int y = 0; y < image.rows; y++) {
+        float *quantRow = quantImg.ptr<float>(y);
+        float *ctrRow = centers.ptr<float>();
+        int *labelsRow = labels.ptr<int>();
         for (int x = 0; x < image.cols; x++) {
-            int cluster_idx = labels.at<int>(y * image.cols + x, 0);
-            quantImg.at<float>(y, x) = centers.at<float>(cluster_idx, 0);
+            int cluster_idx = labelsRow[y * image.cols + x];
+            quantRow[x] = ctrRow[cluster_idx];
         }
     }
     return quantImg;
@@ -66,7 +72,6 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
     // Color space convert
     cv::Mat uniformIm;
     if (nodePorts.optionEnabled(UNIFORM_LUM)) {
-
         cv::cvtColor(inputImg, uniformIm, cv::COLOR_GRAY2RGB);
         cvtColor(uniformIm, uniformIm, cv::COLOR_RGB2Lab);
         cv::Mat temp;
@@ -81,15 +86,14 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
 
     // Small image
     cv::Mat residual;
-    cv::Mat centers;
+    cv::Mat smallImg;
     if (sizePortion > 0) {
-        cv::Mat smallImg;
         int smallWidth = sizePortion * uniformIm.cols + 0.5;
         int smallHeight = sizePortion * uniformIm.rows + 0.5;
         cv::resize(uniformIm, smallImg, {smallWidth, smallHeight});
 
         if (nodePorts.optionEnabled(QUANTIZE_SMALL)) {
-            smallImg = kMeansColors(smallImg, levels, 40, 0.00005, centers);
+            smallImg = kMeansColors(smallImg, levels, 40, 0.00005);
         }
 
         cv::Mat largeMain;
@@ -101,15 +105,12 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
         nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, smallImg);
     } else {
         residual = uniformIm;
-        cv::Mat black(1, 1, CV_32F, cv::Scalar(0));
-        nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, black);
+        smallImg = cv::Mat(1, 1, CV_32F, cv::Scalar(0));
     }
-
-
-    residual = (residual + 1.0) / 2.0;
-    residual = kMeansColors(residual, levels, 40, 0.00005, centers);
+    residual = kMeansColors((residual + 1.0) / 2.0, levels, 40, 0.00005);
     double end = cv::getTickCount();
     // Store the result
+    nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, smallImg);
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, residual);
     double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
     timeLabel_->setText(QString("Time: %1 msec").arg(elapsedTime));
@@ -121,7 +122,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::crea
         nitro::NitroNodeBuilder builder("Bit Compress", "bitCompress", category);
         return builder.
                 withOperator(std::make_unique<nitro::CompressOperator>(timeLabel))->
-                withIcon("blur.png")->
+                withIcon("compress.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withDisplayWidget(TIME_LABEL, timeLabel)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->

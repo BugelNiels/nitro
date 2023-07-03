@@ -192,7 +192,7 @@ nitro::ZLibOperator::creator(const QString &category) {
         auto *crLabel = new QLabel("-");
         return builder.
                 withOperator(std::make_unique<nitro::ZLibOperator>(valueLabel, originalSizeLabel, crLabel))->
-                withIcon("compress.png")->
+                withIcon("zip.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
                 withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
