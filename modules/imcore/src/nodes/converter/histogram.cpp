@@ -10,7 +10,7 @@
 #define OUTPUT_HIST "Histogram"
 #define HIST_DISPLAY "Histogram display"
 
-#define NUM_BINS 150
+#define NUM_BINS 256
 
 cv::Mat createHistogramImage(const cv::Mat &histogram) {
     int histSize = histogram.rows;
@@ -50,7 +50,8 @@ void nitro::HistogramOperator::execute(NodePorts &nodePorts) {
 
     cv::Mat histImg = createHistogramImage(histogram);
 
-    histLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(histImg, displayImage_)));
+    histLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(histImg, displayImage_)).scaled(150, 20, Qt::AspectRatioMode::IgnoreAspectRatio,
+                                                                                           Qt::SmoothTransformation));
 
     nodePorts.output<GrayImageData>(OUTPUT_HIST, histImg);
 }

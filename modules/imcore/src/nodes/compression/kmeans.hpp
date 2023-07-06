@@ -13,4 +13,7 @@ namespace nitro {
         void execute(NodePorts &nodePorts) override;
 
     };
+
+
+    cv::Mat kMeansHist(const cv::Mat &image, int numColors, int maxIter);
 } // nitro

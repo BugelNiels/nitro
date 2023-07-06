@@ -46,7 +46,13 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
         nodePorts.output<ColImageData>(OUTPUT_IMAGE, blankImg_);
         nodePorts.output<GrayImageData>(OUTPUT_ALPHA, blankImg_);
     } else {
-        nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
+        if(isGrayscale(img)) {
+
+            nodePorts.output<GrayImageData>(OUTPUT_IMAGE, img);
+        } else {
+
+            nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
+        }
         if (alpha.empty()) {
             alpha = {img.rows, img.cols, CV_32FC1, cv::Scalar(0)};
             nodePorts.output<GrayImageData>(OUTPUT_ALPHA, alpha);

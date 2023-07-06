@@ -2,6 +2,7 @@
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/grayimagedata.hpp"
 #include "util.hpp"
+#include "../../../../imcore/src/nodes/compression/kmeans.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -13,48 +14,6 @@
 #define QUANTIZE_SMALL "Quantize small"
 #define UNIFORM_LUM "Uniform Luminance"
 #define TIME_LABEL "Time"
-
-static cv::Mat
-kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon) {
-    int nPixels = image.rows * image.cols;
-    cv::Mat samples = image.reshape(1, nPixels);
-    if (samples.rows < numColors) {
-        return {};
-    }
-
-    cv::Mat centers(numColors, 1, CV_32FC1);
-    float *ctrRow1 = centers.ptr<float>();
-    for (int i = 0; i < numColors; i++) {
-        ctrRow1[i] = i * (1.0 / (numColors - 1.0));
-    }
-    cv::Mat labels(nPixels, 1, CV_32SC1);
-    int *labelsRow1 = labels.ptr<int>();
-    for (int i = 0; i < nPixels; i++) {
-        labelsRow1[i] = samples.at<float>(i, 0) * (numColors - 1);
-    }
-
-
-    cv::kmeans(samples,
-               numColors,
-               labels,
-               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, maxIter, epsilon),
-               1,
-               cv::KMEANS_USE_INITIAL_LABELS,
-               centers);
-
-    cv::Mat quantImg(image.size(), image.type());
-
-    for (int y = 0; y < image.rows; y++) {
-        float *quantRow = quantImg.ptr<float>(y);
-        float *ctrRow = centers.ptr<float>();
-        int *labelsRow = labels.ptr<int>();
-        for (int x = 0; x < image.cols; x++) {
-            int cluster_idx = labelsRow[y * image.cols + x];
-            quantRow[x] = ctrRow[cluster_idx];
-        }
-    }
-    return quantImg;
-}
 
 void nitro::CompressOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -93,7 +52,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
         cv::resize(uniformIm, smallImg, {smallWidth, smallHeight});
 
         if (nodePorts.optionEnabled(QUANTIZE_SMALL)) {
-            smallImg = kMeansColors(smallImg, levels, 40, 0.00005);
+            smallImg = nitro::kMeansHist(smallImg, levels, 40);
         }
 
         cv::Mat largeMain;
@@ -107,7 +66,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
         residual = uniformIm;
         smallImg = cv::Mat(1, 1, CV_32F, cv::Scalar(0));
     }
-    residual = kMeansColors((residual + 1.0) / 2.0, levels, 40, 0.00005);
+    residual = nitro::kMeansHist((residual + 1.0) / 2.0, levels, 40);
     double end = cv::getTickCount();
     // Store the result
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, smallImg);
