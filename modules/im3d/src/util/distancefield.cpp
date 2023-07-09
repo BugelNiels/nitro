@@ -84,7 +84,7 @@ static cv::Mat dtMeijsterRoerdinkHesselink(int foreground,
         }
     }
     /* horizontal phase */
-    cv::Mat dt(rows, cols, CV_32FC1);
+    cv::Mat dt(rows, cols, CV_64FC1);
     std::vector<int> s(cols);
     std::vector<int> t(cols);
     for (int y = 0; y < rows; y++) {
@@ -93,7 +93,7 @@ static cv::Mat dtMeijsterRoerdinkHesselink(int foreground,
         s[0] = 0;
         t[0] = 0;
 
-        float *dtRow = dt.ptr<float>(y);
+        double *dtRow = dt.ptr<double>(y);
         int *vdtRow = vdt.ptr<int>(y);
         for (int x = 1; x < cols; x++) {
             int vsq = vdtRow[s[q]];
@@ -308,6 +308,7 @@ static std::vector<cv::Mat> distFields(const cv::Mat &image, int numLevels) {
 cv::Mat nitro::signedDistField(const cv::Mat &img, int val) {
     cv::Mat outside = dtMeijsterRoerdinkHesselink(val, img, false);
     cv::Mat inside = dtMeijsterRoerdinkHesselink(val, img, true);
+
     return outside - inside;
 }
 

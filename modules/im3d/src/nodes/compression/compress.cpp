@@ -3,6 +3,7 @@
 #include "nodes/datatypes/grayimagedata.hpp"
 #include "util.hpp"
 #include "../../../../imcore/src/nodes/compression/kmeans.hpp"
+#include "nodes/datatypes/decimaldata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #define INPUT_IMAGE "Image"
@@ -11,6 +12,7 @@
 #define INPUT_APERTURE "Aperture"
 #define OUTPUT_IMAGE "Residual"
 #define OUTPUT_IMAGE_SMALL "Small"
+#define OUTPUT_WHITE_POINT "White Point"
 #define QUANTIZE_SMALL "Quantize small"
 #define UNIFORM_LUM "Uniform Luminance"
 #define TIME_LABEL "Time"
@@ -61,18 +63,20 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
 
         // Residual
         cv::subtract(uniformIm, largeMain, residual);
-        nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, smallImg);
     } else {
         residual = uniformIm;
         smallImg = cv::Mat(1, 1, CV_32F, cv::Scalar(0));
     }
     residual = nitro::kMeansHist((residual + 1.0) / 2.0, levels, 40);
+    double minVal, maxVal;
+    cv::minMaxIdx(residual, &minVal, &maxVal);
     double end = cv::getTickCount();
+    double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
+    timeLabel_->setText(QString("Time: %1 msec").arg(elapsedTime));
     // Store the result
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE_SMALL, smallImg);
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, residual);
-    double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
-    timeLabel_->setText(QString("Time: %1 msec").arg(elapsedTime));
+    nodePorts.output<DecimalData>(OUTPUT_WHITE_POINT, maxVal);
 }
 
 std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::creator(const QString &category) {
@@ -86,11 +90,12 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::crea
                 withDisplayWidget(TIME_LABEL, timeLabel)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 3, 1, 8)->
-                withInputValue(INPUT_SIZE, 0.2, 0, 1, BoundMode::UPPER_LOWER)->
+                withInputValue(INPUT_SIZE, 0.125, 0, 1, BoundMode::UPPER_LOWER)->
                 withCheckBox(QUANTIZE_SMALL, false)->
                 withCheckBox(UNIFORM_LUM, false)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE_SMALL)->
+                withOutputPort<DecimalData>(OUTPUT_WHITE_POINT)->
                 build();
     };
 }

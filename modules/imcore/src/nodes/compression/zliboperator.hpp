@@ -9,8 +9,8 @@ namespace nitro {
     class ZLibOperator : public NodeOperator {
     public:
 
-        explicit ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                         QLabel *ratioLabel);
+        explicit ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
+                              QLabel *timeLabel);
 
         static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
@@ -19,5 +19,6 @@ namespace nitro {
         QLabel* valueLabel_;
         QLabel* originalSizeLabel_;
         QLabel* ratioLabel_;
+        QLabel* timeLabel_;
     };
 }

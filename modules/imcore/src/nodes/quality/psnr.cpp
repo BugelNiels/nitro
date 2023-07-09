@@ -11,6 +11,9 @@
 
 static double mse(const cv::Mat &im1, const cv::Mat &im2) {
     cv::Mat diff;
+    if(im1.size != im2.size) {
+         return -1;
+    }
     cv::absdiff(im1, im2, diff);
     cv::Mat squaredDiff = diff.mul(diff);
     return cv::mean(squaredDiff).val[0];

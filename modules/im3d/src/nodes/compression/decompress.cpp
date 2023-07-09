@@ -7,6 +7,7 @@
 
 #define INPUT_IMAGE "Residual"
 #define INPUT_SMALL "Small"
+#define INPUT_WHITE_POINT "White Point"
 #define OUTPUT_IMAGE "Image"
 #define UNIFORM_LUM "Uniform Luminance"
 #define TIME_LABEL "Time"
@@ -31,16 +32,17 @@ void nitro::DecompressOperator::execute(NodePorts &nodePorts) {
     // Get the input data
     auto residual = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     auto smallImg = *nodePorts.inGetAs<GrayImageData>(INPUT_SMALL);
+    double whitePoint = nodePorts.inputValue(INPUT_WHITE_POINT);
 
     double start = cv::getTickCount();
 
     // Small image
     cv::Mat largeMain;
     cv::GaussianBlur(smallImg, largeMain, cv::Size(3, 3), 0, 0, cv::BorderTypes::BORDER_REFLECT);
-    largeMain = nitro::resize(largeMain, residual.size(), cv::INTER_LINEAR, AspectRatioMode::IGNORE);
+    cv::resize(largeMain, largeMain, residual.size(), 0, 0, cv::INTER_LINEAR);
 
     // Residual
-    cv::Mat result = (resampleImage(residual, true) * 2.0) - 1.0 + largeMain;
+    cv::Mat result = (resampleImage(residual, true, whitePoint) * 2.0) - 1.0 + largeMain;
 
     if (nodePorts.optionEnabled(UNIFORM_LUM)) {
         result = toRgb(result);
@@ -65,6 +67,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DecompressOperator::cr
                 withCheckBox(UNIFORM_LUM, false)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputPort<GrayImageData>(INPUT_SMALL)->
+                withInputValue(INPUT_WHITE_POINT, 1.0, 0, 1, BoundMode::UPPER_LOWER)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };

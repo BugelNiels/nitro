@@ -15,5 +15,5 @@ namespace nitro {
 
     };
 
-    cv::Mat resampleImage(const cv::Mat &img, bool brightnessCorrect);
+    cv::Mat resampleImage(const cv::Mat &img, bool brightnessCorrect, double whitePoint);
 } // nitro

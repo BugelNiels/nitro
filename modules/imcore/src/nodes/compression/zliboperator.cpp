@@ -9,6 +9,7 @@
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Compressed Image"
 #define INPUT_BITS "Bits"
+#define DISPLAY_TIME "Time"
 
 #define OUTPUT_COMP_SIZE "Compressed"
 #define OUTPUT_ORIG_SIZE "Original"
@@ -131,9 +132,10 @@ static std::vector<uchar> decompressData(const std::vector<uchar> &compressedDat
     return decompressedData;
 }
 
-nitro::ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                  QLabel *ratioLabel)
-        : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
+nitro::ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
+                                  QLabel *timeLabel)
+        : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel),
+          timeLabel_(timeLabel) {}
 
 void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -147,6 +149,7 @@ void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     std::vector<float> colTable;
     toIndexed(img, data, colTable);
 
+    double start = cv::getTickCount();
 
     auto packedData = packData(data, bits);
     auto zlib_buffer = compressData(packedData);
@@ -165,6 +168,9 @@ void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
             rowPtr[x] = colTable[srcPtr[x]];
         }
     }
+    double end = cv::getTickCount();
+    double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
+    timeLabel_->setText(QString("Time: %1 msec").arg(elapsedTime));
 
     double compressKb = size / 1000.0;
     double originalKb = data.total() * data.elemSize() / 1000.0;
@@ -190,12 +196,14 @@ nitro::ZLibOperator::creator(const QString &category) {
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
+        auto *timeLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::ZLibOperator>(valueLabel, originalSizeLabel, crLabel))->
+                withOperator(std::make_unique<nitro::ZLibOperator>(valueLabel, originalSizeLabel, crLabel, timeLabel))->
                 withIcon("zip.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
                 withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
+                withDisplayWidget(DISPLAY_TIME, timeLabel)->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_BITS, 8, 1, 16, BoundMode::UPPER_LOWER)->

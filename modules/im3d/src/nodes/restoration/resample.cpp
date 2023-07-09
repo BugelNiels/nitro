@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #define INPUT_IMAGE "Image"
+#define INPUT_WHITE_POINT "White point"
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 #define OPTION_BRIGHTNESS_CORRECT "Correct Luminance"
@@ -40,25 +41,8 @@ static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &col
 
 static std::vector<cv::Mat> getDfs(const cv::Mat &src, int numLevels) {
     std::vector<cv::Mat> df(numLevels);
-
-    int rows = src.rows;
-    int cols = src.cols;
-    cv::Mat squashed(src.rows, src.cols, CV_8UC2);
-
-
-
-    for (int y = 0; y < rows; y++) {
-        const uchar *srcRow = src.ptr<uchar>(y);
-        cv::Vec2b *rowPtr = squashed.ptr<cv::Vec2b>(y);
-        for (int x = 0; x < cols; x++) {
-            rowPtr[x][0] = srcRow[x];
-            rowPtr[x][1] = srcRow[x] + 1;
-        }
-    }
-
-
 #pragma omp parallel for default(none) shared(df, src) firstprivate(numLevels)
-    for (int d = 0; d < numLevels; d++) {
+    for (int d = 1; d < numLevels; d++) {
         df[d] = nitro::signedDistField(src, d);
     }
     return df;
@@ -74,48 +58,68 @@ static cv::Mat resample(const cv::Mat &img, const std::vector<float> &colTable,
 #pragma omp parallel for default(none) firstprivate(height, width) shared(df, resampled, colTable, img)
     for (int y = 0; y < height; y++) {
         float *resRow = resampled.ptr<float>(y);
+        const uchar *indexRow = img.ptr<uchar>(y);
         for (int x = 0; x < width; x++) {
             // Calculate p from the inverse linear interpolation
-            uchar idx = img.at<uchar>(y, x);
+            uchar idx = indexRow[x];
 
-            float layer0Col = colTable[idx];
-            float layer1Col = colTable[idx + 1];
+            double layer0Col = colTable[idx];
 
-            float p0 = df[idx].at<float>(y, x);
-            float p1 = df[idx + 1].at<float>(y, x);
+            double p0 = df[idx].at<double>(y, x);
+            double p1 = df[idx + 1].at<double>(y, x);
 
-            float delta = (layer1Col - layer0Col);
+            double delta = (colTable[idx + 1] - layer0Col);
 
-            float t = p0 / (p0 - p1);
-            float p = t * delta + layer0Col;
+            double t = p0 / (p0 - p1);
+            if (p0 == p1) {
+                t = 0;
+            }
+            if (t < 0) {
+                delta = layer0Col - colTable[idx - 1];
+            }
+            double p = t * delta + layer0Col;
 
-            resRow[x] = p;
+            resRow[x] = float(p);
         }
     }
 
     return resampled;
 }
 
-cv::Mat nitro::resampleImage(const cv::Mat &img, bool brightnessCorrect) {
+cv::Mat nitro::resampleImage(const cv::Mat &img, bool brightnessCorrect, double whitePoint) {
 
     std::vector<float> colTable;
     cv::Mat indexed;
     toIndexed(img, indexed, colTable);
 
     int numLevels = colTable.size();
+    if (numLevels < 2) {
+        return img;
+    }
     std::vector<cv::Mat> dfs = getDfs(indexed, numLevels);
-    float brightness = std::min(colTable[colTable.size() - 1] + 0.1f, 1.0f);
-    colTable.push_back(brightness);
-    dfs.push_back(dfs[dfs.size() - 1] + 100);
+    double minVal;
+    cv::minMaxIdx(dfs[1], &minVal);
+    dfs[0] = dfs[1] - minVal;
+    colTable.push_back(whitePoint);
+
+
+    cv::minMaxIdx(dfs[dfs.size() - 1], &minVal);
+    dfs.push_back(dfs[dfs.size() - 1] + minVal);
     cv::Mat result = resample(indexed, colTable, dfs);
 
     if (brightnessCorrect) {
+        int filterSize = std::max(img.rows, img.cols) / 8;
+        filterSize = filterSize % 2 == 0 ? filterSize - 1 : filterSize;
+        cv::Size fSize = {filterSize, filterSize};
+        float sigma = 32;
+
         cv::Mat resIn;
-        cv::GaussianBlur(result, resIn, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
+        cv::GaussianBlur(result, resIn, fSize, sigma, sigma, cv::BorderTypes::BORDER_REFLECT);
         cv::Mat resTarget;
-        cv::GaussianBlur(img, resTarget, cv::Size(33, 33), 32, 32, cv::BorderTypes::BORDER_REFLECT);
+        cv::GaussianBlur(img, resTarget, fSize, sigma, sigma, cv::BorderTypes::BORDER_REFLECT);
         result = result - (resIn - resTarget);
     }
+
     return result;
 }
 
@@ -124,9 +128,10 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
         return;
     }
     auto imIn = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
+    double whitePoint = nodePorts.inputValue(INPUT_WHITE_POINT);
     bool correctLum = nodePorts.optionEnabled(OPTION_BRIGHTNESS_CORRECT);
 
-    cv::Mat result = resampleImage(*imIn, correctLum);
+    cv::Mat result = resampleImage(*imIn, correctLum, whitePoint);
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
@@ -138,6 +143,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 withIcon("resample.png")->
                 withNodeColor(NITRO_RESTORATION_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
+                withInputValue(INPUT_WHITE_POINT, 1, 0, 1, BoundMode::UNCHECKED)->
                 withCheckBox(OPTION_BRIGHTNESS_CORRECT, true)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();

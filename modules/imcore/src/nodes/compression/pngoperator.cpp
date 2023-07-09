@@ -6,6 +6,7 @@
 #define DISPLAY_LABEL_COMP "compLabel"
 #define DISPLAY_LABEL_ORIG "origLabel"
 #define DISPLAY_LABEL_RATIO "ratioLabel"
+#define OPTION_PNG_FLAGS "Method"
 #define INPUT_IMAGE "Image"
 #define OUTPUT_IMAGE "Compressed Image"
 #define INPUT_QUALITY "Compression Lvl"
@@ -21,7 +22,7 @@
 
 
 nitro::PngOperator::PngOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                  QLabel *ratioLabel)
+                                QLabel *ratioLabel)
         : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
 
 void nitro::PngOperator::execute(NodePorts &nodePorts) {
@@ -30,6 +31,7 @@ void nitro::PngOperator::execute(NodePorts &nodePorts) {
     }
     auto img = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int quality = nodePorts.inputInteger(INPUT_QUALITY);
+    int strategy = nodePorts.getOption(OPTION_PNG_FLAGS);
 
     cv::Mat data;
     img.convertTo(data, CV_8U, 255);
@@ -37,6 +39,25 @@ void nitro::PngOperator::execute(NodePorts &nodePorts) {
 
     cv::Mat result;
     std::vector<int> compression_params = {cv::IMWRITE_PNG_COMPRESSION, quality};
+
+    compression_params.push_back(cv::IMWRITE_PNG_STRATEGY);
+    switch (strategy) {
+        case 0: {
+            compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_DEFAULT);
+            break;
+        }
+        case 1: {
+            compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_FILTERED);
+            break;
+        }
+        case 2: {
+            compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_RLE);
+            break;
+        }
+        default:
+            compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_RLE);
+    }
+
     std::vector<uchar> png_buffer;
     cv::imencode(".png", data, png_buffer, compression_params);
     unsigned long size = png_buffer.size();
@@ -72,6 +93,7 @@ nitro::PngOperator::creator(const QString &category) {
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
                 withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
+                withDropDown(OPTION_PNG_FLAGS, {"Default", "Filtered", "RLE"})->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withInputInteger(INPUT_QUALITY, 9, 0, 9, BoundMode::UPPER_LOWER)->

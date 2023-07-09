@@ -8,22 +8,28 @@
 #define OUTPUT_IMAGE "Image"
 #define MODE_DROPDOWN "Mode"
 #define OPTION_SIGNED "Signed"
+#define OPTION_NORMALIZE "Normalize"
 
-static cv::Mat distanceField(cv::Mat const &src, double threshold, cv::DistanceTypes mode, bool signedDf) {
+static cv::Mat
+distanceField(cv::Mat const &src, double threshold, cv::DistanceTypes mode, bool signedDf, bool normalize) {
     cv::Mat binaryImOutside;
     cv::threshold(src, binaryImOutside, threshold, 1, cv::THRESH_BINARY_INV);
     binaryImOutside.convertTo(binaryImOutside, CV_8UC1, 255);
 
     cv::Mat df;
     cv::distanceTransform(binaryImOutside, df, mode, cv::DIST_MASK_PRECISE);
-    cv::normalize(df, df, 0, 1, cv::NORM_MINMAX);
+    if (normalize) {
+        cv::normalize(df, df, 0, 1, cv::NORM_MINMAX);
+    }
     if (signedDf) {
         cv::Mat binaryImInside;
         cv::threshold(src, binaryImInside, threshold, 1, cv::THRESH_BINARY);
         binaryImInside.convertTo(binaryImInside, CV_8UC1, 255);
         cv::Mat dfIn;
         cv::distanceTransform(binaryImInside, dfIn, mode, cv::DIST_MASK_PRECISE);
-        cv::normalize(dfIn, dfIn, 0, 1, cv::NORM_MINMAX);
+        if (normalize) {
+            cv::normalize(dfIn, dfIn, 0, 1, cv::NORM_MINMAX);
+        }
         cv::subtract(df, dfIn, df);
     }
     df.convertTo(df, CV_32F);
@@ -40,6 +46,7 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
     double threshold = nodePorts.inputValue(INPUT_THRESH);
     int mode = nodePorts.getOption(MODE_DROPDOWN);
     int signedDf = nodePorts.getOption(OPTION_SIGNED);
+    bool normalize = nodePorts.optionEnabled(OPTION_NORMALIZE);
 
     cv::DistanceTypes type;
     switch (mode) {
@@ -66,7 +73,7 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
 
     }
 
-    cv::Mat result = distanceField(*inputImg, threshold, type, signedDf);
+    cv::Mat result = distanceField(*inputImg, threshold, type, signedDf, normalize);
     // Store the result
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
@@ -82,6 +89,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DistanceTransformOpera
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
                 withDropDown(MODE_DROPDOWN, {"Euclidean", "Manhattan", "Chessboard"})->
                 withCheckBox(OPTION_SIGNED, false)->
+                withCheckBox(OPTION_NORMALIZE, false)->
                 withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
                 build();
     };
