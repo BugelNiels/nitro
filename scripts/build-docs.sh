@@ -7,7 +7,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd ..
 
-doxygen docs/Doxyfile
+project_version=$(head -n 1 version.txt)
+( cat docs/Doxyfile ; echo "$project_version" ) | doxygen docs/Doxyfile
 
 # Exit if any command fails
 set -e

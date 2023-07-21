@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 #  -------------------- Versioning ----------------------------------
-set(NITRO_VERSION_MAJOR 1)
-set(NITRO_VERSION_MINOR 3)
-set(NITRO_VERSION_PATCH 1)
-
-set(NITRO_VERSION "${NITRO_VERSION_MAJOR}.${NITRO_VERSION_MINOR}.${NITRO_VERSION_PATCH}")
+file(STRINGS "version.txt" NITRO_VERSION LIMIT_COUNT 1)
 set(NITRO_NAME "NITRO")
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
@@ -78,8 +74,8 @@ include(cmake/modules.cmake)
 
 add_module(ImCore)
 add_module(ImProc)
-add_module(Thesis)
 add_module(Compression)
+#add_module(Thesis)
 
 include(cmake/config.cmake)
 

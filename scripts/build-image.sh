@@ -26,11 +26,12 @@ if [[ $? -eq 0 ]]; then
     chmod u+x linuxdeployqt-continuous-x86_64.AppImage
   fi
   # TODO save this version elsewhere
-  export VERSION="1.3.1"
+  project_version=$(head -n 1 version.txt)
+  export VERSION=$project_version
   ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
   mkdir bin/
   echo "Copying to bin"
-  cp NITRO-${VERSION}-x86_64.AppImage bin/
+  cp NITRO-${project_version}-x86_64.AppImage bin/
   cd "$initial_loc"
 else
   cd "$initial_loc"
