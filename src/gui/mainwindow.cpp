@@ -6,14 +6,16 @@
 #include <QEvent>
 #include <QHBoxLayout>
 #include <QSplitter>
-#include "src/util/imgresourcereader.hpp"
-#include "config.hpp"
-
-#include "src/gui/nodeeditor/nodedockwidget.hpp"
-#include "stylepresets.hpp"
 #include <QApplication>
 
-nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
+#include "src/util/imgresourcereader.hpp"
+#include "config.hpp"
+#include "src/gui/nodeeditor/nodedockwidget.hpp"
+#include "stylepresets.hpp"
+
+namespace nitro {
+
+MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
         : QMainWindow(parent) {
     setWindowTitle("NITRO");
     setWindowIcon(QIcon(":/icons/nitro.png"));
@@ -35,7 +37,7 @@ nitro::MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
 
 }
 
-void nitro::MainWindow::finalizeSetup() {
+void MainWindow::finalizeSetup() {
     installEventFilter(this);
 
     setMenuBar(initMenuBar());
@@ -50,10 +52,10 @@ void nitro::MainWindow::finalizeSetup() {
 
 }
 
-nitro::MainWindow::~MainWindow() = default;
+MainWindow::~MainWindow() = default;
 
 
-QStatusBar *nitro::MainWindow::initFooter() {
+QStatusBar *MainWindow::initFooter() {
     auto *versionLabel = new QLabel(QString(" version %1 ").arg(NITRO_VERSION), this);
     fileNameLabel_ = new QLabel(" untitled.json ", this);
 
@@ -66,7 +68,7 @@ QStatusBar *nitro::MainWindow::initFooter() {
 }
 
 
-QMenuBar *nitro::MainWindow::initMenuBar() {
+QMenuBar *MainWindow::initMenuBar() {
     auto *menuBar = new QMenuBar();
     auto *iconLabel = new QAction(QIcon(":/icons/nitro.png"), "", this);
     menuBar->addAction(iconLabel);
@@ -84,14 +86,14 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
 
     auto *lightModeToggle = new QAction(menuBar);
     lightModeToggle->setIcon(
-            QIcon(nitro::ImResourceReader::getPixMap(":/icons/theme.png", {42, 42}, QColor(128, 128, 128))));
+            QIcon(ImResourceReader::getPixMap(":/icons/theme.png", {42, 42}, QColor(128, 128, 128))));
     lightModeToggle->setCheckable(true);
     lightModeToggle->setChecked(false); // default is dark mode
     connect(lightModeToggle, &QAction::toggled, this, [this](bool toggled) {
         if (toggled) {
-            nitro::applyStylePreset(nitro::getLightModePalette());
+            applyStylePreset(getLightModePalette());
         } else {
-            nitro::applyStylePreset(nitro::getDarkModePalette());
+            applyStylePreset(getDarkModePalette());
         }
         QWidget *topLevelWidget = QApplication::topLevelWidgets().at(0);
 
@@ -108,7 +110,7 @@ QMenuBar *nitro::MainWindow::initMenuBar() {
     return menuBar;
 }
 
-QMenu *nitro::MainWindow::getWindowMenu() {
+QMenu *MainWindow::getWindowMenu() {
     auto *windowMenu = new QMenu("Window");
     for (auto &dw: widgets_) {
         auto *nodeEditorAction = new QAction(dw->windowTitle(), this);
@@ -122,7 +124,7 @@ QMenu *nitro::MainWindow::getWindowMenu() {
     return windowMenu;
 }
 
-QMenu *nitro::MainWindow::getFileMenu() {
+QMenu *MainWindow::getFileMenu() {
     auto *fileMenu = new QMenu("File");
 
     auto *newAction = new QAction(QStringLiteral("New"), this);
@@ -191,18 +193,20 @@ QMenu *nitro::MainWindow::getFileMenu() {
 }
 
 
-QLabel *nitro::MainWindow::buildDockIcon(const QString &path) {
+QLabel *MainWindow::buildDockIcon(const QString &path) {
     auto *nodeIcon = new QLabel();
     nodeIcon->setPixmap(ImResourceReader::getPixMap(path, {icSize_, icSize_}, icColor_));
     return nodeIcon;
 }
 
-void nitro::MainWindow::registerNodeDock(nitro::NodeDockWidget *widget) {
+void MainWindow::registerNodeDock(NodeDockWidget *widget) {
     nodeDock_ = widget;
     registerDock(widget);
 }
 
-void nitro::MainWindow::registerDock(QDockWidget *widget) {
+void MainWindow::registerDock(QDockWidget *widget) {
     widgets_.push_back(widget);
     dockLayout_->addWidget(widget);
 }
+
+} // namespace nitro

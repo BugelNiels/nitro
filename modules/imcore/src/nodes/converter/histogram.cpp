@@ -1,18 +1,19 @@
 #include "histogram.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#include <QDebug>
+namespace nitro::ImCore {
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_HIST "Histogram"
-#define HIST_DISPLAY "Histogram display"
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_HIST = "Histogram";
+inline const QString HIST_DISPLAY = "Histogram display";
 
-#define NUM_BINS 256
+inline const int NUM_BINS = 256;
 
-cv::Mat createHistogramImage(const cv::Mat &histogram) {
+static cv::Mat createHistogramImage(const cv::Mat &histogram) {
     int histSize = histogram.rows;
     int imageSize = NUM_BINS;
     int binWidth = cvRound(static_cast<double>(imageSize) / histSize);
@@ -41,7 +42,9 @@ static cv::Mat getHistogram(const cv::Mat &src) {
     return histogram;
 }
 
-void nitro::HistogramOperator::execute(NodePorts &nodePorts) {
+HistogramOperator::HistogramOperator(QLabel *histLabel) : histLabel_(histLabel) {}
+
+void HistogramOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -50,18 +53,19 @@ void nitro::HistogramOperator::execute(NodePorts &nodePorts) {
 
     cv::Mat histImg = createHistogramImage(histogram);
 
-    histLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(histImg, displayImage_)).scaled(150, 20, Qt::AspectRatioMode::IgnoreAspectRatio,
+    histLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(histImg, displayImage_)).scaled(150, 20,
+                                                                                           Qt::AspectRatioMode::IgnoreAspectRatio,
                                                                                            Qt::SmoothTransformation));
 
     nodePorts.output<GrayImageData>(OUTPUT_HIST, histImg);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::HistogramOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> HistogramOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Histogram", "histogram", category);
+        NitroNodeBuilder builder("Histogram", "histogram", category);
         auto *histLabel = new QLabel();
         return builder
-                .withOperator(std::make_unique<nitro::HistogramOperator>(histLabel))->
+                .withOperator(std::make_unique<HistogramOperator>(histLabel))->
                 withIcon("hist.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -71,5 +75,4 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::HistogramOperator::cre
     };
 }
 
-nitro::HistogramOperator::HistogramOperator(QLabel *histLabel) : histLabel_(histLabel) {}
-
+} // namespace nitro::ImCore

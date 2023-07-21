@@ -1,18 +1,19 @@
 #include "imagesourceoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "util.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/grayimagedata.hpp"
 
-#include <QDebug>
 #include <opencv2/imgcodecs.hpp>
 #include <QImageReader>
 
-#define OUTPUT_IMAGE "Image"
-#define DISPLAY_IMAGE "Display Img"
-#define OUTPUT_ALPHA "Alpha"
+namespace nitro::ImCore {
 
-nitro::ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel) : displayImgLabel_(displayImgLabel) {}
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString DISPLAY_IMAGE = "Display Img";
+inline const QString OUTPUT_ALPHA = "Alpha";
+
+ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel) : displayImgLabel_(displayImgLabel) {}
 
 void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     cv::Mat inputImg = cv::imread(filePath.toStdString(), -1);
@@ -36,7 +37,7 @@ void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     inputImg.convertTo(dest, CV_32F, 1.0 / nitro::getMaxValue(inputImg));
 }
 
-void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
+void ImageSourceOperator::execute(NodePorts &nodePorts) {
     QString filePath = nodePorts.getGlobalProperty(OUTPUT_IMAGE);
     cv::Mat img;
     cv::Mat alpha;
@@ -46,7 +47,7 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
         nodePorts.output<ColImageData>(OUTPUT_IMAGE, blankImg_);
         nodePorts.output<GrayImageData>(OUTPUT_ALPHA, blankImg_);
     } else {
-        if(isGrayscale(img)) {
+        if (isGrayscale(img)) {
 
             nodePorts.output<GrayImageData>(OUTPUT_IMAGE, img);
         } else {
@@ -68,17 +69,15 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
 
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ImageSourceOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ImageSourceOperator::creator(const QString &category) {
 
     return [category]() {
-        NitroNodeBuilder builder("Image Source", "ImageSource", category);
-
         auto *imgDisplayLabel = new QLabel();
         imgDisplayLabel->setAlignment(Qt::AlignCenter);
         imgDisplayLabel->setStyleSheet("border: 1px solid grey;");
+        NitroNodeBuilder builder("Image Source", "ImageSource", category);
         return builder.
-                withOperator(std::make_unique<nitro::ImageSourceOperator>(imgDisplayLabel))->
+                withOperator(std::make_unique<ImageSourceOperator>(imgDisplayLabel))->
                 withLoadButton(OUTPUT_IMAGE, "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")->
                 withDisplayWidget(DISPLAY_IMAGE, imgDisplayLabel)->
                 withIcon("image_source.png")->
@@ -88,3 +87,4 @@ nitro::ImageSourceOperator::creator(const QString &category) {
     };
 }
 
+} // namespace nitro::ImCore

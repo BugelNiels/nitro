@@ -7,37 +7,37 @@
 
 #include "renderer.hpp"
 
-namespace nitro {
+namespace nitro::Thesis {
 
 /**
  * @brief The MeshRenderer class is responsible for rendering a mesh. Can render
  * any arbitrary mesh.
  */
-    class ShaderRenderer : public Renderer {
-    public:
-        ShaderRenderer();
+class ShaderRenderer : public Renderer {
+public:
+    ShaderRenderer();
 
-        ~ShaderRenderer() override;
+    ~ShaderRenderer() override;
 
-        void updateUniforms();
+    void updateUniforms();
 
-        void updateBuffers(const QImage &image);
+    void updateBuffers(const QImage &image);
 
-        void draw() override;
+    void draw() override;
 
-    protected:
-        void initShaders() override;
+protected:
+    void initShaders() override;
 
-        void initBuffers() override;
+    void initBuffers() override;
 
-    private:
-        QOpenGLShaderProgram *shader;
-        QOpenGLVertexArrayObject *vao;
-        QOpenGLBuffer *coordsBO;
-        QOpenGLBuffer *indexBO;
-        std::unique_ptr<QOpenGLTexture> texture;
-        const int meshIBOSize;
-        int m_imWidth;
-        int m_imHeight;
-    };
-}  // namespace nitro
+private:
+    QOpenGLShaderProgram *shader;
+    QOpenGLVertexArrayObject *vao;
+    QOpenGLBuffer *coordsBO;
+    QOpenGLBuffer *indexBO;
+    std::unique_ptr<QOpenGLTexture> texture;
+    const int meshIBOSize;
+    int m_imWidth;
+    int m_imHeight;
+};
+}  // namespace nitro::Thesis

@@ -30,3 +30,11 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${MODULE_LIBS}
         )
+
+set(EXTRA_RESOURCES resources/resources.qrc)
+# Convert the relative paths of the resource files to absolute paths
+foreach(resource_file ${EXTRA_RESOURCES})
+    set(ABSOLUTE_RESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/${resource_file}")
+    list(APPEND ABSOLUTE_RESOURCE_FILES ${ABSOLUTE_RESOURCE_FILE})
+endforeach()
+target_sources(${PROJECT_NAME} PRIVATE ${ABSOLUTE_RESOURCE_FILES})

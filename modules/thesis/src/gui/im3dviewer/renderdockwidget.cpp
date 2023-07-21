@@ -7,7 +7,9 @@
 
 #define EASTER_EGG_MODE
 
-nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
+namespace nitro::Thesis {
+
+RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
         : QDockWidget(window),
           renderView_(renderView) {
     setWindowTitle("3D Image Viewer");
@@ -49,4 +51,6 @@ nitro::RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *wi
     setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
 }
 
-nitro::RenderDockWidget::~RenderDockWidget() = default;
+RenderDockWidget::~RenderDockWidget() = default;
+
+} // namespace nitro::Thesis

@@ -1,16 +1,19 @@
 #include "decompress.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "util.hpp"
 #include "nodes/restoration/resample.hpp"
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Residual"
-#define INPUT_SMALL "Small"
-#define INPUT_K_SIZE "Filter Size"
-#define OUTPUT_IMAGE "Image"
-#define UNIFORM_LUM "Uniform Luminance"
-#define TIME_LABEL "Time"
+
+namespace nitro::Thesis {
+
+inline const QString INPUT_IMAGE = "Residual";
+inline const QString INPUT_SMALL = "Small";
+inline const QString INPUT_K_SIZE = "Filter Size";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString UNIFORM_LUM = "Uniform Luminance";
+inline const QString TIME_LABEL = "Time";
 
 static cv::Mat toRgb(const cv::Mat &img) {
     cv::Mat result;
@@ -24,7 +27,7 @@ static cv::Mat toRgb(const cv::Mat &img) {
     return channels[0];
 }
 
-void nitro::DecompressOperator::execute(NodePorts &nodePorts) {
+void DecompressOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -55,12 +58,12 @@ void nitro::DecompressOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DecompressOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> DecompressOperator::creator(const QString &category) {
     return [category]() {
         auto *timeLabel = new QLabel("-");
-        nitro::NitroNodeBuilder builder("Bit Decompress", "bitDecompress", category);
+        NitroNodeBuilder builder("Bit Decompress", "bitDecompress", category);
         return builder.
-                withOperator(std::make_unique<nitro::DecompressOperator>(timeLabel))->
+                withOperator(std::make_unique<DecompressOperator>(timeLabel))->
                 withIcon("expand.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withDisplayWidget(TIME_LABEL, timeLabel)->
@@ -73,4 +76,6 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DecompressOperator::cr
     };
 }
 
-nitro::DecompressOperator::DecompressOperator(QLabel *timeLabel) : timeLabel_(timeLabel) {}
+DecompressOperator::DecompressOperator(QLabel *timeLabel) : timeLabel_(timeLabel) {}
+
+} // namespace nitro::Thesis

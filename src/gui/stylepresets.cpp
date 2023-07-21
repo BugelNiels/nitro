@@ -3,11 +3,13 @@
 #include <QApplication>
 #include <QToolTip>
 
-void nitro::applyStylePreset(const StylePreset &preset) {
+namespace nitro {
+
+void applyStylePreset(const StylePreset &preset) {
     QApplication::setPalette(preset.palette);
 }
 
-nitro::StylePreset nitro::getDarkModePalette() {
+StylePreset getDarkModePalette() {
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(34, 34, 36));             // Window background color
     palette.setColor(QPalette::WindowText, QColor(239, 239, 239));      // Text color
@@ -34,7 +36,7 @@ nitro::StylePreset nitro::getDarkModePalette() {
     return preset;
 }
 
-nitro::StylePreset nitro::getLightModePalette() {
+StylePreset getLightModePalette() {
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(222, 222, 222));           // Window background color
     palette.setColor(QPalette::WindowText, QColor(70, 70, 70));          // Text color
@@ -61,3 +63,5 @@ nitro::StylePreset nitro::getLightModePalette() {
 
     return preset;
 }
+
+} // namespace nitro

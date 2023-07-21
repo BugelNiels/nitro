@@ -8,21 +8,20 @@ namespace nitro::Thesis {
 
 class RenderView;
 
-class ThesisModule : public NitroModule {
+class Thesis : public NitroModule {
 public:
-    ThesisModule();
+    Thesis();
 
     void registerDocks(MainWindow *window) override;
 
     void registerNodes(NodeRegistry *registry) override;
 
 private:
+    RenderView *renderViewer_;
 
     void registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer);
 
     void registerImageNodes(NodeRegistry *registry);
-
-    RenderView *renderViewer_;
 
     void registerRestorationNodes(NodeRegistry *registry);
 };

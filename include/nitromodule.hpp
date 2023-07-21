@@ -4,42 +4,42 @@
 
 namespace nitro {
 
-    class MainWindow;
+class MainWindow;
 
-    class NodeRegistry;
+class NodeRegistry;
+
+/**
+ *
+ */
+class NitroModule {
+public:
 
     /**
      *
      */
-    class NitroModule {
-    public:
+    virtual ~NitroModule() = default;
 
-        /**
-         *
-         */
-        virtual ~NitroModule() = default;
+    /**
+     *
+     * @param registry
+     */
+    virtual void registerNodes(NodeRegistry *registry) = 0;
 
-        /**
-         *
-         * @param registry
-         */
-        virtual void registerNodes(NodeRegistry *registry) = 0;
-
-        /**
-         *
-         * @param registry
-         */
-        virtual void registerDataTypes(NodeRegistry *registry) {
-            // No data types are registered by default
-        };
-
-        /**
-         *
-         * @param window
-         */
-        virtual void registerDocks(MainWindow *window) {
-            // No docks are registered by default
-        };
+    /**
+     *
+     * @param registry
+     */
+    virtual void registerDataTypes(NodeRegistry *registry) {
+        // No data types are registered by default
     };
 
-}
+    /**
+     *
+     * @param window
+     */
+    virtual void registerDocks(MainWindow *window) {
+        // No docks are registered by default
+    };
+};
+
+} // namespace nitro

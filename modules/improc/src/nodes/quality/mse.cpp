@@ -1,17 +1,20 @@
 #include "mse.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "util.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_IMAGE_REF "Reference"
-#define OUTPUT_VALUE "Error"
+namespace nitro::ImProc {
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_IMAGE_REF = "Reference";
+inline const QString OUTPUT_VALUE = "Error";
 
 static double mse(const cv::Mat &im1, const cv::Mat &im2) {
     cv::Mat diff;
-    if(im1.size != im2.size) {
+    if (im1.size != im2.size) {
         return -1;
     }
     cv::absdiff(im1, im2, diff);
@@ -19,7 +22,7 @@ static double mse(const cv::Mat &im1, const cv::Mat &im2) {
     return cv::mean(squaredDiff).val[0];
 }
 
-void nitro::MseOperator::execute(NodePorts &nodePorts) {
+void MseOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -35,11 +38,11 @@ void nitro::MseOperator::execute(NodePorts &nodePorts) {
 }
 
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MseOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MseOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("MSE", "mse", category);
+        NitroNodeBuilder builder("MSE", "mse", category);
         return builder.
-                withOperator(std::make_unique<nitro::MseOperator>())->
+                withOperator(std::make_unique<MseOperator>())->
                 withIcon("compare.png")->
                 withNodeColor(NITRO_QUALITY_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -48,3 +51,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MseOperator::creator(c
                 build();
     };
 }
+
+} // namespace nitro::ImProc

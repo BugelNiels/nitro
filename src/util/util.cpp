@@ -1,11 +1,13 @@
+#include "util.hpp"
 
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgproc.hpp>
-#include "util.hpp"
-#include <QDebug>
 #include <iostream>
+#include <QDebug>
 
-QColor nitro::makeReadable(const QColor &color, bool lightMode) {
+namespace nitro {
+
+QColor makeReadable(const QColor &color, bool lightMode) {
     // Convert to YIQ color space
     double y = 0.299 * color.redF() + 0.587 * color.greenF() + 0.114 * color.blueF();
     double i = 0.596 * color.redF() - 0.274 * color.greenF() - 0.322 * color.blueF();
@@ -33,7 +35,7 @@ QColor nitro::makeReadable(const QColor &color, bool lightMode) {
 }
 
 
-int nitro::getMaxValue(const cv::Mat &mat) {
+int getMaxValue(const cv::Mat &mat) {
     int depth = mat.depth();
 
     int maxValue;
@@ -73,7 +75,7 @@ int nitro::getMaxValue(const cv::Mat &mat) {
 
 
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
-QImage nitro::cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
+QImage cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
 
     switch (src.type()) {
         case CV_32F: {
@@ -131,7 +133,7 @@ QImage nitro::cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
 // data with the cv::Mat directly
 //    NOTE: Format_RGB888 is an exception since we need to use a local QImage and thus must clone the data regardless
 //    NOTE: This does not cover all cases - it should be easy to add new ones as required.
-inline cv::Mat nitro::QImageToCvMat(const QImage &inImage, bool inCloneImageData = true) {
+inline cv::Mat QImageToCvMat(const QImage &inImage, bool inCloneImageData = true) {
     switch (inImage.format()) {
         // 8-bit, 4 channel
         case QImage::Format_ARGB32:
@@ -207,7 +209,7 @@ static bool equal(const cv::Mat &a, const cv::Mat &b) {
     return (s[0] == 0) && (s[1] == 0) && (s[2] == 0);
 }
 
-bool nitro::isGrayscale(const cv::Mat &img) {
+bool isGrayscale(const cv::Mat &img) {
     if (img.channels() > 1) {
         std::vector<cv::Mat> channels;
         cv::split(img, channels);
@@ -222,7 +224,7 @@ bool nitro::isGrayscale(const cv::Mat &img) {
 }
 
 
-cv::Mat nitro::cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage) {
+cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage) {
     int targetWidth = targetImage.cols;
     int targetHeight = targetImage.rows;
 
@@ -237,7 +239,7 @@ cv::Mat nitro::cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetIma
     return canvas;
 }
 
-cv::Mat nitro::createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize) {
+cv::Mat createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize) {
     int targetWidth = targetSize[1];
     int targetHeight = targetSize[0];
 
@@ -252,7 +254,7 @@ cv::Mat nitro::createMask(const cv::MatSize &srcSize, const cv::MatSize &targetS
 }
 
 
-cv::Mat nitro::resize(const cv::Mat &imIn,
+cv::Mat resize(const cv::Mat &imIn,
                       const cv::Size &targetSize,
                       const cv::InterpolationFlags mode, AspectRatioMode arMode) {
     cv::Mat result;
@@ -330,3 +332,5 @@ cv::Mat nitro::resize(const cv::Mat &imIn,
     }
     return result;
 }
+
+} // namespace nitro

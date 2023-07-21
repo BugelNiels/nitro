@@ -1,17 +1,20 @@
 #include "bilateralfilter.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_SIGMA_C "Sigma (c)"
-#define INPUT_SIGMA_S "Sigma (s)"
-#define INPUT_D "Diameter"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImProc {
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_SIGMA_C = "Sigma (c)";
+inline const QString INPUT_SIGMA_S = "Sigma (s)";
+inline const QString INPUT_D = "Diameter";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+
+void BilateralFilterOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
@@ -28,11 +31,11 @@ void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> BilateralFilterOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
+        NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
         return builder.
-                withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
+                withOperator(std::make_unique<BilateralFilterOperator>())->
                 withIcon("blur.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
@@ -43,3 +46,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperato
                 build();
     };
 }
+
+} // namespace nitro::ImProc

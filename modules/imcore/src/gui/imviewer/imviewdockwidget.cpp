@@ -1,10 +1,13 @@
-#include <QHBoxLayout>
 #include "imviewdockwidget.hpp"
 #include "imviewer.hpp"
 #include "gui/mainwindow.hpp"
-#include "gui/zoombar.hpp"
+#include "../../../../../src/gui/components/zoombar.hpp"
 
-#define SPACING 20
+#include <QHBoxLayout>
+
+namespace nitro::ImCore {
+
+const int SPACING = 20;
 
 static QWidget *spacing() {
     auto label = new QLabel("|");
@@ -12,14 +15,14 @@ static QWidget *spacing() {
     return label;
 }
 
-nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window)
+ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window)
         : QDockWidget(window), imageViewer_(imageViewer) {
     setWindowTitle("Image Viewer");
 
-    QWidget * imViewTitleWrapper = initTitleBarWidget(window);
+    QWidget *imViewTitleWrapper = initTitleBarWidget(window);
 
 
-    QObject::connect(imageViewer_, &nitro::ImageViewer::mousePosUpdated, window,
+    QObject::connect(imageViewer_, &ImageViewer::mousePosUpdated, window,
                      [this](const QPoint &pos, QColor color) {
                          updateFooterLabels(pos, color);
                      });
@@ -46,7 +49,7 @@ nitro::ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *
     updateFooterLabels({0, 0}, {0, 0, 0});
 }
 
-QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) const {
+QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
     auto imViewTitleWrapper = new QWidget();
     auto imHLayout = new QHBoxLayout();
 
@@ -67,11 +70,11 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
     imHLayout->addWidget(spacing());
 
 
-    connect(imageViewer_, &nitro::ImageViewer::scaleChanged, window,
+    connect(imageViewer_, &ImageViewer::scaleChanged, window,
             [zoomBar](double scale) {
                 zoomBar->setZoom(scale);
             });
-    connect(imageViewer_, &nitro::ImageViewer::imageUpdated, window,
+    connect(imageViewer_, &ImageViewer::imageUpdated, window,
             [sizeLabel](const ImageInfo &img) {
                 sizeLabel->setText(QString("%1 x %2").arg(img.width).arg(img.height));
             });
@@ -80,7 +83,7 @@ QWidget *nitro::ImViewDockWidget::initTitleBarWidget(nitro::MainWindow *window) 
     return imViewTitleWrapper;
 }
 
-void nitro::ImViewDockWidget::updateFooterLabels(const QPoint &pos, const QColor &color) {
+void ImViewDockWidget::updateFooterLabels(const QPoint &pos, const QColor &color) {
     xLabel_->setText(QString::number(pos.x()));
     yLabel_->setText(QString::number(pos.y()));
     rLabel_->setText(QString::number(color.redF(), 'f', 3));
@@ -110,7 +113,7 @@ static QLabel *emptyLabel(bool selectable = false) {
     return label;
 }
 
-QWidget *nitro::ImViewDockWidget::initStatusBar() {
+QWidget *ImViewDockWidget::initStatusBar() {
 
     auto *statusBar = new QWidget(this);
     auto *layout = new QHBoxLayout();
@@ -170,4 +173,6 @@ QWidget *nitro::ImViewDockWidget::initStatusBar() {
     return statusBar;
 }
 
-nitro::ImViewDockWidget::~ImViewDockWidget() = default;
+ImViewDockWidget::~ImViewDockWidget() = default;
+
+} // namespace nitro::ImCore

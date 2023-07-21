@@ -5,32 +5,32 @@
 #include "gui/im3dviewer/settings.hpp"
 
 
-namespace nitro {
+namespace nitro::Thesis {
 /**
  * @brief The Renderer class represents a generic renderer class. The class is
  * essentially abstract and should only contain functionality that is applicable
  * to every renderer.
  */
-    class Renderer {
-    public:
-        Renderer();
+class Renderer {
+public:
+    Renderer();
 
-        Renderer(QOpenGLFunctions_4_1_Core *functions, Settings *settings);
+    Renderer(QOpenGLFunctions_4_1_Core *functions, Settings *settings);
 
-        virtual ~Renderer();
+    virtual ~Renderer();
 
-        virtual void initShaders() = 0;
+    virtual void initShaders() = 0;
 
-        virtual void initBuffers() = 0;
+    virtual void initBuffers() = 0;
 
-        [[nodiscard]] QOpenGLShaderProgram *constructDefaultShader(const QString &name) const;
+    [[nodiscard]] QOpenGLShaderProgram *constructDefaultShader(const QString &name) const;
 
-        void init(QOpenGLFunctions_4_1_Core *f, Settings *s);
+    void init(QOpenGLFunctions_4_1_Core *f, Settings *s);
 
-        virtual void draw() = 0;
+    virtual void draw() = 0;
 
-    protected:
-        QOpenGLFunctions_4_1_Core *gl;
-        Settings *settings;
-    };
-}  // namespace nitro
+protected:
+    QOpenGLFunctions_4_1_Core *gl;
+    Settings *settings;
+};
+}  // namespace nitro::Thesis

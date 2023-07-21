@@ -1,28 +1,28 @@
 #include "imgnodegraphicsview.hpp"
-#include "QtNodes/DataFlowGraphModel"
 
+#include "QtNodes/DataFlowGraphModel"
 #include "src/util/imgresourcereader.hpp"
 #include "QtNodes/internal/AbstractNodeGeometry.hpp"
-
 #include "util.hpp"
 
 #include "QtNodes/internal/ConnectionGraphicsObject.hpp"
 #include "QtNodes/internal/NodeGraphicsObject.hpp"
 #include "QtNodes/InvalidData.hpp"
 #include "QtNodes/Definitions"
-#include <QAction>
 #include "QtNodes/BasicGraphicsScene"
 #include "QtNodes/internal/UndoCommands.hpp"
+
+#include <QAction>
 #include <QMenu>
 #include <QMimeData>
 #include <QUndoStack>
 #include <QApplication>
-
 #include <QKeyEvent>
 #include <QLineEdit>
 
+namespace nitro {
 
-nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
+ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
                                                     QtNodes::BasicGraphicsScene *scene,
                                                     QtNodes::DataFlowGraphModel *model, QWidget *parent)
         : NodeGraphicsView(scene, model, parent),
@@ -32,7 +32,7 @@ nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
 }
 
 QAction *
-nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
+ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
     const QString &menuName = info.getNodeName();
     const QString &nodeType = info.getNodeId();
     const QString &iconPath = info.getIconPath();
@@ -47,12 +47,12 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
         }
     });
     QIcon icon;
-    icon.addPixmap(nitro::ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
+    icon.addPixmap(ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
     createNodeAction->setIcon(icon);
     return createNodeAction;
 }
 
-QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
+QMenu *ImageNodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
     const int padding = 12;
     menu->setContentsMargins(padding, padding, padding, padding);
@@ -91,7 +91,7 @@ QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
 }
 
 
-void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
+void ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
     // Spawn and connect to viewer if possible
     QGraphicsItem *item = itemAt(x, y);
     // Update position of current selected node?
@@ -171,7 +171,7 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
     }
 }
 
-void nitro::ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
+void ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
     if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
         event->button() == Qt::LeftButton) {
         spawnViewerNodeAt(event->pos().x(), event->pos().y());
@@ -180,7 +180,7 @@ void nitro::ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
     }
 }
 
-void nitro::ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
+void ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
         event->button() == Qt::LeftButton) {
         // Fix to ensure we can cycle the viewer node quickly between ports
@@ -190,7 +190,7 @@ void nitro::ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 }
 
-void nitro::ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
+void ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
     if (event->mimeData()->hasUrls()) {
         QList<QUrl> urls = event->mimeData()->urls();
         if (!urls.isEmpty()) {
@@ -216,12 +216,14 @@ void nitro::ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
     }
 }
 
-void nitro::ImageNodeGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
+void ImageNodeGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
 
 }
 
-void nitro::ImageNodeGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
+void ImageNodeGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
     QGraphicsView::dragMoveEvent(event);
     event->acceptProposedAction();
 }
+
+} // namespace nitro

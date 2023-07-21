@@ -7,13 +7,14 @@ class Settings;
 
 namespace nitro {
 
-    typedef struct StylePreset {
-        QPalette palette;
-    } StylePreset;
+using StylePreset = struct StylePreset {
+    QPalette palette;
+};
 
-    void applyStylePreset(const StylePreset &preset);
+void applyStylePreset(const StylePreset &preset);
 
-    StylePreset getDarkModePalette();
+StylePreset getDarkModePalette();
 
-    StylePreset getLightModePalette();
-} // nitro
+StylePreset getLightModePalette();
+
+} // namespace nitro

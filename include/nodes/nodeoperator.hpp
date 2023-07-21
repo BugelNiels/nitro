@@ -8,10 +8,11 @@
 
 namespace nitro {
 
-    class NodeOperator {
-    public:
-        virtual ~NodeOperator() = default;
+class NodeOperator {
+public:
+    virtual ~NodeOperator() = default;
 
-        virtual void execute(NodePorts &nodePorts) = 0;
-    };
-}
+    virtual void execute(NodePorts &nodePorts) = 0;
+};
+
+} // namespace nitro

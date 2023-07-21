@@ -8,97 +8,100 @@
 #include <QGraphicsView>
 #include <opencv2/core/mat.hpp>
 
-namespace nitro {
+namespace nitro::ImCore {
 
-    struct ImageInfo {
-        int width;
-        int height;
-        int channels;
+struct ImageInfo {
+    int width;
+    int height;
+    int channels;
+};
+
+class ImageViewer : public QGraphicsView {
+Q_OBJECT
+
+public:
+    struct ScaleRange {
+        double minimum = 0;
+        double maximum = 0;
     };
+public:
+    explicit ImageViewer(QGraphicsScene *imScene, QWidget *parent = nullptr);
 
-    class ImageViewer : public QGraphicsView {
-    Q_OBJECT
+    ~ImageViewer() override;
 
-    public:
-        struct ScaleRange {
-            double minimum = 0;
-            double maximum = 0;
-        };
-    public:
-        explicit ImageViewer(QGraphicsScene *imScene, QWidget *parent = nullptr);
+    void wheelEvent(QWheelEvent *event) override;
 
-        ~ImageViewer() override;
+    void keyPressEvent(QKeyEvent *event) override;
 
-        void wheelEvent(QWheelEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
-        void keyPressEvent(QKeyEvent *event) override;
-        void keyReleaseEvent(QKeyEvent *event) override;
+    void resetImScale();
 
-        void resetImScale();
+    void setImage(const std::shared_ptr<cv::Mat> &img);
 
-        void setImage(const std::shared_ptr<cv::Mat> &img);
+    void drawBackground(QPainter *painter, const QRectF &r) override;
 
-        void drawBackground(QPainter *painter, const QRectF &r) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
-        void contextMenuEvent(QContextMenuEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
-        void resizeEvent(QResizeEvent *event) override;
+    void removeImage();
 
-        void removeImage();
+    void mouseMoveEvent(QMouseEvent *event) override;
 
-        void mouseMoveEvent(QMouseEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 
-        void leaveEvent(QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
-        void mousePressEvent(QMouseEvent *event) override;
+    const double minScaleFactor = 0.2;
+    const double maxScaleFactor = 20;
+protected:
 
-        const double minScaleFactor = 0.2;
-        const double maxScaleFactor = 20;
-    protected:
+    void saveImage();
 
-        void saveImage();
+public Q_SLOTS:
 
-    public Q_SLOTS:
+    void scaleUp();
 
-        void scaleUp();
+    void scaleDown();
 
-        void scaleDown();
+Q_SIGNALS:
 
-    Q_SIGNALS:
+    void scaleChanged(double scale);
 
-        void scaleChanged(double scale);
-        void imageUpdated(const ImageInfo& img);
-        void mousePosUpdated(const QPoint& pos, QColor color);
+    void imageUpdated(const ImageInfo &img);
 
-    private:
+    void mousePosUpdated(const QPoint &pos, QColor color);
 
-        const int dotSize_ = 3;
-        const int gridStep_ = 64;
+private:
 
-        const int gridStepSize_ = 32;
-        const int emptySize_ = 128;
+    const int dotSize_ = 3;
+    const int gridStep_ = 64;
 
-        ScaleRange scaleRange_;
-        QImage displayImg_;
-        cv::Mat currentImg_;
-        QGraphicsPixmapItem *imgDisplayItem_ = nullptr;
-        QAction *saveAction_;
-        QAction *resetAction_;
-        bool removalDue_ = false;
-        bool crossHairMode_ = false;
+    const int gridStepSize_ = 32;
+    const int emptySize_ = 128;
 
-        void setScaleRange(double minimum = 0, double maximum = 0);
+    ScaleRange scaleRange_;
+    QImage displayImg_;
+    cv::Mat currentImg_;
+    QGraphicsPixmapItem *imgDisplayItem_ = nullptr;
+    QAction *saveAction_;
+    QAction *resetAction_;
+    bool removalDue_ = false;
+    bool crossHairMode_ = false;
 
-        void setupScale(double scale);
+    void setScaleRange(double minimum = 0, double maximum = 0);
 
-        QMenu *createContextMenu();
+    void setupScale(double scale);
 
-        void centerScene();
+    QMenu *createContextMenu();
+
+    void centerScene();
 
 
-        void initActions();
+    void initActions();
 
-        QString lastFilePath_ = "../data/";
-    };
+    QString lastFilePath_ = "../data/";
+};
 
-} // nitro
+} // namespace nitro::ImCore

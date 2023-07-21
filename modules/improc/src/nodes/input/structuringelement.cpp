@@ -1,16 +1,19 @@
 #include "structuringelement.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_X "Width"
-#define INPUT_Y "Height"
-#define OUTPUT_IMAGE "Kernel"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImProc {
 
-void nitro::StructElemOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+inline const QString INPUT_X = "Width";
+inline const QString INPUT_Y = "Height";
+inline const QString OUTPUT_IMAGE = "Kernel";
+inline const QString MODE_DROPDOWN = "Mode";
+
+void StructElemOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     int option = nodePorts.getOption(MODE_DROPDOWN);
@@ -39,11 +42,11 @@ void nitro::StructElemOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> StructElemOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Structuring Element", "structuringElement", category);
+        NitroNodeBuilder builder("Structuring Element", "structuringElement", category);
         return builder.
-                withOperator(std::make_unique<nitro::StructElemOperator>())->
+                withOperator(std::make_unique<StructElemOperator>())->
                 withIcon("kernel.png")->
                 withNodeColor(NITRO_INPUT_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
@@ -53,3 +56,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::StructElemOperator::cr
                 build();
     };
 }
+
+} // namespace nitro::ImProc

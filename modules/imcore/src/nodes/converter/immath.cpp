@@ -1,17 +1,20 @@
 #include "immath.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_FAC "Fac"
-#define INPUT_VALUE_1 "Value 1"
-#define INPUT_VALUE_2 "Value 2"
-#define OUTPUT_VALUE "Value"
-#define OPTION_CLAMP "Clamp"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
+
+inline const QString INPUT_FAC = "Fac";
+inline const QString INPUT_VALUE_1 = "Value 1";
+inline const QString INPUT_VALUE_2 = "Value 2";
+inline const QString OUTPUT_VALUE = "Value";
+inline const QString OPTION_CLAMP = "Clamp";
+inline const QString MODE_DROPDOWN = "Mode";
 
 // TODO: add support for pow, abs and sqrt
 
@@ -67,7 +70,7 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 }
 
 // ensures the images all have the same size and number of channels
-void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
+void MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     auto fac = *nodePorts.inGetAs<GrayImageData>(INPUT_FAC);
     auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
     auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
@@ -97,7 +100,7 @@ void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::MathOperator::execute(NodePorts &nodePorts) {
+void MathOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -168,11 +171,11 @@ void nitro::MathOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MathOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Math", "math", category);
+        NitroNodeBuilder builder("Math", "math", category);
         return builder.
-                withOperator(std::make_unique<nitro::MathOperator>())->
+                withOperator(std::make_unique<MathOperator>())->
                 withIcon("math.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})->
@@ -187,3 +190,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(
                 build();
     };
 }
+
+} // namespace nitro::ImCore

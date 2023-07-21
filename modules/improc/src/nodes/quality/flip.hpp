@@ -3,13 +3,15 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImProc {
 
-    class FlipOperator : public NodeOperator {
-    public:
+class FlipOperator : public NodeOperator {
+public:
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
-        void execute(NodePorts &nodePorts) override;
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-    };
-} // nitro
+    void execute(NodePorts &nodePorts) override;
+
+};
+
+} // namespace nitro::ImProc

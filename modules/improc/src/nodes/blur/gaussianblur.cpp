@@ -1,17 +1,20 @@
 #include "gaussianblur.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_SIZE "Size"
-#define INPUT_SIGMA "Sigma"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define BORDER_DROPDOWN "Border"
+namespace nitro::ImProc {
 
-void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_SIZE = "Size";
+inline const QString INPUT_SIGMA = "Sigma";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString BORDER_DROPDOWN = "Border";
+
+void GaussianBlurOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
@@ -24,11 +27,11 @@ void nitro::GaussianBlurOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> GaussianBlurOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Gaussian Blur", "gaussianFilter", category);
+        NitroNodeBuilder builder("Gaussian Blur", "gaussianFilter", category);
         return builder.
-                withOperator(std::make_unique<nitro::GaussianBlurOperator>())->
+                withOperator(std::make_unique<GaussianBlurOperator>())->
                 withIcon("blur.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
@@ -39,3 +42,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::GaussianBlurOperator::
                 build();
     };
 }
+
+} // namespace nitro::ImProc

@@ -1,18 +1,21 @@
 #include "immix.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/grayimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_FAC "Fac"
-#define INPUT_VALUE_1 "Value 1"
-#define INPUT_VALUE_2 "Value 2"
-#define OUTPUT_VALUE "Value"
-#define OPTION_CLAMP "Clamp"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
+
+inline const QString INPUT_FAC = "Fac";
+inline const QString INPUT_VALUE_1 = "Value 1";
+inline const QString INPUT_VALUE_2 = "Value 2";
+inline const QString OUTPUT_VALUE = "Value";
+inline const QString OPTION_CLAMP = "Clamp";
+inline const QString MODE_DROPDOWN = "Mode";
 
 // Note this function doesn't support alpha images
 static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int numChannels) {
@@ -32,7 +35,7 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 }
 
 // ensures the images all have the same size and number of channels
-void nitro::MixOperator::initUnifiedInputs(NodePorts &nodePorts) {
+void MixOperator::initUnifiedInputs(NodePorts &nodePorts) {
     auto fac = *nodePorts.inGetAs<GrayImageData>(INPUT_FAC);
     auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
     auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
@@ -62,7 +65,7 @@ void nitro::MixOperator::initUnifiedInputs(NodePorts &nodePorts) {
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::MixOperator::execute(NodePorts &nodePorts) {
+void MixOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -98,11 +101,11 @@ void nitro::MixOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MixOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Mix RGB", "mixRgb", category);
+        NitroNodeBuilder builder("Mix RGB", "mixRgb", category);
         return builder.
-                withOperator(std::make_unique<nitro::MixOperator>())->
+                withOperator(std::make_unique<MixOperator>())->
                 withIcon("mix.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Mix"})->
@@ -115,3 +118,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MixOperator::creator(c
                 build();
     };
 }
+
+} // namespace nitro::ImCore

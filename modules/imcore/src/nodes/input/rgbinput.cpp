@@ -1,19 +1,22 @@
 #include "rgbinput.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+
 #include <opencv2/imgproc.hpp>
 #include <random>
 
-#define INPUT_R "Red"
-#define INPUT_G "Green"
-#define INPUT_B "Blue"
-#define OUTPUT_COL "Color"
+namespace nitro::ImCore {
+
+inline const QString INPUT_R = "Red";
+inline const QString INPUT_G = "Green";
+inline const QString INPUT_B = "Blue";
+inline const QString OUTPUT_COL = "Color";
 
 
-nitro::RgbOperator::RgbOperator(QLabel *colLabel) : colLabel_(colLabel) {}
+RgbOperator::RgbOperator(QLabel *colLabel) : colLabel_(colLabel) {}
 
-void nitro::RgbOperator::execute(NodePorts &nodePorts) {
+void RgbOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -31,12 +34,12 @@ void nitro::RgbOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_COL, col);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::RgbOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> RgbOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("RGB", "rgb", category);
+        NitroNodeBuilder builder("RGB", "rgb", category);
         QLabel *colLabel = new QLabel();
         return builder.
-                withOperator(std::make_unique<nitro::RgbOperator>(colLabel))->
+                withOperator(std::make_unique<RgbOperator>(colLabel))->
                 withIcon("color.png")->
                 withNodeColor(NITRO_INPUT_COLOR)->
                 withDisplayWidget("Color", colLabel)->
@@ -48,3 +51,4 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::RgbOperator::creator(c
     };
 }
 
+} // namespace nitro::ImCore

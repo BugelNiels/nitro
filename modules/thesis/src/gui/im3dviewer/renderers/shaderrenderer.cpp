@@ -6,10 +6,13 @@
 #include <QScreen>
 #include <iostream>
 
-// 6 for rendering a quad
-nitro::ShaderRenderer::ShaderRenderer() : meshIBOSize(6), texture(nullptr) {}
 
-nitro::ShaderRenderer::~ShaderRenderer() {
+namespace nitro::Thesis {
+
+// 6 for rendering a quad
+ShaderRenderer::ShaderRenderer() : meshIBOSize(6), texture(nullptr) {}
+
+ShaderRenderer::~ShaderRenderer() {
     vao->destroy();
     coordsBO->destroy();
     indexBO->destroy();
@@ -19,11 +22,11 @@ nitro::ShaderRenderer::~ShaderRenderer() {
     delete shader;
 }
 
-void nitro::ShaderRenderer::initShaders() {
+void ShaderRenderer::initShaders() {
     shader = constructDefaultShader("raycast");
 }
 
-void nitro::ShaderRenderer::initBuffers() {
+void ShaderRenderer::initBuffers() {
     vao = new QOpenGLVertexArrayObject();
     vao->create();
     vao->bind();
@@ -51,7 +54,7 @@ void nitro::ShaderRenderer::initBuffers() {
     indexBO->allocate(meshIndices.data(), sizeof(int) * meshIndices.size());
 }
 
-void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
+void ShaderRenderer::updateBuffers(const QImage &image) {
     m_imWidth = image.width();
     m_imHeight = image.height();
 
@@ -67,7 +70,7 @@ void nitro::ShaderRenderer::updateBuffers(const QImage &image) {
     settings->uniformUpdateRequired = true;
 }
 
-void nitro::ShaderRenderer::updateUniforms() {
+void ShaderRenderer::updateUniforms() {
     shader->bind();
     if (texture) {
         texture->bind();
@@ -79,10 +82,12 @@ void nitro::ShaderRenderer::updateUniforms() {
     shader->setUniformValue("minecraft", settings->minecraft);
 }
 
-void nitro::ShaderRenderer::draw() {
+void ShaderRenderer::draw() {
     vao->bind();
     if (settings->uniformUpdateRequired) {
         updateUniforms();
     }
     gl->glDrawElements(GL_TRIANGLES, meshIBOSize, GL_UNSIGNED_INT, nullptr);
 }
+
+} // namespace nitro::Thesis

@@ -1,17 +1,18 @@
 #include "resample.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "util.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
-#include <opencv2/imgproc.hpp>
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "util/distancefield.hpp"
 
-#include <QDebug>
+#include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_K_SIZE "Filter Size"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define OPTION_BRIGHTNESS_CORRECT "Correct Luminance"
+namespace nitro::Thesis {
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_K_SIZE = "Filter Size";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString OPTION_BRIGHTNESS_CORRECT = "Correct Luminance";
 
 static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {
 
@@ -43,7 +44,7 @@ static std::vector<cv::Mat> getDfs(const cv::Mat &src, int numLevels) {
     std::vector<cv::Mat> df(numLevels);
 #pragma omp parallel for default(none) shared(df, src) firstprivate(numLevels)
     for (int d = 1; d < numLevels; d++) {
-        df[d] = nitro::signedDistField(src, d);
+        df[d] = signedDistField(src, d);
     }
     return df;
 }
@@ -86,7 +87,7 @@ static cv::Mat resample(const cv::Mat &img, const std::vector<float> &colTable,
     return resampled;
 }
 
-cv::Mat nitro::resampleImage(const cv::Mat &img, bool brightnessCorrect, double kSize) {
+cv::Mat resampleImage(const cv::Mat &img, bool brightnessCorrect, double kSize) {
 
     std::vector<float> colTable;
     cv::Mat indexed;
@@ -123,7 +124,7 @@ cv::Mat nitro::resampleImage(const cv::Mat &img, bool brightnessCorrect, double 
     return result;
 }
 
-void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
+void ResampleOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -135,11 +136,11 @@ void nitro::ResampleOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ResampleOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Resample", "resample", category);
+        NitroNodeBuilder builder("Resample", "resample", category);
         return builder.
-                withOperator(std::make_unique<nitro::ResampleOperator>())->
+                withOperator(std::make_unique<ResampleOperator>())->
                 withIcon("resample.png")->
                 withNodeColor(NITRO_RESTORATION_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -149,3 +150,6 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResampleOperator::crea
                 build();
     };
 }
+
+
+} // namespace nitro::Thesis

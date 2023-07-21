@@ -10,15 +10,17 @@
 #include <QElapsedTimer>
 #include <QPainterPath>
 
-nitro::RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
+namespace nitro::Thesis {
+
+RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setMouseTracking(true);
     resetOrientation();
     setFocusPolicy(Qt::StrongFocus);
 }
 
-nitro::RenderView::~RenderView() { makeCurrent(); }
+RenderView::~RenderView() { makeCurrent(); }
 
-void nitro::RenderView::initializeGL() {
+void RenderView::initializeGL() {
     initializeOpenGLFunctions();
 
     connect(&debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this,
@@ -70,7 +72,7 @@ void nitro::RenderView::initializeGL() {
 }
 
 
-void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
+void RenderView::resizeGL(int newWidth, int newHeight) {
     widgetMidPoint = mapToGlobal(QPoint(width() / 2, height() / 2));
 
 
@@ -88,12 +90,12 @@ void nitro::RenderView::resizeGL(int newWidth, int newHeight) {
     updateMatrices();
 }
 
-void nitro::RenderView::updateBuffers(const QImage &image) {
+void RenderView::updateBuffers(const QImage &image) {
     renderer.updateBuffers(image);
     update();
 }
 
-void nitro::RenderView::resetOrientation() {
+void RenderView::resetOrientation() {
     initialCamPos = QVector3D(0.0, 0.0, settings.distFromCamera);
     initialCamRotVec = {1, 0, 0};
     initialCamAngle = 90;
@@ -104,13 +106,13 @@ void nitro::RenderView::resetOrientation() {
     camYaw = 0;
 }
 
-void nitro::RenderView::updateMatrices() {
+void RenderView::updateMatrices() {
     recalcCamMatrix();
     update();
 }
 
-void nitro::RenderView::paintGL() {
-    glClearColor(1,1,1, 1.0);
+void RenderView::paintGL() {
+    glClearColor(1, 1, 1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -131,7 +133,7 @@ void nitro::RenderView::paintGL() {
     painter.end();
 }
 
-void nitro::RenderView::moveFirstPersonCamera() {
+void RenderView::moveFirstPersonCamera() {
     QPointF diff = QCursor::pos() - widgetMidPoint;
     diff *= mouseSensitivity;
 
@@ -166,7 +168,7 @@ void nitro::RenderView::moveFirstPersonCamera() {
     recalcCamMatrix();
 }
 
-void nitro::RenderView::drawHud(QPainter &painter) {
+void RenderView::drawHud(QPainter &painter) {
     QPen chPen;
     chPen.setColor({150, 150, 150});
     painter.setPen(chPen);
@@ -192,7 +194,7 @@ void nitro::RenderView::drawHud(QPainter &painter) {
     }
 }
 
-void nitro::RenderView::recalcCamMatrix() {
+void RenderView::recalcCamMatrix() {
     settings.cameraMatrix.setToIdentity();
     settings.cameraMatrix.rotate(initialCamAngle, initialCamRotVec);
     settings.cameraMatrix.translate(initialCamPos);
@@ -211,7 +213,7 @@ void nitro::RenderView::recalcCamMatrix() {
  * @param y Y coordinate.
  * @return A vector containing the normalized x and y screen coordinates.
  */
-QVector2D nitro::RenderView::toNormalizedScreenCoordinates(float x, float y) const {
+QVector2D RenderView::toNormalizedScreenCoordinates(float x, float y) const {
     float xRatio = x / float(width());
     float yRatio = y / float(height());
 
@@ -229,7 +231,7 @@ QVector2D nitro::RenderView::toNormalizedScreenCoordinates(float x, float y) con
  * movement.
  * @param Event Mouse event.
  */
-void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
+void RenderView::mouseMoveRotate(QMouseEvent *event) {
     QVector2D sPos = toNormalizedScreenCoordinates(event->position().x(), event->position().y());
     QVector3D newVec = QVector3D(sPos.x(), sPos.y(), 0.0);
 
@@ -273,7 +275,7 @@ void nitro::RenderView::mouseMoveRotate(QMouseEvent *event) {
  * mouse movement.
  * @param event Mouse event.
  */
-void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
+void RenderView::mouseMoveTranslate(QMouseEvent *event) {
     QVector2D sPos = toNormalizedScreenCoordinates(event->position().x(), event->position().y());
     if (!dragging) {
         dragging = true;
@@ -296,7 +298,7 @@ void nitro::RenderView::mouseMoveTranslate(QMouseEvent *event) {
  * @brief MeshView::mouseMoveEvent Event that is called when the mouse is moved.
  * @param Event The mouse event.
  */
-void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
+void RenderView::mouseMoveEvent(QMouseEvent *event) {
 
     if (firstPersonMode) {
         return;
@@ -318,7 +320,7 @@ void nitro::RenderView::mouseMoveEvent(QMouseEvent *event) {
  * pressed.
  * @param event The mouse event.
  */
-void nitro::RenderView::mousePressEvent(QMouseEvent *event) {
+void RenderView::mousePressEvent(QMouseEvent *event) {
     QOpenGLWidget::mousePressEvent(event);
     disableFirstPerson();
     setFocus();
@@ -330,7 +332,7 @@ void nitro::RenderView::mousePressEvent(QMouseEvent *event) {
  * pressed.
  * @param event The mouse event.
  */
-void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
+void RenderView::mouseReleaseEvent(QMouseEvent *event) {
     QOpenGLWidget::mouseReleaseEvent(event);
     dragging = false;
     setFocus();
@@ -340,7 +342,7 @@ void nitro::RenderView::mouseReleaseEvent(QMouseEvent *event) {
  * @brief MainView::wheelEvent Event that is called when the user scrolls.
  * @param event The mouse event.
  */
-void nitro::RenderView::wheelEvent(QWheelEvent *event) {
+void RenderView::wheelEvent(QWheelEvent *event) {
     if (firstPersonMode) {
         float speedModStrength = event->angleDelta().y() > 0 ? 1.2 : 0.8;
         movementSpeedModifier *= speedModStrength;
@@ -366,7 +368,7 @@ void nitro::RenderView::wheelEvent(QWheelEvent *event) {
  * @brief MainView::keyPressEvent Event that is called when a key is pressed.
  * @param event The key event.
  */
-void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
+void RenderView::keyPressEvent(QKeyEvent *event) {
     if (event->modifiers().testFlag(Qt::ShiftModifier)) {
         if (event->key() == Qt::Key_F || event->key() == Qt::Key_AsciiTilde) {
             toggleFirstPerson();
@@ -394,14 +396,14 @@ void nitro::RenderView::keyPressEvent(QKeyEvent *event) {
  * @brief MainView::keyReleaseEvent Event that is called when a key is released.
  * @param event The key event.
  */
-void nitro::RenderView::keyReleaseEvent(QKeyEvent *event) {
+void RenderView::keyReleaseEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Shift) {
         movementSpeed = baseMovementSpeed * movementSpeedModifier;
     }
     keys[event->key()] = false;
 }
 
-void nitro::RenderView::toggleFirstPerson() {
+void RenderView::toggleFirstPerson() {
     if (firstPersonMode) {
         disableFirstPerson();
     } else {
@@ -409,7 +411,7 @@ void nitro::RenderView::toggleFirstPerson() {
     }
 }
 
-void nitro::RenderView::disableFirstPerson() {
+void RenderView::disableFirstPerson() {
     if (frameTimer != -1) {
         killTimer(frameTimer);
         frameTimer = -1;
@@ -420,7 +422,7 @@ void nitro::RenderView::disableFirstPerson() {
 
 }
 
-void nitro::RenderView::enableFirstPerson() {
+void RenderView::enableFirstPerson() {
     setCursor(Qt::BlankCursor);
     QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
     oldMouseCoords = toNormalizedScreenCoordinates(width() / 2.0f, height() / 2.0f);
@@ -429,11 +431,11 @@ void nitro::RenderView::enableFirstPerson() {
 }
 
 
-void nitro::RenderView::timerEvent(QTimerEvent *event) {
+void RenderView::timerEvent(QTimerEvent *event) {
     update();
 }
 
-QMenu *nitro::RenderView::createContextMenu() {
+QMenu *RenderView::createContextMenu() {
     // TODO: different class
     auto *menu = new QMenu();
     menu->addAction("Align Top", [this] {
@@ -458,7 +460,7 @@ QMenu *nitro::RenderView::createContextMenu() {
     return menu;
 }
 
-void nitro::RenderView::alignCam(QVector3D axis, float angle) {
+void RenderView::alignCam(QVector3D axis, float angle) {
     resetOrientation();
     // TODO: reset orthographic
     initialCamRotVec = axis;
@@ -466,7 +468,7 @@ void nitro::RenderView::alignCam(QVector3D axis, float angle) {
     updateMatrices();
 }
 
-void nitro::RenderView::contextMenuEvent(QContextMenuEvent *event) {
+void RenderView::contextMenuEvent(QContextMenuEvent *event) {
     if (firstPersonMode) {
         return;
     }
@@ -476,28 +478,31 @@ void nitro::RenderView::contextMenuEvent(QContextMenuEvent *event) {
     }
 }
 
-void nitro::RenderView::toggleOrthographic() {
+void RenderView::toggleOrthographic() {
     settings.orthographic = !settings.orthographic;
     settings.uniformUpdateRequired = true;
     update();
 
 }
 
-void nitro::RenderView::toggleImageColors() {
+void RenderView::toggleImageColors() {
     settings.imageColors = !settings.imageColors;
     settings.uniformUpdateRequired = true;
     update();
 }
 
-void nitro::RenderView::onMessageLogged(QOpenGLDebugMessage message) {
-    if(message.severity() == QOpenGLDebugMessage::LowSeverity || message.severity() == QOpenGLDebugMessage::NotificationSeverity) {
+void RenderView::onMessageLogged(QOpenGLDebugMessage message) {
+    if (message.severity() == QOpenGLDebugMessage::LowSeverity ||
+        message.severity() == QOpenGLDebugMessage::NotificationSeverity) {
         return;
     }
     qDebug() << " → Log:" << message;
 }
 
-void nitro::RenderView::toggleMinecraft() {
+void RenderView::toggleMinecraft() {
     settings.minecraft = !settings.minecraft;
     settings.uniformUpdateRequired = true;
     update();
 }
+
+}  // namespace Thesis

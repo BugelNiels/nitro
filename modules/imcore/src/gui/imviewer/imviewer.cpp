@@ -16,7 +16,9 @@
 #include <QTimer>
 #include <QApplication>
 
-nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
+namespace nitro::ImCore {
+
+ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
         : QGraphicsView(parent) {
 
     setDragMode(QGraphicsView::ScrollHandDrag);
@@ -43,18 +45,18 @@ nitro::ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
 
 }
 
-nitro::ImageViewer::~ImageViewer() = default;
+ImageViewer::~ImageViewer() = default;
 
-void nitro::ImageViewer::initActions() {
+void ImageViewer::initActions() {
 
     resetAction_ = new QAction("Reset view", this);
-    connect(resetAction_, &QAction::triggered, this, &nitro::ImageViewer::resetImScale);
+    connect(resetAction_, &QAction::triggered, this, &ImageViewer::resetImScale);
 
     saveAction_ = new QAction("Save image", this);
-    connect(saveAction_, &QAction::triggered, this, &nitro::ImageViewer::saveImage);
+    connect(saveAction_, &QAction::triggered, this, &ImageViewer::saveImage);
 }
 
-void nitro::ImageViewer::saveImage() {
+void ImageViewer::saveImage() {
 
     if (displayImg_.sizeInBytes() > 0) {
         QString filePath = QFileDialog::getSaveFileName(
@@ -76,7 +78,7 @@ void nitro::ImageViewer::saveImage() {
 }
 
 
-void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
+void ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
 
     const QColor dotColor_ = palette().color(QPalette::Button);
     const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled, QPalette::AlternateBase);
@@ -131,7 +133,7 @@ void nitro::ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
 
 }
 
-void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {
+void ImageViewer::setScaleRange(double minimum, double maximum) {
     if (maximum < minimum)
         std::swap(minimum, maximum);
     minimum = std::max(0.0, minimum);
@@ -142,7 +144,7 @@ void nitro::ImageViewer::setScaleRange(double minimum, double maximum) {
     setupScale(transform().m11());
 }
 
-void nitro::ImageViewer::scaleUp() {
+void ImageViewer::scaleUp() {
     double const step = 1.2;
     double const factor = std::pow(step, 1.0);
 
@@ -159,7 +161,7 @@ void nitro::ImageViewer::scaleUp() {
     Q_EMIT scaleChanged(transform().m11());
 }
 
-void nitro::ImageViewer::scaleDown() {
+void ImageViewer::scaleDown() {
     double const step = 1.2;
     double const factor = std::pow(step, -1.0);
 
@@ -176,7 +178,7 @@ void nitro::ImageViewer::scaleDown() {
     Q_EMIT scaleChanged(transform().m11());
 }
 
-void nitro::ImageViewer::setupScale(double scale) {
+void ImageViewer::setupScale(double scale) {
     scale = std::max(scaleRange_.minimum, std::min(scaleRange_.maximum, scale));
 
     if (scale <= 0)
@@ -193,7 +195,7 @@ void nitro::ImageViewer::setupScale(double scale) {
 }
 
 
-void nitro::ImageViewer::wheelEvent(QWheelEvent *event) {
+void ImageViewer::wheelEvent(QWheelEvent *event) {
     QPoint delta = event->angleDelta();
 
     if (delta.y() == 0) {
@@ -209,7 +211,7 @@ void nitro::ImageViewer::wheelEvent(QWheelEvent *event) {
         scaleDown();
 }
 
-QMenu *nitro::ImageViewer::createContextMenu() {
+QMenu *ImageViewer::createContextMenu() {
     auto *menu = new QMenu();
     menu->addAction(resetAction_);
     menu->addAction(saveAction_);
@@ -219,16 +221,16 @@ QMenu *nitro::ImageViewer::createContextMenu() {
     return menu;
 }
 
-void nitro::ImageViewer::contextMenuEvent(QContextMenuEvent *event) {
+void ImageViewer::contextMenuEvent(QContextMenuEvent *event) {
     QMenu *menu = createContextMenu();
     menu->exec(event->globalPos());
 }
 
-void nitro::ImageViewer::resizeEvent(QResizeEvent *event) {
+void ImageViewer::resizeEvent(QResizeEvent *event) {
     QGraphicsView::resizeEvent(event);
 }
 
-void nitro::ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
+void ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
     if (img->empty()) {
         removeImage();
         return;
@@ -258,7 +260,7 @@ void nitro::ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
     repaint();
 }
 
-void nitro::ImageViewer::removeImage() {
+void ImageViewer::removeImage() {
     removalDue_ = true;
     auto *timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -279,7 +281,7 @@ void nitro::ImageViewer::removeImage() {
     timer->start();
 }
 
-void nitro::ImageViewer::centerScene() {
+void ImageViewer::centerScene() {
     if (scene()) {
         scene()->setSceneRect(QRectF());
         if (imgDisplayItem_) {
@@ -291,7 +293,7 @@ void nitro::ImageViewer::centerScene() {
     }
 }
 
-void nitro::ImageViewer::resetImScale() {
+void ImageViewer::resetImScale() {
     centerScene();
     if (imgDisplayItem_ == nullptr) {
         setupScale(1.0);
@@ -304,7 +306,7 @@ void nitro::ImageViewer::resetImScale() {
     centerScene();
 }
 
-void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
+void ImageViewer::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_R) {
         resetImScale();
         event->accept();
@@ -324,7 +326,7 @@ void nitro::ImageViewer::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void nitro::ImageViewer::keyReleaseEvent(QKeyEvent *event) {
+void ImageViewer::keyReleaseEvent(QKeyEvent *event) {
     QGraphicsView::keyReleaseEvent(event);
     if (event->key() == Qt::Key_Control) {
         crossHairMode_ = false;
@@ -333,7 +335,7 @@ void nitro::ImageViewer::keyReleaseEvent(QKeyEvent *event) {
 }
 
 
-void nitro::ImageViewer::mouseMoveEvent(QMouseEvent *event) {
+void ImageViewer::mouseMoveEvent(QMouseEvent *event) {
     QGraphicsView::mouseMoveEvent(event);
     if (imgDisplayItem_ != nullptr && crossHairMode_) {
         QPointF scenePos = mapToScene(event->pos());
@@ -347,16 +349,18 @@ void nitro::ImageViewer::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void nitro::ImageViewer::leaveEvent(QEvent *event) {
+void ImageViewer::leaveEvent(QEvent *event) {
     QWidget::leaveEvent(event);
-    if(crossHairMode_) {
+    if (crossHairMode_) {
         QApplication::restoreOverrideCursor();
         crossHairMode_ = false;
     }
 }
 
-void nitro::ImageViewer::mousePressEvent(QMouseEvent *event) {
-    if(!crossHairMode_) {
+void ImageViewer::mousePressEvent(QMouseEvent *event) {
+    if (!crossHairMode_) {
         QGraphicsView::mousePressEvent(event);
     }
 }
+
+} // namespace nitro::ImCore

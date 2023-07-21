@@ -4,7 +4,7 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImCore {
 
     class MapRangeOperator : public NodeOperator {
 
@@ -15,4 +15,4 @@ namespace nitro {
 
     };
 
-} // nitro
+} // namespace nitro::ImCore

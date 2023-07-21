@@ -1,18 +1,19 @@
 #include "kmeans.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#include <QDebug>
+namespace nitro::ImProc {
 
-#define INPUT_IMAGE "Image"
-#define INPUT_K "K"
-#define INPUT_MAX_ITER "Max Iter"
-#define OUTPUT_IMAGE "Image"
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_K = "K";
+inline const QString INPUT_MAX_ITER = "Max Iter";
+inline const QString OUTPUT_IMAGE = "Image";
 
 
-#define NUM_BINS 256
+const int NUM_BINS = 256;
 
 static inline int findClosestMean(const std::vector<float> &means, int k, int val) {
     int meanIdx = 0;
@@ -34,7 +35,6 @@ static void histKMeans(const std::vector<int> &hist, int k, int iter, double eps
     means.resize(k);
     std::vector<int> meanCounts(k);
     std::vector<float> oldMeans(k);
-    // TODO: epsilon meanDiff vec
     std::fill(meanCounts.begin(), meanCounts.end(), 0);
     std::fill(oldMeans.begin(), oldMeans.end(), 0);
     for (int i = 0; i < k; i++) {
@@ -84,7 +84,7 @@ static std::vector<int> getHistogram(const cv::Mat &src) {
     return hist;
 }
 
-cv::Mat nitro::kMeansHist(const cv::Mat &image, int numColors, int maxIter) {
+cv::Mat kMeansHist(const cv::Mat &image, int numColors, int maxIter) {
 
     cv::Mat img;
     image.convertTo(img, CV_8UC1, 255.0);
@@ -137,7 +137,7 @@ static cv::Mat kMeansColors(const cv::Mat &image, int numColors, int maxIter, do
     return quantImg;
 }
 
-void nitro::KMeansOperator::execute(NodePorts &nodePorts) {
+void KMeansOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -157,11 +157,11 @@ void nitro::KMeansOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, kMeansDat);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> KMeansOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("K-Means", "kMeans", category);
+        NitroNodeBuilder builder("K-Means", "kMeans", category);
         return builder.
-                withOperator(std::make_unique<nitro::KMeansOperator>())->
+                withOperator(std::make_unique<KMeansOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
@@ -171,3 +171,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::KMeansOperator::creato
                 build();
     };
 }
+
+} // namespace nitro::ImProc

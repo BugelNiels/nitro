@@ -6,42 +6,42 @@
 
 namespace nitro {
 
-    class NodeRegistry;
+class NodeRegistry;
 
-    class NodeDockWidget;
+class NodeDockWidget;
 
-    class MainWindow : public QMainWindow {
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+Q_OBJECT
 
-    public:
-        explicit MainWindow(NodeRegistry *registry, QWidget *parent = nullptr);
+public:
+    explicit MainWindow(NodeRegistry *registry, QWidget *parent = nullptr);
 
-        ~MainWindow() override;
+    ~MainWindow() override;
 
-        QLabel *buildDockIcon(const QString &path);
+    QLabel *buildDockIcon(const QString &path);
 
-        void finalizeSetup();
+    void finalizeSetup();
 
-        void registerDock(QDockWidget *widget);
+    void registerDock(QDockWidget *widget);
 
-        void registerNodeDock(NodeDockWidget *widget);
+    void registerNodeDock(NodeDockWidget *widget);
 
-    private:
-        const int icSize_ = 16;
-        const QColor icColor_ = {148, 148, 148};
-        std::vector<QDockWidget *> widgets_;
-        QLabel *fileNameLabel_ = nullptr;
-        NodeDockWidget *nodeDock_ = nullptr;
-        QSplitter *dockLayout_ = nullptr;
+private:
+    const int icSize_ = 16;
+    const QColor icColor_ = {148, 148, 148};
+    std::vector<QDockWidget *> widgets_;
+    QLabel *fileNameLabel_ = nullptr;
+    NodeDockWidget *nodeDock_ = nullptr;
+    QSplitter *dockLayout_ = nullptr;
 
-        QMenuBar *initMenuBar();
+    QMenuBar *initMenuBar();
 
-        QStatusBar *initFooter();
+    QStatusBar *initFooter();
 
-        QMenu *getFileMenu();
+    QMenu *getFileMenu();
 
-        QMenu *getWindowMenu();
+    QMenu *getWindowMenu();
 
-    };
+};
 
-} // nitro
+} // namespace nitro

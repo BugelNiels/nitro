@@ -2,15 +2,14 @@
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 
-#define DISPLAY_LABEL "valueLabel"
-#define INPUT_VALUE "Value"
+namespace nitro::ImCore {
 
-#include <QDebug>
+inline const QString DISPLAY_LABEL = "valueLabel";
+inline const QString INPUT_VALUE = "Value";
 
+ValueViewOperator::ValueViewOperator(QLabel *valueLabel) : valueLabel_(valueLabel) {}
 
-nitro::ValueViewOperator::ValueViewOperator(QLabel *valueLabel) : valueLabel_(valueLabel) {}
-
-void nitro::ValueViewOperator::execute(NodePorts &nodePorts) {
+void ValueViewOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -23,13 +22,12 @@ void nitro::ValueViewOperator::execute(NodePorts &nodePorts) {
     }
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ValueViewOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ValueViewOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Value Display", "valueViewer", category);
+        NitroNodeBuilder builder("Value Display", "valueViewer", category);
         auto *valueLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::ValueViewOperator>(valueLabel))->
+                withOperator(std::make_unique<ValueViewOperator>(valueLabel))->
                 withIcon("number.png")->
                 withDisplayWidget(DISPLAY_LABEL, valueLabel)->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
@@ -38,3 +36,4 @@ nitro::ValueViewOperator::creator(const QString &category) {
     };
 }
 
+} // namespace nitro::ImCore

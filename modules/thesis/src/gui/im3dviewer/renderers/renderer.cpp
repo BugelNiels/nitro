@@ -1,13 +1,16 @@
 #include "renderer.hpp"
 #include <QOpenGLDebugLogger>
 
+
+namespace nitro::Thesis {
+
 /**
  * @brief Renderer::Renderer Creates a new renderer.
  */
-nitro::Renderer::Renderer() : gl(nullptr) {}
+Renderer::Renderer() : gl(nullptr) {}
 
 
-nitro::Renderer::Renderer(QOpenGLFunctions_4_1_Core *functions, nitro::Settings *settings) {
+Renderer::Renderer(QOpenGLFunctions_4_1_Core *functions, Settings *settings) {
     init(functions, settings);
 }
 
@@ -15,7 +18,7 @@ nitro::Renderer::Renderer(QOpenGLFunctions_4_1_Core *functions, nitro::Settings 
 /**
  * @brief Renderer::~Renderer
  * */
-nitro::Renderer::~Renderer() { }
+Renderer::~Renderer() {}
 
 /**
  * @brief Renderer::updatebounds Initialises the renderer with an OpenGL context and
@@ -23,7 +26,7 @@ nitro::Renderer::~Renderer() { }
  * @param f OpenGL functions pointer.
  * @param s Settings.
  */
-void nitro::Renderer::init(QOpenGLFunctions_4_1_Core *f, Settings *s) {
+void Renderer::init(QOpenGLFunctions_4_1_Core *f, Settings *s) {
     gl = f;
     settings = s;
 
@@ -39,7 +42,7 @@ void nitro::Renderer::init(QOpenGLFunctions_4_1_Core *f, Settings *s) {
  * @param name Name of the shader.
  * @return The constructed shader.
  */
-QOpenGLShaderProgram *nitro::Renderer::constructDefaultShader(
+QOpenGLShaderProgram *Renderer::constructDefaultShader(
         const QString &name) const {
     QString pathVert = ":/shaders/" + name + ".vert";
     QString pathFrag = ":/shaders/" + name + ".frag";
@@ -54,3 +57,5 @@ QOpenGLShaderProgram *nitro::Renderer::constructDefaultShader(
     shader->link();
     return shader;
 }
+
+} // namespace nitro::Thesis

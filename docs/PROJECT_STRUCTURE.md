@@ -56,7 +56,7 @@ class.
 
 A simple implementation of a denoising node is then as follows:
 
-[Header file](../modules/imcore/src/nodes/filters/bilateralfilter.hpp)
+[Header file](../modules/improc/src/nodes/blur/bilateralfilter.hpp)
 
 ```c++
 #pragma once
@@ -90,7 +90,7 @@ namespace nitro {
 } // nitro
 ```
 
-[Source file](../modules/imcore/src/nodes/filters/bilateralfilter.cpp)
+[Source file](../modules/improc/src/nodes/blur/bilateralfilter.cpp)
 
 ```c++
 #include "bilateralfilter.hpp"

@@ -1,19 +1,22 @@
 #include "imresize.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_X "Width"
-#define INPUT_Y "Height"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define ASPECT_RATIO_DROPDOWN "Keep Aspect Ratio"
-#define INTERPOL_METHOD_LABEL "Interpolation Method"
-#define AR_METHOD_LABEL "Aspect Ratio Method"
+namespace nitro::ImCore {
 
-void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_X = "Width";
+inline const QString INPUT_Y = "Height";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString ASPECT_RATIO_DROPDOWN = "Keep Aspect Ratio";
+inline const QString INTERPOL_METHOD_LABEL = "Interpolation Method";
+inline const QString AR_METHOD_LABEL = "Aspect Ratio Method";
+
+void ResizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -32,15 +35,15 @@ void nitro::ResizeOperator::execute(NodePorts &nodePorts) {
     } else {
         mode = cv::INTER_NEAREST;
     }
-    cv::Mat result = nitro::resize(*im1, cv::Size(width, height), mode, arMode);
+    cv::Mat result = resize(*im1, cv::Size(width, height), mode, arMode);
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ResizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Resize", "resize", category);
+        NitroNodeBuilder builder("Resize", "resize", category);
         return builder.
-                withOperator(std::make_unique<nitro::ResizeOperator>())->
+                withOperator(std::make_unique<ResizeOperator>())->
                 withIcon("resize.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")->
@@ -54,3 +57,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creato
                 build();
     };
 }
+
+} // namespace nitro::ImCore

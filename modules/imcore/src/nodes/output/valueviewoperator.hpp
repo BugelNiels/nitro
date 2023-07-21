@@ -4,17 +4,19 @@
 #include "gui/imviewer/imviewer.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImCore {
 
-    class ValueViewOperator : public NodeOperator {
-    public:
+class ValueViewOperator : public NodeOperator {
+public:
 
-        explicit ValueViewOperator(QLabel *valueLabel);
+    explicit ValueViewOperator(QLabel *valueLabel);
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        void execute(NodePorts &nodePorts) override;
-    private:
-        QLabel* valueLabel_;
-    };
-}
+    void execute(NodePorts &nodePorts) override;
+
+private:
+    QLabel *valueLabel_;
+};
+
+} // namespace nitro::ImCore

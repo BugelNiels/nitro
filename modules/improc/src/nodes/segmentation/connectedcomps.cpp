@@ -1,14 +1,17 @@
 #include "connectedcomps.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_THRESH "Threshold"
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
-#define OPTION_INVERSE "Inverse"
+namespace nitro::ImProc {
 
-void nitro::ConnectedCompsOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_THRESH = "Threshold";
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString OPTION_INVERSE = "Inverse";
+
+void ConnectedCompsOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -30,11 +33,11 @@ void nitro::ConnectedCompsOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConnectedCompsOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ConnectedCompsOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Connected Components", "connectedComps", category);
+        NitroNodeBuilder builder("Connected Components", "connectedComps", category);
         return builder.
-                withOperator(std::make_unique<nitro::ConnectedCompsOperator>())->
+                withOperator(std::make_unique<ConnectedCompsOperator>())->
                 withIcon("connected_comps.png")->
                 withNodeColor(NITRO_SEGMENTATION_COLOR)->
                 withInputValue(INPUT_THRESH, 0.5, 0, 1)->
@@ -44,3 +47,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConnectedCompsOperator
                 build();
     };
 }
+
+} // namespace nitro::ImProc

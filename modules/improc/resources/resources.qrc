@@ -1,0 +1,16 @@
+<RCC>
+	<qresource prefix="/">
+		<file>icons/nodes/blur.png</file>
+		<file>icons/nodes/compare.png</file>
+		<file>icons/nodes/connected_comps.png</file>
+		<file>icons/nodes/denoise.png</file>
+		<file>icons/nodes/distance.png</file>
+		<file>icons/nodes/filter.png</file>
+		<file>icons/nodes/frequency.png</file>
+		<file>icons/nodes/kernel.png</file>
+		<file>icons/nodes/mask.png</file>
+		<file>icons/nodes/morphology.png</file>
+		<file>icons/nodes/quantize.png</file>
+		<file>icons/nodes/shift.png</file>
+	</qresource>
+</RCC>

@@ -1,16 +1,17 @@
 #include "quantize.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#include <QDebug>
+namespace nitro::ImProc {
 
-#define INPUT_IMAGE "Image"
-#define INPUT_K "K"
-#define OUTPUT_IMAGE "Image"
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_K = "K";
+inline const QString OUTPUT_IMAGE = "Image";
 
-void nitro::QuantizeOperator::execute(NodePorts &nodePorts) {
+void QuantizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -24,11 +25,11 @@ void nitro::QuantizeOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::QuantizeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> QuantizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Quantize", "quantization", category);
+        NitroNodeBuilder builder("Quantize", "quantization", category);
         return builder.
-                withOperator(std::make_unique<nitro::QuantizeOperator>())->
+                withOperator(std::make_unique<QuantizeOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
@@ -37,3 +38,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::QuantizeOperator::crea
                 build();
     };
 }
+
+} // namespace nitro::ImProc

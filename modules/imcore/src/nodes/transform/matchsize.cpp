@@ -1,18 +1,21 @@
 #include "matchsize.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "util.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_IMAGE_TARGET "Target"
-#define ASPECT_RATIO_DROPDOWN "Keep Aspect Ratio"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define INTERPOL_METHOD_LABEL "Interpolation Method"
-#define AR_METHOD_LABEL "Aspect Ratio Method"
+namespace nitro::ImCore {
 
-void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_IMAGE_TARGET = "Target";
+inline const QString ASPECT_RATIO_DROPDOWN = "Keep Aspect Ratio";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString INTERPOL_METHOD_LABEL = "Interpolation Method";
+inline const QString AR_METHOD_LABEL = "Aspect Ratio Method";
+
+void MatchSizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -38,11 +41,11 @@ void nitro::MatchSizeOperator::execute(NodePorts &nodePorts) {
 }
 
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MatchSizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Match Size", "matchSize", category);
+        NitroNodeBuilder builder("Match Size", "matchSize", category);
         return builder.
-                withOperator(std::make_unique<nitro::MatchSizeOperator>())->
+                withOperator(std::make_unique<MatchSizeOperator>())->
                 withIcon("match_size.png")->
                 withNodeColor(NITRO_TRANSFORM_COLOR)->
                 withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")->
@@ -55,3 +58,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MatchSizeOperator::cre
                 build();
     };
 }
+
+} // namespace nitro::ImCore

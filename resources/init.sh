@@ -18,7 +18,6 @@ for file in shaders/*; do
   fi
 done
 
-
 echo "Adding icons"
 for file in icons/*; do
   if [[ -f "$file" ]]; then

@@ -1,31 +1,31 @@
 #include "pngoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "include/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 
-#define DISPLAY_LABEL_COMP "compLabel"
-#define DISPLAY_LABEL_ORIG "origLabel"
-#define DISPLAY_LABEL_RATIO "ratioLabel"
-#define OPTION_PNG_FLAGS "Method"
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Compressed Image"
-#define INPUT_QUALITY "Compression Lvl"
-
-#define OUTPUT_COMP_SIZE "Compressed"
-#define OUTPUT_ORIG_SIZE "Original"
-#define OUTPUT_RATIO "Ratio"
-
-#include <QDebug>
-
-#include <zlib.h>
 #include <opencv2/imgcodecs.hpp>
 
+namespace nitro::Compression {
 
-nitro::PngOperator::PngOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                QLabel *ratioLabel)
+inline const QString DISPLAY_LABEL_COMP = "compLabel";
+inline const QString DISPLAY_LABEL_ORIG = "origLabel";
+inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
+inline const QString OPTION_PNG_FLAGS = "Method";
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_QUALITY = "Compression Lvl";
+
+inline const QString OUTPUT_IMAGE = "Compressed Image";
+inline const QString OUTPUT_COMP_SIZE = "Compressed";
+inline const QString OUTPUT_ORIG_SIZE = "Original";
+inline const QString OUTPUT_RATIO = "Ratio";
+
+
+PngOperator::PngOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
+                         QLabel *ratioLabel)
         : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
 
-void nitro::PngOperator::execute(NodePorts &nodePorts) {
+void PngOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -80,15 +80,14 @@ void nitro::PngOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::PngOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> PngOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("PNG Compression", "Png", category);
+        NitroNodeBuilder builder("PNG Compression", "Png", category);
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::PngOperator>(valueLabel, originalSizeLabel, crLabel))->
+                withOperator(std::make_unique<PngOperator>(valueLabel, originalSizeLabel, crLabel))->
                 withIcon("zip.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
@@ -105,3 +104,4 @@ nitro::PngOperator::creator(const QString &category) {
     };
 }
 
+} // namespace nitro::Compression

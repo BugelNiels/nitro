@@ -3,13 +3,14 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImProc {
 
-    class MorphologyOperator : public NodeOperator {
-    public:
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+class MorphologyOperator : public NodeOperator {
+public:
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        void execute(NodePorts &nodePorts) override;
+    void execute(NodePorts &nodePorts) override;
 
-    };
-} // nitro
+};
+
+} // namespace nitro::ImProc

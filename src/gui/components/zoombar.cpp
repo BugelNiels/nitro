@@ -1,6 +1,8 @@
-#include "gui/zoombar.hpp"
+#include "zoombar.hpp"
 
-nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
+namespace nitro {
+
+ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
         : QProgressBar(parent),
           curZoom_(100),
           minZoom_(minZoom),
@@ -8,11 +10,11 @@ nitro::ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
     setValue(minimum());
 }
 
-QString nitro::ZoomBar::text() const {
+QString ZoomBar::text() const {
     return QString::number(curZoom_) + "%";
 }
 
-void nitro::ZoomBar::setZoom(int zoom) {
+void ZoomBar::setZoom(int zoom) {
     curZoom_ = zoom;
     double logValue = log10(curZoom_);
     double logMin = log10(minZoom_);
@@ -21,6 +23,8 @@ void nitro::ZoomBar::setZoom(int zoom) {
     update();
 }
 
-void nitro::ZoomBar::setZoom(double zoomFactor) {
+void ZoomBar::setZoom(double zoomFactor) {
     setZoom(int(zoomFactor * 100.0 + 0.5));
 }
+
+} // namespace nitro

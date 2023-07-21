@@ -6,23 +6,25 @@
 #include "flexibledata.hpp"
 
 namespace nitro {
-    class IntegerData : public FlexibleData<int, IntegerData> {
-    public:
-        IntegerData();
 
-        explicit IntegerData(int value);
+class IntegerData : public FlexibleData<int, IntegerData> {
+public:
+    IntegerData();
 
-        static QString id() {
-            return id_;
-        }
+    explicit IntegerData(int value);
 
-        static void registerConversions();
+    static QString id() {
+        return id_;
+    }
 
-        [[nodiscard]] QString getDescription() const override;
+    static void registerConversions();
 
-    private:
-        inline static const QString name_ = "Integer";
-        inline static const QString id_ = "Integer";
-        inline static const QColor baseColor_ = {89, 140, 92};
-    };
-} // nitro
+    [[nodiscard]] QString getDescription() const override;
+
+private:
+    inline static const QString name_ = "Integer";
+    inline static const QString id_ = "Integer";
+    inline static const QColor baseColor_ = {89, 140, 92};
+};
+
+} // namespace nitro

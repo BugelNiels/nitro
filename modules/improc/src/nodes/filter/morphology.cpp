@@ -1,23 +1,25 @@
 #include "morphology.hpp"
 #include "nodes/nitronodebuilder.hpp"
+#include "util.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
-#include "util.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
 
-#define INPUT_IMAGE_1 "Image"
-#define INPUT_IMAGE_2 "Kernel"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImProc {
 
-void nitro::MorphologyOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_IMAGE_1 = "Image";
+inline const QString INPUT_IMAGE_2 = "Kernel";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+
+void MorphologyOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
     auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE_1);
     auto im2 = nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE_2);
-
 
     cv::Mat kernel;
     im2->convertTo(kernel, CV_8UC1, 255);
@@ -53,11 +55,11 @@ void nitro::MorphologyOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MorphologyOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Morphology", "morphology", category);
+        NitroNodeBuilder builder("Morphology", "morphology", category);
         return builder.
-                withOperator(std::make_unique<nitro::MorphologyOperator>())->
+                withOperator(std::make_unique<MorphologyOperator>())->
                 withIcon("morphology.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withDropDown(MODE_DROPDOWN,
@@ -68,3 +70,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MorphologyOperator::cr
                 build();
     };
 }
+
+} // namespace nitro::ImProc

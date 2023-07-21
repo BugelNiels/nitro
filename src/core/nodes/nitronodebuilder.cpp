@@ -11,7 +11,7 @@
 
 
 #include "src/util/imgresourcereader.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "modules/imcore/include/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/nitronode.hpp"

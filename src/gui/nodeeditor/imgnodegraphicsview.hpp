@@ -11,38 +11,38 @@
 
 namespace nitro {
 
-    class ImageNodeGraphicsView : public NodeGraphicsView {
-    public:
+class ImageNodeGraphicsView : public NodeGraphicsView {
+public:
 
-        // TODO: better initialization
-        ImageNodeGraphicsView(NodeRegistry *nodes, QtNodes::BasicGraphicsScene *scene,
-                              QtNodes::DataFlowGraphModel *model,
-                              QWidget *parent);
-
-
-        void mousePressEvent(QMouseEvent *event) override;
-
-        void mouseDoubleClickEvent(QMouseEvent *event) override;
-
-        QMenu *initNodeMenu();
-
-    public Q_SLOTS:
-
-        void dragMoveEvent(QDragMoveEvent *event) override;
-
-        void dragEnterEvent(QDragEnterEvent *event) override;
-
-        void dropEvent(QDropEvent *event) override;
-
-    private:
-        QtNodes::NodeId nodeBeingViewed_;
-        QtNodes::PortIndex currentPort_ = 0;
-        NodeRegistry *nodes_;
+    // TODO: better initialization
+    ImageNodeGraphicsView(NodeRegistry *nodes, QtNodes::BasicGraphicsScene *scene,
+                          QtNodes::DataFlowGraphModel *model,
+                          QWidget *parent);
 
 
-        QAction *spawnNodeAction(const QtNodes::NodeInfo &info);
+    void mousePressEvent(QMouseEvent *event) override;
 
-        void spawnViewerNodeAt(int x, int y);
-    };
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
-} // nitro
+    QMenu *initNodeMenu();
+
+public Q_SLOTS:
+
+    void dragMoveEvent(QDragMoveEvent *event) override;
+
+    void dragEnterEvent(QDragEnterEvent *event) override;
+
+    void dropEvent(QDropEvent *event) override;
+
+private:
+    QtNodes::NodeId nodeBeingViewed_;
+    QtNodes::PortIndex currentPort_ = 0;
+    NodeRegistry *nodes_;
+
+
+    QAction *spawnNodeAction(const QtNodes::NodeInfo &info);
+
+    void spawnViewerNodeAt(int x, int y);
+};
+
+} // namespace nitro

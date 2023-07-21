@@ -4,19 +4,20 @@
 #include "gui/imviewer/imviewer.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImCore {
 
-    class ImageViewOperator : public NodeOperator {
-    public:
+class ImageViewOperator : public NodeOperator {
+public:
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, ImageViewer* imageViewer);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, ImageViewer *imageViewer);
 
-        explicit ImageViewOperator(ImageViewer *imViewer);
+    explicit ImageViewOperator(ImageViewer *imViewer);
 
 
-        void execute(NodePorts &nodePorts) override;
+    void execute(NodePorts &nodePorts) override;
 
-    private:
-        ImageViewer *imViewer_;
-    };
-}
+private:
+    ImageViewer *imViewer_;
+};
+
+} // namespace nitro::ImCore

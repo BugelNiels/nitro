@@ -1,24 +1,26 @@
 #include "zliboperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "include/grayimagedata.hpp"
-
-#define DISPLAY_LABEL_COMP "compLabel"
-#define DISPLAY_LABEL_ORIG "origLabel"
-#define DISPLAY_LABEL_RATIO "ratioLabel"
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Compressed Image"
-#define INPUT_BITS "Bits"
-#define DISPLAY_TIME "Time"
-
-#define OUTPUT_COMP_SIZE "Compressed"
-#define OUTPUT_ORIG_SIZE "Original"
-#define OUTPUT_RATIO "Ratio"
-
-#include <QDebug>
+#include "../../../../imcore/include/grayimagedata.hpp"
 
 #include <zlib.h>
 #include <opencv2/imgcodecs.hpp>
+
+namespace nitro::Compression {
+
+inline const QString DISPLAY_LABEL_COMP = "compLabel";
+inline const QString DISPLAY_LABEL_ORIG = "origLabel";
+inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
+inline const QString DISPLAY_TIME = "Time";
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_BITS = "Bits";
+
+inline const QString OUTPUT_IMAGE = "Compressed Image";
+inline const QString OUTPUT_COMP_SIZE = "Compressed";
+inline const QString OUTPUT_ORIG_SIZE = "Original";
+inline const QString OUTPUT_RATIO = "Ratio";
+
 
 static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {
 
@@ -132,12 +134,12 @@ static std::vector<uchar> decompressData(const std::vector<uchar> &compressedDat
     return decompressedData;
 }
 
-nitro::ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
-                                  QLabel *timeLabel)
+ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
+                           QLabel *timeLabel)
         : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel),
           timeLabel_(timeLabel) {}
 
-void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
+void ZLibOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -197,16 +199,15 @@ void nitro::ZLibOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ZLibOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ZLibOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("zlib  Compression", "zlib", category);
+        NitroNodeBuilder builder("zlib  Compression", "zlib", category);
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
         auto *timeLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::ZLibOperator>(valueLabel, originalSizeLabel, crLabel, timeLabel))->
+                withOperator(std::make_unique<ZLibOperator>(valueLabel, originalSizeLabel, crLabel, timeLabel))->
                 withIcon("zip.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
@@ -223,3 +224,4 @@ nitro::ZLibOperator::creator(const QString &category) {
     };
 }
 
+} // namespace nitro::Compression

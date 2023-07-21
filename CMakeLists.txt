@@ -20,7 +20,7 @@ set(CMAKE_AUTORCC ON)
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets OpenGL OpenGLWidgets)
 find_package(OpenCV REQUIRED)
-find_package(OpenMP REQUIRED)
+find_package(OpenMP)
 find_package(ZLIB REQUIRED)
 
 set(NITRO_INCLUDE_DIRS "")
@@ -37,7 +37,7 @@ list(APPEND NITRO_LIBS ZLIB::ZLIB)
 if (OpenMP_FOUND)
     list(APPEND NITRO_LIBS OpenMP::OpenMP_CXX)
 else ()
-    message("OpenMP was not found.")
+    message("OpenMP was not found. Compiling without OpenMP support.")
 endif ()
 
 include_directories(
@@ -49,7 +49,8 @@ file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc)
+        resources/resources.qrc
+        )
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
@@ -66,8 +67,9 @@ target_link_libraries(${PROJECT_NAME}
 # Enable Modules - add more modules if required
 set(ENABLED_MODULES
         ImCore
-        ImExtra
-        Im3D
+        ImProc
+        Thesis
+        Compression
         )
 
 include(cmake/config.cmake)

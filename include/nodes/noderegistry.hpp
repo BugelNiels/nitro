@@ -5,22 +5,24 @@
 #include "QtNodes/NodeInfo.hpp"
 
 namespace nitro {
-    class NodeRegistry {
 
-    public:
-        NodeRegistry();
+class NodeRegistry {
 
-        [[nodiscard]] const std::shared_ptr<QtNodes::NodeDelegateModelRegistry> &getRegistry() const;
+public:
+    NodeRegistry();
 
-        [[nodiscard]] std::vector<std::pair<QString, std::vector<QtNodes::NodeInfo>>> getCategories() const;
+    [[nodiscard]] const std::shared_ptr<QtNodes::NodeDelegateModelRegistry> &getRegistry() const;
 
-        void registerNode(const std::function<std::unique_ptr<NitroNode>()> &buildFunction);
+    [[nodiscard]] std::vector<std::pair<QString, std::vector<QtNodes::NodeInfo>>> getCategories() const;
 
-    private:
-        int catIdx_ = 0;
-        std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry_;
-        std::unordered_map<QString, std::vector<QtNodes::NodeInfo>> categories_;
-        std::unordered_map<QString, int> categoryOrder_;
-    };
-}
+    void registerNode(const std::function<std::unique_ptr<NitroNode>()> &buildFunction);
+
+private:
+    int catIdx_ = 0;
+    std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry_;
+    std::unordered_map<QString, std::vector<QtNodes::NodeInfo>> categories_;
+    std::unordered_map<QString, int> categoryOrder_;
+};
+
+} // namespace nitro
 

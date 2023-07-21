@@ -1,14 +1,17 @@
 #include "dctransform.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
-#define OPTION_INVERSE "Inverse"
+namespace nitro::ImProc {
 
-void nitro::DCTOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString OPTION_INVERSE = "Inverse";
+
+void DCTOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
@@ -23,11 +26,11 @@ void nitro::DCTOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DCTOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> DCTOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Cosine Transform", "dct", category);
+        NitroNodeBuilder builder("Cosine Transform", "dct", category);
         return builder.
-                withOperator(std::make_unique<nitro::DCTOperator>())->
+                withOperator(std::make_unique<DCTOperator>())->
                 withIcon("frequency.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -36,3 +39,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DCTOperator::creator(c
                 build();
     };
 }
+
+} // namespace nitro::ImProc

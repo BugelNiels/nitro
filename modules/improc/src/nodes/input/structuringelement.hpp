@@ -3,14 +3,15 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImProc {
 
-    class StructElemOperator : public NodeOperator {
-    public:
+class StructElemOperator : public NodeOperator {
+public:
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        void execute(NodePorts &nodePorts) override;
+    void execute(NodePorts &nodePorts) override;
 
-    };
-} // nitro
+};
+
+} // namespace nitro::ImProc

@@ -1,25 +1,27 @@
 #include "iminfo.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_WIDTH "Width"
-#define OUTPUT_HEIGHT "Height"
-#define OUTPUT_AR "Aspect Ratio"
-#define OUTPUT_NUM_PIXELS "Num Pixels"
-#define OUTPUT_TYPE "Type"
+namespace nitro::ImCore {
 
-nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_WIDTH = "Width";
+inline const QString OUTPUT_HEIGHT = "Height";
+inline const QString OUTPUT_AR = "Aspect Ratio";
+inline const QString OUTPUT_NUM_PIXELS = "Num Pixels";
+inline const QString OUTPUT_TYPE = "Type";
+
+ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
         : typeLabel_(typeLabel) {
 
 }
 
-void
-nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
+void ImInfoOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -61,12 +63,12 @@ nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
     typeLabel_->setText(QString("Type: %1").arg(type));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ImInfoOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Image Info", "imInfo", category);
+        NitroNodeBuilder builder("Image Info", "imInfo", category);
         auto *typeLabel = new QLabel("Type: ");
         return builder.
-                withOperator(std::make_unique<nitro::ImInfoOperator>(typeLabel))->
+                withOperator(std::make_unique<ImInfoOperator>(typeLabel))->
                 withIcon("info.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
@@ -78,3 +80,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creato
                 build();
     };
 }
+
+} // namespace nitro::ImCore

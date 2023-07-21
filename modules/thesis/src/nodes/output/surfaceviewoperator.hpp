@@ -4,20 +4,20 @@
 #include "gui/im3dviewer/renderview.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::Thesis {
 
-    class SurfaceViewOperator : public NodeOperator {
+class SurfaceViewOperator : public NodeOperator {
 
-    public:
+public:
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, RenderView *renderViewer);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, RenderView *renderViewer);
 
-        explicit SurfaceViewOperator(RenderView *surfViewer);
+    explicit SurfaceViewOperator(RenderView *surfViewer);
 
-        void execute(NodePorts &nodePorts) override;
+    void execute(NodePorts &nodePorts) override;
 
-    private:
-        RenderView *surfViewer_;
-        cv::Mat currentImg_;
-    };
-}
+private:
+    RenderView *surfViewer_;
+    cv::Mat currentImg_;
+};
+} // namespace nitro::Thesis

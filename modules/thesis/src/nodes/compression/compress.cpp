@@ -1,22 +1,23 @@
 #include "compress.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "util.hpp"
-#include "../../../../imcore/src/nodes/compression/kmeans.hpp"
+#include "../../../../improc/src/nodes/quantization/kmeans.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_BITS "bits"
-#define INPUT_SIZE "Size"
-#define INPUT_APERTURE "Aperture"
-#define OUTPUT_IMAGE "Residual"
-#define OUTPUT_IMAGE_SMALL "Small"
-#define QUANTIZE_SMALL "Quantize small"
-#define UNIFORM_LUM "Uniform Luminance"
-#define TIME_LABEL "Time"
+namespace nitro::Thesis {
 
-void nitro::CompressOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_BITS = "bits";
+inline const QString INPUT_SIZE = "Size";
+inline const QString OUTPUT_IMAGE = "Residual";
+inline const QString OUTPUT_IMAGE_SMALL = "Small";
+inline const QString QUANTIZE_SMALL = "Quantize small";
+inline const QString UNIFORM_LUM = "Uniform Luminance";
+inline const QString TIME_LABEL = "Time";
+
+void CompressOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -53,7 +54,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
         cv::resize(uniformIm, smallImg, {smallWidth, smallHeight});
 
         if (nodePorts.optionEnabled(QUANTIZE_SMALL)) {
-            smallImg = nitro::kMeansHist(smallImg, levels, 40);
+            smallImg = nitro::ImProc::kMeansHist(smallImg, levels, 40);
         }
 
         cv::Mat largeMain;
@@ -66,7 +67,7 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
         residual = uniformIm;
         smallImg = cv::Mat(1, 1, CV_32F, cv::Scalar(0));
     }
-    residual = nitro::kMeansHist((residual + 1.0) / 2.0, levels, 40);
+    residual = nitro::ImProc::kMeansHist((residual + 1.0) / 2.0, levels, 40);
     double end = cv::getTickCount();
     double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
     timeLabel_->setText(QString("Time: %1 msec").arg(elapsedTime));
@@ -75,12 +76,12 @@ void nitro::CompressOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, residual);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> CompressOperator::creator(const QString &category) {
     return [category]() {
         auto *timeLabel = new QLabel("-");
-        nitro::NitroNodeBuilder builder("Bit Compress", "bitCompress", category);
+        NitroNodeBuilder builder("Bit Compress", "bitCompress", category);
         return builder.
-                withOperator(std::make_unique<nitro::CompressOperator>(timeLabel))->
+                withOperator(std::make_unique<CompressOperator>(timeLabel))->
                 withIcon("compress.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withDisplayWidget(TIME_LABEL, timeLabel)->
@@ -95,4 +96,7 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CompressOperator::crea
     };
 }
 
-nitro::CompressOperator::CompressOperator(QLabel *timeLabel) : timeLabel_(timeLabel) {}
+CompressOperator::CompressOperator(QLabel *timeLabel) : timeLabel_(timeLabel) {}
+
+
+} // namespace nitro::Thesis

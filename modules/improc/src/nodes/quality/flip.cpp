@@ -1,23 +1,25 @@
 #include "flip.hpp"
-#include <opencv2/imgproc.hpp>
 #include "FLIP.h"
 #include "color.h"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 
+#include <opencv2/imgproc.hpp>
 #include <QDebug>
 
-#define INPUT_IMAGE_1 "Image"
-#define INPUT_IMAGE_2 "Reference"
-#define INPUT_X "Width (m)"
-#define INPUT_RES "Res (x)"
-#define INPUT_DIST "Dist (m)"
-#define OUTPUT_RESULT "Result"
-#define OUTPUT_ERROR_MAP "Errors"
-#define OUTPUT_AVG_ERROR "Avg. Error"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImProc {
+
+inline const QString INPUT_IMAGE_1 = "Image";
+inline const QString INPUT_IMAGE_2 = "Reference";
+inline const QString INPUT_X = "Width (m)";
+inline const QString INPUT_RES = "Res (x)";
+inline const QString INPUT_DIST = "Dist (m)";
+inline const QString OUTPUT_RESULT = "Result";
+inline const QString OUTPUT_ERROR_MAP = "Errors";
+inline const QString OUTPUT_AVG_ERROR = "Avg. Error";
+inline const QString MODE_DROPDOWN = "Mode";
 
 static FLIP::image<FLIP::color3> cvMatToFlipImg(const cv::Mat &img) {
     int width = img.cols;
@@ -86,8 +88,7 @@ inline static float calculatePPD(const double dist, const double resolutionX,
 // To prevent initializing this thing all the time
 
 
-void
-nitro::FlipOperator::execute(NodePorts &nodePorts) {
+void FlipOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -117,11 +118,11 @@ nitro::FlipOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<DecimalData>(OUTPUT_AVG_ERROR, cv::mean(cvErrMap)[0]);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> FlipOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("NVIDIA FLIP", "nvidiaFlip", category);
+        NitroNodeBuilder builder("NVIDIA FLIP", "nvidiaFlip", category);
         return builder.
-                withOperator(std::make_unique<nitro::FlipOperator>())->
+                withOperator(std::make_unique<FlipOperator>())->
                 withIcon("compare.png")->
                 withNodeColor({118, 185, 0})->
                 withInputPort<ColImageData>(INPUT_IMAGE_1)->
@@ -135,3 +136,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FlipOperator::creator(
                 build();
     };
 }
+
+} // namespace nitro::ImProc

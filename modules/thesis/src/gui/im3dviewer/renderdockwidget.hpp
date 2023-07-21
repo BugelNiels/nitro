@@ -2,20 +2,26 @@
 
 #include <QDockWidget>
 
+
 namespace nitro {
-    class MainWindow;
-    class RenderView;
 
-    class RenderDockWidget : public QDockWidget {
-    public:
+class MainWindow;
 
-        explicit RenderDockWidget(RenderView *renderView, MainWindow* window);
+namespace Thesis {
 
-        ~RenderDockWidget() override;
+class RenderView;
 
-    private:
+class RenderDockWidget : public QDockWidget {
+public:
 
-        RenderView *renderView_;
-    };
+    explicit RenderDockWidget(RenderView *renderView, MainWindow *window);
 
-} // nitro
+    ~RenderDockWidget() override;
+
+private:
+
+    RenderView *renderView_;
+};
+
+} // namespace Thesis
+} // namespace nitro

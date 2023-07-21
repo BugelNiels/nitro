@@ -5,38 +5,42 @@
 #include <QLabel>
 
 namespace nitro {
-    class MainWindow;
+class MainWindow;
+}
 
-    class ImageViewer;
+namespace nitro::ImCore {
 
-    class ImViewDockWidget : public QDockWidget {
-    public:
 
-        explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
+class ImageViewer;
 
-        ~ImViewDockWidget() override;
+class ImViewDockWidget : public QDockWidget {
+public:
 
-    private:
-        ImageViewer *imageViewer_;
+    explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
 
-        QWidget *initStatusBar();
+    ~ImViewDockWidget() override;
 
-        QLabel *colLabel_;
-        QLabel *xLabel_;
-        QLabel *yLabel_;
-        QLabel *rLabel_;
-        QLabel *gLabel_;
-        QLabel *bLabel_;
-        QLabel *hLabel_;
-        QLabel *sLabel_;
-        QLabel *vLabel_;
-        QLabel *lLabel_;
-        QPixmap colLabelPixMap_;
-        QLabel *hexLabel_;
+private:
+    ImageViewer *imageViewer_;
 
-        void updateFooterLabels(const QPoint &pos, const QColor &color);
+    QWidget *initStatusBar();
 
-        QWidget *initTitleBarWidget(MainWindow *window) const;
-    };
+    QLabel *colLabel_;
+    QLabel *xLabel_;
+    QLabel *yLabel_;
+    QLabel *rLabel_;
+    QLabel *gLabel_;
+    QLabel *bLabel_;
+    QLabel *hLabel_;
+    QLabel *sLabel_;
+    QLabel *vLabel_;
+    QLabel *lLabel_;
+    QPixmap colLabelPixMap_;
+    QLabel *hexLabel_;
 
-} // nitro
+    void updateFooterLabels(const QPoint &pos, const QColor &color);
+
+    QWidget *initTitleBarWidget(MainWindow *window) const;
+};
+
+} // namespace nitro::ImCore

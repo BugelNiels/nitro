@@ -1,30 +1,27 @@
 #include "jpegoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
-#include "include/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 
-#define DISPLAY_LABEL_COMP "compLabel"
-#define DISPLAY_LABEL_ORIG "origLabel"
-#define DISPLAY_LABEL_RATIO "ratioLabel"
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Compressed Image"
-#define INPUT_QUALITY "Quality"
-
-#define OUTPUT_COMP_SIZE "Compressed"
-#define OUTPUT_ORIG_SIZE "Original"
-#define OUTPUT_RATIO "Ratio"
-
-#include <QDebug>
-
-#include <zlib.h>
 #include <opencv2/imgcodecs.hpp>
 
+namespace nitro::Compression {
 
-nitro::JpegOperator::JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                                  QLabel *ratioLabel)
+inline const QString DISPLAY_LABEL_COMP = "compLabel";
+inline const QString DISPLAY_LABEL_ORIG = "origLabel";
+inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Compressed Image";
+inline const QString INPUT_QUALITY = "Quality";
+inline const QString OUTPUT_COMP_SIZE = "Compressed";
+inline const QString OUTPUT_ORIG_SIZE = "Original";
+inline const QString OUTPUT_RATIO = "Ratio";
+
+JpegOperator::JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
+                           QLabel *ratioLabel)
         : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
 
-void nitro::JpegOperator::execute(NodePorts &nodePorts) {
+void JpegOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -60,15 +57,14 @@ void nitro::JpegOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::JpegOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> JpegOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("JPEG  Compression", "jpeg", category);
+        NitroNodeBuilder builder("JPEG  Compression", "jpeg", category);
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
         return builder.
-                withOperator(std::make_unique<nitro::JpegOperator>(valueLabel, originalSizeLabel, crLabel))->
+                withOperator(std::make_unique<JpegOperator>(valueLabel, originalSizeLabel, crLabel))->
                 withIcon("zip.png")->
                 withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
                 withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
@@ -84,3 +80,4 @@ nitro::JpegOperator::creator(const QString &category) {
     };
 }
 
+} // namespace nitro::Compression

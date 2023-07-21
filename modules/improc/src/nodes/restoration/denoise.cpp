@@ -1,14 +1,17 @@
 #include "denoise.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "../../../../imcore/include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
+namespace nitro::ImProc {
 
-void nitro::DenoiseOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
+
+void DenoiseOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     auto inputImg = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
@@ -23,11 +26,11 @@ void nitro::DenoiseOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DenoiseOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> DenoiseOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Denoise", "denoise", category);
+        NitroNodeBuilder builder("Denoise", "denoise", category);
         return builder.
-                withOperator(std::make_unique<nitro::DenoiseOperator>())->
+                withOperator(std::make_unique<DenoiseOperator>())->
                 withIcon("denoise.png")->
                 withNodeColor(NITRO_RESTORATION_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
@@ -35,3 +38,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DenoiseOperator::creat
                 build();
     };
 }
+
+} // namespace nitro::ImProc

@@ -1,18 +1,21 @@
 #include "colorspaceconvert.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 #include <utility>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
 
-nitro::ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> codes) : codes_(std::move(codes)) {
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+
+ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> codes) : codes_(std::move(codes)) {
 
 }
 
-void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
+void ConvertOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -79,7 +82,7 @@ void nitro::ConvertOperator::execute(NodePorts &nodePorts) {
 }
 
 
-void nitro::ConvertOperator::getConversions(QStringList &colorNames, std::vector<cv::ColorConversionCodes> &codes) {
+void ConvertOperator::getConversions(QStringList &colorNames, std::vector<cv::ColorConversionCodes> &codes) {
     colorNames.append("RGB -> XYZ");
     codes.push_back(cv::COLOR_RGB2XYZ);
 
@@ -111,15 +114,15 @@ void nitro::ConvertOperator::getConversions(QStringList &colorNames, std::vector
     codes.push_back(cv::COLOR_Luv2RGB);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ConvertOperator::creator(const QString &category) {
     return [category]() {
         QStringList colorNames;
         std::vector<cv::ColorConversionCodes> codes;
         getConversions(colorNames, codes);
 
-        nitro::NitroNodeBuilder builder("Convert Color Space", "convert", category);
+        NitroNodeBuilder builder("Convert Color Space", "convert", category);
         return builder.
-                withOperator(std::make_unique<nitro::ConvertOperator>(codes))->
+                withOperator(std::make_unique<ConvertOperator>(codes))->
                 withIcon("color.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withDropDown(MODE_DROPDOWN, colorNames)->
@@ -128,3 +131,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ConvertOperator::creat
                 build();
     };
 }
+
+} // namespace nitro::ImCore

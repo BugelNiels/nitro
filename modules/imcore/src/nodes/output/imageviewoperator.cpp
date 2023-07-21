@@ -1,39 +1,41 @@
 #include "imageviewoperator.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 
-#define INPUT_IMAGE "Image"
+namespace nitro::ImCore {
 
-#include <QDebug>
+inline const QString INPUT_IMAGE = "Image";
 
-nitro::ImageViewOperator::ImageViewOperator(nitro::ImageViewer *imViewer)
+ImageViewOperator::ImageViewOperator(ImageViewer *imViewer)
         : imViewer_(imViewer) {
 }
 
 
-void nitro::ImageViewOperator::execute(NodePorts &nodePorts) {
+void ImageViewOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         imViewer_->removeImage();
         return;
     }
     auto im = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
 
-    if(im->rows == 1 && im->cols == 1) {
+    if (im->rows == 1 && im->cols == 1) {
         cv::resize(*im, *im, {256, 256});
     }
     imViewer_->setImage(im);
 
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ImageViewOperator::creator(const QString &category, ImageViewer *imageViewer) {
+std::function<std::unique_ptr<NitroNode>()>
+ImageViewOperator::creator(const QString &category, ImageViewer *imageViewer) {
     return [category, imageViewer]() {
-        nitro::NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
+        NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
         return builder.
-                withOperator(std::make_unique<nitro::ImageViewOperator>(imageViewer))->
+                withOperator(std::make_unique<ImageViewOperator>(imageViewer))->
                 withIcon("viewer.png")->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
                 build();
     };
 }
+
+} // namespace nitro::ImCore

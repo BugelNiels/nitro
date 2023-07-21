@@ -1,10 +1,11 @@
 #pragma once
 
-namespace nitro {
-
+namespace nitro::Thesis {
 /**
  * @brief Represents the different shaders that exist in this program.
  */
-enum ShaderType { SURFACE, RAYCAST, LEVEL };
+enum class ShaderType {
+    SURFACE, RAYCAST, LEVEL
+};
 
-}  // namespace nitro
+}  // namespace nitro::Thesis

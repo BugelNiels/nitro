@@ -1,20 +1,22 @@
 #include "layerremoval.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
 #include <QDebug>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_K "K"
-#define OPTION_CUMULATIVE "Cumulative"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::Thesis {
 
-#define EPSILON 0.00001
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_K = "K";
+inline const QString OPTION_CUMULATIVE = "Cumulative";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
 
-#define MAX_GRAY 256
+const double EPSILON = 0.00001;
+
+const int MAX_GRAY = 256;
 
 // Source: https://github.com/dennisjosesilva/morphotree
 
@@ -250,8 +252,7 @@ static cv::Mat removeLayers(const cv::Mat &img, const std::vector<double> &impor
     return res;
 }
 
-void
-nitro::LayerRemovalOperator::execute(NodePorts &nodePorts) {
+void LayerRemovalOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -271,11 +272,11 @@ nitro::LayerRemovalOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> LayerRemovalOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Layer Removal", "layerRemoval", category);
+        NitroNodeBuilder builder("Layer Removal", "layerRemoval", category);
         return builder.
-                withOperator(std::make_unique<nitro::LayerRemovalOperator>())->
+                withOperator(std::make_unique<LayerRemovalOperator>())->
                 withIcon("quantize.png")->
                 withNodeColor(NITRO_COMPRESSION_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -285,3 +286,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::LayerRemovalOperator::
                 build();
     };
 }
+
+} // namespace nitro::Thesis

@@ -3,15 +3,16 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImProc {
 
-    class GaussianBlurOperator : public NodeOperator {
+class GaussianBlurOperator : public NodeOperator {
 
+public:
 
-    public:
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
-        void execute(NodePorts &nodePorts) override;
+    void execute(NodePorts &nodePorts) override;
 
-    };
-} // nitro
+};
+
+} // namespace nitro::ImProc

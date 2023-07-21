@@ -1,16 +1,17 @@
 #include "colormap.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#include <QDebug>
+namespace nitro::ImCore {
 
-#define INPUT_IMAGE "Image"
-#define OPTION_DROPDOWN "Option"
-#define DISPLAY_LABEL "Color Label"
-#define OUTPUT_IMAGE "Image"
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OPTION_DROPDOWN = "Option";
+inline const QString DISPLAY_LABEL = "Color Label";
+inline const QString OUTPUT_IMAGE = "Image";
 
 static cv::Mat createGradientImage(int width, int height) {
     cv::Mat gradientImage(height, width, CV_8UC1);
@@ -24,9 +25,9 @@ static cv::Mat createGradientImage(int width, int height) {
     return gradientImage;
 }
 
-nitro::ColorMapOperator::ColorMapOperator(QLabel *displayLabel) : displayLabel_(displayLabel) {}
+ColorMapOperator::ColorMapOperator(QLabel *displayLabel) : displayLabel_(displayLabel) {}
 
-void nitro::ColorMapOperator::execute(NodePorts &nodePorts) {
+void ColorMapOperator::execute(NodePorts &nodePorts) {
 
     int option = nodePorts.getOption(OPTION_DROPDOWN);
     auto colormapType = static_cast<cv::ColormapTypes>(option);
@@ -50,12 +51,12 @@ void nitro::ColorMapOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ColorMapOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Apply Color Map", "colorMap", category);
+        NitroNodeBuilder builder("Apply Color Map", "colorMap", category);
         auto *displayLabel = new QLabel();
         return builder
-                .withOperator(std::make_unique<nitro::ColorMapOperator>(displayLabel))->
+                .withOperator(std::make_unique<ColorMapOperator>(displayLabel))->
                 withIcon("colormap.png")->
                 withNodeColor(NITRO_COLOR_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -90,3 +91,4 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ColorMapOperator::crea
     };
 }
 
+} // namespace nitro::ImCore

@@ -4,24 +4,29 @@
 #include "nodes/noderegistry.hpp"
 #include "nodes/nitronodebuilder.hpp"
 
-namespace nitro {
-    class ImageViewer;
+namespace nitro::ImProc {
 
-    namespace ImExtra {
+class ImageViewer;
 
-        class ImExtraModule : public NitroModule {
-        public:
-            ImExtraModule();
+class ImProc : public NitroModule {
+public:
+    ImProc();
 
-            void registerNodes(NodeRegistry *registry) override;
+    void registerNodes(NodeRegistry *registry) override;
 
-            void registerFilterNodes(NodeRegistry *registry);
+private:
 
-            void registerAnalysisNodes(NodeRegistry *registry);
+    void registerFilterNodes(NodeRegistry *registry) const;
 
-            void registerInputNodes(NodeRegistry *registry);
-        };
-    }
+    void registerAnalysisNodes(NodeRegistry *registry) const;
 
+    void registerInputNodes(NodeRegistry *registry) const;
 
-} // imCore
+    void registerQualityMetricNodes(NodeRegistry *registry) const;
+
+    void registerRestorationNodes(NodeRegistry *registry) const;
+
+    void registerQuantizationNodes(NodeRegistry *registry);
+};
+
+} // namespace nitro::ImProc

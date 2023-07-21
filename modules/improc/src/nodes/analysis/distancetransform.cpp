@@ -1,14 +1,17 @@
 #include "distancetransform.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_THRESH "Threshold"
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define OPTION_SIGNED "Signed"
-#define OPTION_NORMALIZE "Normalize"
+namespace nitro::ImProc {
+
+inline const QString INPUT_THRESH = "Threshold";
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString OPTION_SIGNED = "Signed";
+inline const QString OPTION_NORMALIZE = "Normalize";
 
 static cv::Mat
 distanceField(cv::Mat const &src, double threshold, cv::DistanceTypes mode, bool signedDf, bool normalize) {
@@ -37,7 +40,7 @@ distanceField(cv::Mat const &src, double threshold, cv::DistanceTypes mode, bool
 }
 
 
-void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
+void DistanceTransformOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -78,11 +81,11 @@ void nitro::DistanceTransformOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DistanceTransformOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> DistanceTransformOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Distance Transform", "distanceTransform", category);
+        NitroNodeBuilder builder("Distance Transform", "distanceTransform", category);
         return builder.
-                withOperator(std::make_unique<nitro::DistanceTransformOperator>())->
+                withOperator(std::make_unique<DistanceTransformOperator>())->
                 withIcon("distance.png")->
                 withNodeColor(NITRO_ANALYSIS_COLOR)->
                 withInputValue(INPUT_THRESH, 0.5, 0, 1)->
@@ -94,3 +97,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::DistanceTransformOpera
                 build();
     };
 }
+
+} // namespace nitro::ImProc

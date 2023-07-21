@@ -26,6 +26,7 @@ void setupApplication() {
     QSurfaceFormat::setDefaultFormat(glFormat);
 #ifdef _OPENMP
     omp_set_num_threads(8);
+    cv::setNumThreads(8);
 #else
     std::cerr << "Warning: OpenMP not found. No parallelization available." << std::endl;
 #endif

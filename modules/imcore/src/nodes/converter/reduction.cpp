@@ -1,15 +1,18 @@
 #include "reduction.hpp"
 #include "util.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
 #include "nodes/datatypes/integerdata.hpp"
+
 #include <opencv2/imgproc.hpp>
 #include <unordered_set>
 
-#define INPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
-#define OUTPUT_VALUE "Value"
+namespace nitro::ImCore {
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString MODE_DROPDOWN = "Mode";
+inline const QString OUTPUT_VALUE = "Value";
 
 static double minMat(const cv::Mat &in) {
     double minValue, maxValue;
@@ -94,8 +97,7 @@ static int uniqueMat(const cv::Mat &in) {
     return 0;
 }
 
-void
-nitro::ReductionOperator::execute(NodePorts &nodePorts) {
+void ReductionOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -123,11 +125,11 @@ nitro::ReductionOperator::execute(NodePorts &nodePorts) {
     }
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ReductionOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ReductionOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Reduction", "reduction", category);
+        NitroNodeBuilder builder("Reduction", "reduction", category);
         return builder.
-                withOperator(std::make_unique<nitro::ReductionOperator>())->
+                withOperator(std::make_unique<ReductionOperator>())->
                 withIcon("sum.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Average", "Count Unique"})->
@@ -136,3 +138,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ReductionOperator::cre
                 build();
     };
 }
+
+} // namespace nitro::ImCore

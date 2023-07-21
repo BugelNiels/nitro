@@ -1,10 +1,13 @@
 #include "fouriershift.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
+namespace nitro::ImProc {
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString OUTPUT_IMAGE = "Image";
 
 // Credit: https://stackoverflow.com/a/57673157
 bool fftShift(const cv::Mat &src, cv::Mat &dst) {
@@ -28,8 +31,8 @@ bool fftShift(const cv::Mat &src, cv::Mat &dst) {
     return false;
 }
 
-void nitro::FFTShiftOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+void FFTShiftOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
@@ -42,11 +45,11 @@ void nitro::FFTShiftOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShiftOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> FFTShiftOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Fourier Shift", "fftShift", category);
+        NitroNodeBuilder builder("Fourier Shift", "fftShift", category);
         return builder.
-                withOperator(std::make_unique<nitro::FFTShiftOperator>())->
+                withOperator(std::make_unique<FFTShiftOperator>())->
                 withIcon("shift.png")->
                 withNodeColor(NITRO_FILTER_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -54,3 +57,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::FFTShiftOperator::crea
                 build();
     };
 }
+
+} // namespace nitro::ImProc

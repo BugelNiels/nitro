@@ -1,18 +1,21 @@
 #include "maprange.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/grayimagedata.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Value"
-#define INPUT_FROM_MIN "From Min"
-#define INPUT_FROM_MAX "From Max"
-#define INPUT_TO_MIN "To Min"
-#define INPUT_TO_MAX "To Max"
-#define OUTPUT_IMAGE "Result"
-#define OPTION_CLAMP "Clamp"
+namespace nitro::ImCore {
 
-void nitro::MapRangeOperator::execute(NodePorts &nodePorts) {
+inline const QString INPUT_IMAGE = "Value";
+inline const QString INPUT_FROM_MIN = "From Min";
+inline const QString INPUT_FROM_MAX = "From Max";
+inline const QString INPUT_TO_MIN = "To Min";
+inline const QString INPUT_TO_MAX = "To Max";
+inline const QString OUTPUT_IMAGE = "Result";
+inline const QString OPTION_CLAMP = "Clamp";
+
+void MapRangeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -52,11 +55,11 @@ void nitro::MapRangeOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MapRangeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MapRangeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Map Range", "mapRange", category);
+        NitroNodeBuilder builder("Map Range", "mapRange", category);
         return builder.
-                withOperator(std::make_unique<nitro::MapRangeOperator>())->
+                withOperator(std::make_unique<MapRangeOperator>())->
                 withIcon("map_range.png")->
                 withNodeColor(NITRO_CONVERTER_COLOR)->
                 withInputValue(INPUT_IMAGE, 0.5, 0, 1, BoundMode::UNCHECKED,
@@ -70,3 +73,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MapRangeOperator::crea
                 build();
     };
 }
+
+} // namespace nitro::ImCore

@@ -1,25 +1,28 @@
 #include "psnr.hpp"
 #include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "../../../../imcore/include/grayimagedata.hpp"
 #include "util.hpp"
 #include "nodes/datatypes/decimaldata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_IMAGE_REF "Reference"
-#define OUTPUT_VALUE "Error"
+namespace nitro::ImProc {
+
+inline const QString INPUT_IMAGE = "Image";
+inline const QString INPUT_IMAGE_REF = "Reference";
+inline const QString OUTPUT_VALUE = "Error";
 
 static double mse(const cv::Mat &im1, const cv::Mat &im2) {
     cv::Mat diff;
-    if(im1.size != im2.size) {
-         return -1;
+    if (im1.size != im2.size) {
+        return -1;
     }
     cv::absdiff(im1, im2, diff);
     cv::Mat squaredDiff = diff.mul(diff);
     return cv::mean(squaredDiff).val[0];
 }
 
-void nitro::PsnrOperator::execute(NodePorts &nodePorts) {
+void PsnrOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -32,11 +35,11 @@ void nitro::PsnrOperator::execute(NodePorts &nodePorts) {
 }
 
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::PsnrOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> PsnrOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("PSNR", "psnr", category);
+        NitroNodeBuilder builder("PSNR", "psnr", category);
         return builder.
-                withOperator(std::make_unique<nitro::PsnrOperator>())->
+                withOperator(std::make_unique<PsnrOperator>())->
                 withIcon("compare.png")->
                 withNodeColor(NITRO_QUALITY_COLOR)->
                 withInputPort<GrayImageData>(INPUT_IMAGE)->
@@ -45,3 +48,5 @@ std::function<std::unique_ptr<nitro::NitroNode>()> nitro::PsnrOperator::creator(
                 build();
     };
 }
+
+} // namespace nitro::ImProc

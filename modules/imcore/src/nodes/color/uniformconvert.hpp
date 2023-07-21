@@ -3,12 +3,14 @@
 #include "nodes/nodeoperator.hpp"
 #include "nodes/nitronode.hpp"
 
-namespace nitro {
+namespace nitro::ImCore {
 
-    class UniformConvertOperator : public NodeOperator {
-    public:
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
-        void execute(NodePorts &nodePorts) override;
+class UniformConvertOperator : public NodeOperator {
+public:
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-    };
-} // nitro
+    void execute(NodePorts &nodePorts) override;
+
+};
+
+} // namespace nitro::ImCore

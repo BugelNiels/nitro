@@ -4,43 +4,31 @@
 #include "nodes/noderegistry.hpp"
 #include "nodes/nitronodebuilder.hpp"
 
-namespace nitro {
-    class ImageViewer;
+namespace nitro::ImCore {
+class ImageViewer;
 
-    namespace ImCore {
+class ImCore : public NitroModule {
+public:
+    ImCore();
 
-        class ImCoreModule : public NitroModule {
-        public:
-            ImCoreModule();
+    void registerDataTypes(NodeRegistry *registry) override;
 
-            void registerDataTypes(NodeRegistry *registry) override;
+    void registerDocks(MainWindow *window) override;
 
-            void registerDocks(MainWindow *window) override;
+    void registerNodes(NodeRegistry *registry) override;
 
-            void registerNodes(NodeRegistry *registry) override;
+private:
+    ImageViewer *imageViewer_;
 
-        private:
-            void registerInputNodes(NodeRegistry *registry);
+    void registerInputNodes(NodeRegistry *registry);
 
-            void registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer);
+    void registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer);
 
-            void registerConvertNodes(NodeRegistry *registry);
+    void registerConvertNodes(NodeRegistry *registry);
 
-            void registerFilterNodes(NodeRegistry *registry);
+    void registerColorNodes(NodeRegistry *registry);
 
-            void registerCompressionNodes(NodeRegistry *registry);
+    void registerTransformNodes(NodeRegistry *registry);
+};
 
-            ImageViewer *imageViewer_;
-
-            void registerColorNodes(NodeRegistry *registry);
-
-            void registerQualityMetricNodes(NodeRegistry *registry);
-
-            void registerTransformNodes(NodeRegistry *registry);
-
-            void registerRestorationNodes(NodeRegistry *registry);
-        };
-    }
-
-
-} // imCore
+} // namespace nitro::ImCore

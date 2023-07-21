@@ -1,0 +1,10 @@
+<RCC>
+	<qresource prefix="/">
+		<file>icons/nodes/3d.png</file>
+		<file>icons/nodes/compress.png</file>
+		<file>icons/nodes/connected_comps.png</file>
+		<file>icons/nodes/expand.png</file>
+		<file>icons/nodes/resample.png</file>
+		<file>icons/surface_visualizer.png</file>
+	</qresource>
+</RCC>

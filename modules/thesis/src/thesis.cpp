@@ -13,34 +13,34 @@
 #include "nodes/compression/decompress.hpp"
 
 namespace nitro::Thesis {
-ThesisModule::ThesisModule() {
+Thesis::Thesis() {
     renderViewer_ = new RenderView();
 }
 
-void ThesisModule::registerNodes(NodeRegistry *registry) {
+void Thesis::registerNodes(NodeRegistry *registry) {
     registerOutputNodes(registry, renderViewer_);
     registerImageNodes(registry);
     registerRestorationNodes(registry);
 }
 
-void ThesisModule::registerDocks(nitro::MainWindow *window) {
+void Thesis::registerDocks(nitro::MainWindow *window) {
     auto im3DViewDock = new RenderDockWidget(renderViewer_, window);
     window->registerDock(im3DViewDock);
 }
 
-void ThesisModule::registerImageNodes(NodeRegistry *registry) {
+void Thesis::registerImageNodes(NodeRegistry *registry) {
     const QString category = "Compression";
     registry->registerNode(LayerRemovalOperator::creator(category));
     registry->registerNode(CompressOperator::creator(category));
     registry->registerNode(DecompressOperator::creator(category));
 }
 
-void ThesisModule::registerRestorationNodes(NodeRegistry *registry) {
+void Thesis::registerRestorationNodes(NodeRegistry *registry) {
     const QString category = "Restoration";
     registry->registerNode(ResampleOperator::creator(category));
 }
 
-void ThesisModule::registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer) {
+void Thesis::registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer) {
     const QString category = "Output";
     registry->registerNode(SurfaceViewOperator::creator(category, renderViewer));
 }
