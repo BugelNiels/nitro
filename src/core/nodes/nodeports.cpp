@@ -14,8 +14,8 @@ NodePorts::NodePorts() = default;
 
 NodePorts::NodePorts(std::vector<PortData> inputList,
                      std::vector<PortData> outputList,
-                     std::unordered_map<QString, int> options) : options_(
-        std::move(options)) {
+                     std::unordered_map<QString, int> options)
+        : options_(std::move(options)) {
     for (auto &portData: inputList) {
         inputList_.push_back(portData.name_);
         origInTypes_[portData.name_] = portData.type_;

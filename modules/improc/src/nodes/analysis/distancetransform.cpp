@@ -1,6 +1,6 @@
 #include "distancetransform.hpp"
 #include <nodes/nitronodebuilder.hpp>
-#include "../../../../imcore/include/grayimagedata.hpp"
+#include <grayimagedata.hpp>
 
 #include <opencv2/imgproc.hpp>
 

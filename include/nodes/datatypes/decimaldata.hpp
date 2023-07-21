@@ -1,10 +1,7 @@
 #pragma once
 
-#include <utility>
-
 #include "QtNodes/NodeData"
 #include "flexibledata.hpp"
-#include "../../../modules/imcore/include/colimagedata.hpp"
 
 namespace nitro {
 

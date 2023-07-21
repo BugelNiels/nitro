@@ -1,5 +1,5 @@
 #include "surfaceviewoperator.hpp"
-#include "../../../../imcore/include/colimagedata.hpp"
+#include <colimagedata.hpp>
 #include <util.hpp>
 #include <nodes/nitronodebuilder.hpp>
 

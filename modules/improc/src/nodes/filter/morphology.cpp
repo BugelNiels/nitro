@@ -1,8 +1,8 @@
 #include "morphology.hpp"
 #include <nodes/nitronodebuilder.hpp>
 #include <util.hpp>
-#include "../../../../imcore/include/colimagedata.hpp"
-#include "../../../../imcore/include/grayimagedata.hpp"
+#include <colimagedata.hpp>
+#include <grayimagedata.hpp>
 
 #include <opencv2/imgproc.hpp>
 #include <QDebug>

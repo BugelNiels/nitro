@@ -1,8 +1,8 @@
 #include "imviewdockwidget.hpp"
 #include "imviewer.hpp"
-#include <gui/mainwindow.hpp>
-#include "../../../../../src/gui/components/zoombar.hpp"
 
+#include <gui/mainwindow.hpp>
+#include <gui/zoombar.hpp>
 #include <QHBoxLayout>
 
 namespace nitro::ImCore {

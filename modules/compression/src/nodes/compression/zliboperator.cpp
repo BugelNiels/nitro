@@ -1,7 +1,7 @@
 #include "zliboperator.hpp"
 #include <nodes/nitronodebuilder.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
-#include "../../../../imcore/include/grayimagedata.hpp"
+#include <grayimagedata.hpp>
 
 #include <zlib.h>
 #include <opencv2/imgcodecs.hpp>

@@ -2,8 +2,8 @@
 #include "FLIP.h"
 #include "color.h"
 #include <nodes/nitronodebuilder.hpp>
-#include "../../../../imcore/include/colimagedata.hpp"
-#include "../../../../imcore/include/grayimagedata.hpp"
+#include <colimagedata.hpp>
+#include <grayimagedata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
 
 #include <opencv2/imgproc.hpp>

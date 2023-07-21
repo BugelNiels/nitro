@@ -25,7 +25,6 @@ if [[ $? -eq 0 ]]; then
     wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     chmod u+x linuxdeployqt-continuous-x86_64.AppImage
   fi
-  # TODO save this version elsewhere
   project_version=$(head -n 1 version.txt)
   export VERSION=$project_version
   ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage

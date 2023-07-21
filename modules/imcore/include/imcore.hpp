@@ -11,7 +11,7 @@ class ImCore : public NitroModule {
 public:
     ImCore();
 
-    void registerDataTypes(NodeRegistry *registry) override;
+    void registerDataTypes() override;
 
     void registerDocks(MainWindow *window) override;
 

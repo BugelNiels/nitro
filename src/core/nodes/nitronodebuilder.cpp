@@ -11,6 +11,7 @@
 
 
 #include "src/util/imgresourcereader.hpp"
+#include "colimagedata.hpp"
 #include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
 #include <nodes/nitronode.hpp>
@@ -171,6 +172,7 @@ NitroNodeBuilder::withInputValue(const QString &name, double defaultVal, double 
 }
 
 NitroNodeBuilder *NitroNodeBuilder::withLoadButton(const QString &name, const QString &filters) {
+    // TODO: remove dependency on colimagedata
     outputList_.emplace_back(name, std::make_shared<ColImageData>());
     // TODO: align icon
     auto *loadButton = new QPushButton();

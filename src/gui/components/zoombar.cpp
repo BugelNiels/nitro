@@ -1,4 +1,4 @@
-#include "zoombar.hpp"
+#include "include/gui/zoombar.hpp"
 
 namespace nitro {
 

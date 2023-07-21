@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
     auto *nodes = new nitro::NodeRegistry();
     for (auto &nitroModule: modules) {
-        nitroModule->registerDataTypes(nodes);
+        nitroModule->registerDataTypes();
         nitroModule->registerNodes(nodes);
     }
     auto *window = new nitro::MainWindow(nodes);

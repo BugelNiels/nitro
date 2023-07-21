@@ -5,73 +5,76 @@
 
 namespace nitro {
 
+/**
+ * Describes the different modes for resizing.
+ */
 enum class AspectRatioMode {
-    IGNORE, KEEP_CROP, KEEP_SHRINK, KEEP_GROW
+    /**
+     * Resizes the image to width/height.
+     * If the new aspect ratio is different from the original aspect ration, the image might appear distorted.
+     */
+    IGNORE,
+    /**
+     * Resizes the image to width/height, but does not distort the image. Instead, crops the larger dimension.
+     */
+    KEEP_CROP,
+    /**
+     * The image is resized to fit in the bounding box determined by the width/height.
+     * In case that the aspect ratio is different, either the new width or height shrinks to maintain the aspect ratio.
+     */
+    KEEP_SHRINK,
+    /**
+     * The image is resized to be at least as large as the bounding box determined by the width/height.
+     * In case that the aspect ratio is different, either the new width or height grows to maintain the aspect ratio.
+     */
+    KEEP_GROW
 };
 
 /**
+ *  Makes a color readable depending on whether the background is dark or light.
  *
- * @param color
- * @param lightMode
- * @return
+ * @param color The color to adjust.
+ * @param lightMode True if the background is light (i.e. the colour should potentially be made darker).
+ * False if the background is dark (i.e. the color should potentially be made lighter).
+ * @return The adjusted color.
  */
 QColor makeReadable(const QColor &color, bool lightMode = false);
 
 /**
- *
- * @param img
- * @return
+ * Converts an OpenCV image to a QImage.
+ * @param img The openCV Image
+ * @param buffer A temporary buffer used to store the conversion so that this does not have to be re-allocated all the time.
+ * @return A QImage.
  */
 QImage cvMatToQImage(const cv::Mat &src, cv::Mat &buffer);
 
 /**
- *
- * @param inImage
- * @param inCloneImageData
- * @return
+ * Returns the maximum possible value that can be represented by the provided image.
+ * Not to be confused with the maximum value IN the image.
+ * @param img The matrix to find the maximum representable value of.
+ * @return The maximum representable value.
  */
-cv::Mat QImageToCvMat(const QImage &inImage, bool inCloneImageData);
+int getMaxValue(const cv::Mat &img);
 
 /**
- *
- * @param mat
- * @return
- */
-int getMaxValue(const cv::Mat &mat);
-
-/**
- *
- * @param img
- * @return
+ * Determines whether an image is grayscale or not. Also works for images consisting of multiple channels.
+ * @param img The input image.
+ * @return True if the image is grayscale, false otherwise.
  */
 bool isGrayscale(const cv::Mat &img);
 
 /**
+ * Resizes an input image to the desired target size.
  *
- * @param srcImage
- * @param targetImage
- * @return
- */
-cv::Mat cropToMatchSize(const cv::Mat &srcImage, const cv::Mat &targetImage);
-
-/**
- *
- * @param srcSize
- * @param targetSize
- * @return
- */
-cv::Mat createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize);
-
-/**
- *
- * @param imIn
- * @param targetSize
- * @param mode
- * @param arMode
- * @return
+ * @param imIn The image to resize.
+ * @param targetSize The desired size.
+ * @param mode The interpolation mode. @see cv::InterpolationFlags.
+ * @param arMode Aspect ratio mode. @see nitro::AspectRatioMode.
+ * @return The resized image.
  */
 cv::Mat resize(const cv::Mat &imIn,
                const cv::Size &targetSize,
-               const cv::InterpolationFlags mode, AspectRatioMode arMode);
+               cv::InterpolationFlags mode,
+               AspectRatioMode arMode);
 
 } // nitro

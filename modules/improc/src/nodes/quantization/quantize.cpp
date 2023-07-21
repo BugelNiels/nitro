@@ -1,7 +1,7 @@
 #include "quantize.hpp"
 #include <util.hpp>
 #include <nodes/nitronodebuilder.hpp>
-#include "../../../../imcore/include/colimagedata.hpp"
+#include <colimagedata.hpp>
 
 #include <opencv2/imgproc.hpp>
 

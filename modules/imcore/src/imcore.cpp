@@ -51,7 +51,7 @@ void ImCore::registerNodes(NodeRegistry *registry) {
     registerTransformNodes(registry);
 }
 
-void ImCore::registerDataTypes(NodeRegistry *registry) {
+void ImCore::registerDataTypes() {
     ColImageData::registerConversions();
     GrayImageData::registerConversions();
     DecimalData::registerConversions();

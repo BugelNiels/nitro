@@ -10,21 +10,50 @@ class NodeRegistry;
 
 class NodeDockWidget;
 
+/**
+ * The main window of the application. Contains the node editor, GUI dock widgets, file menu and footer.
+ */
 class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
+    /**
+     * Initialises a new MainWindow with the provided nodes as registered to the NodeRegistry.
+     * @param registry Node registry containing the supported nodes and data types.
+     * Note that once a MainWindow is created, adding new nodes to the node registry does not change anything in the MainWindow.
+     * @param parent Parent widget.
+     */
     explicit MainWindow(NodeRegistry *registry, QWidget *parent = nullptr);
 
+    /**
+     * Destructor.
+     */
     ~MainWindow() override;
 
+    /**
+     * Creates an icon for a GUI dock widget of a specific size and color.
+     * @param path Path of the icon as defined in the relevant resources.qrc.
+     * @return A QLabel having the icon as its pixmap.
+     */
     QLabel *buildDockIcon(const QString &path);
 
-    void finalizeSetup();
 
+    /**
+     * Registers a GUI dock widget. A toggle for the dock widget is added to the window menu.
+     * @param widget The new dock widget.
+     */
     void registerDock(QDockWidget *widget);
 
+    /**
+     * Registers a new widget that displays the node canvas/graph. Note that NITRO currently only supports a single NodeDockWidget at the time.
+     * @param widget The NodeDockWidget to register.
+     */
     void registerNodeDock(NodeDockWidget *widget);
+
+    /**
+     * Finalizes the setup for this window. Should always be called once everything has been initialised (i.e. all docks have been registered).
+     */
+    void finalizeSetup();
 
 private:
     const int icSize_ = 16;
