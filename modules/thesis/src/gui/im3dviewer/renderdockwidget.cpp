@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include "renderview.hpp"
-#include "gui/mainwindow.hpp"
+#include <gui/mainwindow.hpp>
 
 #define EASTER_EGG_MODE
 

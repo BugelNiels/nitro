@@ -1,9 +1,9 @@
 #include "compress.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "../../../../imcore/include/grayimagedata.hpp"
-#include "util.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <grayimagedata.hpp>
+#include <util.hpp>
 #include "../../../../improc/src/nodes/quantization/kmeans.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
 #include <opencv2/imgproc.hpp>
 
 namespace nitro::Thesis {

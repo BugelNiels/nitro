@@ -1,5 +1,5 @@
 #include "invert.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

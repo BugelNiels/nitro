@@ -1,8 +1,8 @@
 #include "immath.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <util.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
 #include "include/grayimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

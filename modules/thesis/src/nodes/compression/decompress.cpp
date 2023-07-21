@@ -1,7 +1,7 @@
 #include "decompress.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "../../../../imcore/include/grayimagedata.hpp"
-#include "util.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <grayimagedata.hpp>
+#include <util.hpp>
 #include "nodes/restoration/resample.hpp"
 #include <opencv2/imgproc.hpp>
 

@@ -1,6 +1,6 @@
 #include "colormap.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <util.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include "include/grayimagedata.hpp"
 

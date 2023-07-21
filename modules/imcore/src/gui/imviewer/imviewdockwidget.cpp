@@ -1,6 +1,6 @@
 #include "imviewdockwidget.hpp"
 #include "imviewer.hpp"
-#include "gui/mainwindow.hpp"
+#include <gui/mainwindow.hpp>
 #include "../../../../../src/gui/components/zoombar.hpp"
 
 #include <QHBoxLayout>

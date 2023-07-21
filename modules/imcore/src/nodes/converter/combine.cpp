@@ -1,5 +1,5 @@
 #include "combine.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include "include/grayimagedata.hpp"
 

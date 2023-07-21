@@ -1,5 +1,5 @@
 #include "imviewer.hpp"
-#include "util.hpp"
+#include <util.hpp>
 
 #include <QColorSpace>
 #include <QImage>

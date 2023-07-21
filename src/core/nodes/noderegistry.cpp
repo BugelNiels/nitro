@@ -1,6 +1,6 @@
-#include "nodes/noderegistry.hpp"
+#include <nodes/noderegistry.hpp>
 
-#include "nodes/nitronode.hpp"
+#include <nodes/nitronode.hpp>
 
 
 nitro::NodeRegistry::NodeRegistry() {

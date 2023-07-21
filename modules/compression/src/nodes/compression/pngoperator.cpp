@@ -1,6 +1,6 @@
 #include "pngoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
 #include "../../../../imcore/include/grayimagedata.hpp"
 
 #include <opencv2/imgcodecs.hpp>

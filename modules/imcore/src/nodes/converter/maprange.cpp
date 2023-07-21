@@ -1,7 +1,7 @@
 #include "maprange.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/grayimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
 
 #include <opencv2/imgproc.hpp>
 

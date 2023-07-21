@@ -1,36 +1,30 @@
 #!/bin/bash
 
+# Setup the correct working directory
+initial_loc=$(pwd)
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+# Removes the original file
 resourcesFile="resources.qrc"
 rm $resourcesFile
+
+# All the files to add
+file_list=$(find . -type f -not -name "*.sh" -not -name "*.bash" -not -name "*.qrc" -print)
 echo "Creating $resourcesFile"
 
+# Create resources.qrc file
 touch $resourcesFile
 echo "<RCC>" >>$resourcesFile
 echo -e "\t<qresource prefix=\"/\">" >>$resourcesFile
 
-echo -e "\t\t<file>DefaultStyle.json</file>" >>$resourcesFile
-
-
-echo "Adding shader files"
-for file in shaders/*; do
-  if [[ -f "$file" ]]; then
-    echo -e "\t\t<file>$file</file>" >> $resourcesFile
-  fi
-done
-
-echo "Adding icons"
-for file in icons/*; do
-  if [[ -f "$file" ]]; then
-    echo -e "\t\t<file>$file</file>" >> $resourcesFile
-  elif [[ -d "$file" ]]; then
-    for icon in $file/*; do
-      if [[ -f "$icon" ]]; then
-        echo -e "\t\t<file>$icon</file>" >> $resourcesFile
-      fi
-    done
-  fi
+for file in $file_list; do
+  echo -e "\t\t<file>$file</file>" >>$resourcesFile
+  echo "Added ${file}"
 done
 
 echo -e "\t</qresource>" >>$resourcesFile
 echo "</RCC>" >>$resourcesFile
+
+# Done and navigate back
 echo "Done"
+cd "$initial_loc"

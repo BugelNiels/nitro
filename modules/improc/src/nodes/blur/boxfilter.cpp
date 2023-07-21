@@ -1,5 +1,5 @@
 #include "boxfilter.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "../../../../imcore/include/colimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

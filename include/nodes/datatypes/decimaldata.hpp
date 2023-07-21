@@ -5,7 +5,6 @@
 #include "QtNodes/NodeData"
 #include "flexibledata.hpp"
 #include "../../../modules/imcore/include/colimagedata.hpp"
-#include "include/valueslider.hpp"
 
 namespace nitro {
 

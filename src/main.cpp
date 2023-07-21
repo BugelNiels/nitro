@@ -7,14 +7,14 @@
 #include <QApplication>
 #include <QSurfaceFormat>
 
-#include "gui/mainwindow.hpp"
+#include <gui/mainwindow.hpp>
 #include <QStyle>
 #include <QFontDatabase>
 
-#include "QtNodes/internal/WidgetNodePainter.hpp"
-#include "nitromodule.hpp"
-#include "nodes/noderegistry.hpp"
-#include "config.hpp"
+#include <QtNodes/internal/WidgetNodePainter.hpp>
+#include <nitromodule.hpp>
+#include <nodes/noderegistry.hpp>
+#include <config.hpp>
 
 #include "src/gui/stylepresets.hpp"
 

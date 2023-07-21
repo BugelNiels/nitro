@@ -6,7 +6,7 @@
 #include <QLabel>
 #include "nodeoperator.hpp"
 #include "nitronode.hpp"
-#include "include/valueslider.hpp"
+#include <valueslider.hpp>
 
 class QVBoxLayout;
 

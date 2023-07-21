@@ -1,8 +1,8 @@
 #include "mse.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "../../../../imcore/include/grayimagedata.hpp"
-#include "util.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <util.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
 
 #include <opencv2/imgproc.hpp>
 

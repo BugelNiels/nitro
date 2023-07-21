@@ -1,4 +1,4 @@
-#include "gui/mainwindow.hpp"
+#include <gui/mainwindow.hpp>
 
 #include <QMenuBar>
 #include <QStatusBar>
@@ -7,9 +7,9 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 #include <QApplication>
+#include <config.hpp>
 
 #include "src/util/imgresourcereader.hpp"
-#include "config.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
 #include "stylepresets.hpp"
 

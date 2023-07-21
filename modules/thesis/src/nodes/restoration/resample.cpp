@@ -1,7 +1,7 @@
 #include "resample.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "util.hpp"
-#include "../../../../imcore/include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+#include <grayimagedata.hpp>
 #include "util/distancefield.hpp"
 
 #include <opencv2/imgproc.hpp>

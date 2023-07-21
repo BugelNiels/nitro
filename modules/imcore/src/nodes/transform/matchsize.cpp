@@ -1,7 +1,7 @@
 #include "matchsize.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include "util.hpp"
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 

@@ -1,6 +1,6 @@
 #include "valueviewoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
 
 namespace nitro::ImCore {
 

@@ -1,4 +1,4 @@
-#include "util.hpp"
+#include <util.hpp>
 
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgproc.hpp>
@@ -255,8 +255,8 @@ cv::Mat createMask(const cv::MatSize &srcSize, const cv::MatSize &targetSize) {
 
 
 cv::Mat resize(const cv::Mat &imIn,
-                      const cv::Size &targetSize,
-                      const cv::InterpolationFlags mode, AspectRatioMode arMode) {
+               const cv::Size &targetSize,
+               const cv::InterpolationFlags mode, AspectRatioMode arMode) {
     cv::Mat result;
 
     switch (arMode) {
@@ -291,7 +291,7 @@ cv::Mat resize(const cv::Mat &imIn,
             cv::Size newSize = targetSize;
             double arIn = double(imIn.cols) / double(imIn.rows);
             double arTarget = double(targetSize.width) / double(targetSize.height);
-            if(arIn > 1) {
+            if (arIn > 1) {
                 if (arIn > arTarget) {
                     newSize.height = int(std::round(newSize.width / arIn));
                 } else {
@@ -312,7 +312,7 @@ cv::Mat resize(const cv::Mat &imIn,
             cv::Size newSize = targetSize;
             double arIn = double(imIn.cols) / double(imIn.rows);
             double arTarget = double(targetSize.width) / double(targetSize.height);
-            if(arIn > 1) {
+            if (arIn > 1) {
                 if (arIn > arTarget) {
                     newSize.width = int(std::round(newSize.height * arIn));
                 } else {

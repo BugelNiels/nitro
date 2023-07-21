@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nodes/nodeoperator.hpp"
+#include <nodes/nodeoperator.hpp>
 #include "gui/im3dviewer/renderview.hpp"
-#include "nodes/nitronode.hpp"
+#include <nodes/nitronode.hpp>
 
 namespace nitro::Thesis {
 

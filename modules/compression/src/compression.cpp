@@ -1,7 +1,7 @@
 #include "compression.hpp"
 
-#include "nodes/noderegistry.hpp"
-#include "gui/mainwindow.hpp"
+#include <nodes/noderegistry.hpp>
+#include <gui/mainwindow.hpp>
 #include "nodes/compression/zliboperator.hpp"
 #include "nodes/compression/pngoperator.hpp"
 #include "nodes/compression/jpegoperator.hpp"

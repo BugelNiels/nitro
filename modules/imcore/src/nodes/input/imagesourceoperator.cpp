@@ -1,7 +1,7 @@
 #include "imagesourceoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include "util.hpp"
+#include <util.hpp>
 #include "include/grayimagedata.hpp"
 
 #include <opencv2/imgcodecs.hpp>

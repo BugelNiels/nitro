@@ -1,14 +1,14 @@
 #include "imcore.hpp"
 
 #include "include/colimagedata.hpp"
-#include "nodes/datatypes/integerdata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/datatypes/integerdata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
 
 #include "gui/imviewer/imviewer.hpp"
 #include "gui/imviewer/imviewdockwidget.hpp"
 
-#include "nodes/noderegistry.hpp"
-#include "gui/mainwindow.hpp"
+#include <nodes/noderegistry.hpp>
+#include <gui/mainwindow.hpp>
 
 #include "nodes/output/imageviewoperator.hpp"
 #include "src/nodes/transform/imresize.hpp"

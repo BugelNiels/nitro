@@ -1,7 +1,7 @@
 #include "improc.hpp"
 
-#include "nodes/noderegistry.hpp"
-#include "gui/mainwindow.hpp"
+#include <nodes/noderegistry.hpp>
+#include <gui/mainwindow.hpp>
 #include "src/nodes/filter/morphology.hpp"
 #include "nodes/input/structuringelement.hpp"
 #include "nodes/input/mask.hpp"

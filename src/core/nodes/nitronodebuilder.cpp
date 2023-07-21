@@ -1,9 +1,9 @@
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <QVBoxLayout>
 #include <utility>
 #include <QPushButton>
-#include "QtNodes/NodeColors.hpp"
+#include <QtNodes/NodeColors.hpp>
 #include <QAction>
 #include <QComboBox>
 #include <QCheckBox>
@@ -11,19 +11,17 @@
 
 
 #include "src/util/imgresourcereader.hpp"
-#include "modules/imcore/include/colimagedata.hpp"
-#include "nodes/datatypes/integerdata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/nitronode.hpp"
-#include "external/qt-value-slider/include/doubleslider.hpp"
-#include "external/qt-value-slider/include/intslider.hpp"
+#include <nodes/datatypes/integerdata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronode.hpp>
+#include <doubleslider.hpp>
+#include <intslider.hpp>
 #include <QAbstractItemView>
-
-using DoubleSlider = ValueSliders::DoubleSlider;
-using IntSlider = ValueSliders::IntSlider;
 
 using namespace nitro;
 
+using DoubleSlider = ValueSliders::DoubleSlider;
+using IntSlider = ValueSliders::IntSlider;
 
 static QWidget *createWrapper() {
     auto *wrapper = new QWidget();
@@ -257,8 +255,8 @@ NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, QLabe
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, const QString& text) {
-    auto* label = new QLabel(text);
+NitroNodeBuilder *NitroNodeBuilder::withDisplayWidget(const QString &name, const QString &text) {
+    auto *label = new QLabel(text);
     node_->connectLabel(name, label);
     addOptionWidget(label);
     return this;

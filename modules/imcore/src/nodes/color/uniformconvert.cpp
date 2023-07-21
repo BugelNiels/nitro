@@ -1,5 +1,5 @@
 #include "uniformconvert.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/grayimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

@@ -2,14 +2,15 @@
 
 #include <QLabel>
 #include <QCheckBox>
+
 #include "imgnodegraphicsview.hpp"
 #include "src/util/imgresourcereader.hpp"
 #include "src/gui/components/draggabletreewidget.hpp"
-#include "QtNodes/DataFlowGraphModel"
-#include "QtNodes/NodeDelegateModelRegistry"
-#include "gui/mainwindow.hpp"
-#include "QtNodes/internal/WidgetNodePainter.hpp"
+#include <gui/mainwindow.hpp>
 
+#include <QtNodes/internal/WidgetNodePainter.hpp>
+#include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/NodeDelegateModelRegistry>
 #include <QKeyEvent>
 #include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
@@ -20,7 +21,6 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QProgressBar>
-
 #include <QUndoStack>
 #include <QPushButton>
 

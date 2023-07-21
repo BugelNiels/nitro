@@ -1,16 +1,16 @@
 #include "imgnodegraphicsview.hpp"
 
-#include "QtNodes/DataFlowGraphModel"
 #include "src/util/imgresourcereader.hpp"
-#include "QtNodes/internal/AbstractNodeGeometry.hpp"
-#include "util.hpp"
+#include <util.hpp>
 
-#include "QtNodes/internal/ConnectionGraphicsObject.hpp"
-#include "QtNodes/internal/NodeGraphicsObject.hpp"
-#include "QtNodes/InvalidData.hpp"
-#include "QtNodes/Definitions"
-#include "QtNodes/BasicGraphicsScene"
-#include "QtNodes/internal/UndoCommands.hpp"
+#include <QtNodes/internal/ConnectionGraphicsObject.hpp>
+#include <QtNodes/internal/NodeGraphicsObject.hpp>
+#include <QtNodes/InvalidData.hpp>
+#include <QtNodes/Definitions>
+#include <QtNodes/BasicGraphicsScene>
+#include <QtNodes/internal/UndoCommands.hpp>
+#include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/internal/AbstractNodeGeometry.hpp>
 
 #include <QAction>
 #include <QMenu>
@@ -23,8 +23,8 @@
 namespace nitro {
 
 ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
-                                                    QtNodes::BasicGraphicsScene *scene,
-                                                    QtNodes::DataFlowGraphModel *model, QWidget *parent)
+                                             QtNodes::BasicGraphicsScene *scene,
+                                             QtNodes::DataFlowGraphModel *model, QWidget *parent)
         : NodeGraphicsView(scene, model, parent),
           nodeBeingViewed_(QtNodes::InvalidNodeId),
           nodes_(nodes) {
@@ -100,7 +100,7 @@ void ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
         QtNodes::NodeGraphicsObject *ngo;
         ngo = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item);
         while (!ngo) {
-            if(item == nullptr) {
+            if (item == nullptr) {
                 return;
             }
             item = item->parentItem();

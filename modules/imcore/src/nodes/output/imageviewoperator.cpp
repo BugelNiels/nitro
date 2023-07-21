@@ -1,5 +1,5 @@
 #include "imageviewoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 
 namespace nitro::ImCore {

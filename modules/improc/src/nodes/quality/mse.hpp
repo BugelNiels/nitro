@@ -1,8 +1,8 @@
 #pragma once
 
 #include <opencv2/imgproc.hpp>
-#include "nodes/nodeoperator.hpp"
-#include "nodes/nitronode.hpp"
+#include <nodes/nodeoperator.hpp>
+#include <nodes/nitronode.hpp>
 
 namespace nitro::ImProc {
 

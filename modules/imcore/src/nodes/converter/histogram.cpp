@@ -1,6 +1,6 @@
 #include "histogram.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <util.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include "include/grayimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

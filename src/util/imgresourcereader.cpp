@@ -1,4 +1,5 @@
 #include "imgresourcereader.hpp"
+
 #include <QPainter>
 
 namespace nitro {

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
+#  -------------------- Versioning ----------------------------------
 set(NITRO_VERSION_MAJOR 1)
 set(NITRO_VERSION_MINOR 3)
 set(NITRO_VERSION_PATCH 1)
@@ -9,6 +10,8 @@ set(NITRO_NAME "NITRO")
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
 
+#  -------------------- Options -----------------------------
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 cmake_policy(SET CMP0079 NEW)
 
@@ -17,17 +20,19 @@ include(GNUInstallDirs)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+#  -------------------- Required components --------------------
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets OpenGL OpenGLWidgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS OpenGL OpenGLWidgets)
 find_package(OpenCV REQUIRED)
 find_package(OpenMP)
 find_package(ZLIB REQUIRED)
 
-set(NITRO_INCLUDE_DIRS "")
-set(EXTERNAL_LIBS "")
+#  -------------------- 3rd Party dependencies
 add_subdirectory(external)
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
 
+#  -------------------- Requires libraries --------------------
 set(NITRO_LIBS "")
 list(APPEND NITRO_LIBS ${OpenCV_LIBS})
 list(APPEND NITRO_LIBS Qt6::Core)
@@ -40,9 +45,11 @@ else ()
     message("OpenMP was not found. Compiling without OpenMP support.")
 endif ()
 
+#  -------------------- Create main project target --------------------
 include_directories(
         ${CMAKE_BINARY_DIR}
         ${OpenCV_INCLUDE_DIRS})
+
 
 file(GLOB_RECURSE CPPS src/*.cpp)
 file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
@@ -64,13 +71,15 @@ target_link_libraries(${PROJECT_NAME}
         ${NITRO_LIBS}
         )
 
-# Enable Modules - add more modules if required
-set(ENABLED_MODULES
-        ImCore
-        ImProc
-        Thesis
-        Compression
-        )
+# -------------------- Modules --------------------
+
+# Module functions
+include(cmake/modules.cmake)
+
+add_module(ImCore)
+add_module(ImProc)
+add_module(Thesis)
+add_module(Compression)
 
 include(cmake/config.cmake)
 

@@ -1,6 +1,6 @@
 #include "imrotate.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <util.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 
 #include <opencv2/imgproc.hpp>

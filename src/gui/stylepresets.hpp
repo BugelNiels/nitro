@@ -3,8 +3,6 @@
 #include <QPalette>
 #include <QColor>
 
-class Settings;
-
 namespace nitro {
 
 using StylePreset = struct StylePreset {

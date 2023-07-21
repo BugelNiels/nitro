@@ -1,4 +1,5 @@
 #include "draggabletreewidget.hpp"
+
 #include <QMouseEvent>
 #include <QAction>
 #include <QScrollBar>

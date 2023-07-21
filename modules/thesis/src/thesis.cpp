@@ -3,8 +3,8 @@
 #include "gui/im3dviewer/renderview.hpp"
 #include "gui/im3dviewer/renderdockwidget.hpp"
 
-#include "nodes/noderegistry.hpp"
-#include "gui/mainwindow.hpp"
+#include <nodes/noderegistry.hpp>
+#include <gui/mainwindow.hpp>
 
 #include "nodes/output/surfaceviewoperator.hpp"
 #include "nodes/compression/layerremoval.hpp"

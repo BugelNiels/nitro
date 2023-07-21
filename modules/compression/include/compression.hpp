@@ -1,8 +1,8 @@
 #pragma once
 
 #include "nitromodule.hpp"
-#include "nodes/noderegistry.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/noderegistry.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 namespace nitro::Compression {
 
