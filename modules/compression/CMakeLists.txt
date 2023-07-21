@@ -2,6 +2,8 @@ set(MODULE_NAME Compression)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+requires_module(ImCore)
+
 file(GLOB_RECURSE MODULE_SOURCES src/*.cpp)
 file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
 
