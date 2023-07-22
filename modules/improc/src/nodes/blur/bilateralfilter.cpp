@@ -6,12 +6,12 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_SIGMA_C = "Sigma (c)";
-inline const QString INPUT_SIGMA_S = "Sigma (s)";
-inline const QString INPUT_D = "Diameter";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_SIGMA_C = "Sigma (c)";
+static inline const QString INPUT_SIGMA_S = "Sigma (s)";
+static inline const QString INPUT_D = "Diameter";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 void BilateralFilterOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

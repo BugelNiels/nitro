@@ -6,8 +6,8 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 // Credit: https://stackoverflow.com/a/57673157
 bool fftShift(const cv::Mat &src, cv::Mat &dst) {

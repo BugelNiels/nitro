@@ -6,8 +6,8 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void InvertOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

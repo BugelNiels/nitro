@@ -7,10 +7,10 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_K = "K";
-inline const QString INPUT_MAX_ITER = "Max Iter";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_K = "K";
+static inline const QString INPUT_MAX_ITER = "Max Iter";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 
 const int NUM_BINS = 256;

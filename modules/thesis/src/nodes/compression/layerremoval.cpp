@@ -8,11 +8,11 @@
 
 namespace nitro::Thesis {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_K = "K";
-inline const QString OPTION_CUMULATIVE = "Cumulative";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_K = "K";
+static inline const QString OPTION_CUMULATIVE = "Cumulative";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 const double EPSILON = 0.00001;
 

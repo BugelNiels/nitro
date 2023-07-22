@@ -7,7 +7,7 @@
 
 namespace nitro::ImCore {
 
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void CombineOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

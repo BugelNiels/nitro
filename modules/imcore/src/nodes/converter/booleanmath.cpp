@@ -9,10 +9,10 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_VALUE_1 = "Value 1";
-inline const QString INPUT_VALUE_2 = "Value 2";
-inline const QString OUTPUT_VALUE = "Value";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_VALUE_1 = "Value 1";
+static inline const QString INPUT_VALUE_2 = "Value 2";
+static inline const QString OUTPUT_VALUE = "Value";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 double regularBoolMath(double a, double b, int option) {
     switch (option) {

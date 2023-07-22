@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QString>
-#include "QtNodes/NodeDelegateModel"
-#include "QtNodes/NodeInfo.hpp"
+#include <QtNodes/NodeDelegateModel>
+#include <QtNodes/NodeInfo.hpp>
 #include "nodeports.hpp"
 #include "nodeoperator.hpp"
 
@@ -100,7 +100,6 @@ private:
     void connectLabel(const QString &name, QLabel *label);
 
     friend class NitroNodeBuilder;
-
 
 };
 

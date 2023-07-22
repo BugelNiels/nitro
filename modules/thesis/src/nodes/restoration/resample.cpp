@@ -8,11 +8,11 @@
 
 namespace nitro::Thesis {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_K_SIZE = "Filter Size";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
-inline const QString OPTION_BRIGHTNESS_CORRECT = "Correct Luminance";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_K_SIZE = "Filter Size";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString OPTION_BRIGHTNESS_CORRECT = "Correct Luminance";
 
 static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {
 

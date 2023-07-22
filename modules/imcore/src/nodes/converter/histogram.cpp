@@ -7,9 +7,9 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_HIST = "Histogram";
-inline const QString HIST_DISPLAY = "Histogram display";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_HIST = "Histogram";
+static inline const QString HIST_DISPLAY = "Histogram display";
 
 inline const int NUM_BINS = 256;
 

@@ -6,11 +6,11 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_SIZE = "Size";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
-inline const QString BORDER_DROPDOWN = "Border";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_SIZE = "Size";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString BORDER_DROPDOWN = "Border";
 
 void BoxFilterOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

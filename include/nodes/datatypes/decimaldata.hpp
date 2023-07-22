@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QtNodes/NodeData"
+#include <QtNodes/NodeData>
 #include "flexibledata.hpp"
 
 namespace nitro {

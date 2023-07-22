@@ -6,10 +6,10 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_MIN = "Min";
-inline const QString INPUT_MAX = "Max";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_MIN = "Min";
+static inline const QString INPUT_MAX = "Max";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void NormalizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

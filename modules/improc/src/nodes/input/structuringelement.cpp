@@ -7,10 +7,10 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_X = "Width";
-inline const QString INPUT_Y = "Height";
-inline const QString OUTPUT_IMAGE = "Kernel";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_X = "Width";
+static inline const QString INPUT_Y = "Height";
+static inline const QString OUTPUT_IMAGE = "Kernel";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 void StructElemOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

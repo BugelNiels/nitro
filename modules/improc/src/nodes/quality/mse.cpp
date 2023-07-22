@@ -8,9 +8,9 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_IMAGE_REF = "Reference";
-inline const QString OUTPUT_VALUE = "Error";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE_REF = "Reference";
+static inline const QString OUTPUT_VALUE = "Error";
 
 static double mse(const cv::Mat &im1, const cv::Mat &im2) {
     cv::Mat diff;

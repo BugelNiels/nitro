@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "QtNodes/NodeData"
+#include <QtNodes/NodeData>
 
 namespace nitro {
 

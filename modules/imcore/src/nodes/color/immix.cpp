@@ -10,12 +10,12 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_FAC = "Fac";
-inline const QString INPUT_VALUE_1 = "Value 1";
-inline const QString INPUT_VALUE_2 = "Value 2";
-inline const QString OUTPUT_VALUE = "Value";
-inline const QString OPTION_CLAMP = "Clamp";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_FAC = "Fac";
+static inline const QString INPUT_VALUE_1 = "Value 1";
+static inline const QString INPUT_VALUE_2 = "Value 2";
+static inline const QString OUTPUT_VALUE = "Value";
+static inline const QString OPTION_CLAMP = "Clamp";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 // Note this function doesn't support alpha images
 static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int numChannels) {

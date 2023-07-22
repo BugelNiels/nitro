@@ -8,13 +8,13 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Value";
-inline const QString INPUT_FROM_MIN = "From Min";
-inline const QString INPUT_FROM_MAX = "From Max";
-inline const QString INPUT_TO_MIN = "To Min";
-inline const QString INPUT_TO_MAX = "To Max";
-inline const QString OUTPUT_IMAGE = "Result";
-inline const QString OPTION_CLAMP = "Clamp";
+static inline const QString INPUT_IMAGE = "Value";
+static inline const QString INPUT_FROM_MIN = "From Min";
+static inline const QString INPUT_FROM_MAX = "From Max";
+static inline const QString INPUT_TO_MIN = "To Min";
+static inline const QString INPUT_TO_MAX = "To Max";
+static inline const QString OUTPUT_IMAGE = "Result";
+static inline const QString OPTION_CLAMP = "Clamp";
 
 void MapRangeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

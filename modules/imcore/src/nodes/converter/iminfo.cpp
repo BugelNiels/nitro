@@ -9,12 +9,12 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_WIDTH = "Width";
-inline const QString OUTPUT_HEIGHT = "Height";
-inline const QString OUTPUT_AR = "Aspect Ratio";
-inline const QString OUTPUT_NUM_PIXELS = "Num Pixels";
-inline const QString OUTPUT_TYPE = "Type";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_WIDTH = "Width";
+static inline const QString OUTPUT_HEIGHT = "Height";
+static inline const QString OUTPUT_AR = "Aspect Ratio";
+static inline const QString OUTPUT_NUM_PIXELS = "Num Pixels";
+static inline const QString OUTPUT_TYPE = "Type";
 
 ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
         : typeLabel_(typeLabel) {

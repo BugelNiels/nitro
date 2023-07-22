@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QtNodes/NodeData"
+#include <QtNodes/NodeData>
 #include <opencv2/imgproc.hpp>
 #include <QImage>
 #include <QDebug>
@@ -62,13 +62,10 @@ protected:
     template<class V>
     static void registerConversionFrom(std::function<T(const std::shared_ptr<QtNodes::NodeData> &)> conversion) {
         QString id = V::id();
-        if (conversions.count(id) > 0) {
-        }
         conversions[id] = std::move(conversion);
     }
 
 private:
-    // TODO: T matches for certain subclasses
     inline static std::unordered_map<QString, std::function<T(
             const std::shared_ptr<QtNodes::NodeData> &)>> conversions;
 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <map>
 #include <opencv2/core/mat.hpp>
-#include "QtNodes/Definitions"
+#include <QtNodes/Definitions>
 #include "nodes/datatypes/flexibledata.hpp"
 #include "portdata.hpp"
 

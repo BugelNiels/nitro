@@ -7,15 +7,15 @@
 
 namespace nitro::Compression {
 
-inline const QString DISPLAY_LABEL_COMP = "compLabel";
-inline const QString DISPLAY_LABEL_ORIG = "origLabel";
-inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Compressed Image";
-inline const QString INPUT_QUALITY = "Quality";
-inline const QString OUTPUT_COMP_SIZE = "Compressed";
-inline const QString OUTPUT_ORIG_SIZE = "Original";
-inline const QString OUTPUT_RATIO = "Ratio";
+static inline const QString DISPLAY_LABEL_COMP = "compLabel";
+static inline const QString DISPLAY_LABEL_ORIG = "origLabel";
+static inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Compressed Image";
+static inline const QString INPUT_QUALITY = "Quality";
+static inline const QString OUTPUT_COMP_SIZE = "Compressed";
+static inline const QString OUTPUT_ORIG_SIZE = "Original";
+static inline const QString OUTPUT_RATIO = "Ratio";
 
 JpegOperator::JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
                            QLabel *ratioLabel)

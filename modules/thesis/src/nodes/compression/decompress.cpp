@@ -8,12 +8,12 @@
 
 namespace nitro::Thesis {
 
-inline const QString INPUT_IMAGE = "Residual";
-inline const QString INPUT_SMALL = "Small";
-inline const QString INPUT_K_SIZE = "Filter Size";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString UNIFORM_LUM = "Uniform Luminance";
-inline const QString TIME_LABEL = "Time";
+static inline const QString INPUT_IMAGE = "Residual";
+static inline const QString INPUT_SMALL = "Small";
+static inline const QString INPUT_K_SIZE = "Filter Size";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString UNIFORM_LUM = "Uniform Luminance";
+static inline const QString TIME_LABEL = "Time";
 
 static cv::Mat toRgb(const cv::Mat &img) {
     cv::Mat result;

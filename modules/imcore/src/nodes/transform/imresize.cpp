@@ -7,14 +7,14 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_X = "Width";
-inline const QString INPUT_Y = "Height";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
-inline const QString ASPECT_RATIO_DROPDOWN = "Keep Aspect Ratio";
-inline const QString INTERPOL_METHOD_LABEL = "Interpolation Method";
-inline const QString AR_METHOD_LABEL = "Aspect Ratio Method";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_X = "Width";
+static inline const QString INPUT_Y = "Height";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString ASPECT_RATIO_DROPDOWN = "Keep Aspect Ratio";
+static inline const QString INTERPOL_METHOD_LABEL = "Interpolation Method";
+static inline const QString AR_METHOD_LABEL = "Aspect Ratio Method";
 
 void ResizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

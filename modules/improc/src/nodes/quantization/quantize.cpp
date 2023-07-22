@@ -7,9 +7,9 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_K = "K";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_K = "K";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void QuantizeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

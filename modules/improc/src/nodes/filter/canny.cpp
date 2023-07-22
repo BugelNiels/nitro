@@ -6,11 +6,11 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_THRESH_1 = "Threshold 1";
-inline const QString INPUT_THRESH_2 = "Threshold 2";
-inline const QString INPUT_APERTURE = "Aperture";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_THRESH_1 = "Threshold 1";
+static inline const QString INPUT_THRESH_2 = "Threshold 2";
+static inline const QString INPUT_APERTURE = "Aperture";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void CannyEdgeDetectionOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

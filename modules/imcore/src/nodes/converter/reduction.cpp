@@ -10,9 +10,9 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
-inline const QString OUTPUT_VALUE = "Value";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString OUTPUT_VALUE = "Value";
 
 static double minMat(const cv::Mat &in) {
     double minValue, maxValue;

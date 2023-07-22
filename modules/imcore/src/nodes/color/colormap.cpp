@@ -8,10 +8,10 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OPTION_DROPDOWN = "Option";
-inline const QString DISPLAY_LABEL = "Color Label";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OPTION_DROPDOWN = "Option";
+static inline const QString DISPLAY_LABEL = "Color Label";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 static cv::Mat createGradientImage(int width, int height) {
     cv::Mat gradientImage(height, width, CV_8UC1);

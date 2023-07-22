@@ -6,9 +6,9 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString OPTION_INVERSE = "Inverse";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString OPTION_INVERSE = "Inverse";
 
 void FFTOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

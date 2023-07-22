@@ -4,7 +4,7 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
 
 ImageViewOperator::ImageViewOperator(ImageViewer *imViewer)
         : imViewer_(imViewer) {

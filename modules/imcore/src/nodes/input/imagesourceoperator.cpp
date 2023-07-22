@@ -9,9 +9,9 @@
 
 namespace nitro::ImCore {
 
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString DISPLAY_IMAGE = "Display Img";
-inline const QString OUTPUT_ALPHA = "Alpha";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString DISPLAY_IMAGE = "Display Img";
+static inline const QString OUTPUT_ALPHA = "Alpha";
 
 ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel) : displayImgLabel_(displayImgLabel) {}
 

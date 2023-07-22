@@ -8,8 +8,8 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_SEED = "Seed";
-inline const QString OUTPUT_VAL = "Value";
+static inline const QString INPUT_SEED = "Seed";
+static inline const QString OUTPUT_VAL = "Value";
 
 static double generateRandomDouble(int seed) {
     std::default_random_engine generator(seed);

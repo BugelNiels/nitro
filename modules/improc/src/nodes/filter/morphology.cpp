@@ -9,10 +9,10 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE_1 = "Image";
-inline const QString INPUT_IMAGE_2 = "Kernel";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_IMAGE_1 = "Image";
+static inline const QString INPUT_IMAGE_2 = "Kernel";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 void MorphologyOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

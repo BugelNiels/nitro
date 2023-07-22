@@ -8,14 +8,14 @@
 
 namespace nitro::Thesis {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_BITS = "bits";
-inline const QString INPUT_SIZE = "Size";
-inline const QString OUTPUT_IMAGE = "Residual";
-inline const QString OUTPUT_IMAGE_SMALL = "Small";
-inline const QString QUANTIZE_SMALL = "Quantize small";
-inline const QString UNIFORM_LUM = "Uniform Luminance";
-inline const QString TIME_LABEL = "Time";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_BITS = "bits";
+static inline const QString INPUT_SIZE = "Size";
+static inline const QString OUTPUT_IMAGE = "Residual";
+static inline const QString OUTPUT_IMAGE_SMALL = "Small";
+static inline const QString QUANTIZE_SMALL = "Quantize small";
+static inline const QString UNIFORM_LUM = "Uniform Luminance";
+static inline const QString TIME_LABEL = "Time";
 
 void CompressOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

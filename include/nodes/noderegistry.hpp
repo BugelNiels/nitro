@@ -1,8 +1,8 @@
 #pragma once
 
 #include "nitronodebuilder.hpp"
-#include "QtNodes/NodeDelegateModelRegistry"
-#include "QtNodes/NodeInfo.hpp"
+#include <QtNodes/NodeDelegateModelRegistry>
+#include <QtNodes/NodeInfo.hpp>
 
 namespace nitro {
 

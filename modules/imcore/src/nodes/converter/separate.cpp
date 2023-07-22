@@ -5,7 +5,7 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
 
 void SeparateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

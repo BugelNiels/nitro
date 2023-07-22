@@ -7,8 +7,8 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
 
 void RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {

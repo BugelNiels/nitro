@@ -11,15 +11,15 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_IMAGE_1 = "Image";
-inline const QString INPUT_IMAGE_2 = "Reference";
-inline const QString INPUT_X = "Width (m)";
-inline const QString INPUT_RES = "Res (x)";
-inline const QString INPUT_DIST = "Dist (m)";
-inline const QString OUTPUT_RESULT = "Result";
-inline const QString OUTPUT_ERROR_MAP = "Errors";
-inline const QString OUTPUT_AVG_ERROR = "Avg. Error";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_IMAGE_1 = "Image";
+static inline const QString INPUT_IMAGE_2 = "Reference";
+static inline const QString INPUT_X = "Width (m)";
+static inline const QString INPUT_RES = "Res (x)";
+static inline const QString INPUT_DIST = "Dist (m)";
+static inline const QString OUTPUT_RESULT = "Result";
+static inline const QString OUTPUT_ERROR_MAP = "Errors";
+static inline const QString OUTPUT_AVG_ERROR = "Avg. Error";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 static FLIP::image<FLIP::color3> cvMatToFlipImg(const cv::Mat &img) {
     int width = img.cols;

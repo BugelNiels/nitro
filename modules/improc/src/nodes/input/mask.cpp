@@ -8,14 +8,14 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_MASK_WIDTH = "Scale X";
-inline const QString INPUT_MASK_HEIGHT = "Scale Y";
-inline const QString INPUT_X = "Width";
-inline const QString INPUT_Y = "Height";
-inline const QString INPUT_POS_X = "X";
-inline const QString INPUT_POS_Y = "Y";
-inline const QString OUTPUT_IMAGE = "Mask";
-inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString INPUT_MASK_WIDTH = "Scale X";
+static inline const QString INPUT_MASK_HEIGHT = "Scale Y";
+static inline const QString INPUT_X = "Width";
+static inline const QString INPUT_Y = "Height";
+static inline const QString INPUT_POS_X = "X";
+static inline const QString INPUT_POS_Y = "Y";
+static inline const QString OUTPUT_IMAGE = "Mask";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 // TODO: rotation
 void MaskOperator::execute(NodePorts &nodePorts) {

@@ -5,6 +5,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #                                Dependencies                                #
 # -------------------------------------------------------------------------- #
 requires_module(ImCore)
+requires_module(ImProc)
 find_package(ZLIB REQUIRED)
 list(APPEND MODULE_LIBS ZLIB::ZLIB)
 

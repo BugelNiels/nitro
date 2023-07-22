@@ -6,12 +6,12 @@
 
 namespace nitro::ImProc {
 
-inline const QString INPUT_THRESH = "Threshold";
-inline const QString INPUT_IMAGE = "Image";
-inline const QString OUTPUT_IMAGE = "Image";
-inline const QString MODE_DROPDOWN = "Mode";
-inline const QString OPTION_SIGNED = "Signed";
-inline const QString OPTION_NORMALIZE = "Normalize";
+static inline const QString INPUT_THRESH = "Threshold";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString OPTION_SIGNED = "Signed";
+static inline const QString OPTION_NORMALIZE = "Normalize";
 
 static cv::Mat
 distanceField(cv::Mat const &src, double threshold, cv::DistanceTypes mode, bool signedDf, bool normalize) {

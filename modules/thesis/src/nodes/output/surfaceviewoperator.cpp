@@ -5,7 +5,7 @@
 
 namespace nitro::Thesis {
 
-inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_IMAGE = "Image";
 
 SurfaceViewOperator::SurfaceViewOperator(RenderView *surfViewer)
         : surfViewer_(surfViewer) {

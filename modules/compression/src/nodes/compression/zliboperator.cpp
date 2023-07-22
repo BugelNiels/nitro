@@ -8,18 +8,18 @@
 
 namespace nitro::Compression {
 
-inline const QString DISPLAY_LABEL_COMP = "compLabel";
-inline const QString DISPLAY_LABEL_ORIG = "origLabel";
-inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
-inline const QString DISPLAY_TIME = "Time";
+static inline const QString DISPLAY_LABEL_COMP = "compLabel";
+static inline const QString DISPLAY_LABEL_ORIG = "origLabel";
+static inline const QString DISPLAY_LABEL_RATIO = "ratioLabel";
+static inline const QString DISPLAY_TIME = "Time";
 
-inline const QString INPUT_IMAGE = "Image";
-inline const QString INPUT_BITS = "Bits";
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_BITS = "Bits";
 
-inline const QString OUTPUT_IMAGE = "Compressed Image";
-inline const QString OUTPUT_COMP_SIZE = "Compressed";
-inline const QString OUTPUT_ORIG_SIZE = "Original";
-inline const QString OUTPUT_RATIO = "Ratio";
+static inline const QString OUTPUT_IMAGE = "Compressed Image";
+static inline const QString OUTPUT_COMP_SIZE = "Compressed";
+static inline const QString OUTPUT_ORIG_SIZE = "Original";
+static inline const QString OUTPUT_RATIO = "Ratio";
 
 
 static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {

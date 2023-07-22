@@ -4,8 +4,8 @@
 
 namespace nitro::ImCore {
 
-inline const QString DISPLAY_LABEL = "valueLabel";
-inline const QString INPUT_VALUE = "Value";
+static inline const QString DISPLAY_LABEL = "valueLabel";
+static inline const QString INPUT_VALUE = "Value";
 
 ValueViewOperator::ValueViewOperator(QLabel *valueLabel) : valueLabel_(valueLabel) {}
 

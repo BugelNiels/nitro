@@ -8,10 +8,10 @@
 
 namespace nitro::ImCore {
 
-inline const QString INPUT_R = "Red";
-inline const QString INPUT_G = "Green";
-inline const QString INPUT_B = "Blue";
-inline const QString OUTPUT_COL = "Color";
+static inline const QString INPUT_R = "Red";
+static inline const QString INPUT_G = "Green";
+static inline const QString INPUT_B = "Blue";
+static inline const QString OUTPUT_COL = "Color";
 
 
 RgbOperator::RgbOperator(QLabel *colLabel) : colLabel_(colLabel) {}
