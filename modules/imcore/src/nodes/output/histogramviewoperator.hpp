@@ -1,28 +1,28 @@
 #pragma once
 
 #include <nodes/nodeoperator.hpp>
-#include "gui/im3dviewer/renderview.hpp"
+#include "gui/imviewer/imageviewer.hpp"
+#include "src/gui/histogram/histogramviewer.hpp"
 #include "gui/mainwindow.hpp"
 #include <nodes/nitronode.hpp>
 
-namespace nitro::Thesis {
+namespace nitro::ImCore {
 
-class SurfaceViewOperator : public NodeOperator {
-
+class HistogramViewOperator : public NodeOperator {
 public:
 
     static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, MainWindow *window);
 
-    explicit SurfaceViewOperator(MainWindow *window);
+    explicit HistogramViewOperator(MainWindow *window);
+    ~HistogramViewOperator() override;
 
-    ~SurfaceViewOperator();
 
     void execute(NodePorts &nodePorts) override;
 
 private:
+    HistogramView *histViewer_ = nullptr;
     MainWindow *window_;
     QDockWidget *dockWidget_;
-    RenderView *surfViewer_;
-    cv::Mat currentImg_;
 };
-} // namespace nitro::Thesis
+
+} // namespace nitro::ImCore

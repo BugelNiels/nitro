@@ -1,4 +1,5 @@
 #include "surfaceviewoperator.hpp"
+#include "gui/im3dviewer/renderdockwidget.hpp"
 #include <colimagedata.hpp>
 #include <util.hpp>
 #include <nodes/nitronodebuilder.hpp>
@@ -7,8 +8,19 @@ namespace nitro::Thesis {
 
 static inline const QString INPUT_IMAGE = "Image";
 
-SurfaceViewOperator::SurfaceViewOperator(RenderView *surfViewer)
-        : surfViewer_(surfViewer) {
+SurfaceViewOperator::SurfaceViewOperator(MainWindow *window) : window_(window) {
+    if (window->isFinalized()) {
+        // TODO:
+        surfViewer_ = new RenderView();
+        dockWidget_ = new RenderDockWidget(surfViewer_, window);
+        window->registerDock(dockWidget_);
+    }
+}
+
+SurfaceViewOperator::~SurfaceViewOperator() {
+    if (window_->isFinalized()) {
+        window_->removeDockWidget(dockWidget_);
+    }
 }
 
 void SurfaceViewOperator::execute(NodePorts &nodePorts) {
@@ -19,12 +31,13 @@ void SurfaceViewOperator::execute(NodePorts &nodePorts) {
     surfViewer_->updateBuffers(cvMatToQImage(*img, currentImg_));
 }
 
+
 std::function<std::unique_ptr<NitroNode>()>
-SurfaceViewOperator::creator(const QString &category, RenderView *renderViewer) {
-    return [category, renderViewer]() {
+SurfaceViewOperator::creator(const QString &category, MainWindow *window) {
+    return [category, window]() {
         nitro::NitroNodeBuilder builder("3D Image Viewer", "ImageViewer3D", category);
         return builder.
-                withOperator(std::make_unique<SurfaceViewOperator>(renderViewer))->
+                withOperator(std::make_unique<SurfaceViewOperator>(window))->
                 withIcon("3d.png")->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->

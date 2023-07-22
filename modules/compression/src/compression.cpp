@@ -11,7 +11,8 @@ namespace nitro::Compression {
 
 Compression::Compression() = default;
 
-void Compression::registerNodes(NodeRegistry *registry) {
+void Compression::registerNodes(NodeRegistry *registry, MainWindow *window) {
+    Q_UNUSED(window);
     registerCompressionNodes(registry);
 }
 

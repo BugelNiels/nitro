@@ -4,8 +4,10 @@
 #include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
 
-#include "gui/imviewer/imviewer.hpp"
+#include "gui/imviewer/imageviewer.hpp"
 #include "gui/imviewer/imviewdockwidget.hpp"
+#include "gui/histogram/histogramdockwidget.hpp"
+#include "gui/histogram/histogramviewer.hpp"
 
 #include <nodes/noderegistry.hpp>
 #include <gui/mainwindow.hpp>
@@ -35,17 +37,16 @@
 #include "nodes/input/rgbinput.hpp"
 #include "nodes/converter/maprange.hpp"
 #include "nodes/color/uniformconvert.hpp"
-#include "nodes/converter/histogram.hpp"
+#include "src/nodes/output/histogramviewoperator.hpp"
 
 namespace nitro::ImCore {
 
-ImCore::ImCore() {
-    imageViewer_ = new ImageViewer(new QGraphicsScene());
-}
+ImCore::ImCore() {}
 
-void ImCore::registerNodes(NodeRegistry *registry) {
+void ImCore::registerNodes(NodeRegistry *registry, MainWindow *window) {
+    window_ = window;
     registerInputNodes(registry);
-    registerOutputNodes(registry, imageViewer_);
+    registerOutputNodes(registry);
     registerConvertNodes(registry);
     registerColorNodes(registry);
     registerTransformNodes(registry);
@@ -56,11 +57,6 @@ void ImCore::registerDataTypes() {
     GrayImageData::registerConversions();
     DecimalData::registerConversions();
     IntegerData::registerConversions();
-}
-
-void ImCore::registerDocks(MainWindow *window) {
-    auto imViewDock = new ImViewDockWidget(imageViewer_, window);
-    window->registerDock(imViewDock);
 }
 
 void ImCore::registerConvertNodes(NodeRegistry *registry) {
@@ -75,9 +71,7 @@ void ImCore::registerConvertNodes(NodeRegistry *registry) {
     registry->registerNode(RgbToGrayscaleOperator::creator(category));
     registry->registerNode(SeparateOperator::creator(category));
     registry->registerNode(CombineOperator::creator(category));
-    registry->registerNode(HistogramOperator::creator(category));
 }
-
 
 
 void ImCore::registerTransformNodes(NodeRegistry *registry) {
@@ -127,10 +121,11 @@ void ImCore::registerInputNodes(NodeRegistry *registry) {
     registry->registerNode(RgbOperator::creator(category));
 }
 
-void ImCore::registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer) {
+void ImCore::registerOutputNodes(NodeRegistry *registry) {
     const QString category = "Output";
-    registry->registerNode(ImageViewOperator::creator(category, imageViewer));
+    registry->registerNode(ImageViewOperator::creator(category, window_));
     registry->registerNode(ValueViewOperator::creator(category));
+    registry->registerNode(HistogramViewOperator::creator(category, window_));
 }
 
 } // namespace nitro::ImCore

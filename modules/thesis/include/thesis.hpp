@@ -12,18 +12,17 @@ class Thesis : public NitroModule {
 public:
     Thesis();
 
-    void registerDocks(MainWindow *window) override;
-
-    void registerNodes(NodeRegistry *registry) override;
+    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
 
 private:
-    RenderView *renderViewer_;
+    MainWindow *window_;
 
-    void registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer);
+    void registerOutputNodes(NodeRegistry *registry);
 
     void registerImageNodes(NodeRegistry *registry);
 
     void registerRestorationNodes(NodeRegistry *registry);
+
 };
 
 } // namespace nitro::Thesis

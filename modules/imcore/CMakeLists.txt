@@ -2,6 +2,14 @@ set(MODULE_NAME ImCore)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # -------------------------------------------------------------------------- #
+#                                Dependencies                                #
+# -------------------------------------------------------------------------- #
+requires_module(ImCore)
+
+find_package(Qt6 REQUIRED COMPONENTS Charts)
+list(APPEND MODULE_LIBS Qt6::Charts)
+
+# -------------------------------------------------------------------------- #
 #                            Create module target                            #
 # -------------------------------------------------------------------------- #
 file(GLOB_RECURSE MODULE_SOURCES src/*.cpp)

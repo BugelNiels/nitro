@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nodes/nodeoperator.hpp>
-#include "gui/imviewer/imviewer.hpp"
+#include "gui/imviewer/imageviewer.hpp"
 #include <nodes/nitronode.hpp>
 
 namespace nitro::ImCore {

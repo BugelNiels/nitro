@@ -11,17 +11,17 @@ class MainWindow;
 namespace nitro::ImCore {
 
 
-class ImageViewer;
+class HistogramView;
 
-class ImViewDockWidget : public QDockWidget {
+class HistogramViewerDockWidget : public QDockWidget {
 public:
 
-    explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
+    explicit HistogramViewerDockWidget(HistogramView *histViewer, MainWindow *window);
 
-    ~ImViewDockWidget() override;
+    ~HistogramViewerDockWidget() override;
 
 private:
-    ImageViewer *imageViewer_;
+    HistogramView *histViewer_;
 
     QWidget *initTitleBarWidget(MainWindow *window) const;
 };

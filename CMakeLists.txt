@@ -95,7 +95,7 @@ include(cmake/modules.cmake)
 add_module(ImCore)
 add_module(ImProc)
 add_module(Compression)
-add_module(Thesis)
+#add_module(Thesis)
 
 # Adds and links the modules
 include(cmake/config.cmake)

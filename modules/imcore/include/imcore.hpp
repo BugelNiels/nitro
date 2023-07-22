@@ -6,6 +6,7 @@
 
 namespace nitro::ImCore {
 class ImageViewer;
+class HistogramView;
 
 class ImCore : public NitroModule {
 public:
@@ -13,22 +14,22 @@ public:
 
     void registerDataTypes() override;
 
-    void registerDocks(MainWindow *window) override;
-
-    void registerNodes(NodeRegistry *registry) override;
+    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
 
 private:
-    ImageViewer *imageViewer_;
+    MainWindow *window_;
 
     void registerInputNodes(NodeRegistry *registry);
 
-    void registerOutputNodes(NodeRegistry *registry, ImageViewer *imageViewer);
+    void registerOutputNodes(NodeRegistry *registry);
 
     void registerConvertNodes(NodeRegistry *registry);
 
     void registerColorNodes(NodeRegistry *registry);
 
     void registerTransformNodes(NodeRegistry *registry);
+
+
 };
 
 } // namespace nitro::ImCore

@@ -24,5 +24,6 @@
 		<file>./icons/nodes/math.png</file>
 		<file>./icons/nodes/normalize.png</file>
 		<file>./icons/image_viewer.png</file>
+		<file>./icons/hist_viewer.png</file>
 	</qresource>
 </RCC>

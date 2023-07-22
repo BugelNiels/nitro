@@ -10,7 +10,7 @@ class Compression : public NitroModule {
 public:
     Compression();
 
-    void registerNodes(NodeRegistry *registry) override;
+    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
 
 private:
     void registerCompressionNodes(NodeRegistry *registry);

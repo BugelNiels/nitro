@@ -12,7 +12,7 @@ class ImProc : public NitroModule {
 public:
     ImProc();
 
-    void registerNodes(NodeRegistry *registry) override;
+    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
 
 private:
 

@@ -14,18 +14,13 @@
 
 namespace nitro::Thesis {
 Thesis::Thesis() {
-    renderViewer_ = new RenderView();
 }
 
-void Thesis::registerNodes(NodeRegistry *registry) {
-    registerOutputNodes(registry, renderViewer_);
+void Thesis::registerNodes(NodeRegistry *registry, MainWindow *window) {
+    window_ = window;
+    registerOutputNodes(registry);
     registerImageNodes(registry);
     registerRestorationNodes(registry);
-}
-
-void Thesis::registerDocks(nitro::MainWindow *window) {
-    auto im3DViewDock = new RenderDockWidget(renderViewer_, window);
-    window->registerDock(im3DViewDock);
 }
 
 void Thesis::registerImageNodes(NodeRegistry *registry) {
@@ -40,8 +35,8 @@ void Thesis::registerRestorationNodes(NodeRegistry *registry) {
     registry->registerNode(ResampleOperator::creator(category));
 }
 
-void Thesis::registerOutputNodes(NodeRegistry *registry, RenderView *renderViewer) {
+void Thesis::registerOutputNodes(NodeRegistry *registry) {
     const QString category = "Output";
-    registry->registerNode(SurfaceViewOperator::creator(category, renderViewer));
+    registry->registerNode(SurfaceViewOperator::creator(category, window_));
 }
 } // namespace nitro::Thesis

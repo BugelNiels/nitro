@@ -47,16 +47,13 @@ int main(int argc, char *argv[]) {
     std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();
 
     auto *nodes = new nitro::NodeRegistry();
+    auto *window = new nitro::MainWindow();
     for (auto &nitroModule: modules) {
         nitroModule->registerDataTypes();
-        nitroModule->registerNodes(nodes);
-    }
-    auto *window = new nitro::MainWindow(nodes);
-    for (auto &nitroModule: modules) {
-        nitroModule->registerDocks(window);
+        nitroModule->registerNodes(nodes, window);
     }
 
-    window->finalizeSetup();
+    window->finalizeSetup(nodes);
     window->show();
     return QApplication::exec();
 }

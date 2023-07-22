@@ -18,12 +18,10 @@ Q_OBJECT
 
 public:
     /**
-     * Initialises a new MainWindow with the provided nodes as registered to the NodeRegistry.
-     * @param registry Node registry containing the supported nodes and data types.
-     * Note that once a MainWindow is created, adding new nodes to the node registry does not change anything in the MainWindow.
+     * Initialises a new empty MainWindow.
      * @param parent Parent widget.
      */
-    explicit MainWindow(NodeRegistry *registry, QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
 
     /**
      * Destructor.
@@ -52,8 +50,16 @@ public:
 
     /**
      * Finalizes the setup for this window. Should always be called once everything has been initialised (i.e. all docks have been registered).
+     * @param registry Node registry containing the supported nodes and data types.
+     * Note that once a MainWindow is finalized, adding new nodes to the node registry does not change anything in the MainWindow.
      */
-    void finalizeSetup();
+    void finalizeSetup(NodeRegistry *registry);
+
+    /**
+     * Checks whether the window is finalized or not.
+     * @return True if the MainWindow is finalized. False otherwise.
+     */
+    [[nodiscard]] bool isFinalized() const;
 
 private:
     const int icSize_ = 16;
@@ -62,6 +68,7 @@ private:
     QLabel *fileNameLabel_ = nullptr;
     NodeDockWidget *nodeDock_ = nullptr;
     QSplitter *dockLayout_ = nullptr;
+    QSplitter *vertLayout_;
 
     QMenuBar *initMenuBar();
 
@@ -71,6 +78,7 @@ private:
 
     QMenu *getWindowMenu();
 
+    bool finalized_ = false;
 };
 
 } // namespace nitro

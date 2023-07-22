@@ -1,4 +1,4 @@
-#include "imviewer.hpp"
+#include "imageviewer.hpp"
 #include <util.hpp>
 
 #include <QColorSpace>
@@ -40,7 +40,6 @@ ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
     setSceneRect(-maxSize, -maxSize, (maxSize * 2), (maxSize * 2));
     setScene(imScene);
     resetImScale();
-
     initActions();
 
 }
@@ -106,31 +105,79 @@ void ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
         }
     }
 
-    if (imgDisplayItem_ != nullptr) {
-        return;
+    if (imgDisplayItem_ == nullptr) {
+        QRectF gridRect(-emptySize_, -emptySize_, emptySize_ * 2, emptySize_ * 2);
+        QPen pBounds(imgOutlineCol_, 2.0);
+        painter->setBrush(QBrush(gridBackgroundColor_));
+        painter->drawRect(gridRect);
+
+        QPen pFine(imgGridCol_, 1.0);
+
+        painter->setPen(pFine);
+        for (qreal x = gridRect.x() + gridStepSize_; x < gridRect.x() + gridRect.width(); x += gridStepSize_) {
+            painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
+        }
+        for (qreal y = gridRect.y() + gridStepSize_; y < gridRect.y() + gridRect.height(); y += gridStepSize_) {
+            painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
+        }
+
+
+        painter->setPen(pBounds);
+        QBrush brush(Qt::transparent);
+        painter->setBrush(brush);
+        painter->drawRect(gridRect);
     }
 
-    QRectF gridRect(-emptySize_, -emptySize_, emptySize_ * 2, emptySize_ * 2);
-    QPen pBounds(imgOutlineCol_, 2.0);
-    painter->setBrush(QBrush(gridBackgroundColor_));
-    painter->drawRect(gridRect);
 
-    QPen pFine(imgGridCol_, 1.0);
+}
 
-    painter->setPen(pFine);
-    for (qreal x = gridRect.x() + gridStepSize_; x < gridRect.x() + gridRect.width(); x += gridStepSize_) {
-        painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
+void ImageViewer::drawFooter(QPainter *painter) const {
+    const double footerHeight = 30;
+    const QRectF &r = geometry();
+    QRectF footerRect(0, r.height() - footerHeight, r.width(), footerHeight);
+
+    // Draw the footer background
+    QColor footerBackgroundColor = QColor(0, 0, 0, 80); // RGB(64, 64, 64) with alpha 200
+    painter->setBrush(QBrush(footerBackgroundColor));
+    painter->setPen(Qt::NoPen);
+    painter->drawRect(footerRect);
+
+    painter->setPen(Qt::white);
+
+    QColor color;
+    if (displayImg_.rect().contains(itemPos_)) {
+        color = displayImg_.pixelColor(itemPos_);
+    } else {
+        color = {0, 0, 0};
     }
-    for (qreal y = gridRect.y() + gridStepSize_; y < gridRect.y() + gridRect.height(); y += gridStepSize_) {
-        painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
-    }
+
+    // Monospaced font
+    QString monospacedFontFamily = "Monospace";
+    QFont monospacedFont(monospacedFontFamily);
+    monospacedFont.setStyleHint(QFont::TypeWriter);
+    painter->setFont(monospacedFont);
+
+    QString xValue = QString::number(itemPos_.x());
+    QString paddedXValue = xValue.rightJustified(5, ' ');
+
+    QString yValue = QString::number(itemPos_.y());
+    QString paddedYValue = yValue.rightJustified(5, ' ');
 
 
-    painter->setPen(pBounds);
-    QBrush brush(Qt::transparent);
-    painter->setBrush(brush);
-    painter->drawRect(gridRect);
-
+    QString footerText = "  X:" + paddedXValue +
+                         "  Y:" + paddedYValue +
+                         "  |" +
+                         "  R:" + QString::number(color.redF(), 'f', 3) +
+                         "  G:" + QString::number(color.greenF(), 'f', 3) +
+                         "  B:" + QString::number(color.blueF(), 'f', 3) +
+                         "  |" +
+                         "  H:" + QString::number(color.hueF(), 'f', 3) +
+                         "  S:" + QString::number(color.saturationF(), 'f', 3) +
+                         "  V:" + QString::number(color.valueF(), 'f', 3) +
+                         "  L:" + QString::number(color.lightnessF(), 'f', 3) +
+                         "  |" +
+                         "  " + color.name();
+    painter->drawText(footerRect, Qt::AlignLeft | Qt::AlignVCenter, footerText);
 }
 
 void ImageViewer::setScaleRange(double minimum, double maximum) {
@@ -256,7 +303,7 @@ void ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
 //            resetImScale();
         }
     }
-    emit imageUpdated({img->cols, img->rows, img->channels()});
+    emit imageUpdated(*img);
     repaint();
 }
 
@@ -272,7 +319,7 @@ void ImageViewer::removeImage() {
                 imgDisplayItem_ = nullptr;
             }
             resetImScale();
-            emit imageUpdated({0, 0, 0});
+            emit imageUpdated(cv::Mat());
             repaint();
         }
         timer->deleteLater();
@@ -342,9 +389,8 @@ void ImageViewer::mouseMoveEvent(QMouseEvent *event) {
         if (!imgDisplayItem_->contains(scenePos)) {
             return;
         }
-        QPoint itemPos = imgDisplayItem_->mapFromScene(scenePos).toPoint();
-        emit mousePosUpdated(itemPos, displayImg_.pixelColor(itemPos));
-        repaint();
+        itemPos_ = imgDisplayItem_->mapFromScene(scenePos).toPoint();
+        scene()->update();
 
     }
 }
@@ -361,6 +407,11 @@ void ImageViewer::mousePressEvent(QMouseEvent *event) {
     if (!crossHairMode_) {
         QGraphicsView::mousePressEvent(event);
     }
+}
+
+void ImageViewer::drawForeground(QPainter *painter, const QRectF &r) {
+    painter->resetTransform();
+    drawFooter(painter);
 }
 
 } // namespace nitro::ImCore

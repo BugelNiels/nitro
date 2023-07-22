@@ -16,7 +16,7 @@ class NitroModule {
 public:
 
     /**
-     * Default deconstructor.
+     * Default destructor.
      */
     virtual ~NitroModule() = default;
 
@@ -24,8 +24,9 @@ public:
      * Used to register new nodes to the existing registry. If a module introduces new nodes, this function should be implemented.
      * @see NodeRegistry.
      * @param registry Registry.
+     * @param window The window to register the GUI widgets to. Can be used by viewer widgets.
      */
-    virtual void registerNodes(NodeRegistry *registry) {
+    virtual void registerNodes(NodeRegistry *registry, MainWindow *window) {
         // No nodes are registered by default
     }
 
@@ -35,14 +36,6 @@ public:
      */
     virtual void registerDataTypes() {
         // No data types are registered by default
-    };
-
-    /**
-     * Used to register new GUI widgets. This adds the widgets to main window.
-     * @param window The window to register the GUI widgets to.
-     */
-    virtual void registerDocks(MainWindow *window) {
-        // No docks are registered by default
     };
 };
 

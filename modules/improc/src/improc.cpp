@@ -26,7 +26,8 @@ namespace nitro::ImProc {
 
 ImProc::ImProc() = default;
 
-void ImProc::registerNodes(NodeRegistry *registry) {
+void ImProc::registerNodes(NodeRegistry *registry, MainWindow *window) {
+    Q_UNUSED(window);
     registerFilterNodes(registry);
     registerAnalysisNodes(registry);
     registerInputNodes(registry);

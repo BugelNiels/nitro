@@ -10,12 +10,6 @@
 
 namespace nitro::ImCore {
 
-struct ImageInfo {
-    int width;
-    int height;
-    int channels;
-};
-
 class ImageViewer : public QGraphicsView {
 Q_OBJECT
 
@@ -53,6 +47,8 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
 
+    void drawForeground(QPainter *painter, const QRectF &rect) override;
+
     const double minScaleFactor = 0.2;
     const double maxScaleFactor = 20;
 protected:
@@ -69,7 +65,7 @@ Q_SIGNALS:
 
     void scaleChanged(double scale);
 
-    void imageUpdated(const ImageInfo &img);
+    void imageUpdated(const cv::Mat &img);
 
     void mousePosUpdated(const QPoint &pos, QColor color);
 
@@ -84,6 +80,7 @@ private:
     ScaleRange scaleRange_;
     QImage displayImg_;
     cv::Mat currentImg_;
+    QPoint itemPos_;
     QGraphicsPixmapItem *imgDisplayItem_ = nullptr;
     QAction *saveAction_;
     QAction *resetAction_;
@@ -102,6 +99,8 @@ private:
     void initActions();
 
     QString lastFilePath_ = "../data/";
+
+    void drawFooter(QPainter *painter) const;
 };
 
 } // namespace nitro::ImCore

@@ -15,41 +15,32 @@
 
 namespace nitro {
 
-MainWindow::MainWindow(NodeRegistry *registry, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
     setWindowTitle("NITRO");
     setWindowIcon(QIcon(":/icons/nitro.png"));
 
     dockLayout_ = new QSplitter(Qt::Horizontal, this);
-
     dockLayout_->setProperty("handleWidth", 16);
-    dockLayout_->setSizes({this->width() / 2, this->width() / 2}); // Temp fix for equal sizes
 
     // Node editor, visualizers split
-    auto *vertLayout = new QSplitter(Qt::Vertical, this);
-    vertLayout->setProperty("handleWidth", 16);
-    vertLayout->addWidget(dockLayout_);
-    vertLayout->addWidget(new NodeDockWidget(registry, this));
-    vertLayout->setStretchFactor(0, 1);
-    vertLayout->setStretchFactor(1, 1);
-
-    setCentralWidget(vertLayout);
+    vertLayout_ = new QSplitter(Qt::Vertical, this);
+    vertLayout_->setProperty("handleWidth", 16);
+    vertLayout_->addWidget(dockLayout_);
 
 }
 
-void MainWindow::finalizeSetup() {
+void MainWindow::finalizeSetup(NodeRegistry *registry) {
+    vertLayout_->addWidget(new NodeDockWidget(registry, this));
+    setCentralWidget(vertLayout_);
     installEventFilter(this);
 
     setMenuBar(initMenuBar());
     setStatusBar(initFooter());
 
-    const int widgetCount = dockLayout_->count();
-    QList<int> initialSizes;
-    initialSizes.fill(1, widgetCount);
-    dockLayout_->setSizes(initialSizes);
-
     setWindowState(Qt::WindowMaximized);
 
+    finalized_ = true;
 }
 
 MainWindow::~MainWindow() = default;
@@ -205,8 +196,18 @@ void MainWindow::registerNodeDock(NodeDockWidget *widget) {
 }
 
 void MainWindow::registerDock(QDockWidget *widget) {
+    if (!isFinalized()) {
+        return;
+    }
     widgets_.push_back(widget);
     dockLayout_->addWidget(widget);
+    if (widgets_.size() == 1) {
+        vertLayout_->setSizes({1, 1});
+    }
+}
+
+bool MainWindow::isFinalized() const {
+    return finalized_;
 }
 
 } // namespace nitro
