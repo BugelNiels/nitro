@@ -201,6 +201,14 @@ public:
     }
 
     /**
+     * Sets the data for an output port. All data is encapsulated by a custom type. For example, IntegerDataType encapsulated integers.
+     * In this case, the custom type can be provided here.
+     * @param name The name of the output port.
+     * @param data The data to set.
+     */
+    void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
+
+    /**
      * Get the option associated with the provided name.
      * @param optionName Name of the option.
      * @return The integer option.
@@ -258,7 +266,6 @@ private:
     std::unordered_map<QString, QString> properties_;
     std::unordered_map<QString, int> options_; // used for dropdowns and other options
 
-    void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 };
 
 } // namespace nitro
