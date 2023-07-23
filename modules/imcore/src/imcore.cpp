@@ -43,7 +43,7 @@ namespace nitro::ImCore {
 
 ImCore::ImCore() {}
 
-void ImCore::registerNodes(NodeRegistry *registry, MainWindow *window) {
+void ImCore::registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
     window_ = window;
     registerInputNodes(registry);
     registerOutputNodes(registry);
@@ -59,7 +59,7 @@ void ImCore::registerDataTypes() {
     IntegerData::registerConversions();
 }
 
-void ImCore::registerConvertNodes(NodeRegistry *registry) {
+void ImCore::registerConvertNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Converter";
     registry->registerNode(ImInfoOperator::creator(category)); // TODO: place elsewhere?
     registry->registerNode(MathOperator::creator(category));
@@ -74,7 +74,7 @@ void ImCore::registerConvertNodes(NodeRegistry *registry) {
 }
 
 
-void ImCore::registerTransformNodes(NodeRegistry *registry) {
+void ImCore::registerTransformNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Transform";
     registry->registerNode(ResizeOperator::creator(category));
     registry->registerNode(ImFlipOperator::creator(category));
@@ -83,7 +83,7 @@ void ImCore::registerTransformNodes(NodeRegistry *registry) {
     registry->registerNode(MatchSizeOperator::creator(category));
 }
 
-void ImCore::registerColorNodes(NodeRegistry *registry) {
+void ImCore::registerColorNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Color";
     registry->registerNode(MixOperator::creator(category));
     registry->registerNode(ConvertOperator::creator(category));
@@ -92,7 +92,7 @@ void ImCore::registerColorNodes(NodeRegistry *registry) {
 }
 
 
-void ImCore::registerInputNodes(NodeRegistry *registry) {
+void ImCore::registerInputNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Input";
 
     // ------ Image Source Node ------
@@ -121,7 +121,7 @@ void ImCore::registerInputNodes(NodeRegistry *registry) {
     registry->registerNode(RgbOperator::creator(category));
 }
 
-void ImCore::registerOutputNodes(NodeRegistry *registry) {
+void ImCore::registerOutputNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Output";
     registry->registerNode(ImageViewOperator::creator(category, window_));
     registry->registerNode(ValueViewOperator::creator(category));

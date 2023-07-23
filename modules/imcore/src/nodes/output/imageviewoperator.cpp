@@ -35,6 +35,7 @@ void ImageViewOperator::execute(NodePorts &nodePorts) {
         cv::resize(*im, *im, {256, 256});
     }
     imViewer_->setImage(im);
+    nodePorts.setOutputData(INPUT_IMAGE, nodePorts.inGet(INPUT_IMAGE));
 
 }
 
@@ -46,6 +47,7 @@ std::function<std::unique_ptr<NitroNode>()> ImageViewOperator::creator(const QSt
                 withIcon("viewer.png")->
                 withNodeColor(NITRO_OUTPUT_COLOR)->
                 withInputPort<ColImageData>(INPUT_IMAGE)->
+                withOutputPort<ColImageData>(INPUT_IMAGE)->
                 build();
     };
 }

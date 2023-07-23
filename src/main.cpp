@@ -7,14 +7,14 @@
 #include <QApplication>
 #include <QSurfaceFormat>
 
-#include <gui/mainwindow.hpp>
-#include <QStyle>
 #include <QFontDatabase>
+#include <QStyle>
+#include <gui/mainwindow.hpp>
 
 #include <QtNodes/internal/WidgetNodePainter.hpp>
+#include <config.hpp>
 #include <nitromodule.hpp>
 #include <nodes/noderegistry.hpp>
-#include <config.hpp>
 
 #include "src/gui/stylepresets.hpp"
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
     std::vector<std::unique_ptr<nitro::NitroModule>> modules = nitro::initModules();
 
-    auto *nodes = new nitro::NodeRegistry();
+    auto nodes = std::make_shared<nitro::NodeRegistry>();
     auto *window = new nitro::MainWindow();
     for (auto &nitroModule: modules) {
         nitroModule->registerDataTypes();

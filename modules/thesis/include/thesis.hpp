@@ -12,16 +12,16 @@ class Thesis : public NitroModule {
 public:
     Thesis();
 
-    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
+    void registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) override;
 
 private:
     MainWindow *window_;
 
-    void registerOutputNodes(NodeRegistry *registry);
+    void registerOutputNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerImageNodes(NodeRegistry *registry);
+    void registerImageNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerRestorationNodes(NodeRegistry *registry);
+    void registerRestorationNodes(std::shared_ptr<NodeRegistry>& registry);
 
 };
 

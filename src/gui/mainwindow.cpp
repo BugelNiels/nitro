@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-void MainWindow::finalizeSetup(NodeRegistry *registry) {
+void MainWindow::finalizeSetup(std::shared_ptr<NodeRegistry>& registry) {
     vertLayout_->addWidget(new NodeDockWidget(registry, this));
     setCentralWidget(vertLayout_);
     installEventFilter(this);

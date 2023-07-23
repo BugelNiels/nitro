@@ -23,7 +23,7 @@ public:
 private:
     HistogramView *histViewer_;
 
-    QWidget *initTitleBarWidget(MainWindow *window) const;
+    QWidget *initTitleBarWidget(MainWindow *window);
 };
 
 } // namespace nitro::ImCore

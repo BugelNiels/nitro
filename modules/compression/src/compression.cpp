@@ -11,12 +11,12 @@ namespace nitro::Compression {
 
 Compression::Compression() = default;
 
-void Compression::registerNodes(NodeRegistry *registry, MainWindow *window) {
+void Compression::registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
     Q_UNUSED(window);
     registerCompressionNodes(registry);
 }
 
-void Compression::registerCompressionNodes(NodeRegistry *registry) {
+void Compression::registerCompressionNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Compression";
     registry->registerNode(ZLibOperator::creator(category));
     registry->registerNode(PngOperator::creator(category));

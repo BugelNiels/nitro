@@ -12,21 +12,21 @@ class ImProc : public NitroModule {
 public:
     ImProc();
 
-    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
+    void registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) override;
 
 private:
 
-    void registerFilterNodes(NodeRegistry *registry) const;
+    void registerFilterNodes(std::shared_ptr<NodeRegistry>& registry) const;
 
-    void registerAnalysisNodes(NodeRegistry *registry) const;
+    void registerAnalysisNodes(std::shared_ptr<NodeRegistry>& registry) const;
 
-    void registerInputNodes(NodeRegistry *registry) const;
+    void registerInputNodes(std::shared_ptr<NodeRegistry>& registry) const;
 
-    void registerQualityMetricNodes(NodeRegistry *registry) const;
+    void registerQualityMetricNodes(std::shared_ptr<NodeRegistry>& registry) const;
 
-    void registerRestorationNodes(NodeRegistry *registry) const;
+    void registerRestorationNodes(std::shared_ptr<NodeRegistry>& registry) const;
 
-    void registerQuantizationNodes(NodeRegistry *registry);
+    void registerQuantizationNodes(std::shared_ptr<NodeRegistry>& registry);
 };
 
 } // namespace nitro::ImProc

@@ -14,7 +14,7 @@ class MainWindow;
 class NodeDockWidget : public QDockWidget {
 public:
 
-    NodeDockWidget(NodeRegistry *nodes, MainWindow *window);
+    NodeDockWidget(std::shared_ptr<NodeRegistry>& nodes, MainWindow *window);
 
     ~NodeDockWidget() override;
 

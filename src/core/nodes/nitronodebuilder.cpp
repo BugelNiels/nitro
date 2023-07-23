@@ -120,15 +120,16 @@ void NitroNodeBuilder::addOutPortWidget(QLabel *label) {
     outLayout_->addWidget(label, 0, Qt::AlignTop | Qt::AlignRight);
 }
 
-NitroNodeBuilder *
-NitroNodeBuilder::withInputInteger(const QString &name, int defaultVal, int min, int max,
-                                   BoundMode boundMode,
-                                   std::initializer_list<QString> conversionTypes) {
+NitroNodeBuilder *NitroNodeBuilder::withInputInteger(const QString &name,
+                                                     int defaultVal, int min, int max,
+                                                     BoundMode boundMode,
+                                                     std::initializer_list<QString> conversionTypes) {
     initInputValue(name, new IntSlider(name, defaultVal, min, max, boundMode), conversionTypes);
     return this;
 }
 
-void NitroNodeBuilder::initInputValue(const QString &name, ValueSliders::IntSlider *slider,
+void NitroNodeBuilder::initInputValue(const QString &name,
+                                      ValueSliders::IntSlider *slider,
                                       std::initializer_list<QString> cTypes) {
     auto data = std::make_shared<IntegerData>(slider->getVal());
     for (auto &cType: cTypes) {

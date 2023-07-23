@@ -16,26 +16,26 @@ namespace nitro::Thesis {
 Thesis::Thesis() {
 }
 
-void Thesis::registerNodes(NodeRegistry *registry, MainWindow *window) {
+void Thesis::registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
     window_ = window;
     registerOutputNodes(registry);
     registerImageNodes(registry);
     registerRestorationNodes(registry);
 }
 
-void Thesis::registerImageNodes(NodeRegistry *registry) {
+void Thesis::registerImageNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Compression";
     registry->registerNode(LayerRemovalOperator::creator(category));
     registry->registerNode(CompressOperator::creator(category));
     registry->registerNode(DecompressOperator::creator(category));
 }
 
-void Thesis::registerRestorationNodes(NodeRegistry *registry) {
+void Thesis::registerRestorationNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Restoration";
     registry->registerNode(ResampleOperator::creator(category));
 }
 
-void Thesis::registerOutputNodes(NodeRegistry *registry) {
+void Thesis::registerOutputNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Output";
     registry->registerNode(SurfaceViewOperator::creator(category, window_));
 }

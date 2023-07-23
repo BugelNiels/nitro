@@ -26,7 +26,7 @@
 
 namespace nitro {
 
-NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
+NodeDockWidget::NodeDockWidget(std::shared_ptr<NodeRegistry>& nodes, MainWindow *window)
         : QDockWidget(window),
           filename_("untitled.json") {
 

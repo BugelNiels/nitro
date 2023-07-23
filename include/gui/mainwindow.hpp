@@ -53,7 +53,7 @@ public:
      * @param registry Node registry containing the supported nodes and data types.
      * Note that once a MainWindow is finalized, adding new nodes to the node registry does not change anything in the MainWindow.
      */
-    void finalizeSetup(NodeRegistry *registry);
+    void finalizeSetup(std::shared_ptr<NodeRegistry>& registry);
 
     /**
      * Checks whether the window is finalized or not.

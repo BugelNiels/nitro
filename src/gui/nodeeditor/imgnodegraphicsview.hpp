@@ -14,7 +14,7 @@ class ImageNodeGraphicsView : public NodeGraphicsView {
 public:
 
     // TODO: better initialization
-    ImageNodeGraphicsView(NodeRegistry *nodes, QtNodes::BasicGraphicsScene *scene,
+    ImageNodeGraphicsView(std::shared_ptr<NodeRegistry>& nodes, QtNodes::BasicGraphicsScene *scene,
                           QtNodes::DataFlowGraphModel *model,
                           QWidget *parent);
 
@@ -36,7 +36,7 @@ public Q_SLOTS:
 private:
     QtNodes::NodeId nodeBeingViewed_;
     QtNodes::PortIndex currentPort_ = 0;
-    NodeRegistry *nodes_;
+    std::shared_ptr<NodeRegistry>& nodes_;
 
 
     QAction *spawnNodeAction(const QtNodes::NodeInfo &info);

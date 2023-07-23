@@ -26,7 +26,7 @@ namespace nitro::ImProc {
 
 ImProc::ImProc() = default;
 
-void ImProc::registerNodes(NodeRegistry *registry, MainWindow *window) {
+void ImProc::registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
     Q_UNUSED(window);
     registerFilterNodes(registry);
     registerAnalysisNodes(registry);
@@ -36,14 +36,14 @@ void ImProc::registerNodes(NodeRegistry *registry, MainWindow *window) {
     registerQuantizationNodes(registry);
 }
 
-void ImProc::registerInputNodes(NodeRegistry *registry) const {
+void ImProc::registerInputNodes(std::shared_ptr<NodeRegistry>& registry) const {
     const QString category = "Input";
     registry->registerNode(MaskOperator::creator(category));
     registry->registerNode(StructElemOperator::creator(category));
 }
 
 
-void ImProc::registerFilterNodes(NodeRegistry *registry) const {
+void ImProc::registerFilterNodes(std::shared_ptr<NodeRegistry>& registry) const {
     const QString category = "Filter";
     registry->registerNode(BoxFilterOperator::creator(category));
     registry->registerNode(GaussianBlurOperator::creator(category));
@@ -55,13 +55,13 @@ void ImProc::registerFilterNodes(NodeRegistry *registry) const {
     registry->registerNode(FFTShiftOperator::creator(category));
 }
 
-void ImProc::registerAnalysisNodes(NodeRegistry *registry) const {
+void ImProc::registerAnalysisNodes(std::shared_ptr<NodeRegistry>& registry) const {
     const QString category = "Analysis";
     registry->registerNode(DistanceTransformOperator::creator(category));
     registry->registerNode(ConnectedCompsOperator::creator(category));
 }
 
-void ImProc::registerQualityMetricNodes(NodeRegistry *registry) const {
+void ImProc::registerQualityMetricNodes(std::shared_ptr<NodeRegistry>& registry) const {
     const QString category = "Quality";
     registry->registerNode(MseOperator::creator(category));
     registry->registerNode(PsnrOperator::creator(category));
@@ -69,12 +69,12 @@ void ImProc::registerQualityMetricNodes(NodeRegistry *registry) const {
 }
 
 
-void ImProc::registerRestorationNodes(NodeRegistry *registry) const {
+void ImProc::registerRestorationNodes(std::shared_ptr<NodeRegistry>& registry) const {
     const QString category = "Restoration";
     registry->registerNode(DenoiseOperator::creator(category));
 }
 
-void ImProc::registerQuantizationNodes(NodeRegistry *registry) {
+void ImProc::registerQuantizationNodes(std::shared_ptr<NodeRegistry>& registry) {
     const QString category = "Quantization";
     registry->registerNode(QuantizeOperator::creator(category));
     registry->registerNode(KMeansOperator::creator(category));

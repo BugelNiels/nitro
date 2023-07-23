@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 namespace nitro {
 
@@ -26,7 +27,7 @@ public:
      * @param registry Registry.
      * @param window The window to register the GUI widgets to. Can be used by viewer widgets.
      */
-    virtual void registerNodes(NodeRegistry *registry, MainWindow *window) {
+    virtual void registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
         // No nodes are registered by default
     }
 

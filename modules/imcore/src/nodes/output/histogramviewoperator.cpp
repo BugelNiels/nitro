@@ -36,7 +36,6 @@ void HistogramViewOperator::execute(NodePorts &nodePorts) {
         cv::resize(im, im, {256, 256});
     }
     histViewer_->updateChart(im);
-
 }
 
 std::function<std::unique_ptr<NitroNode>()>

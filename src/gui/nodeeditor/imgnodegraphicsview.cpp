@@ -22,7 +22,7 @@
 
 namespace nitro {
 
-ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
+ImageNodeGraphicsView::ImageNodeGraphicsView(std::shared_ptr<NodeRegistry>& nodes,
                                              QtNodes::BasicGraphicsScene *scene,
                                              QtNodes::DataFlowGraphModel *model, QWidget *parent)
         : NodeGraphicsView(scene, model, parent),
@@ -135,6 +135,9 @@ void ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                                                    QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
 
             auto const &cid = c->nodeId();
+            if(viewerNodeName == dataModel_->nodeData(cid, QtNodes::NodeRole::Type).value<QString>()) {
+                return;
+            }
             // Find a suitable port to view; multiple clicks will cycle through the ports
             if (nodeBeingViewed_ == cid) {
                 int numPorts = dataModel_->nodeData(cid, QtNodes::NodeRole::OutPortCount).toInt();

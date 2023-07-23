@@ -14,20 +14,20 @@ public:
 
     void registerDataTypes() override;
 
-    void registerNodes(NodeRegistry *registry, MainWindow *window) override;
+    void registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) override;
 
 private:
     MainWindow *window_;
 
-    void registerInputNodes(NodeRegistry *registry);
+    void registerInputNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerOutputNodes(NodeRegistry *registry);
+    void registerOutputNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerConvertNodes(NodeRegistry *registry);
+    void registerConvertNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerColorNodes(NodeRegistry *registry);
+    void registerColorNodes(std::shared_ptr<NodeRegistry>& registry);
 
-    void registerTransformNodes(NodeRegistry *registry);
+    void registerTransformNodes(std::shared_ptr<NodeRegistry>& registry);
 
 
 };
