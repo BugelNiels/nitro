@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['keypressevent_46',['keyPressEvent',['../db/d5a/classnitro_1_1RenderView.html#a0d166df40fa6b8b8505421c9e0558e3a',1,'nitro::RenderView']]],
-  ['keyreleaseevent_47',['keyReleaseEvent',['../db/d5a/classnitro_1_1RenderView.html#a6e5c566220f0c3469aa2d9e37b7e0b1b',1,'nitro::RenderView']]],
-  ['kmeansoperator_48',['KMeansOperator',['../d9/d71/classnitro_1_1KMeansOperator.html',1,'nitro']]]
+  ['histogramview_44',['HistogramView',['../d2/d2a/classnitro_1_1ImCore_1_1HistogramView.html',1,'nitro::ImCore']]],
+  ['histogramviewerdockwidget_45',['HistogramViewerDockWidget',['../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html',1,'nitro::ImCore']]],
+  ['histogramviewoperator_46',['HistogramViewOperator',['../d0/df1/classnitro_1_1ImCore_1_1HistogramViewOperator.html',1,'nitro::ImCore']]]
 ];

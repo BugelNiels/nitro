@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['execute_18',['execute',['../dc/d51/classnitro_1_1BilateralFilterOperator.html#aa7bfb9596a2bb10de0edd56074aeb72b',1,'nitro::BilateralFilterOperator']]]
+  ['dctoperator_17',['DCTOperator',['../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html',1,'nitro::ImProc']]],
+  ['decimaldata_18',['DecimalData',['../d9/dad/classnitro_1_1DecimalData.html',1,'nitro']]],
+  ['decompressoperator_19',['DecompressOperator',['../d8/d84/classnitro_1_1Thesis_1_1DecompressOperator.html',1,'nitro::Thesis']]],
+  ['denoiseoperator_20',['DenoiseOperator',['../dc/d48/classnitro_1_1ImProc_1_1DenoiseOperator.html',1,'nitro::ImProc']]],
+  ['distancetransformoperator_21',['DistanceTransformOperator',['../da/da3/classnitro_1_1ImProc_1_1DistanceTransformOperator.html',1,'nitro::ImProc']]],
+  ['draggabletreewidget_22',['DraggableTreeWidget',['../d5/d71/classnitro_1_1DraggableTreeWidget.html',1,'nitro']]]
 ];

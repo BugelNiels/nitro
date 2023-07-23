@@ -3,6 +3,7 @@ var classnitro_1_1NitroNodeBuilder =
     [ "NitroNodeBuilder", "da/dd1/classnitro_1_1NitroNodeBuilder.html#aa3f521829c04aa62480348e3ec783454", null ],
     [ "build", "da/dd1/classnitro_1_1NitroNodeBuilder.html#a98173e459e727e551f412f72119c862c", null ],
     [ "withCheckBox", "da/dd1/classnitro_1_1NitroNodeBuilder.html#a43873a652adcc71d048714e38ec849a8", null ],
+    [ "withDisplayWidget", "da/dd1/classnitro_1_1NitroNodeBuilder.html#a58152edf7b6835fc9dc50e7f8c782b84", null ],
     [ "withDisplayWidget", "da/dd1/classnitro_1_1NitroNodeBuilder.html#a1d3b4e42af0301db2a3f1b00f01bcfe8", null ],
     [ "withDropDown", "da/dd1/classnitro_1_1NitroNodeBuilder.html#ab549cff7e0bf6e74b9af4ad4d7b309a7", null ],
     [ "withIcon", "da/dd1/classnitro_1_1NitroNodeBuilder.html#a08c105c45f514f1bd56f615611bd9962", null ],

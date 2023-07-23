@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -101,7 +100,7 @@ Modules</h2>
 <p>Adding new modules can be done by following a similar structure to the existing module:</p>
 <ul>
 <li>Create a new directory in the <code>modules</code> directory. The folder structure should be all lower-case.</li>
-<li>Create an implementation of <code><a class="el" href="../../db/d88/imcoremodule_8hpp_source.html">imcoremodule.hpp</a></code>. This implementation should register the new nodes, in addition to the data types and widgets (if there are any).</li>
+<li>Create an implementation of <code>imcoremodule.hpp</code>. This implementation should register the new nodes, in addition to the data types and widgets (if there are any).</li>
 <li>Create a <code>CMakeLists.txt</code> to create a library of the module. See e.g. <a href="../../../modules/imcore/CMakeLists.txt">this CMakeLists.txt</a> on how to do this. Note that any libraries used in the module, must unfortunately still be found and linked in the main <a href="../../../CMakeLists.txt">CMakeLists.txt</a>. A future release should hopefully fix this issue.</li>
 <li>Add any nodes, data types or widgets as needed (see below).</li>
 </ul>
@@ -122,12 +121,12 @@ Modules</h2>
 Nodes</h2>
 <p>Nodes are built using the builder-pattern to ensure maximum flexibility. As such, new nodes are not created by creating a subclass of <code>NitroNode</code>. Instead, nodes are built dynamically at runtime. Each node will typically have a <code>NodeOperator</code>. This operator is what performs the actual computation of the node. For details on how to construct a node, you can look at the <a href="../../../include/nodes/nitronodebuilder.hpp">NitroNodeBuilder</a> class.</p>
 <p>A simple implementation of a denoising node is then as follows:</p>
-<p><a href="../../../modules/imcore/src/nodes/filters/bilateralfilter.hpp">Header file</a></p>
+<p><a href="../../../modules/improc/src/nodes/blur/bilateralfilter.hpp">Header file</a></p>
 <div class="fragment"><div class="line"> {c++}</div>
 <div class="line">#pragma once</div>
 <div class="line"> </div>
-<div class="line">#include &quot;nodes/nodeoperator.hpp&quot;</div>
-<div class="line">#include &quot;nodes/nitronode.hpp&quot;</div>
+<div class="line">#include &lt;nodes/nodeoperator.hpp&gt;</div>
+<div class="line">#include &lt;nodes/nitronode.hpp&gt;</div>
 <div class="line"> </div>
 <div class="line">namespace nitro {</div>
 <div class="line"> </div>
@@ -153,10 +152,10 @@ Nodes</h2>
 <div class="line"> </div>
 <div class="line">    };</div>
 <div class="line">} // nitro</div>
-</div><!-- fragment --><p><a href="../../../modules/imcore/src/nodes/filters/bilateralfilter.cpp">Source file</a></p>
+</div><!-- fragment --><p><a href="../../../modules/improc/src/nodes/blur/bilateralfilter.cpp">Source file</a></p>
 <div class="fragment"><div class="line"> {c++}</div>
 <div class="line">#include &quot;bilateralfilter.hpp&quot;</div>
-<div class="line">#include &quot;nodes/nitronodebuilder.hpp&quot;</div>
+<div class="line">#include &lt;nodes/nitronodebuilder.hpp&gt;</div>
 <div class="line">#include &quot;nodes/datatypes/colimagedata.hpp&quot;</div>
 <div class="line">#include &lt;opencv2/imgproc.hpp&gt;</div>
 <div class="line"> </div>
@@ -235,8 +234,8 @@ Data Types</h2>
 <div class="line">} // nitro</div>
 </div><!-- fragment --><p><a href="../../../src/core/nodes/datatypes/integerdata.cpp">Source file</a></p>
 <div class="fragment"><div class="line"> {c++}</div>
-<div class="line">#include &quot;nodes/datatypes/integerdata.hpp&quot;</div>
-<div class="line">#include &quot;nodes/datatypes/decimaldata.hpp&quot;</div>
+<div class="line">#include &lt;nodes/datatypes/integerdata.hpp&gt;</div>
+<div class="line">#include &lt;nodes/datatypes/decimaldata.hpp&gt;</div>
 <div class="line"> </div>
 <div class="line">namespace nitro {</div>
 <div class="line">    IntegerData::IntegerData() : FlexibleData&lt;int, IntegerData&gt;(0, id_, name_, baseColor_) {</div>

@@ -1,6 +1,6 @@
 var classnitro_1_1NodeDockWidget =
 [
-    [ "NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html#ae753b08bc882a81beff5a66a24c35356", null ],
+    [ "NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html#addb96397fdb1c245696849ffe79697a8", null ],
     [ "~NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html#a139d3c05782bb7c632a6831802a5bb7d", null ],
     [ "canQuitSafely", "de/db3/classnitro_1_1NodeDockWidget.html#ac352c4b1f470b10b6bc7f62bf939b9b3", null ],
     [ "clearModel", "de/db3/classnitro_1_1NodeDockWidget.html#aac3df66f1d6d12c44233e5e0aebdd8d1", null ],

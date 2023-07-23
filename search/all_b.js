@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['portdata_68',['PortData',['../d9/d6d/classnitro_1_1PortData.html',1,'nitro']]],
-  ['project_20structure_69',['Project Structure',['../d6/d44/md_docs_PROJECT_STRUCTURE.html',1,'']]]
+  ['layerremovaloperator_74',['LayerRemovalOperator',['../dd/d58/classnitro_1_1Thesis_1_1LayerRemovalOperator.html',1,'nitro::Thesis']]],
+  ['license_75',['LICENSE',['../da/d19/md_LICENSE.html',1,'']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['bilateralfilteroperator_0',['BilateralFilterOperator',['../dc/d51/classnitro_1_1BilateralFilterOperator.html',1,'nitro']]],
-  ['booleanmathoperator_1',['BooleanMathOperator',['../d5/d10/classnitro_1_1BooleanMathOperator.html',1,'nitro']]],
-  ['boxfilteroperator_2',['BoxFilterOperator',['../d7/dd4/classnitro_1_1BoxFilterOperator.html',1,'nitro']]]
+  ['allinputoftype_0',['allInputOfType',['../da/da7/classnitro_1_1NodePorts.html#afeb69c9ad7ef973abb3dcb86cd0b0535',1,'nitro::NodePorts']]],
+  ['allinputspresent_1',['allInputsPresent',['../da/da7/classnitro_1_1NodePorts.html#ad69d8df769f46dba5f99015f9e4ed4a5',1,'nitro::NodePorts']]]
 ];

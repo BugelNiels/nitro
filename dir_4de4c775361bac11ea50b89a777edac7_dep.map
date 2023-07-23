@@ -1,0 +1,10 @@
+<map id="modules/imcore/src/nodes/input" name="modules/imcore/src/nodes/input">
+<area shape="rect" id="node1" href="dir_4de4c775361bac11ea50b89a777edac7.html" title="input" alt="" coords="43,52,115,100"/>
+<area shape="rect" id="node2" href="dir_33a879eef93b9d8814acc7072fb3906b.html" title="include" alt="" coords="5,148,77,196"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000020_000012.html" title="4" alt="" coords="60,127,70,142"/>
+<area shape="rect" id="node3" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="5,244,77,292"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000020_000001.html" title="12" alt="" coords="71,227,88,242"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000012_000001.html" title="5" alt="" coords="36,218,45,233"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000001_000012.html" title="1" alt="" coords="37,208,47,222"/>
+<area shape="rect" id="clust1" href="dir_0c3a686d3313c46e053416bc772f8a36.html" title="nodes" alt="" coords="32,16,125,111"/>
+</map>

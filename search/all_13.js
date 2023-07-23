@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['_7erenderer_96',['~Renderer',['../d4/d51/classnitro_1_1Renderer.html#a33c9c2ae4408887deac66e484e3e71ec',1,'nitro::Renderer']]]
+  ['text_130',['text',['../dc/d18/classnitro_1_1ZoomBar.html#aa23b8bb36f585d0c0572e8baea5c67f4',1,'nitro::ZoomBar']]],
+  ['thesis_131',['Thesis',['../d9/dba/classnitro_1_1Thesis_1_1Thesis.html',1,'nitro::Thesis']]],
+  ['translateoperator_132',['TranslateOperator',['../d8/dc4/classnitro_1_1ImCore_1_1TranslateOperator.html',1,'nitro::ImCore']]]
 ];

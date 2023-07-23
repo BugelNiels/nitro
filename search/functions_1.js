@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['execute_176',['execute',['../dc/d51/classnitro_1_1BilateralFilterOperator.html#aa7bfb9596a2bb10de0edd56074aeb72b',1,'nitro::BilateralFilterOperator']]]
+  ['builddockicon_231',['buildDockIcon',['../dc/d7d/classnitro_1_1MainWindow.html#abbe029756f13ef9f6dc968fc7ae0f335',1,'nitro::MainWindow']]]
 ];

@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -92,60 +91,58 @@ $(document).ready(function(){initNavTree('db/d48/nodedockwidget_8hpp_source.html
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;QDockWidget&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;QTreeWidget&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;QtNodes/NodeGraphicsView.hpp&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;QtNodes/DataFlowGraphModel&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;imgnodegraphicsview.hpp&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>nitro {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">class </span>MainWindow;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="../../de/db3/classnitro_1_1NodeDockWidget.html">   13</a></span>&#160;    <span class="keyword">class </span><a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a> : <span class="keyword">public</span> QDockWidget {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a>(<a class="code" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> *nodes, <a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window);</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;QtNodes/DataFlowGraphModel&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;QtNodes/NodeGraphicsView.hpp&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;imgnodegraphicsview.hpp&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>nitro {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">class </span>MainWindow;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../de/db3/classnitro_1_1NodeDockWidget.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a> : <span class="keyword">public</span> QDockWidget {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a>(std::shared_ptr&lt;NodeRegistry&gt; &amp;nodes, <a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        ~<a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    ~<a class="code" href="../../de/db3/classnitro_1_1NodeDockWidget.html">NodeDockWidget</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">void</span> clearModel();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> clearModel();</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">bool</span> canQuitSafely();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">bool</span> canQuitSafely();</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">void</span> saveModel(<span class="keywordtype">bool</span> askFile = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> saveModel(<span class="keywordtype">bool</span> askFile = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordtype">void</span> loadModel();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> loadModel();</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">const</span> QString &amp;getFileName();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">const</span> QString &amp;getFileName();</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">void</span> updateGraphicsView();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> updateGraphicsView();</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> keyPressEvent(QKeyEvent *event) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> keyPressEvent(QKeyEvent *event) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        NodeGraphicsView *view_;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        QJsonObject prevSave_;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        QString filename_;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        QString saveFilePath;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        QtNodes::DataFlowGraphModel *dataFlowGraphModel_;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        QTreeWidget *nodeTreeWidget_;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        QLineEdit *searchBar_;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        QtNodes::BasicGraphicsScene *nodeScene_;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    NodeGraphicsView *view_;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    QJsonObject prevSave_;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    QString filename_;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    QString saveFilePath;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    QtNodes::DataFlowGraphModel *dataFlowGraphModel_;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    QTreeWidget *nodeTreeWidget_;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    QLineEdit *searchBar_;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    QtNodes::BasicGraphicsScene *nodeScene_;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">bool</span> searchTreeItem(QTreeWidgetItem *item, <span class="keyword">const</span> QString &amp;searchText);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> searchTreeItem(QTreeWidgetItem *item, <span class="keyword">const</span> QString &amp;searchText);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> searchTextChanged(<span class="keyword">const</span> QString &amp;searchText);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> searchTextChanged(<span class="keyword">const</span> QString &amp;searchText);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        QTreeWidget *initSideMenu();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    QTreeWidget *initSideMenu();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        QWidget *initNodeTitleBar(<a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a> *window);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1MainWindow_html"><div class="ttname"><a href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.hpp:13</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeDockWidget_html"><div class="ttname"><a href="../../de/db3/classnitro_1_1NodeDockWidget.html">nitro::NodeDockWidget</a></div><div class="ttdef"><b>Definition:</b> nodedockwidget.hpp:13</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html">nitro::NodeRegistry</a></div><div class="ttdef"><b>Definition:</b> noderegistry.hpp:8</div></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    QWidget *initNodeTitleBar(<a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a> *window);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1MainWindow_html"><div class="ttname"><a href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.hpp:16</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeDockWidget_html"><div class="ttname"><a href="../../de/db3/classnitro_1_1NodeDockWidget.html">nitro::NodeDockWidget</a></div><div class="ttdef"><b>Definition:</b> nodedockwidget.hpp:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

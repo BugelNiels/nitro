@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -90,37 +89,34 @@ $(document).ready(function(){initNavTree('df/d7c/nitromodule_8hpp_source.html','
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>nitro {</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">class </span>MainWindow;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">class </span>NodeRegistry;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html">   14</a></span>&#160;    <span class="keyword">class </span><a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html">NitroModule</a> {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html">NitroModule</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#ade50d627ec7d10a7a9355e9869c1896d">   26</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#ade50d627ec7d10a7a9355e9869c1896d">registerNodes</a>(<a class="code" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> *registry) = 0;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#a99b767e355b4cba1b012dc301099b63f">   32</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#a99b767e355b4cba1b012dc301099b63f">registerDataTypes</a>(<a class="code" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> *registry) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="comment">// No data types are registered by default</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        };</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#a077c73664291e0590ed2cf090b084adb">   40</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#a077c73664291e0590ed2cf090b084adb">registerDocks</a>(<a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="comment">// No docks are registered by default</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        };</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    };</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
-<div class="ttc" id="aclassnitro_1_1MainWindow_html"><div class="ttname"><a href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.hpp:13</div></div>
-<div class="ttc" id="aclassnitro_1_1NitroModule_html"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html">nitro::NitroModule</a></div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:14</div></div>
-<div class="ttc" id="aclassnitro_1_1NitroModule_html_a077c73664291e0590ed2cf090b084adb"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#a077c73664291e0590ed2cf090b084adb">nitro::NitroModule::registerDocks</a></div><div class="ttdeci">virtual void registerDocks(MainWindow *window)</div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:40</div></div>
-<div class="ttc" id="aclassnitro_1_1NitroModule_html_a99b767e355b4cba1b012dc301099b63f"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#a99b767e355b4cba1b012dc301099b63f">nitro::NitroModule::registerDataTypes</a></div><div class="ttdeci">virtual void registerDataTypes(NodeRegistry *registry)</div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:32</div></div>
-<div class="ttc" id="aclassnitro_1_1NitroModule_html_ade50d627ec7d10a7a9355e9869c1896d"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#ade50d627ec7d10a7a9355e9869c1896d">nitro::NitroModule::registerNodes</a></div><div class="ttdeci">virtual void registerNodes(NodeRegistry *registry)=0</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html">nitro::NodeRegistry</a></div><div class="ttdef"><b>Definition:</b> noderegistry.hpp:8</div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>nitro {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">class </span>MainWindow;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">class </span>NodeRegistry;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html">NitroModule</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#a0fa1761277e6395eb8223cef47cca9fe">   21</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#a0fa1761277e6395eb8223cef47cca9fe">~NitroModule</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#ad427fce3ae421f5350c4a725d337d7ba">   29</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#ad427fce3ae421f5350c4a725d337d7ba">registerNodes</a>(std::shared_ptr&lt;NodeRegistry&gt; &amp;registry, <a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="comment">// No nodes are registered by default</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../d7/d57/classnitro_1_1NitroModule.html#a09e7bf12ac874375a651a0b2c78248e0">   37</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/d57/classnitro_1_1NitroModule.html#a09e7bf12ac874375a651a0b2c78248e0">registerDataTypes</a>(){</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="comment">// No data types are registered by default</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1MainWindow_html"><div class="ttname"><a href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.hpp:16</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroModule_html"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html">nitro::NitroModule</a></div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:16</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroModule_html_a09e7bf12ac874375a651a0b2c78248e0"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#a09e7bf12ac874375a651a0b2c78248e0">nitro::NitroModule::registerDataTypes</a></div><div class="ttdeci">virtual void registerDataTypes()</div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:37</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroModule_html_a0fa1761277e6395eb8223cef47cca9fe"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#a0fa1761277e6395eb8223cef47cca9fe">nitro::NitroModule::~NitroModule</a></div><div class="ttdeci">virtual ~NitroModule()=default</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroModule_html_ad427fce3ae421f5350c4a725d337d7ba"><div class="ttname"><a href="../../d7/d57/classnitro_1_1NitroModule.html#ad427fce3ae421f5350c4a725d337d7ba">nitro::NitroModule::registerNodes</a></div><div class="ttdeci">virtual void registerNodes(std::shared_ptr&lt; NodeRegistry &gt; &amp;registry, MainWindow *window)</div><div class="ttdef"><b>Definition:</b> nitromodule.hpp:29</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

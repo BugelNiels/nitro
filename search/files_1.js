@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['canny_2ecpp_698',['canny.cpp',['../d4/dce/canny_8cpp.html',1,'']]],
+  ['canny_2ehpp_699',['canny.hpp',['../d0/d5b/canny_8hpp.html',1,'']]],
+  ['categorycolors_2eh_700',['categorycolors.h',['../d0/d29/categorycolors_8h.html',1,'']]],
+  ['colimagedata_2ecpp_701',['colimagedata.cpp',['../db/dfd/colimagedata_8cpp.html',1,'']]],
+  ['colimagedata_2ehpp_702',['colimagedata.hpp',['../d7/da0/colimagedata_8hpp.html',1,'']]],
+  ['colormap_2ecpp_703',['colormap.cpp',['../d4/d2b/colormap_8cpp.html',1,'']]],
+  ['colormap_2ehpp_704',['colormap.hpp',['../d0/d9c/colormap_8hpp.html',1,'']]],
+  ['colorspaceconvert_2ecpp_705',['colorspaceconvert.cpp',['../de/df0/colorspaceconvert_8cpp.html',1,'']]],
+  ['colorspaceconvert_2ehpp_706',['colorspaceconvert.hpp',['../d1/dfd/colorspaceconvert_8hpp.html',1,'']]],
+  ['combine_2ecpp_707',['combine.cpp',['../dc/d31/combine_8cpp.html',1,'']]],
+  ['combine_2ehpp_708',['combine.hpp',['../db/d5c/combine_8hpp.html',1,'']]],
+  ['compress_2ecpp_709',['compress.cpp',['../d7/d4d/compress_8cpp.html',1,'']]],
+  ['compress_2ehpp_710',['compress.hpp',['../de/db1/compress_8hpp.html',1,'']]],
+  ['compression_2ecpp_711',['compression.cpp',['../de/dc6/compression_8cpp.html',1,'']]],
+  ['compression_2ehpp_712',['compression.hpp',['../d7/deb/compression_8hpp.html',1,'']]],
+  ['connectedcomps_2ecpp_713',['connectedcomps.cpp',['../df/d04/connectedcomps_8cpp.html',1,'']]],
+  ['connectedcomps_2ehpp_714',['connectedcomps.hpp',['../d8/d04/connectedcomps_8hpp.html',1,'']]],
+  ['contributing_2emd_715',['CONTRIBUTING.md',['../d2/d52/CONTRIBUTING_8md.html',1,'']]]
+];

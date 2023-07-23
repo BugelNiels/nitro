@@ -1,0 +1,13 @@
+<map id="modules/thesis/src/gui/im3dviewer/settings.hpp" name="modules/thesis/src/gui/im3dviewer/settings.hpp">
+<area shape="rect" id="node1" title=" " alt="" coords="385,5,596,47"/>
+<area shape="rect" id="node2" href="$d1/dae/renderer_8hpp.html" title=" " alt="" coords="327,95,521,151"/>
+<area shape="rect" id="node6" href="$d8/ddf/renderview_8hpp.html" title=" " alt="" coords="443,310,674,351"/>
+<area shape="rect" id="node3" href="$d6/d54/renderer_8cpp.html" title=" " alt="" coords="110,199,303,255"/>
+<area shape="rect" id="node4" href="$d4/d4e/shaderrenderer_8hpp.html" title=" " alt="" coords="327,199,521,255"/>
+<area shape="rect" id="node5" href="$dd/d9f/shaderrenderer_8cpp.html" title=" " alt="" coords="226,303,419,359"/>
+<area shape="rect" id="node7" href="$da/dee/renderdockwidget_8cpp.html" title=" " alt="" coords="5,407,280,448"/>
+<area shape="rect" id="node8" href="$d5/d6b/renderview_8cpp.html" title=" " alt="" coords="305,407,535,448"/>
+<area shape="rect" id="node9" href="$d8/d04/surfaceviewoperator_8hpp.html" title=" " alt="" coords="559,407,835,448"/>
+<area shape="rect" id="node11" href="$dc/d84/thesis_8cpp.html" title=" " alt="" coords="801,496,945,537"/>
+<area shape="rect" id="node10" href="$d2/dc8/surfaceviewoperator_8cpp.html" title=" " alt="" coords="503,496,777,537"/>
+</map>

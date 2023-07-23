@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['zoombar_173',['ZoomBar',['../dc/d18/classnitro_1_1ZoomBar.html',1,'nitro']]]
+  ['thesis_223',['Thesis',['../d9/dba/classnitro_1_1Thesis_1_1Thesis.html',1,'nitro::Thesis']]],
+  ['translateoperator_224',['TranslateOperator',['../d8/dc4/classnitro_1_1ImCore_1_1TranslateOperator.html',1,'nitro::ImCore']]]
 ];

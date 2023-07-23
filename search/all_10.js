@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['valueviewoperator_93',['ValueViewOperator',['../d4/d8b/classnitro_1_1ValueViewOperator.html',1,'nitro']]]
+  ['quantizeoperator_105',['QuantizeOperator',['../de/d33/classnitro_1_1ImProc_1_1QuantizeOperator.html',1,'nitro::ImProc']]]
 ];

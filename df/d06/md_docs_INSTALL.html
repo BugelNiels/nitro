@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -94,7 +93,7 @@ $(document).ready(function(){initNavTree('df/d06/md_docs_INSTALL.html','../../')
 <p>To set up the repository locally, clone the repository:</p>
 <div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:BugelNiels/nitro.git</div>
 </div><!-- fragment --><p>In case <code>--recurse-submodules</code> was not used, you can initialize the submodules using:</p>
-<div class="fragment"><div class="line">git submodule updatebounds</div>
+<div class="fragment"><div class="line">git submodule init</div>
 <div class="line">git submodule update</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
 2. Prerequisites</h1>
@@ -153,9 +152,11 @@ $(document).ready(function(){initNavTree('df/d06/md_docs_INSTALL.html','../../')
 </ul>
 <h1><a class="anchor" id="autotoc_md19"></a>
 3. Building &amp; Running</h1>
-<p>To build the project, can execute the <code>build.sh</code> script and run the resulting binary:</p>
-<div class="fragment"><div class="line">sh build.sh</div>
-<div class="line">./bin/nitro</div>
+<p>To build the project, can execute the <code>build.sh</code> script in the <code>scripts/</code> directory and run the resulting binary:</p>
+<div class="fragment"><div class="line">cd scripts</div>
+<div class="line">bash build.sh</div>
+<div class="line">cd ..</div>
+<div class="line">./bin/nitro </div>
 </div><!-- fragment --><p>Alternatively, you can manually build and run the program:</p>
 <div class="fragment"><div class="line">mkdir build</div>
 <div class="line">cd build</div>

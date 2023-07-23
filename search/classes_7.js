@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['layerremovaloperator_138',['LayerRemovalOperator',['../d6/d67/classnitro_1_1LayerRemovalOperator.html',1,'nitro']]]
+  ['jpegoperator_186',['JpegOperator',['../d8/dac/classnitro_1_1Compression_1_1JpegOperator.html',1,'nitro::Compression']]]
 ];

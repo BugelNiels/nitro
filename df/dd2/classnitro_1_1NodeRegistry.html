@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -91,19 +90,102 @@ $(document).ready(function(){initNavTree('df/dd2/classnitro_1_1NodeRegistry.html
 <div class="title">nitro::NodeRegistry Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dc/db6/noderegistry_8hpp_source.html">noderegistry.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a831ba3b159a95054492537577d26771d"><td class="memItemLeft" align="right" valign="top"><a id="a831ba3b159a95054492537577d26771d"></a>
-const std::shared_ptr&lt; QtNodes::NodeDelegateModelRegistry &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRegistry</b> () const</td></tr>
-<tr class="separator:a831ba3b159a95054492537577d26771d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa111dda5934316e3291a435384ee1d5d"><td class="memItemLeft" align="right" valign="top"><a id="aa111dda5934316e3291a435384ee1d5d"></a>
-std::vector&lt; std::pair&lt; QString, std::vector&lt; QtNodes::NodeInfo &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCategories</b> () const</td></tr>
-<tr class="separator:aa111dda5934316e3291a435384ee1d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0abd04c7b199282ac1f467fd894ebe56"><td class="memItemLeft" align="right" valign="top"><a id="a0abd04c7b199282ac1f467fd894ebe56"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerNode</b> (const std::function&lt; std::unique_ptr&lt; <a class="el" href="../../da/d5a/classnitro_1_1NitroNode.html">NitroNode</a> &gt;()&gt; &amp;buildFunction)</td></tr>
+<tr class="memitem:ae9f2cb5880a9a8e3be4a0564181014c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html#ae9f2cb5880a9a8e3be4a0564181014c7">NodeRegistry</a> ()</td></tr>
+<tr class="separator:ae9f2cb5880a9a8e3be4a0564181014c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0abd04c7b199282ac1f467fd894ebe56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html#a0abd04c7b199282ac1f467fd894ebe56">registerNode</a> (const std::function&lt; std::unique_ptr&lt; <a class="el" href="../../da/d5a/classnitro_1_1NitroNode.html">NitroNode</a> &gt;()&gt; &amp;buildFunction)</td></tr>
 <tr class="separator:a0abd04c7b199282ac1f467fd894ebe56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa111dda5934316e3291a435384ee1d5d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; QString, std::vector&lt; QtNodes::NodeInfo &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html#aa111dda5934316e3291a435384ee1d5d">getCategories</a> () const</td></tr>
+<tr class="separator:aa111dda5934316e3291a435384ee1d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a831ba3b159a95054492537577d26771d"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; QtNodes::NodeDelegateModelRegistry &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html#a831ba3b159a95054492537577d26771d">getRegistry</a> () const</td></tr>
+<tr class="separator:a831ba3b159a95054492537577d26771d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>General registry class containing the information of all the supported nodes. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae9f2cb5880a9a8e3be4a0564181014c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9f2cb5880a9a8e3be4a0564181014c7">&#9670;&nbsp;</a></span>NodeRegistry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">nitro::NodeRegistry::NodeRegistry </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates a new empty registry. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa111dda5934316e3291a435384ee1d5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa111dda5934316e3291a435384ee1d5d">&#9670;&nbsp;</a></span>getCategories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::pair&lt; QString, std::vector&lt; QtNodes::NodeInfo &gt; &gt; &gt; nitro::NodeRegistry::getCategories </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get all the node categories and the nodes within said category. </p><dl class="section return"><dt>Returns</dt><dd>A list of node categories. Each category is stored as a pair, where the first item is the name of the category. The second item is a list containing the information for each node within the category. </dd></dl>
+
+</div>
+</div>
+<a id="a831ba3b159a95054492537577d26771d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a831ba3b159a95054492537577d26771d">&#9670;&nbsp;</a></span>getRegistry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::shared_ptr&lt; QtNodes::NodeDelegateModelRegistry &gt; &amp; nitro::NodeRegistry::getRegistry </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the registry as required by the QtNodes library. </p><dl class="section return"><dt>Returns</dt><dd>A registry in the format required by QtNodes. </dd></dl>
+
+</div>
+</div>
+<a id="a0abd04c7b199282ac1f467fd894ebe56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0abd04c7b199282ac1f467fd894ebe56">&#9670;&nbsp;</a></span>registerNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nitro::NodeRegistry::registerNode </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; std::unique_ptr&lt; <a class="el" href="../../da/d5a/classnitro_1_1NitroNode.html">NitroNode</a> &gt;()&gt; &amp;&#160;</td>
+          <td class="paramname"><em>buildFunction</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function can be used to register a new node. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buildFunction</td><td>A function that returns a pointer to a <a class="el" href="../../da/d5a/classnitro_1_1NitroNode.html">NitroNode</a>. The function should generate a new node with the desired functionality every time it is called. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/nodes/<a class="el" href="../../dc/db6/noderegistry_8hpp_source.html">noderegistry.hpp</a></li>
 <li>src/core/nodes/noderegistry.cpp</li>

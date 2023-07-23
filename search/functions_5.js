@@ -1,7 +1,12 @@
 var searchData=
 [
-  ['registerdatatypes_183',['registerDataTypes',['../d7/d57/classnitro_1_1NitroModule.html#a99b767e355b4cba1b012dc301099b63f',1,'nitro::NitroModule::registerDataTypes()'],['../db/d90/classnitro_1_1ImCore_1_1ImCoreModule.html#a3ceef490a414a7d19e135c44869aee2f',1,'nitro::ImCore::ImCoreModule::registerDataTypes()']]],
-  ['registerdocks_184',['registerDocks',['../d7/d57/classnitro_1_1NitroModule.html#a077c73664291e0590ed2cf090b084adb',1,'nitro::NitroModule::registerDocks()'],['../d2/df1/classnitro_1_1Im3D_1_1Im3DModule.html#a12665b39099ad180b423cb9b91976e5b',1,'nitro::Im3D::Im3DModule::registerDocks()'],['../db/d90/classnitro_1_1ImCore_1_1ImCoreModule.html#aa0871ae9c7ca0008d92b46ce77ce81e8',1,'nitro::ImCore::ImCoreModule::registerDocks()']]],
-  ['registernodes_185',['registerNodes',['../d7/d57/classnitro_1_1NitroModule.html#ade50d627ec7d10a7a9355e9869c1896d',1,'nitro::NitroModule::registerNodes()'],['../d2/df1/classnitro_1_1Im3D_1_1Im3DModule.html#a668f75317e1bd6ae034c594ad458bb8b',1,'nitro::Im3D::Im3DModule::registerNodes()'],['../db/d90/classnitro_1_1ImCore_1_1ImCoreModule.html#a54553303f3c9a1f89154acbd362aebf8',1,'nitro::ImCore::ImCoreModule::registerNodes()'],['../d4/d5f/classnitro_1_1ImExtra_1_1ImExtraModule.html#aa582c3c3fbac6fa3a7d1afdb483e871e',1,'nitro::ImExtra::ImExtraModule::registerNodes()']]],
-  ['renderer_186',['Renderer',['../d4/d51/classnitro_1_1Renderer.html#a510ac4bc7ed5323002cd49166b85b372',1,'nitro::Renderer']]]
+  ['getcategories_236',['getCategories',['../df/dd2/classnitro_1_1NodeRegistry.html#aa111dda5934316e3291a435384ee1d5d',1,'nitro::NodeRegistry']]],
+  ['getdata_237',['getData',['../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac',1,'nitro::PortData']]],
+  ['getglobalproperty_238',['getGlobalProperty',['../da/da7/classnitro_1_1NodePorts.html#a997b09411153ec7539af2157e75cc77e',1,'nitro::NodePorts']]],
+  ['getindata_239',['getInData',['../da/da7/classnitro_1_1NodePorts.html#ab9f90b255820793fc7e54e7c439f4911',1,'nitro::NodePorts']]],
+  ['getname_240',['getName',['../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6',1,'nitro::PortData']]],
+  ['getoption_241',['getOption',['../da/da7/classnitro_1_1NodePorts.html#ae6603c00091284bd41c11d98c2ef2bae',1,'nitro::NodePorts']]],
+  ['getoutdata_242',['getOutData',['../da/da7/classnitro_1_1NodePorts.html#ab45dbf2c52a02e2b753c46767e68a492',1,'nitro::NodePorts::getOutData(QtNodes::PortIndex portIndex)'],['../da/da7/classnitro_1_1NodePorts.html#a846de18644e97a7a6b3e2bd53f531a9f',1,'nitro::NodePorts::getOutData(const QString &amp;name)']]],
+  ['getregistry_243',['getRegistry',['../df/dd2/classnitro_1_1NodeRegistry.html#a831ba3b159a95054492537577d26771d',1,'nitro::NodeRegistry']]],
+  ['gettype_244',['getType',['../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1',1,'nitro::PortData']]]
 ];

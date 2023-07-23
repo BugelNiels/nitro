@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>NITRO: modules/imextra/src/nodes/filter/dctransform.hpp Source File</title>
+<title>NITRO: modules/improc/src/nodes/filter/dctransform.hpp Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -28,7 +28,6 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">v1.3.0</span>
    </div>
   </td>
  </tr>
@@ -90,27 +89,29 @@ $(document).ready(function(){initNavTree('d1/da1/dctransform_8hpp_source.html','
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;nodes/nodeoperator.hpp&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;nodes/nitronode.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;nodes/nitronode.hpp&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;nodes/nodeoperator.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>nitro {</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>nitro::ImProc {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="../../d4/d49/classnitro_1_1DCTOperator.html">    8</a></span>&#160;    <span class="keyword">class </span><a class="code" href="../../d4/d49/classnitro_1_1DCTOperator.html">DCTOperator</a> : <span class="keyword">public</span> <a class="code" href="../../d0/d72/classnitro_1_1NodeOperator.html">NodeOperator</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keyword">static</span> std::function&lt;std::unique_ptr&lt;NitroNode&gt;()&gt; creator(<span class="keyword">const</span> QString &amp;category);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keywordtype">void</span> execute(<a class="code" href="../../da/da7/classnitro_1_1NodePorts.html">NodePorts</a> &amp;nodePorts) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    };</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;} <span class="comment">// nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1DCTOperator_html"><div class="ttname"><a href="../../d4/d49/classnitro_1_1DCTOperator.html">nitro::DCTOperator</a></div><div class="ttdef"><b>Definition:</b> dctransform.hpp:8</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeOperator_html"><div class="ttname"><a href="../../d0/d72/classnitro_1_1NodeOperator.html">nitro::NodeOperator</a></div><div class="ttdef"><b>Definition:</b> nodeoperator.hpp:11</div></div>
-<div class="ttc" id="aclassnitro_1_1NodePorts_html"><div class="ttname"><a href="../../da/da7/classnitro_1_1NodePorts.html">nitro::NodePorts</a></div><div class="ttdef"><b>Definition:</b> nodeports.hpp:21</div></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="../../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html">DCTOperator</a> : <span class="keyword">public</span> <a class="code" href="../../d0/d72/classnitro_1_1NodeOperator.html">NodeOperator</a> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">static</span> std::function&lt;std::unique_ptr&lt;NitroNode&gt;()&gt; creator(<span class="keyword">const</span> QString &amp;category);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html#a1df92efcee9940f79f34320575dc8838">execute</a>(<a class="code" href="../../da/da7/classnitro_1_1NodePorts.html">NodePorts</a> &amp;nodePorts) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;};</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;} <span class="comment">// namespace nitro::ImProc</span></div>
+<div class="ttc" id="aclassnitro_1_1ImProc_1_1DCTOperator_html"><div class="ttname"><a href="../../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html">nitro::ImProc::DCTOperator</a></div><div class="ttdef"><b>Definition:</b> dctransform.hpp:8</div></div>
+<div class="ttc" id="aclassnitro_1_1ImProc_1_1DCTOperator_html_a1df92efcee9940f79f34320575dc8838"><div class="ttname"><a href="../../da/d45/classnitro_1_1ImProc_1_1DCTOperator.html#a1df92efcee9940f79f34320575dc8838">nitro::ImProc::DCTOperator::execute</a></div><div class="ttdeci">void execute(NodePorts &amp;nodePorts) override</div><div class="ttdef"><b>Definition:</b> dctransform.cpp:13</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeOperator_html"><div class="ttname"><a href="../../d0/d72/classnitro_1_1NodeOperator.html">nitro::NodeOperator</a></div><div class="ttdef"><b>Definition:</b> nodeoperator.hpp:14</div></div>
+<div class="ttc" id="aclassnitro_1_1NodePorts_html"><div class="ttname"><a href="../../da/da7/classnitro_1_1NodePorts.html">nitro::NodePorts</a></div><div class="ttdef"><b>Definition:</b> nodeports.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="../../dir_b24621b616efde34dcb3c101af4ace97.html">imextra</a></li><li class="navelem"><a class="el" href="../../dir_290cc283624a8f713bb11e5beb855683.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f8c7c1ac004eeb3803642494b68add8e.html">nodes</a></li><li class="navelem"><a class="el" href="../../dir_82a7d90e90cefb9585b00b3b9405f389.html">filter</a></li><li class="navelem"><b>dctransform.hpp</b></li>
+    <li class="navelem"><a class="el" href="../../dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="../../dir_2f1d8109ebb9e16cb52ef744dbfb6b3f.html">improc</a></li><li class="navelem"><a class="el" href="../../dir_e9c5fa871d4806ae7f8b1ec96cc9dea6.html">src</a></li><li class="navelem"><a class="el" href="../../dir_96e2dcf46afdfc617e004e381ecbc6fb.html">nodes</a></li><li class="navelem"><a class="el" href="../../dir_e464085b0e9fe578a0e2353680656b80.html">filter</a></li><li class="navelem"><b>dctransform.hpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
