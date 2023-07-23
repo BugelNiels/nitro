@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Verifies whether all cpp files have been correctly formatted
+
 # Setup the correct working directory
 initial_loc=$(pwd)
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -25,19 +27,16 @@ for ext in $SOURCE_EXTENSIONS; do
 
   # Run clang-format and check for changes
   for file in $files; do
-    echo "Checking file: $file"
-    echo ""
-    clang-format -style=file:.clang-format "$file" > "$temp_file"
+    echo "Checking: $file..."
+    clang-format -style=file:.clang-format "$file" >"$temp_file"
     format_diff=$(diff -u "$file" "$temp_file")
-    echo "$format_diff"
     if [ "$format_diff" != "" ]; then
       unformatted_files+=("$file")
-      echo "File $file is not properly formatted"
-    else
-      echo "File $file is properly formatted"
+      echo "File $file is not properly formatted:"
+      echo "--------------------------------------------------------------------------------"
+      echo "$format_diff"
+      echo "--------------------------------------------------------------------------------"
     fi
-    echo ""
-    exit
   done
 done
 
