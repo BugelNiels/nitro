@@ -1,11 +1,11 @@
 #include "morphology.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <util.hpp>
 #include <colimagedata.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
-#include <opencv2/imgproc.hpp>
 #include <QDebug>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::ImProc {
 
@@ -58,16 +58,15 @@ void MorphologyOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> MorphologyOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Morphology", "morphology", category);
-        return builder.
-                withOperator(std::make_unique<MorphologyOperator>())->
-                withIcon("morphology.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withDropDown(MODE_DROPDOWN,
-                             {"Dilate", "Erode", "Open", "Close", "Top Hat", "Black Hat"})->
-                withInputPort<ColImageData>(INPUT_IMAGE_1)->
-                withInputPort<GrayImageData>(INPUT_IMAGE_2)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<MorphologyOperator>())
+                ->withIcon("morphology.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN,
+                               {"Dilate", "Erode", "Open", "Close", "Top Hat", "Black Hat"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE_1)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE_2)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

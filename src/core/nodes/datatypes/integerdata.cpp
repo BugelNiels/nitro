@@ -1,5 +1,5 @@
-#include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
 
 namespace nitro {
 
@@ -7,7 +7,8 @@ IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseC
     allowConversionFrom(DecimalData::id());
 }
 
-IntegerData::IntegerData(int value) : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
+IntegerData::IntegerData(int value)
+    : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
     allowConversionFrom(DecimalData::id());
 }
 

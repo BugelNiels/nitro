@@ -1,8 +1,8 @@
 #include "psnr.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
-#include <util.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -31,21 +31,18 @@ void PsnrOperator::execute(NodePorts &nodePorts) {
     auto imRef = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE_REF);
     double psnr = 10.0 * log10(1.0 / mse(imIn, imRef));
     nodePorts.output<DecimalData>(OUTPUT_VALUE, psnr);
-
 }
-
 
 std::function<std::unique_ptr<NitroNode>()> PsnrOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("PSNR", "psnr", category);
-        return builder.
-                withOperator(std::make_unique<PsnrOperator>())->
-                withIcon("compare.png")->
-                withNodeColor(NITRO_QUALITY_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputPort<GrayImageData>(INPUT_IMAGE_REF)->
-                withOutputValue(OUTPUT_VALUE)->
-                build();
+        return builder.withOperator(std::make_unique<PsnrOperator>())
+                ->withIcon("compare.png")
+                ->withNodeColor(NITRO_QUALITY_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE_REF)
+                ->withOutputValue(OUTPUT_VALUE)
+                ->build();
     };
 }
 

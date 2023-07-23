@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QTreeWidget>
 #include <QMap>
+#include <QTreeWidget>
 
 namespace nitro {
 
@@ -12,7 +12,6 @@ public:
     void registerAction(const QString &key, QAction *action);
 
 protected:
-
     void mousePressEvent(QMouseEvent *event) override;
 
     void mouseReleaseEvent(QMouseEvent *event) override;

@@ -1,8 +1,8 @@
 #include "resample.hpp"
+#include "util/distancefield.hpp"
+#include <grayimagedata.hpp>
 #include <nodes/nitronodebuilder.hpp>
 #include <util.hpp>
-#include <grayimagedata.hpp>
-#include "util/distancefield.hpp"
 
 #include <opencv2/imgproc.hpp>
 
@@ -37,7 +37,6 @@ static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &col
             rowPtr[x] = colMap[srcPtr[x] * 255 + 0.5];
         }
     }
-
 }
 
 static std::vector<cv::Mat> getDfs(const cv::Mat &src, int numLevels) {
@@ -49,14 +48,16 @@ static std::vector<cv::Mat> getDfs(const cv::Mat &src, int numLevels) {
     return df;
 }
 
-static cv::Mat resample(const cv::Mat &img, const std::vector<float> &colTable,
+static cv::Mat resample(const cv::Mat &img,
+                        const std::vector<float> &colTable,
                         const std::vector<cv::Mat> &df) {
     int width = df[0].cols;
     int height = df[0].rows;
 
     cv::Mat resampled = cv::Mat::zeros(height, width, CV_32FC1);
 
-#pragma omp parallel for default(none) firstprivate(height, width) shared(df, resampled, colTable, img)
+#pragma omp parallel for default(none) firstprivate(height, width)                                 \
+        shared(df, resampled, colTable, img)
     for (int y = 0; y < height; y++) {
         float *resRow = resampled.ptr<float>(y);
         const uchar *indexRow = img.ptr<uchar>(y);
@@ -103,7 +104,6 @@ cv::Mat resampleImage(const cv::Mat &img, bool brightnessCorrect, double kSize) 
     dfs[0] = dfs[1] - minVal;
     colTable.push_back(colTable[colTable.size() - 1] * 2 - colTable[colTable.size() - 2]);
 
-
     cv::minMaxIdx(dfs[dfs.size() - 1], &minVal);
     dfs.push_back(dfs[dfs.size() - 1] + minVal);
     cv::Mat result = resample(indexed, colTable, dfs);
@@ -139,17 +139,15 @@ void ResampleOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> ResampleOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Resample", "resample", category);
-        return builder.
-                withOperator(std::make_unique<ResampleOperator>())->
-                withIcon("resample.png")->
-                withNodeColor(NITRO_RESTORATION_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputValue(INPUT_K_SIZE, 0.125, 0, 1, BoundMode::LOWER_ONLY)->
-                withCheckBox(OPTION_BRIGHTNESS_CORRECT, true)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ResampleOperator>())
+                ->withIcon("resample.png")
+                ->withNodeColor(NITRO_RESTORATION_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputValue(INPUT_K_SIZE, 0.125, 0, 1, BoundMode::LOWER_ONLY)
+                ->withCheckBox(OPTION_BRIGHTNESS_CORRECT, true)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
-
 
 } // namespace nitro::Thesis

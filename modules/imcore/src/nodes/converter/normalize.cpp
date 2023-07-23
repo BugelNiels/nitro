@@ -1,6 +1,6 @@
 #include "normalize.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -27,15 +27,14 @@ void NormalizeOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> NormalizeOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Normalize", "normalize", category);
-        return builder.
-                withOperator(std::make_unique<NormalizeOperator>())->
-                withIcon("map_range.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputValue(INPUT_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_MAX, 1, 0, 1, BoundMode::UNCHECKED)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<NormalizeOperator>())
+                ->withIcon("map_range.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputValue(INPUT_MIN, 0, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_MAX, 1, 0, 1, BoundMode::UNCHECKED)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

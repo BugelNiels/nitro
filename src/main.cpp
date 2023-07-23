@@ -1,7 +1,5 @@
 #if _OPENMP
-
 #include <omp.h>
-
 #endif
 
 #include <QApplication>
@@ -36,7 +34,6 @@ void setupApplication() {
     font.setPixelSize(14);
     QApplication::setFont(font);
 }
-
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

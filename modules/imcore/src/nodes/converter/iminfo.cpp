@@ -1,9 +1,9 @@
 #include "iminfo.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -16,10 +16,7 @@ static inline const QString OUTPUT_AR = "Aspect Ratio";
 static inline const QString OUTPUT_NUM_PIXELS = "Num Pixels";
 static inline const QString OUTPUT_TYPE = "Type";
 
-ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
-        : typeLabel_(typeLabel) {
-
-}
+ImInfoOperator::ImInfoOperator(QLabel *typeLabel) : typeLabel_(typeLabel) {}
 
 void ImInfoOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -33,26 +30,26 @@ void ImInfoOperator::execute(NodePorts &nodePorts) {
 
     QString type;
     switch (im1->depth()) {
-        case CV_8U:  // 8-bit unsigned integer (0-255)
+        case CV_8U: // 8-bit unsigned integer (0-255)
             type = "8-bit uint";
             break;
-        case CV_8S:  // 8-bit signed integer (-128 to 127)
+        case CV_8S: // 8-bit signed integer (-128 to 127)
             type = "8-bit int";
             break;
-        case CV_16U:  // 16-bit unsigned integer (0-65535)
+        case CV_16U: // 16-bit unsigned integer (0-65535)
             type = "16-bit uint";
             break;
-        case CV_16S:  // 16-bit signed integer (-32768 to 32767)
+        case CV_16S: // 16-bit signed integer (-32768 to 32767)
             type = "16-bit int";
             break;
-        case CV_32S:  // 32-bit signed integer
+        case CV_32S: // 32-bit signed integer
             type = "32-bit int";
             break;
 
-        case CV_32F:  // 32-bit floating-point
+        case CV_32F: // 32-bit floating-point
             type = "Float";
             break;
-        case CV_64F:  // 64-bit floating-point
+        case CV_64F: // 64-bit floating-point
             type = "Double";
             break;
         default:
@@ -67,17 +64,16 @@ std::function<std::unique_ptr<NitroNode>()> ImInfoOperator::creator(const QStrin
     return [category]() {
         NitroNodeBuilder builder("Image Info", "imInfo", category);
         auto *typeLabel = new QLabel("Type: ");
-        return builder.
-                withOperator(std::make_unique<ImInfoOperator>(typeLabel))->
-                withIcon("info.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withDisplayWidget(OUTPUT_TYPE, typeLabel)->
-                withOutputInteger(OUTPUT_WIDTH)->
-                withOutputInteger(OUTPUT_HEIGHT)->
-                withOutputInteger(OUTPUT_NUM_PIXELS)->
-                withOutputValue(OUTPUT_AR)->
-                build();
+        return builder.withOperator(std::make_unique<ImInfoOperator>(typeLabel))
+                ->withIcon("info.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withDisplayWidget(OUTPUT_TYPE, typeLabel)
+                ->withOutputInteger(OUTPUT_WIDTH)
+                ->withOutputInteger(OUTPUT_HEIGHT)
+                ->withOutputInteger(OUTPUT_NUM_PIXELS)
+                ->withOutputValue(OUTPUT_AR)
+                ->build();
     };
 }
 

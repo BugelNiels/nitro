@@ -2,8 +2,8 @@
 
 #include <utility>
 
-#include <QtNodes/NodeData>
 #include "flexibledata.hpp"
+#include <QtNodes/NodeData>
 
 namespace nitro {
 
@@ -13,9 +13,7 @@ public:
 
     explicit IntegerData(int value);
 
-    static QString id() {
-        return id_;
-    }
+    static QString id() { return id_; }
 
     static void registerConversions();
 

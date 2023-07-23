@@ -1,6 +1,6 @@
 #include "colorspaceconvert.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 #include <utility>
@@ -11,9 +11,8 @@ static inline const QString INPUT_IMAGE = "Image";
 static inline const QString OUTPUT_IMAGE = "Image";
 static inline const QString MODE_DROPDOWN = "Mode";
 
-ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> codes) : codes_(std::move(codes)) {
-
-}
+ConvertOperator::ConvertOperator(std::vector<cv::ColorConversionCodes> codes)
+    : codes_(std::move(codes)) {}
 
 void ConvertOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -77,12 +76,11 @@ void ConvertOperator::execute(NodePorts &nodePorts) {
             break;
     }
 
-
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
 }
 
-
-void ConvertOperator::getConversions(QStringList &colorNames, std::vector<cv::ColorConversionCodes> &codes) {
+void ConvertOperator::getConversions(QStringList &colorNames,
+                                     std::vector<cv::ColorConversionCodes> &codes) {
     colorNames.append("RGB -> XYZ");
     codes.push_back(cv::COLOR_RGB2XYZ);
 
@@ -121,14 +119,13 @@ std::function<std::unique_ptr<NitroNode>()> ConvertOperator::creator(const QStri
         getConversions(colorNames, codes);
 
         NitroNodeBuilder builder("Convert Color Space", "convert", category);
-        return builder.
-                withOperator(std::make_unique<ConvertOperator>(codes))->
-                withIcon("color.png")->
-                withNodeColor(NITRO_COLOR_COLOR)->
-                withDropDown(MODE_DROPDOWN, colorNames)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ConvertOperator>(codes))
+                ->withIcon("color.png")
+                ->withNodeColor(NITRO_COLOR_COLOR)
+                ->withDropDown(MODE_DROPDOWN, colorNames)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

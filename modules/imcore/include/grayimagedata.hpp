@@ -3,7 +3,6 @@
 #include "nodes/datatypes/flexibledata.hpp"
 #include <opencv2/imgproc.hpp>
 
-
 namespace nitro {
 
 class GrayImageData : public FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData> {
@@ -14,9 +13,7 @@ public:
 
     explicit GrayImageData(const cv::Mat &img);
 
-    static QString id() {
-        return id_;
-    }
+    static QString id() { return id_; }
 
     static void registerConversions();
 

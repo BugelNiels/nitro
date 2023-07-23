@@ -6,27 +6,26 @@
 namespace nitro {
 
 GrayImageData::GrayImageData()
-        : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(),
-                                                                id_,
-                                                                name_,
-                                                                baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(),
+                                                            id_,
+                                                            name_,
+                                                            baseColor_) {
     allowConversionFrom(ColImageData::id());
 }
 
-
 GrayImageData::GrayImageData(std::shared_ptr<cv::Mat> img)
-        : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::move(img),
-                                                                id_,
-                                                                name_,
-                                                                baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::move(img),
+                                                            id_,
+                                                            name_,
+                                                            baseColor_) {
     allowConversionFrom(ColImageData::id());
 }
 
 GrayImageData::GrayImageData(const cv::Mat &img)
-        : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(img),
-                                                                id_,
-                                                                name_,
-                                                                baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, GrayImageData>(std::make_shared<cv::Mat>(img),
+                                                            id_,
+                                                            name_,
+                                                            baseColor_) {
     allowConversionFrom(ColImageData::id());
 }
 
@@ -34,7 +33,9 @@ QString GrayImageData::getDescription() const {
     return "";
 }
 
-bool GrayImageData::empty() const { return data() == nullptr || data()->empty(); }
+bool GrayImageData::empty() const {
+    return data() == nullptr || data()->empty();
+}
 
 void GrayImageData::registerConversions() {
 
@@ -55,8 +56,7 @@ void GrayImageData::registerConversions() {
             [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
                 auto imData = std::static_pointer_cast<IntegerData>(nodeData);
                 int val = imData->data();
-                return std::make_shared<cv::Mat>(1, 1, CV_32F,
-                                                 cv::Scalar(val / 255.0f));
+                return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val / 255.0f));
             });
 
     GrayImageData::registerConversionFrom<ColImageData>(

@@ -1,9 +1,9 @@
 #include "histogramdockwidget.hpp"
 #include "histogramviewer.hpp"
 
-#include <gui/mainwindow.hpp>
-#include <QTabBar>
 #include <QHBoxLayout>
+#include <QTabBar>
+#include <gui/mainwindow.hpp>
 
 namespace nitro::ImCore {
 
@@ -16,7 +16,8 @@ static QWidget *spacing() {
 }
 
 HistogramViewerDockWidget::HistogramViewerDockWidget(HistogramView *histViewer, MainWindow *window)
-        : QDockWidget(window), histViewer_(histViewer) {
+    : QDockWidget(window),
+      histViewer_(histViewer) {
     setWindowTitle("Histogram Viewer");
 
     QWidget *imViewTitleWrapper = initTitleBarWidget(window);

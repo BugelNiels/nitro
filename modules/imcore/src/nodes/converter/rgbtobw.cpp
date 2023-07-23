@@ -1,7 +1,7 @@
 #include "rgbtobw.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -24,16 +24,16 @@ void RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<NitroNode>()> RgbToGrayscaleOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> RgbToGrayscaleOperator::creator(
+        const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("RGB to Grayscale", "grayscaleConvert", category);
-        return builder.
-                withOperator(std::make_unique<RgbToGrayscaleOperator>())->
-                withIcon("greyscale.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<RgbToGrayscaleOperator>())
+                ->withIcon("greyscale.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

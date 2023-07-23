@@ -1,7 +1,7 @@
 #include "histogramviewoperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include "include/colimagedata.hpp"
 #include "gui/histogram/histogramdockwidget.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 namespace nitro::ImCore {
 
@@ -15,13 +15,11 @@ HistogramViewOperator::HistogramViewOperator(MainWindow *window) : window_(windo
     }
 }
 
-
 HistogramViewOperator::~HistogramViewOperator() {
     if (window_->isFinalized()) {
         window_->removeDockWidget(dockWidget_);
     }
 }
-
 
 void HistogramViewOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -38,16 +36,15 @@ void HistogramViewOperator::execute(NodePorts &nodePorts) {
     histViewer_->updateChart(im);
 }
 
-std::function<std::unique_ptr<NitroNode>()>
-HistogramViewOperator::creator(const QString &category, MainWindow *window) {
+std::function<std::unique_ptr<NitroNode>()> HistogramViewOperator::creator(const QString &category,
+                                                                           MainWindow *window) {
     return [category, window]() {
         NitroNodeBuilder builder("Histogram", "HistogramViewer", category);
-        return builder.
-                withOperator(std::make_unique<HistogramViewOperator>(window))->
-                withIcon("hist.png")->
-                withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<HistogramViewOperator>(window))
+                ->withIcon("hist.png")
+                ->withNodeColor(NITRO_OUTPUT_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->build();
     };
 }
 

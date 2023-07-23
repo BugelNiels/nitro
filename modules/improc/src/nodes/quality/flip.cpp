@@ -1,13 +1,13 @@
 #include "flip.hpp"
 #include "FLIP.h"
 #include "color.h"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
 #include <grayimagedata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
-#include <opencv2/imgproc.hpp>
 #include <QDebug>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::ImProc {
 
@@ -80,13 +80,13 @@ static cv::Mat flipImgFloatToGrayMat(const FLIP::image<float> &img) {
     return res;
 }
 
-inline static float calculatePPD(const double dist, const double resolutionX,
+inline static float calculatePPD(const double dist,
+                                 const double resolutionX,
                                  const double monitorWidth) {
     return dist * (resolutionX / monitorWidth) * (M_PI / 180.0f);
 }
 
 // To prevent initializing this thing all the time
-
 
 void FlipOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -98,8 +98,10 @@ void FlipOperator::execute(NodePorts &nodePorts) {
     int resX = nodePorts.inputInteger(INPUT_RES);
     double dist = nodePorts.inputValue(INPUT_DIST);
 
-    FLIP::image<FLIP::color3> fImgA = im1->channels() == 1 ? cvGrayscaleMatToFlipImg(*im1) : cvMatToFlipImg(*im1);
-    FLIP::image<FLIP::color3> fImgB = im2->channels() == 1 ? cvGrayscaleMatToFlipImg(*im2) : cvMatToFlipImg(*im2);
+    FLIP::image<FLIP::color3> fImgA = im1->channels() == 1 ? cvGrayscaleMatToFlipImg(*im1)
+                                                           : cvMatToFlipImg(*im1);
+    FLIP::image<FLIP::color3> fImgB = im2->channels() == 1 ? cvGrayscaleMatToFlipImg(*im2)
+                                                           : cvMatToFlipImg(*im2);
     int width = im1->cols;
     int height = im1->rows;
 
@@ -121,19 +123,18 @@ void FlipOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> FlipOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("NVIDIA FLIP", "nvidiaFlip", category);
-        return builder.
-                withOperator(std::make_unique<FlipOperator>())->
-                withIcon("compare.png")->
-                withNodeColor({118, 185, 0})->
-                withInputPort<ColImageData>(INPUT_IMAGE_1)->
-                withInputPort<ColImageData>(INPUT_IMAGE_2)->
-                withInputValue(INPUT_X, 0.7, 0.1, 2, BoundMode::LOWER_ONLY)->
-                withInputInteger(INPUT_RES, 1920, 256, 4096, BoundMode::LOWER_ONLY)->
-                withInputValue(INPUT_DIST, 0.7, 0, 3, BoundMode::LOWER_ONLY)->
-                withOutputPort<ColImageData>(OUTPUT_RESULT)->
-                withOutputPort<GrayImageData>(OUTPUT_ERROR_MAP)->
-                withOutputPort<DecimalData>(OUTPUT_AVG_ERROR)->
-                build();
+        return builder.withOperator(std::make_unique<FlipOperator>())
+                ->withIcon("compare.png")
+                ->withNodeColor({118, 185, 0})
+                ->withInputPort<ColImageData>(INPUT_IMAGE_1)
+                ->withInputPort<ColImageData>(INPUT_IMAGE_2)
+                ->withInputValue(INPUT_X, 0.7, 0.1, 2, BoundMode::LOWER_ONLY)
+                ->withInputInteger(INPUT_RES, 1920, 256, 4096, BoundMode::LOWER_ONLY)
+                ->withInputValue(INPUT_DIST, 0.7, 0, 3, BoundMode::LOWER_ONLY)
+                ->withOutputPort<ColImageData>(OUTPUT_RESULT)
+                ->withOutputPort<GrayImageData>(OUTPUT_ERROR_MAP)
+                ->withOutputPort<DecimalData>(OUTPUT_AVG_ERROR)
+                ->build();
     };
 }
 

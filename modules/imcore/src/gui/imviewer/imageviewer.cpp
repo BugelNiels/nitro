@@ -1,25 +1,24 @@
 #include "imageviewer.hpp"
 #include <util.hpp>
 
+#include <QApplication>
 #include <QColorSpace>
+#include <QFileDialog>
+#include <QGraphicsPixmapItem>
+#include <QHBoxLayout>
 #include <QImage>
 #include <QImageReader>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QTimer>
 #include <QtAlgorithms>
 #include <cmath>
-#include <QMenu>
-#include <QHBoxLayout>
-#include <QGraphicsPixmapItem>
-#include <QFileDialog>
-#include <QTimer>
-#include <QApplication>
 
 namespace nitro::ImCore {
 
-ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
-        : QGraphicsView(parent) {
+ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent) : QGraphicsView(parent) {
 
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
@@ -41,7 +40,6 @@ ImageViewer::ImageViewer(QGraphicsScene *imScene, QWidget *parent)
     setScene(imScene);
     resetImScale();
     initActions();
-
 }
 
 ImageViewer::~ImageViewer() = default;
@@ -59,28 +57,32 @@ void ImageViewer::saveImage() {
 
     if (displayImg_.sizeInBytes() > 0) {
         QString filePath = QFileDialog::getSaveFileName(
-                this, "Save Image", lastFilePath_,
+                this,
+                "Save Image",
+                lastFilePath_,
                 tr("Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)"));
         if (filePath == "") {
             return;
         }
         lastFilePath_ = filePath;
         if (displayImg_.save(filePath)) {
-            QMessageBox::information(this, tr("Save Successful"),
+            QMessageBox::information(this,
+                                     tr("Save Successful"),
                                      QString("File saved to\n %1").arg(filePath));
         } else {
-            QMessageBox::warning(this, tr("Could not save"),
-                                 QString("Something went wrong while trying to save to\n %1").arg(filePath));
+            QMessageBox::warning(
+                    this,
+                    tr("Could not save"),
+                    QString("Something went wrong while trying to save to\n %1").arg(filePath));
         }
     }
-
 }
-
 
 void ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
 
     const QColor dotColor_ = palette().color(QPalette::Button);
-    const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled, QPalette::AlternateBase);
+    const QColor gridBackgroundColor_ = palette().color(QPalette::Disabled,
+                                                        QPalette::AlternateBase);
     const QColor bGroundCol_ = palette().color(QPalette::Base);
     const QColor imgOutlineCol_ = palette().color(QPalette::Disabled, QPalette::Button);
     const QColor imgGridCol_ = palette().color(QPalette::Base);
@@ -114,21 +116,20 @@ void ImageViewer::drawBackground(QPainter *painter, const QRectF &r) {
         QPen pFine(imgGridCol_, 1.0);
 
         painter->setPen(pFine);
-        for (qreal x = gridRect.x() + gridStepSize_; x < gridRect.x() + gridRect.width(); x += gridStepSize_) {
+        for (qreal x = gridRect.x() + gridStepSize_; x < gridRect.x() + gridRect.width();
+             x += gridStepSize_) {
             painter->drawLine(x, gridRect.y(), x, gridRect.y() + gridRect.height());
         }
-        for (qreal y = gridRect.y() + gridStepSize_; y < gridRect.y() + gridRect.height(); y += gridStepSize_) {
+        for (qreal y = gridRect.y() + gridStepSize_; y < gridRect.y() + gridRect.height();
+             y += gridStepSize_) {
             painter->drawLine(gridRect.x(), y, gridRect.x() + gridRect.width(), y);
         }
-
 
         painter->setPen(pBounds);
         QBrush brush(Qt::transparent);
         painter->setBrush(brush);
         painter->drawRect(gridRect);
     }
-
-
 }
 
 void ImageViewer::drawFooter(QPainter *painter) const {
@@ -163,20 +164,15 @@ void ImageViewer::drawFooter(QPainter *painter) const {
     QString yValue = QString::number(itemPos_.y());
     QString paddedYValue = yValue.rightJustified(5, ' ');
 
-
-    QString footerText = "  X:" + paddedXValue +
-                         "  Y:" + paddedYValue +
-                         "  |" +
+    QString footerText = "  X:" + paddedXValue + "  Y:" + paddedYValue + "  |" +
                          "  R:" + QString::number(color.redF(), 'f', 3) +
                          "  G:" + QString::number(color.greenF(), 'f', 3) +
-                         "  B:" + QString::number(color.blueF(), 'f', 3) +
-                         "  |" +
+                         "  B:" + QString::number(color.blueF(), 'f', 3) + "  |" +
                          "  H:" + QString::number(color.hueF(), 'f', 3) +
                          "  S:" + QString::number(color.saturationF(), 'f', 3) +
                          "  V:" + QString::number(color.valueF(), 'f', 3) +
-                         "  L:" + QString::number(color.lightnessF(), 'f', 3) +
-                         "  |" +
-                         "  " + color.name();
+                         "  L:" + QString::number(color.lightnessF(), 'f', 3) + "  |" + "  " +
+                         color.name();
     painter->drawText(footerRect, Qt::AlignLeft | Qt::AlignVCenter, footerText);
 }
 
@@ -241,7 +237,6 @@ void ImageViewer::setupScale(double scale) {
     Q_EMIT scaleChanged(scale);
 }
 
-
 void ImageViewer::wheelEvent(QWheelEvent *event) {
     QPoint delta = event->angleDelta();
 
@@ -298,9 +293,9 @@ void ImageViewer::setImage(const std::shared_ptr<cv::Mat> &img) {
         imgDisplayItem_->setPixmap(QPixmap::fromImage(displayImg_));
         if (imgDisplayItem_->boundingRect().width() != oldDisplayWidth ||
             imgDisplayItem_->boundingRect().height() != oldDisplayHeight) {
-//            QRectF rect = scene()->itemsBoundingRect();
-//            scene()->setSceneRect(rect);
-//            resetImScale();
+            //            QRectF rect = scene()->itemsBoundingRect();
+            //            scene()->setSceneRect(rect);
+            //            resetImScale();
         }
     }
     emit imageUpdated(*img);
@@ -332,10 +327,10 @@ void ImageViewer::centerScene() {
     if (scene()) {
         scene()->setSceneRect(QRectF());
         if (imgDisplayItem_) {
-            centerOn(imgDisplayItem_->boundingRect().width() / 2, imgDisplayItem_->boundingRect().height() / 2);
+            centerOn(imgDisplayItem_->boundingRect().width() / 2,
+                     imgDisplayItem_->boundingRect().height() / 2);
         } else {
             centerOn(0, 0);
-
         }
     }
 }
@@ -345,7 +340,8 @@ void ImageViewer::resetImScale() {
     if (imgDisplayItem_ == nullptr) {
         setupScale(1.0);
     } else {
-        auto maxSize = std::max(imgDisplayItem_->boundingRect().width(), imgDisplayItem_->boundingRect().height());
+        auto maxSize = std::max(imgDisplayItem_->boundingRect().width(),
+                                imgDisplayItem_->boundingRect().height());
         auto minCurSize = std::min(rect().width(), rect().height());
         double scale = minCurSize / maxSize;
         setupScale(0.8 * scale);
@@ -381,7 +377,6 @@ void ImageViewer::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-
 void ImageViewer::mouseMoveEvent(QMouseEvent *event) {
     QGraphicsView::mouseMoveEvent(event);
     if (imgDisplayItem_ != nullptr && crossHairMode_) {
@@ -391,7 +386,6 @@ void ImageViewer::mouseMoveEvent(QMouseEvent *event) {
         }
         itemPos_ = imgDisplayItem_->mapFromScene(scenePos).toPoint();
         scene()->update();
-
     }
 }
 

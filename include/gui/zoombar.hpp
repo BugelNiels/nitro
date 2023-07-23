@@ -42,5 +42,3 @@ private:
 };
 
 } // namespace nitro
-
-

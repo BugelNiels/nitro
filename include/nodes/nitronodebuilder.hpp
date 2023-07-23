@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QString>
-#include <set>
+#include "nitronode.hpp"
+#include "nodeoperator.hpp"
 #include <QColor>
 #include <QLabel>
-#include "nodeoperator.hpp"
-#include "nitronode.hpp"
+#include <QString>
+#include <set>
 #include <valueslider.hpp>
 
 class QVBoxLayout;
@@ -37,7 +37,8 @@ public:
     }
 
     template<class T>
-    NitroNodeBuilder *withInputPort(const QString &name, std::initializer_list<QString> allowedConversions) {
+    NitroNodeBuilder *withInputPort(const QString &name,
+                                    std::initializer_list<QString> allowedConversions) {
         QtNodes::NodeDataType imDataType = T().type();
         for (auto &type: allowedConversions) {
             imDataType.allowedFromConversions.insert(type);
@@ -49,11 +50,17 @@ public:
 
     // TODO: refactor this with fewer parameters
 
-    NitroNodeBuilder *withInputInteger(const QString &name, int defaultVal, int min, int max,
+    NitroNodeBuilder *withInputInteger(const QString &name,
+                                       int defaultVal,
+                                       int min,
+                                       int max,
                                        BoundMode boundMode = BoundMode::UPPER_LOWER,
                                        std::initializer_list<QString> allowedConversions = {});
 
-    NitroNodeBuilder *withInputValue(const QString &name, double defaultVal, double min, double max,
+    NitroNodeBuilder *withInputValue(const QString &name,
+                                     double defaultVal,
+                                     double min,
+                                     double max,
                                      BoundMode boundMode = BoundMode::UPPER_LOWER,
                                      std::initializer_list<QString> allowedConversions = {});
 
@@ -76,10 +83,16 @@ public:
 
     NitroNodeBuilder *withOutputValue(const QString &name, double defaultVal);
 
-    NitroNodeBuilder *withSourcedOutputInteger(const QString &name, int defaultVal, int min, int max,
+    NitroNodeBuilder *withSourcedOutputInteger(const QString &name,
+                                               int defaultVal,
+                                               int min,
+                                               int max,
                                                BoundMode boundMode = BoundMode::UPPER_LOWER);
 
-    NitroNodeBuilder *withSourcedOutputValue(const QString &name, double defaultVal, double min, double max,
+    NitroNodeBuilder *withSourcedOutputValue(const QString &name,
+                                             double defaultVal,
+                                             double min,
+                                             double max,
                                              BoundMode boundMode = BoundMode::UPPER_LOWER);
 
     // Option Widgets
@@ -111,7 +124,6 @@ private:
     QVBoxLayout *outLayout_;
     QVBoxLayout *optionLayout_;
 
-
     void addInPortWidget(QWidget *widget);
 
     void addInPortWidget(QLabel *label);
@@ -122,13 +134,13 @@ private:
 
     void addOptionWidget(QWidget *widget);
 
-
-    void initInputValue(const QString &name, ValueSliders::IntSlider *slider,
+    void initInputValue(const QString &name,
+                        ValueSliders::IntSlider *slider,
                         std::initializer_list<QString> list);
 
-    void initInputVal(const QString &name, ValueSliders::DoubleSlider *slider,
+    void initInputVal(const QString &name,
+                      ValueSliders::DoubleSlider *slider,
                       std::initializer_list<QString> list);
-
 };
 
 } // namespace nitro

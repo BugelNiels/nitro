@@ -1,19 +1,19 @@
 #include <nodes/nitronode.hpp>
 
-#include <utility>
-#include <QPushButton>
-#include <QComboBox>
+#include <QApplication>
 #include <QCheckBox>
-#include <QLabel>
-#include <QImageReader>
+#include <QComboBox>
 #include <QFileDialog>
+#include <QImageReader>
+#include <QLabel>
+#include <QPushButton>
 #include <QtNodes/InvalidData.hpp>
-#include <nodes/datatypes/integerdata.hpp>
-#include <nodes/datatypes/decimaldata.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <doubleslider.hpp>
 #include <intslider.hpp>
-#include <QApplication>
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <utility>
 
 using DoubleSlider = ValueSliders::DoubleSlider;
 using IntSlider = ValueSliders::IntSlider;
@@ -59,7 +59,8 @@ unsigned int NitroNode::nPorts(QtNodes::PortType portType) const {
     return 0;
 }
 
-QtNodes::NodeDataType NitroNode::dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const {
+QtNodes::NodeDataType NitroNode::dataType(QtNodes::PortType portType,
+                                          QtNodes::PortIndex portIndex) const {
     if (portType == QtNodes::PortType::In) {
         return nodePorts_.inDataType(int(portIndex));
     }
@@ -80,7 +81,6 @@ QString NitroNode::getInPortKey(unsigned int portIndex) const {
 QString NitroNode::getOutPortKey(unsigned int portIndex) const {
     return QString("Out %1").arg(portIndex);
 }
-
 
 void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::PortIndex portIndex) {
     if (data == nullptr && sliderInputDeleted_) {
@@ -126,7 +126,6 @@ void NitroNode::setInData(std::shared_ptr<QtNodes::NodeData> data, QtNodes::Port
     }
 }
 
-
 QWidget *NitroNode::embeddedWidget() {
     return widget_;
 }
@@ -165,7 +164,10 @@ void NitroNode::connectInputWidget(DoubleSlider *slider, QLabel *valLabel, int p
     });
 }
 
-void NitroNode::connectLoadButton(const QString &name, QPushButton *button, int port, const QString &filter) {
+void NitroNode::connectLoadButton(const QString &name,
+                                  QPushButton *button,
+                                  int port,
+                                  const QString &filter) {
     button->setText(DEFAULT_BUTTON_TEXT);
     QString key = getOutPortKey(port);
     widgets_[key] = button;
@@ -178,7 +180,8 @@ void NitroNode::connectLoadButton(const QString &name, QPushButton *button, int 
             filePath = DEFAULT_BUTTON_TEXT;
         }
         QFontMetrics fontMetrics(button->font());
-        QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
+        QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(),
+                                                    Qt::ElideRight,
                                                     button->width() - 30);
         button->setText(elidedText);
         for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
@@ -187,8 +190,10 @@ void NitroNode::connectLoadButton(const QString &name, QPushButton *button, int 
         }
     };
     connect(button, &QPushButton::pressed, this, [this, key, button, name, filter]() {
-        QString filePath = QFileDialog::getOpenFileName(
-                nullptr, "NITRO File View", "../data/", filter);
+        QString filePath = QFileDialog::getOpenFileName(nullptr,
+                                                        "NITRO File View",
+                                                        "../data/",
+                                                        filter);
         nodePorts_.setGlobalProperty(name, filePath);
         algo_->execute(nodePorts_);
 
@@ -198,7 +203,8 @@ void NitroNode::connectLoadButton(const QString &name, QPushButton *button, int 
         }
 
         QFontMetrics fontMetrics(button->font());
-        QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(), Qt::ElideRight,
+        QString elidedText = fontMetrics.elidedText(QFileInfo(filePath).fileName(),
+                                                    Qt::ElideRight,
                                                     button->width() - 30);
         button->setText(elidedText);
         for (int i = 0; i < nodePorts_.numOutPorts(); i++) {
@@ -238,13 +244,11 @@ void NitroNode::connectSourceValue(DoubleSlider *slider, int port) {
     });
 }
 
-
 void NitroNode::load(const QJsonObject &loadJ) {
     propJson_ = loadJ["properties"].toObject();
     for (auto const &key: propJson_.keys()) {
         widgetsJson_[key](propJson_[key]);
     }
-
 }
 
 QJsonObject NitroNode::save() const {
@@ -297,8 +301,7 @@ void NitroNode::connectLabel(const QString &name, QLabel *label) {
 void NitroNode::inputConnectionCreated(const QtNodes::ConnectionId &connectionId) {
     QtNodes::PortIndex idx = connectionId.inPortIndex;
     QString key = getInPortKey(idx);
-    if (widgets_[key] &&
-        nodePorts_.inDataType(idx).id == DecimalData().type().id ||
+    if (widgets_[key] && nodePorts_.inDataType(idx).id == DecimalData().type().id ||
         nodePorts_.inDataType(idx).id == IntegerData().type().id) {
         widgets_[key]->setHidden(true);
         widgets_[key + LABEL_SUFFIX]->setHidden(false);
@@ -309,8 +312,7 @@ void NitroNode::inputConnectionDeleted(const QtNodes::ConnectionId &connectionId
     QtNodes::PortIndex idx = connectionId.inPortIndex;
 
     QString key = getInPortKey(idx);
-    if (widgets_[key] &&
-        nodePorts_.inDataType(idx).id == DecimalData().type().id ||
+    if (widgets_[key] && nodePorts_.inDataType(idx).id == DecimalData().type().id ||
         nodePorts_.inDataType(idx).id == IntegerData().type().id) {
         widgets_[key]->setHidden(false);
         widgets_[key + LABEL_SUFFIX]->setHidden(true);
@@ -318,4 +320,4 @@ void NitroNode::inputConnectionDeleted(const QtNodes::ConnectionId &connectionId
     }
 }
 
-} // nitro
+} // namespace nitro

@@ -1,7 +1,7 @@
 #include "combine.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -29,21 +29,19 @@ void CombineOperator::execute(NodePorts &nodePorts) {
     cv::Mat result;
     cv::merge(channels, result);
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
-
 }
 
 std::function<std::unique_ptr<NitroNode>()> CombineOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
-        return builder.
-                withOperator(std::make_unique<CombineOperator>())->
-                withIcon("layers.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<GrayImageData>("Channel 1")->
-                withInputPort<GrayImageData>("Channel 2")->
-                withInputPort<GrayImageData>("Channel 3")->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<CombineOperator>())
+                ->withIcon("layers.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<GrayImageData>("Channel 1")
+                ->withInputPort<GrayImageData>("Channel 2")
+                ->withInputPort<GrayImageData>("Channel 3")
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

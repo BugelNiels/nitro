@@ -1,7 +1,7 @@
 #include "imtranslate.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -46,7 +46,6 @@ void TranslateOperator::execute(NodePorts &nodePorts) {
     int offsetY = int(std::round(offsetRatioY * im1->rows));
     int option = nodePorts.getOption(OPTION_PAD);
 
-
     cv::Mat result;
     if (option) {
         result = translateImagePad(*im1, offsetX, offsetY);
@@ -59,16 +58,15 @@ void TranslateOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> TranslateOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Translate", "translate", category);
-        return builder.
-                withOperator(std::make_unique<TranslateOperator>())->
-                withIcon("resize.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withCheckBox(OPTION_PAD, false)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputValue(INPUT_X, 0, -1, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_Y, 0, -1, 1, BoundMode::UNCHECKED)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<TranslateOperator>())
+                ->withIcon("resize.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withCheckBox(OPTION_PAD, false)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputValue(INPUT_X, 0, -1, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_Y, 0, -1, 1, BoundMode::UNCHECKED)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

@@ -1,10 +1,10 @@
 #include "immix.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include <nodes/datatypes/decimaldata.hpp>
 #include "include/grayimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
 #include <nodes/datatypes/integerdata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -81,7 +81,6 @@ void MixOperator::execute(NodePorts &nodePorts) {
         default:
             cv::blendLinear(in1_, in2_, fac_, 1 - fac_, result);
             break;
-
     }
 
     if (nodePorts.optionEnabled(OPTION_CLAMP)) {
@@ -104,18 +103,21 @@ void MixOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> MixOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Mix RGB", "mixRgb", category);
-        return builder.
-                withOperator(std::make_unique<MixOperator>())->
-                withIcon("mix.png")->
-                withNodeColor(NITRO_COLOR_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Mix"})->
-                withInputValue(INPUT_FAC, 1, 0, 1, BoundMode::UPPER_LOWER,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputPort<ColImageData>(INPUT_VALUE_1, {IntegerData::id(), DecimalData::id()})->
-                withInputPort<ColImageData>(INPUT_VALUE_2, {IntegerData::id(), DecimalData::id()})->
-                withOutputValue(OUTPUT_VALUE)->
-                withCheckBox(OPTION_CLAMP, false)->
-                build();
+        return builder.withOperator(std::make_unique<MixOperator>())
+                ->withIcon("mix.png")
+                ->withNodeColor(NITRO_COLOR_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Mix"})
+                ->withInputValue(INPUT_FAC,
+                                 1,
+                                 0,
+                                 1,
+                                 BoundMode::UPPER_LOWER,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputPort<ColImageData>(INPUT_VALUE_1, {IntegerData::id(), DecimalData::id()})
+                ->withInputPort<ColImageData>(INPUT_VALUE_2, {IntegerData::id(), DecimalData::id()})
+                ->withOutputValue(OUTPUT_VALUE)
+                ->withCheckBox(OPTION_CLAMP, false)
+                ->build();
     };
 }
 

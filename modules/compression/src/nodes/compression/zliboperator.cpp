@@ -1,10 +1,10 @@
 #include "zliboperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <nodes/datatypes/decimaldata.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
-#include <zlib.h>
 #include <opencv2/imgcodecs.hpp>
+#include <zlib.h>
 
 namespace nitro::Compression {
 
@@ -20,7 +20,6 @@ static inline const QString OUTPUT_IMAGE = "Compressed Image";
 static inline const QString OUTPUT_COMP_SIZE = "Compressed";
 static inline const QString OUTPUT_ORIG_SIZE = "Original";
 static inline const QString OUTPUT_RATIO = "Ratio";
-
 
 static void toIndexed(const cv::Mat &src, cv::Mat &dest, std::vector<float> &colTable) {
 
@@ -108,7 +107,6 @@ static cv::Mat unpackData(const std::vector<uchar> &packedData, int numBits, int
             uchar value = (packedData[packedIndex] >> bitPosition) & leastBitMask;
             ptr[col] = value;
 
-
             bitPosition += numBits;
             if (bitPosition >= 8) {
                 bitPosition -= 8;
@@ -121,12 +119,15 @@ static cv::Mat unpackData(const std::vector<uchar> &packedData, int numBits, int
     return data;
 }
 
-static std::vector<uchar> decompressData(const std::vector<uchar> &compressedData, uLong sourceSize) {
+static std::vector<uchar> decompressData(const std::vector<uchar> &compressedData,
+                                         uLong sourceSize) {
     std::vector<uchar> decompressedData(sourceSize);
 
-
     uLong destSize = static_cast<uLong>(decompressedData.size());
-    int result = uncompress(&decompressedData[0], &destSize, &compressedData[0], compressedData.size());
+    int result = uncompress(&decompressedData[0],
+                            &destSize,
+                            &compressedData[0],
+                            compressedData.size());
     if (result != Z_OK) {
         // Decompression failed
         decompressedData.clear();
@@ -134,10 +135,14 @@ static std::vector<uchar> decompressData(const std::vector<uchar> &compressedDat
     return decompressedData;
 }
 
-ZLibOperator::ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
+ZLibOperator::ZLibOperator(QLabel *valueLabel,
+                           QLabel *originalSizeLabel,
+                           QLabel *ratioLabel,
                            QLabel *timeLabel)
-        : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel),
-          timeLabel_(timeLabel) {}
+    : valueLabel_(valueLabel),
+      originalSizeLabel_(originalSizeLabel),
+      ratioLabel_(ratioLabel),
+      timeLabel_(timeLabel) {}
 
 void ZLibOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -145,7 +150,6 @@ void ZLibOperator::execute(NodePorts &nodePorts) {
     }
     auto img = *nodePorts.inGetAs<GrayImageData>(INPUT_IMAGE);
     int bits = nodePorts.inputInteger(INPUT_BITS);
-
 
     cv::Mat data;
     std::vector<float> colTable;
@@ -155,7 +159,6 @@ void ZLibOperator::execute(NodePorts &nodePorts) {
 
     auto packedData = packData(data, bits);
     auto zlib_buffer = compressData(packedData);
-
 
     double end = cv::getTickCount();
     double elapsedTime = (end - start) / cv::getTickFrequency() * 1000.0;
@@ -187,7 +190,8 @@ void ZLibOperator::execute(NodePorts &nodePorts) {
 
     QString sizeString = QString("Input: %1 KB").arg(originalKb);
     QString compressSizeString = QString("Compressed: %1 KB").arg(compressKb);
-    QString ratioString = QString("Ratio: %1").arg(QString::number(originalKb / compressKb, 'f', 3));
+    QString ratioString = QString("Ratio: %1")
+                                  .arg(QString::number(originalKb / compressKb, 'f', 3));
 
     originalSizeLabel_->setText(sizeString);
     valueLabel_->setText(compressSizeString);
@@ -206,21 +210,24 @@ std::function<std::unique_ptr<NitroNode>()> ZLibOperator::creator(const QString 
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
         auto *timeLabel = new QLabel("-");
-        return builder.
-                withOperator(std::make_unique<ZLibOperator>(valueLabel, originalSizeLabel, crLabel, timeLabel))->
-                withIcon("zip.png")->
-                withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
-                withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
-                withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
-                withDisplayWidget(DISPLAY_TIME, timeLabel)->
-                withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_BITS, 8, 1, 16, BoundMode::UPPER_LOWER)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                withOutputValue(OUTPUT_ORIG_SIZE)->
-                withOutputValue(OUTPUT_COMP_SIZE)->
-                withOutputValue(OUTPUT_RATIO)->
-                build();
+        return builder
+                .withOperator(std::make_unique<ZLibOperator>(valueLabel,
+                                                             originalSizeLabel,
+                                                             crLabel,
+                                                             timeLabel))
+                ->withIcon("zip.png")
+                ->withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)
+                ->withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)
+                ->withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)
+                ->withDisplayWidget(DISPLAY_TIME, timeLabel)
+                ->withNodeColor(NITRO_OUTPUT_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_BITS, 8, 1, 16, BoundMode::UPPER_LOWER)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->withOutputValue(OUTPUT_ORIG_SIZE)
+                ->withOutputValue(OUTPUT_COMP_SIZE)
+                ->withOutputValue(OUTPUT_RATIO)
+                ->build();
     };
 }
 

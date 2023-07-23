@@ -1,6 +1,6 @@
 #include "uniformconvert.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -45,18 +45,18 @@ void UniformConvertOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<NitroNode>()> UniformConvertOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> UniformConvertOperator::creator(
+        const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Convert Luminance", "perceptUniform", category);
-        return builder.
-                withOperator(std::make_unique<UniformConvertOperator>())->
-                withIcon("gradient.png")->
-                withNodeColor(NITRO_COLOR_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withDropDown(OPTION_INVERSE, {"Gray -> L", "L -> Gray"})->
-                withCheckBox(OPTION_ROUND, false)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<UniformConvertOperator>())
+                ->withIcon("gradient.png")
+                ->withNodeColor(NITRO_COLOR_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withDropDown(OPTION_INVERSE, {"Gray -> L", "L -> Gray"})
+                ->withCheckBox(OPTION_ROUND, false)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

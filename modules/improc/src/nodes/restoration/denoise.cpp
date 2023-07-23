@@ -1,6 +1,6 @@
 #include "denoise.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
@@ -29,13 +29,12 @@ void DenoiseOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> DenoiseOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Denoise", "denoise", category);
-        return builder.
-                withOperator(std::make_unique<DenoiseOperator>())->
-                withIcon("denoise.png")->
-                withNodeColor(NITRO_RESTORATION_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<DenoiseOperator>())
+                ->withIcon("denoise.png")
+                ->withNodeColor(NITRO_RESTORATION_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

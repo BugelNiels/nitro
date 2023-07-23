@@ -1,9 +1,9 @@
 #include <util.hpp>
 
+#include <QDebug>
+#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgproc.hpp>
-#include <iostream>
-#include <QDebug>
 
 namespace nitro {
 
@@ -34,35 +34,34 @@ QColor makeReadable(const QColor &color, bool lightMode) {
     return QColor::fromRgbF(r, g, b, color.alphaF());
 }
 
-
 int getMaxValue(const cv::Mat &mat) {
     int depth = mat.depth();
 
     int maxValue;
 
     switch (depth) {
-        case CV_8U:  // 8-bit unsigned integer (0-255)
+        case CV_8U: // 8-bit unsigned integer (0-255)
             maxValue = 255;
             break;
 
-        case CV_8S:  // 8-bit signed integer (-128 to 127)
+        case CV_8S: // 8-bit signed integer (-128 to 127)
             maxValue = 127;
             break;
 
-        case CV_16U:  // 16-bit unsigned integer (0-65535)
+        case CV_16U: // 16-bit unsigned integer (0-65535)
             maxValue = 65535;
             break;
 
-        case CV_16S:  // 16-bit signed integer (-32768 to 32767)
+        case CV_16S: // 16-bit signed integer (-32768 to 32767)
             maxValue = 32767;
             break;
 
-        case CV_32S:  // 32-bit signed integer
+        case CV_32S: // 32-bit signed integer
             maxValue = INT_MAX;
             break;
 
-        case CV_32F:  // 32-bit floating-point
-        case CV_64F:  // 64-bit floating-point
+        case CV_32F: // 32-bit floating-point
+        case CV_64F: // 64-bit floating-point
             maxValue = 1;
             break;
 
@@ -72,7 +71,6 @@ int getMaxValue(const cv::Mat &mat) {
     }
     return maxValue;
 }
-
 
 // Source for the next two functions: https://github.com/asmaloney/asmOpenCV/blob/master/asmOpenCV.h
 QImage cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
@@ -100,7 +98,8 @@ QImage cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
         // 8-bit, 4 channel
         case CV_8UC4: {
             return QImage(img.data,
-                          img.cols, img.rows,
+                          img.cols,
+                          img.rows,
                           static_cast<int>(img.step),
                           QImage::Format_ARGB32);
         }
@@ -108,7 +107,8 @@ QImage cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
             // 8-bit, 3 channel
         case CV_8UC3: {
             return QImage(img.data,
-                          img.cols, img.rows,
+                          img.cols,
+                          img.rows,
                           static_cast<int>(img.step),
                           QImage::Format_RGB888);
         }
@@ -116,13 +116,15 @@ QImage cvMatToQImage(const cv::Mat &src, cv::Mat &img) {
             // 8-bit, 1 channel
         case CV_8UC1: {
             return QImage(img.data,
-                          img.cols, img.rows,
+                          img.cols,
+                          img.rows,
                           static_cast<int>(img.step),
                           QImage::Format_Grayscale8);
         }
 
         default:
-            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << img.type();
+            qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:"
+                       << img.type();
             break;
     }
 
@@ -152,7 +154,8 @@ bool isGrayscale(const cv::Mat &img) {
 
 cv::Mat resize(const cv::Mat &imIn,
                const cv::Size &targetSize,
-               const cv::InterpolationFlags mode, AspectRatioMode arMode) {
+               const cv::InterpolationFlags mode,
+               AspectRatioMode arMode) {
     cv::Mat result;
 
     switch (arMode) {
@@ -201,8 +204,7 @@ cv::Mat resize(const cv::Mat &imIn,
                 }
             }
             cv::resize(imIn, result, newSize, 0, 0, mode);
-        }
-            break;
+        } break;
 
         case AspectRatioMode::KEEP_GROW: {
             cv::Size newSize = targetSize;
@@ -220,11 +222,9 @@ cv::Mat resize(const cv::Mat &imIn,
                 } else {
                     newSize.height = int(std::round(newSize.width / arIn));
                 }
-
             }
             cv::resize(imIn, result, newSize, 0, 0, mode);
-        }
-            break;
+        } break;
     }
     return result;
 }

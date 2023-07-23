@@ -1,14 +1,15 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::Compression {
 
 class ZLibOperator : public NodeOperator {
 public:
-
-    explicit ZLibOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel,
+    explicit ZLibOperator(QLabel *valueLabel,
+                          QLabel *originalSizeLabel,
+                          QLabel *ratioLabel,
                           QLabel *timeLabel);
 
     static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);

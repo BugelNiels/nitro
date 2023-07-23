@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace nitro {
 
@@ -15,7 +15,6 @@ class NodeRegistry;
  */
 class NitroModule {
 public:
-
     /**
      * Default destructor.
      */
@@ -27,7 +26,7 @@ public:
      * @param registry Registry.
      * @param window The window to register the GUI widgets to. Can be used by viewer widgets.
      */
-    virtual void registerNodes(std::shared_ptr<NodeRegistry>& registry, MainWindow *window) {
+    virtual void registerNodes(std::shared_ptr<NodeRegistry> &registry, MainWindow *window) {
         // No nodes are registered by default
     }
 
@@ -35,8 +34,8 @@ public:
      * Used to register new data types. If a module introduces new data types, this function should be implemented.
      * Note that the conversion registration is done via the static methods in the corresponding data classes.
      */
-    virtual void registerDataTypes() {
-        // No data types are registered by default
+    virtual void registerDataTypes(){
+            // No data types are registered by default
     };
 };
 

@@ -1,6 +1,6 @@
 #include "bilateralfilter.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -31,19 +31,19 @@ void BilateralFilterOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<NitroNode>()> BilateralFilterOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> BilateralFilterOperator::creator(
+        const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
-        return builder.
-                withOperator(std::make_unique<BilateralFilterOperator>())->
-                withIcon("blur.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_D, 9, 1, 64)->
-                withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
-                withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<BilateralFilterOperator>())
+                ->withIcon("blur.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_D, 9, 1, 64)
+                ->withInputValue(INPUT_SIGMA_C, 75, 2, 255)
+                ->withInputValue(INPUT_SIGMA_S, 75, 2, 255)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

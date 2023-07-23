@@ -1,9 +1,10 @@
 #include "distancefield.hpp"
 
-#include <opencv2/imgproc.hpp>
 #include <QDebug>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::Thesis {
+
 static cv::Mat maskDistanceTransform(int foreground, const cv::Mat &image, bool inside) {
     int cols = image.cols;
     int rows = image.rows;
@@ -68,7 +69,7 @@ static cv::Mat maskDistanceTransform(int foreground, const cv::Mat &image, bool 
 static cv::Mat dtMeijsterRoerdinkHesselink(int foreground, const cv::Mat &image, bool inside) {
     int cols = image.cols;
     int rows = image.rows;
-    int infinity = cols * cols + rows * rows;  // or anything larger than this
+    int infinity = cols * cols + rows * rows; // or anything larger than this
 
     /* vertical phase */
     cv::Mat vdt = maskDistanceTransform(foreground, image, inside);
@@ -97,9 +98,11 @@ static cv::Mat dtMeijsterRoerdinkHesselink(int foreground, const cv::Mat &image,
         for (int x = 1; x < cols; x++) {
             int vsq = vdtRow[s[q]];
             int vxy = vdtRow[x];
-            while ((q >= 0) && ((t[q] - s[q]) * (t[q] - s[q]) + vsq > (t[q] - x) * (t[q] - x) + vxy)) {
+            while ((q >= 0) &&
+                   ((t[q] - s[q]) * (t[q] - s[q]) + vsq > (t[q] - x) * (t[q] - x) + vxy)) {
                 q--;
-                if (q >= 0) vsq = vdtRow[s[q]];
+                if (q >= 0)
+                    vsq = vdtRow[s[q]];
             }
             if (q < 0) {
                 q = 0;
@@ -135,4 +138,5 @@ cv::Mat signedDistField(const cv::Mat &img, int val) {
 
     return outside - inside;
 }
-} // nitro::Thesis
+
+} // namespace nitro::Thesis

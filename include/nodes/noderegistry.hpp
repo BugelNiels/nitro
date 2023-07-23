@@ -29,8 +29,8 @@ public:
      * @return A list of node categories. Each category is stored as a pair, where the first item is the name of the category.
      * The second item is a list containing the information for each node within the category.
      */
-    [[nodiscard]] std::vector<std::pair<QString, std::vector<QtNodes::NodeInfo>>> getCategories() const;
-
+    [[nodiscard]] std::vector<std::pair<QString, std::vector<QtNodes::NodeInfo>>> getCategories()
+            const;
 
     /**
      * Get the registry as required by the QtNodes library.
@@ -46,4 +46,3 @@ private:
 };
 
 } // namespace nitro
-

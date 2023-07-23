@@ -1,20 +1,20 @@
 #pragma once
 
-#include <utility>
-#include <vector>
+#include "nodes/datatypes/flexibledata.hpp"
+#include "portdata.hpp"
 #include <QString>
+#include <QtNodes/Definitions>
 #include <iostream>
 #include <map>
 #include <opencv2/core/mat.hpp>
-#include <QtNodes/Definitions>
-#include "nodes/datatypes/flexibledata.hpp"
-#include "portdata.hpp"
+#include <utility>
+#include <vector>
 
 namespace QtNodes {
 class NodeData;
 
 class NodeDataType;
-}
+} // namespace QtNodes
 
 namespace nitro {
 
@@ -265,7 +265,6 @@ private:
 
     std::unordered_map<QString, QString> properties_;
     std::unordered_map<QString, int> options_; // used for dropdowns and other options
-
 };
 
 } // namespace nitro

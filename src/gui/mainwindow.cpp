@@ -1,22 +1,21 @@
 #include <gui/mainwindow.hpp>
 
-#include <QMenuBar>
-#include <QStatusBar>
-#include <QKeyEvent>
+#include <QApplication>
 #include <QEvent>
 #include <QHBoxLayout>
+#include <QKeyEvent>
+#include <QMenuBar>
 #include <QSplitter>
-#include <QApplication>
+#include <QStatusBar>
 #include <config.hpp>
 
-#include "src/util/imgresourcereader.hpp"
 #include "src/gui/nodeeditor/nodedockwidget.hpp"
+#include "src/util/imgresourcereader.hpp"
 #include "stylepresets.hpp"
 
 namespace nitro {
 
-MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("NITRO");
     setWindowIcon(QIcon(":/icons/nitro.png"));
 
@@ -27,10 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     vertLayout_ = new QSplitter(Qt::Vertical, this);
     vertLayout_->setProperty("handleWidth", 16);
     vertLayout_->addWidget(dockLayout_);
-
 }
 
-void MainWindow::finalizeSetup(std::shared_ptr<NodeRegistry>& registry) {
+void MainWindow::finalizeSetup(std::shared_ptr<NodeRegistry> &registry) {
     vertLayout_->addWidget(new NodeDockWidget(registry, this));
     setCentralWidget(vertLayout_);
     installEventFilter(this);
@@ -45,7 +43,6 @@ void MainWindow::finalizeSetup(std::shared_ptr<NodeRegistry>& registry) {
 
 MainWindow::~MainWindow() = default;
 
-
 QStatusBar *MainWindow::initFooter() {
     auto *versionLabel = new QLabel(QString(" version %1 ").arg(NITRO_VERSION), this);
     fileNameLabel_ = new QLabel(" untitled.json ", this);
@@ -57,7 +54,6 @@ QStatusBar *MainWindow::initFooter() {
     statusBar->setStyleSheet("color: grey;");
     return statusBar;
 }
-
 
 QMenuBar *MainWindow::initMenuBar() {
     auto *menuBar = new QMenuBar();
@@ -76,8 +72,8 @@ QMenuBar *MainWindow::initMenuBar() {
     menuBar->addMenu(windowMenu);
 
     auto *lightModeToggle = new QAction(menuBar);
-    lightModeToggle->setIcon(
-            QIcon(ImResourceReader::getPixMap(":/icons/theme.png", {42, 42}, QColor(128, 128, 128))));
+    lightModeToggle->setIcon(QIcon(
+            ImResourceReader::getPixMap(":/icons/theme.png", {42, 42}, QColor(128, 128, 128))));
     lightModeToggle->setCheckable(true);
     lightModeToggle->setChecked(false); // default is dark mode
     connect(lightModeToggle, &QAction::toggled, this, [this](bool toggled) {
@@ -182,7 +178,6 @@ QMenu *MainWindow::getFileMenu() {
     fileMenu->addAction(quitAction);
     return fileMenu;
 }
-
 
 QLabel *MainWindow::buildDockIcon(const QString &path) {
     auto *nodeIcon = new QLabel();

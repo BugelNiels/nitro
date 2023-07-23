@@ -1,6 +1,6 @@
 #include "valueviewoperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 namespace nitro::ImCore {
 
@@ -26,13 +26,12 @@ std::function<std::unique_ptr<NitroNode>()> ValueViewOperator::creator(const QSt
     return [category]() {
         NitroNodeBuilder builder("Value Display", "valueViewer", category);
         auto *valueLabel = new QLabel("-");
-        return builder.
-                withOperator(std::make_unique<ValueViewOperator>(valueLabel))->
-                withIcon("number.png")->
-                withDisplayWidget(DISPLAY_LABEL, valueLabel)->
-                withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<DecimalData>(INPUT_VALUE)->
-                build();
+        return builder.withOperator(std::make_unique<ValueViewOperator>(valueLabel))
+                ->withIcon("number.png")
+                ->withDisplayWidget(DISPLAY_LABEL, valueLabel)
+                ->withNodeColor(NITRO_OUTPUT_COLOR)
+                ->withInputPort<DecimalData>(INPUT_VALUE)
+                ->build();
     };
 }
 

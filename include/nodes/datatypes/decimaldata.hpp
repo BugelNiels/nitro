@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtNodes/NodeData>
 #include "flexibledata.hpp"
+#include <QtNodes/NodeData>
 
 namespace nitro {
 
@@ -11,9 +11,7 @@ public:
 
     explicit DecimalData(double value);
 
-    static QString id() {
-        return id_;
-    }
+    static QString id() { return id_; }
 
     static void registerConversions();
 

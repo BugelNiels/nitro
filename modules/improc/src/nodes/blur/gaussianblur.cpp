@@ -1,6 +1,6 @@
 #include "gaussianblur.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -30,16 +30,15 @@ void GaussianBlurOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> GaussianBlurOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Gaussian Blur", "gaussianFilter", category);
-        return builder.
-                withOperator(std::make_unique<GaussianBlurOperator>())->
-                withIcon("blur.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_SIZE, 64, 1, 256, BoundMode::LOWER_ONLY)->
-                withInputValue(INPUT_SIGMA, 32, 0, 128, BoundMode::LOWER_ONLY)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<GaussianBlurOperator>())
+                ->withIcon("blur.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_SIZE, 64, 1, 256, BoundMode::LOWER_ONLY)
+                ->withInputValue(INPUT_SIGMA, 32, 0, 128, BoundMode::LOWER_ONLY)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

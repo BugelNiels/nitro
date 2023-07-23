@@ -1,8 +1,8 @@
 #include "colormap.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -47,7 +47,6 @@ void ColorMapOperator::execute(NodePorts &nodePorts) {
     cv::applyColorMap(imIn, result, colormapType);
     result.convertTo(result, CV_32F, 1 / 255.0);
 
-
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
@@ -55,39 +54,19 @@ std::function<std::unique_ptr<NitroNode>()> ColorMapOperator::creator(const QStr
     return [category]() {
         NitroNodeBuilder builder("Apply Color Map", "colorMap", category);
         auto *displayLabel = new QLabel();
-        return builder
-                .withOperator(std::make_unique<ColorMapOperator>(displayLabel))->
-                withIcon("colormap.png")->
-                withNodeColor(NITRO_COLOR_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withDropDown(OPTION_DROPDOWN,
-                             {
-                                     "Autumn",
-                                     "Bone",
-                                     "Jet",
-                                     "Winter",
-                                     "Rainbow",
-                                     "Ocean",
-                                     "Summer",
-                                     "Spring",
-                                     "Cool",
-                                     "Hsv",
-                                     "Pink",
-                                     "Hot",
-                                     "Parula",
-                                     "Magma",
-                                     "Inferno",
-                                     "Plasma",
-                                     "Viridis",
-                                     "Cividis",
-                                     "Twilight",
-                                     "Twilight Shifted",
-                                     "Turbo",
-                                     "Deep green"
-                             })->
-                withDisplayWidget(DISPLAY_LABEL, displayLabel)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ColorMapOperator>(displayLabel))
+                ->withIcon("colormap.png")
+                ->withNodeColor(NITRO_COLOR_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withDropDown(OPTION_DROPDOWN,
+                               {"Autumn", "Bone",      "Jet",     "Winter",   "Rainbow",
+                                "Ocean",  "Summer",    "Spring",  "Cool",     "Hsv",
+                                "Pink",   "Hot",       "Parula",  "Magma",    "Inferno",
+                                "Plasma", "Viridis",   "Cividis", "Twilight", "Twilight Shifted",
+                                "Turbo",  "Deep green"})
+                ->withDisplayWidget(DISPLAY_LABEL, displayLabel)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

@@ -1,23 +1,24 @@
 #pragma once
 
+#include <QGraphicsView>
 #include <QLabel>
+#include <QMenu>
 #include <QOpenGLDebugLogger>
 #include <QScrollArea>
 #include <QVector3D>
-#include <QMenu>
-#include <QGraphicsView>
 #include <opencv2/core/mat.hpp>
 
 namespace nitro::ImCore {
 
 class ImageViewer : public QGraphicsView {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     struct ScaleRange {
         double minimum = 0;
         double maximum = 0;
     };
+
 public:
     explicit ImageViewer(QGraphicsScene *imScene, QWidget *parent = nullptr);
 
@@ -51,8 +52,8 @@ public:
 
     const double minScaleFactor = 0.2;
     const double maxScaleFactor = 20;
-protected:
 
+protected:
     void saveImage();
 
 public Q_SLOTS:
@@ -70,7 +71,6 @@ Q_SIGNALS:
     void mousePosUpdated(const QPoint &pos, QColor color);
 
 private:
-
     const int dotSize_ = 3;
     const int gridStep_ = 64;
 
@@ -94,7 +94,6 @@ private:
     QMenu *createContextMenu();
 
     void centerScene();
-
 
     void initActions();
 

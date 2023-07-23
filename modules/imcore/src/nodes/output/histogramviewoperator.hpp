@@ -1,21 +1,20 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include "gui/imviewer/imageviewer.hpp"
-#include "src/gui/histogram/histogramviewer.hpp"
 #include "gui/mainwindow.hpp"
+#include "src/gui/histogram/histogramviewer.hpp"
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::ImCore {
 
 class HistogramViewOperator : public NodeOperator {
 public:
-
-    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, MainWindow *window);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category,
+                                                               MainWindow *window);
 
     explicit HistogramViewOperator(MainWindow *window);
     ~HistogramViewOperator() override;
-
 
     void execute(NodePorts &nodePorts) override;
 

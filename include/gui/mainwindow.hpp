@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QMainWindow>
 #include <QLabel>
+#include <QMainWindow>
 #include <QSplitter>
 
 namespace nitro {
@@ -14,7 +14,7 @@ class NodeDockWidget;
  * The main window of the application. Contains the node editor, GUI dock widgets, file menu and footer.
  */
 class MainWindow : public QMainWindow {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     /**
@@ -35,7 +35,6 @@ public:
      */
     QLabel *buildDockIcon(const QString &path);
 
-
     /**
      * Registers a GUI dock widget. A toggle for the dock widget is added to the window menu.
      * @param widget The new dock widget.
@@ -53,7 +52,7 @@ public:
      * @param registry Node registry containing the supported nodes and data types.
      * Note that once a MainWindow is finalized, adding new nodes to the node registry does not change anything in the MainWindow.
      */
-    void finalizeSetup(std::shared_ptr<NodeRegistry>& registry);
+    void finalizeSetup(std::shared_ptr<NodeRegistry> &registry);
 
     /**
      * Checks whether the window is finalized or not.

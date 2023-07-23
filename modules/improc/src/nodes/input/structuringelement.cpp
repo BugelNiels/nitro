@@ -1,7 +1,7 @@
 #include "structuringelement.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -45,15 +45,14 @@ void StructElemOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> StructElemOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Structuring Element", "structuringElement", category);
-        return builder.
-                withOperator(std::make_unique<StructElemOperator>())->
-                withIcon("kernel.png")->
-                withNodeColor(NITRO_INPUT_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})->
-                withInputInteger(INPUT_X, 3, 1, 15)->
-                withInputInteger(INPUT_Y, 3, 1, 15)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<StructElemOperator>())
+                ->withIcon("kernel.png")
+                ->withNodeColor(NITRO_INPUT_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Rectangle", "Ellipse", "Cross"})
+                ->withInputInteger(INPUT_X, 3, 1, 15)
+                ->withInputInteger(INPUT_Y, 3, 1, 15)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

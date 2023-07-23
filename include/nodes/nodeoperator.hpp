@@ -1,8 +1,8 @@
 #pragma once
 
-#include <map>
-#include <QString>
 #include "nodeports.hpp"
+#include <QString>
+#include <map>
 
 #include "categorycolors.h"
 

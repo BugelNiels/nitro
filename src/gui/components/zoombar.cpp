@@ -3,10 +3,10 @@
 namespace nitro {
 
 ZoomBar::ZoomBar(int minZoom, int maxZoom, QWidget *parent)
-        : QProgressBar(parent),
-          curZoom_(100),
-          minZoom_(minZoom),
-          maxZoom_(maxZoom) {
+    : QProgressBar(parent),
+      curZoom_(100),
+      minZoom_(minZoom),
+      maxZoom_(maxZoom) {
     setValue(minimum());
 }
 

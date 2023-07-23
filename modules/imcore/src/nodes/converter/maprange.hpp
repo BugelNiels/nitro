@@ -1,18 +1,17 @@
 #pragma once
 
-#include <opencv2/imgproc.hpp>
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::ImCore {
 
-    class MapRangeOperator : public NodeOperator {
+class MapRangeOperator : public NodeOperator {
 
-    public:
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+public:
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        void execute(NodePorts &nodePorts) override;
-
-    };
+    void execute(NodePorts &nodePorts) override;
+};
 
 } // namespace nitro::ImCore

@@ -1,15 +1,13 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::Compression {
 
 class JpegOperator : public NodeOperator {
 public:
-
-    explicit JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                          QLabel *ratioLabel);
+    explicit JpegOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel);
 
     static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 

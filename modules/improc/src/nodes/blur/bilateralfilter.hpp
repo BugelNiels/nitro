@@ -1,7 +1,7 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::ImProc {
 
@@ -24,7 +24,6 @@ public:
      * @param options Options for passing additional parameters to the algorithm. Currently unused.
      */
     void execute(NodePorts &nodePorts) override;
-
 };
 
 } // namespace nitro::ImProc

@@ -1,6 +1,6 @@
 #include "invert.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -35,13 +35,12 @@ void InvertOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> InvertOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Invert", "invert", category);
-        return builder.
-                withOperator(std::make_unique<InvertOperator>())->
-                withIcon("invert.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<InvertOperator>())
+                ->withIcon("invert.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

@@ -9,14 +9,11 @@ class ColImageData : public FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>
 public:
     ColImageData();
 
-
     explicit ColImageData(std::shared_ptr<cv::Mat> img);
 
     explicit ColImageData(const cv::Mat &img);
 
-    static QString id() {
-        return id_;
-    }
+    static QString id() { return id_; }
 
     static void registerConversions();
 

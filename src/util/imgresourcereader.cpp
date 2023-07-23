@@ -6,10 +6,12 @@ namespace nitro {
 
 QMap<QString, QPixmap> ImResourceReader::loadedIcons_;
 
-
 QPixmap ImResourceReader::getPixMap(const QString &path, const QSize &size, const QColor &color) {
-    QString key = QString("%1?color=%2&size=%3x%4").arg(path).arg(color.name()).arg(size.width()).arg(
-            size.height());
+    QString key = QString("%1?color=%2&size=%3x%4")
+                          .arg(path)
+                          .arg(color.name())
+                          .arg(size.width())
+                          .arg(size.height());
     if (loadedIcons_.contains(key)) {
         return ImResourceReader::loadedIcons_[key];
     }
@@ -23,8 +25,8 @@ QPixmap ImResourceReader::getPixMap(const QString &path, const QSize &size, cons
         }
     }
 
-    auto newIcon = QPixmap::fromImage(myImage).scaled(size, Qt::AspectRatioMode::KeepAspectRatio,
-                                                      Qt::SmoothTransformation);
+    auto newIcon = QPixmap::fromImage(myImage);
+    newIcon = newIcon.scaled(size, Qt::AspectRatioMode::KeepAspectRatio, Qt::SmoothTransformation);
     loadedIcons_[key] = newIcon;
     return newIcon;
 }

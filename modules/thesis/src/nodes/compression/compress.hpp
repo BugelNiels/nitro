@@ -1,7 +1,7 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::Thesis {
 
@@ -16,4 +16,5 @@ public:
 private:
     QLabel *timeLabel_;
 };
+
 } // namespace nitro::Thesis

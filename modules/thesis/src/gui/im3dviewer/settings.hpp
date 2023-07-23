@@ -33,4 +33,4 @@ using Settings = struct Settings {
     bool minecraft = false;
 };
 
-}  // namespace nitro::Thesis
+} // namespace nitro::Thesis

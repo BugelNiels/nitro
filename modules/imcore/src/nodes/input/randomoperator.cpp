@@ -1,7 +1,7 @@
 #include "randomoperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 #include <random>
@@ -29,13 +29,12 @@ void RandomOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> RandomOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Random", "random", category);
-        return builder.
-                withOperator(std::make_unique<RandomOperator>())->
-                withIcon("number.png")->
-                withNodeColor(NITRO_INPUT_COLOR)->
-                withInputInteger(INPUT_SEED, 0, 0, 100, BoundMode::LOWER_ONLY)->
-                withOutputValue(OUTPUT_VAL)->
-                build();
+        return builder.withOperator(std::make_unique<RandomOperator>())
+                ->withIcon("number.png")
+                ->withNodeColor(NITRO_INPUT_COLOR)
+                ->withInputInteger(INPUT_SEED, 0, 0, 100, BoundMode::LOWER_ONLY)
+                ->withOutputValue(OUTPUT_VAL)
+                ->build();
     };
 }
 

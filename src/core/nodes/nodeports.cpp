@@ -1,10 +1,10 @@
 #include <nodes/nodeports.hpp>
 
+#include <QtNodes/Definitions>
 #include <QtNodes/InvalidData.hpp>
 #include <QtNodes/NodeData>
-#include <QtNodes/Definitions>
-#include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
 
 #include <utility>
 
@@ -15,7 +15,7 @@ NodePorts::NodePorts() = default;
 NodePorts::NodePorts(std::vector<PortData> inputList,
                      std::vector<PortData> outputList,
                      std::unordered_map<QString, int> options)
-        : options_(std::move(options)) {
+    : options_(std::move(options)) {
     for (auto &portData: inputList) {
         inputList_.push_back(portData.name_);
         origInTypes_[portData.name_] = portData.type_;
@@ -29,11 +29,10 @@ NodePorts::NodePorts(std::vector<PortData> inputList,
 
 NodePorts::~NodePorts() = default;
 
-
 void NodePorts::setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data) {
     if (outputMap_.count(name) == 0) {
-        std::cerr << "setOutputData: Node output does not contain port with name: " << name.toStdString()
-                  << std::endl;
+        std::cerr << "setOutputData: Node output does not contain port with name: "
+                  << name.toStdString() << std::endl;
         return;
     }
     outputMap_[name].type_ = data->type();
@@ -149,18 +148,20 @@ QString NodePorts::getGlobalProperty(const QString &key) {
 
 int NodePorts::getOption(const QString &optionName) {
     if (options_.count(optionName) == 0) {
-        throw std::invalid_argument(
-                QString("Attempting to retrieve option with name %1, but this option does not exist.\n").arg(
-                        optionName).toStdString());
+        throw std::invalid_argument(QString("Attempting to retrieve option with name %1, but this "
+                                            "option does not exist.\n")
+                                            .arg(optionName)
+                                            .toStdString());
     }
     return options_[optionName];
 }
 
 bool NodePorts::optionEnabled(const QString &optionName) {
     if (options_.count(optionName) == 0) {
-        throw std::invalid_argument(
-                QString("Attempting to retrieve option with name %1, but this option does not exist.\n").arg(
-                        optionName).toStdString());
+        throw std::invalid_argument(QString("Attempting to retrieve option with name %1, but this "
+                                            "option does not exist.\n")
+                                            .arg(optionName)
+                                            .toStdString());
     }
     return options_[optionName];
 }

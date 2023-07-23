@@ -1,9 +1,9 @@
 #include "immath.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include <nodes/datatypes/decimaldata.hpp>
 #include "include/grayimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -47,7 +47,6 @@ double regularBoolMath(double fac, double a, double b, int option) {
         default:
             result = a * b;
             break;
-
     }
     return (1 - fac) * a + fac * result;
 }
@@ -150,7 +149,6 @@ void MathOperator::execute(NodePorts &nodePorts) {
         default:
             cv::multiply(in1_, in2_, result);
             break;
-
     }
     cv::blendLinear(result, in1_, fac_, 1 - fac_, result);
 
@@ -174,20 +172,32 @@ void MathOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> MathOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Math", "math", category);
-        return builder.
-                withOperator(std::make_unique<MathOperator>())->
-                withIcon("math.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})->
-                withInputValue(INPUT_FAC, 1, 0, 1, BoundMode::UPPER_LOWER,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withOutputValue(OUTPUT_VALUE)->
-                withCheckBox(OPTION_CLAMP, false)->
-                build();
+        return builder.withOperator(std::make_unique<MathOperator>())
+                ->withIcon("math.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN,
+                               {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})
+                ->withInputValue(INPUT_FAC,
+                                 1,
+                                 0,
+                                 1,
+                                 BoundMode::UPPER_LOWER,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_1,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_2,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withOutputValue(OUTPUT_VALUE)
+                ->withCheckBox(OPTION_CLAMP, false)
+                ->build();
     };
 }
 

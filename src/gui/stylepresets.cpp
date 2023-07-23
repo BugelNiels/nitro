@@ -15,8 +15,8 @@ StylePreset getDarkModePalette() {
     palette.setColor(QPalette::WindowText, QColor(239, 239, 239));      // Text color
     palette.setColor(QPalette::Base, QColor(43, 43, 45));               // Base color
     palette.setColor(QPalette::AlternateBase, QColor(42, 42, 43));      // Alternate base color
-    palette.setColor(QPalette::ToolTipBase, QColor(34, 34, 36));     // ToolTip base color
-    palette.setColor(QPalette::ToolTipText, QColor(189, 189, 189));           // ToolTip text color
+    palette.setColor(QPalette::ToolTipBase, QColor(34, 34, 36));        // ToolTip base color
+    palette.setColor(QPalette::ToolTipText, QColor(189, 189, 189));     // ToolTip text color
     palette.setColor(QPalette::Text, QColor(239, 239, 239));            // Text color
     palette.setColor(QPalette::Button, QColor(35, 35, 40));             // Button color
     palette.setColor(QPalette::ButtonText, QColor(239, 239, 239));      // Button text color
@@ -38,18 +38,18 @@ StylePreset getDarkModePalette() {
 
 StylePreset getLightModePalette() {
     QPalette palette;
-    palette.setColor(QPalette::Window, QColor(222, 222, 222));           // Window background color
-    palette.setColor(QPalette::WindowText, QColor(70, 70, 70));          // Text color
-    palette.setColor(QPalette::Base, QColor(240, 240, 240));             // Base color
-    palette.setColor(QPalette::AlternateBase, QColor(250, 250, 250));    // Alternate base color
-    palette.setColor(QPalette::ToolTipBase, QColor(240, 240, 240));      // ToolTip base color
-    palette.setColor(QPalette::ToolTipText, QColor(70, 70, 70));         // ToolTip text color
-    palette.setColor(QPalette::Text, QColor(70, 70, 70));                // Text color
-    palette.setColor(QPalette::Button, QColor(220, 220, 220));           // Button color
-    palette.setColor(QPalette::ButtonText, QColor(70, 70, 70));          // Button text color
-    palette.setColor(QPalette::Highlight, QColor(95, 130, 197));         // Highlight color
-    palette.setColor(QPalette::HighlightedText, QColor(255, 255, 255));  // Highlight text color
-    palette.setColor(QPalette::PlaceholderText, QColor(170, 170, 170));  // Placeholder text color
+    palette.setColor(QPalette::Window, QColor(222, 222, 222));          // Window background color
+    palette.setColor(QPalette::WindowText, QColor(70, 70, 70));         // Text color
+    palette.setColor(QPalette::Base, QColor(240, 240, 240));            // Base color
+    palette.setColor(QPalette::AlternateBase, QColor(250, 250, 250));   // Alternate base color
+    palette.setColor(QPalette::ToolTipBase, QColor(240, 240, 240));     // ToolTip base color
+    palette.setColor(QPalette::ToolTipText, QColor(70, 70, 70));        // ToolTip text color
+    palette.setColor(QPalette::Text, QColor(70, 70, 70));               // Text color
+    palette.setColor(QPalette::Button, QColor(220, 220, 220));          // Button color
+    palette.setColor(QPalette::ButtonText, QColor(70, 70, 70));         // Button text color
+    palette.setColor(QPalette::Highlight, QColor(95, 130, 197));        // Highlight color
+    palette.setColor(QPalette::HighlightedText, QColor(255, 255, 255)); // Highlight text color
+    palette.setColor(QPalette::PlaceholderText, QColor(170, 170, 170)); // Placeholder text color
     palette.setColor(QPalette::Disabled, QPalette::Text, QColor(170, 170, 170));
     palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(170, 170, 170));
     palette.setColor(QPalette::Disabled, QPalette::Button, QColor(170, 170, 170));

@@ -1,13 +1,11 @@
 #pragma once
 
-#include <QPalette>
 #include <QColor>
+#include <QPalette>
 
 namespace nitro {
 
-using StylePreset = struct StylePreset {
-    QPalette palette;
-};
+using StylePreset = struct StylePreset { QPalette palette; };
 
 void applyStylePreset(const StylePreset &preset);
 

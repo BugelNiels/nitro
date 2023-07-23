@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QStatusBar>
 #include <QLabel>
+#include <QStatusBar>
 
 namespace nitro {
 class MainWindow;
@@ -10,12 +10,10 @@ class MainWindow;
 
 namespace nitro::ImCore {
 
-
 class HistogramView;
 
 class HistogramViewerDockWidget : public QDockWidget {
 public:
-
     explicit HistogramViewerDockWidget(HistogramView *histViewer, MainWindow *window);
 
     ~HistogramViewerDockWidget() override;

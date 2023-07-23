@@ -6,27 +6,23 @@
 namespace nitro {
 
 ColImageData::ColImageData()
-        : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::make_shared<cv::Mat>(),
-                                                               id_,
-                                                               name_,
-                                                               baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::make_shared<cv::Mat>(),
+                                                           id_,
+                                                           name_,
+                                                           baseColor_) {
     allowConversionFrom(GrayImageData::id());
 }
 
-
 ColImageData::ColImageData(std::shared_ptr<cv::Mat> img)
-        : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::move(img),
-                                                               id_,
-                                                               name_,
-                                                               baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::move(img), id_, name_, baseColor_) {
     allowConversionFrom(GrayImageData::id());
 }
 
 ColImageData::ColImageData(const cv::Mat &img)
-        : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::make_shared<cv::Mat>(img),
-                                                               id_,
-                                                               name_,
-                                                               baseColor_) {
+    : FlexibleData<std::shared_ptr<cv::Mat>, ColImageData>(std::make_shared<cv::Mat>(img),
+                                                           id_,
+                                                           name_,
+                                                           baseColor_) {
     allowConversionFrom(GrayImageData::id());
 }
 
@@ -34,8 +30,9 @@ QString ColImageData::getDescription() const {
     return "";
 }
 
-bool ColImageData::empty() const { return data() == nullptr || data()->empty(); }
-
+bool ColImageData::empty() const {
+    return data() == nullptr || data()->empty();
+}
 
 void ColImageData::registerConversions() {
 
@@ -49,16 +46,14 @@ void ColImageData::registerConversions() {
             [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
                 auto imData = std::static_pointer_cast<DecimalData>(nodeData);
                 double val = imData->data();
-                return std::make_shared<cv::Mat>(1, 1, CV_32F,
-                                                 cv::Scalar(val, val, val));
+                return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val, val, val));
             });
 
     ColImageData::registerConversionFrom<IntegerData>(
             [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
                 auto imData = std::static_pointer_cast<IntegerData>(nodeData);
                 double val = imData->data() / 255.0;
-                return std::make_shared<cv::Mat>(1, 1, CV_32F,
-                                                 cv::Scalar(val, val, val));
+                return std::make_shared<cv::Mat>(1, 1, CV_32F, cv::Scalar(val, val, val));
             });
 
     ColImageData::registerConversionFrom<GrayImageData>(
@@ -70,4 +65,4 @@ void ColImageData::registerConversions() {
             });
 }
 
-} // namespace nitro::ImCore
+} // namespace nitro

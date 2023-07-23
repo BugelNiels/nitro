@@ -1,7 +1,7 @@
 #include "kmeans.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -11,7 +11,6 @@ static inline const QString INPUT_IMAGE = "Image";
 static inline const QString INPUT_K = "K";
 static inline const QString INPUT_MAX_ITER = "Max Iter";
 static inline const QString OUTPUT_IMAGE = "Image";
-
 
 const int NUM_BINS = 256;
 
@@ -28,7 +27,11 @@ static inline int findClosestMean(const std::vector<float> &means, int k, int va
     return meanIdx;
 }
 
-static void histKMeans(const std::vector<int> &hist, int k, int iter, double epsilon, std::vector<float> &means,
+static void histKMeans(const std::vector<int> &hist,
+                       int k,
+                       int iter,
+                       double epsilon,
+                       std::vector<float> &means,
                        std::vector<int> &labels) {
     int size = hist.size();
 
@@ -54,7 +57,6 @@ static void histKMeans(const std::vector<int> &hist, int k, int iter, double eps
         std::fill(means.begin(), means.end(), 0);
         for (int j = 0; j < size; ++j) {
             means[labels[j]] += j * hist[j];
-
         }
         float diff = 0;
         for (int j = 0; j < k; j++) {
@@ -106,19 +108,25 @@ cv::Mat kMeansHist(const cv::Mat &image, int numColors, int maxIter) {
     return result;
 }
 
-static cv::Mat kMeansColors(const cv::Mat &image, int numColors, int maxIter, double epsilon, int maxAttempts) {
+static cv::Mat kMeansColors(const cv::Mat &image,
+                            int numColors,
+                            int maxIter,
+                            double epsilon,
+                            int maxAttempts) {
     cv::Mat labels;
     cv::Mat centers;
     cv::Mat samples = image.reshape(1, image.rows * image.cols);
     if (samples.rows < numColors) {
         return {};
     }
-    cv::kmeans(samples,
-               numColors,
-               labels,
-               cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, maxIter, epsilon),
-               maxAttempts,
-               cv::KMEANS_PP_CENTERS, centers);
+    cv::kmeans(
+            samples,
+            numColors,
+            labels,
+            cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, maxIter, epsilon),
+            maxAttempts,
+            cv::KMEANS_PP_CENTERS,
+            centers);
 
     cv::Mat quantImg(image.size(), image.type());
     for (int y = 0; y < image.rows; y++) {
@@ -160,15 +168,14 @@ void KMeansOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> KMeansOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("K-Means", "kMeans", category);
-        return builder.
-                withOperator(std::make_unique<KMeansOperator>())->
-                withIcon("quantize.png")->
-                withNodeColor(NITRO_COMPRESSION_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_MAX_ITER, 20, 1, 50, BoundMode::LOWER_ONLY)->
-                withInputInteger(INPUT_K, 8, 2, 255)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<KMeansOperator>())
+                ->withIcon("quantize.png")
+                ->withNodeColor(NITRO_COMPRESSION_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_MAX_ITER, 20, 1, 50, BoundMode::LOWER_ONLY)
+                ->withInputInteger(INPUT_K, 8, 2, 255)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

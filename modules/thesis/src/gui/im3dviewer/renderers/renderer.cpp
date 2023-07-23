@@ -1,7 +1,6 @@
 #include "renderer.hpp"
 #include <QOpenGLDebugLogger>
 
-
 namespace nitro::Thesis {
 
 /**
@@ -9,11 +8,9 @@ namespace nitro::Thesis {
  */
 Renderer::Renderer() : gl(nullptr) {}
 
-
 Renderer::Renderer(QOpenGLFunctions_4_1_Core *functions, Settings *settings) {
     init(functions, settings);
 }
-
 
 /**
  * @brief Renderer::~Renderer
@@ -42,8 +39,7 @@ void Renderer::init(QOpenGLFunctions_4_1_Core *f, Settings *s) {
  * @param name Name of the shader.
  * @return The constructed shader.
  */
-QOpenGLShaderProgram *Renderer::constructDefaultShader(
-        const QString &name) const {
+QOpenGLShaderProgram *Renderer::constructDefaultShader(const QString &name) const {
     QString pathVert = ":/shaders/" + name + ".vert";
     QString pathFrag = ":/shaders/" + name + ".frag";
     QString pathShading = ":/shaders/shading.glsl";

@@ -2,8 +2,8 @@
 
 #include <QDockWidget>
 #include <QTreeWidget>
-#include <QtNodes/NodeGraphicsView.hpp>
 #include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/NodeGraphicsView.hpp>
 
 #include "imgnodegraphicsview.hpp"
 
@@ -13,8 +13,7 @@ class MainWindow;
 
 class NodeDockWidget : public QDockWidget {
 public:
-
-    NodeDockWidget(std::shared_ptr<NodeRegistry>& nodes, MainWindow *window);
+    NodeDockWidget(std::shared_ptr<NodeRegistry> &nodes, MainWindow *window);
 
     ~NodeDockWidget() override;
 
@@ -50,7 +49,6 @@ private:
     QTreeWidget *initSideMenu();
 
     QWidget *initNodeTitleBar(nitro::MainWindow *window);
-
 };
 
 } // namespace nitro

@@ -1,8 +1,8 @@
 #include "maprange.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <grayimagedata.hpp>
 #include <colimagedata.hpp>
+#include <grayimagedata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -59,19 +59,22 @@ void MapRangeOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> MapRangeOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Map Range", "mapRange", category);
-        return builder.
-                withOperator(std::make_unique<MapRangeOperator>())->
-                withIcon("map_range.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputValue(INPUT_IMAGE, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_FROM_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_FROM_MAX, 1, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_TO_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_TO_MAX, 1, 0, 1, BoundMode::UNCHECKED)->
-                withOutputValue(OUTPUT_IMAGE)->
-                withCheckBox(OPTION_CLAMP, false)->
-                build();
+        return builder.withOperator(std::make_unique<MapRangeOperator>())
+                ->withIcon("map_range.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputValue(INPUT_IMAGE,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_FROM_MIN, 0, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_FROM_MAX, 1, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_TO_MIN, 0, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_TO_MAX, 1, 0, 1, BoundMode::UNCHECKED)
+                ->withOutputValue(OUTPUT_IMAGE)
+                ->withCheckBox(OPTION_CLAMP, false)
+                ->build();
     };
 }
 

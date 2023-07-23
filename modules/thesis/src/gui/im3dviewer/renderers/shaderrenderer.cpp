@@ -6,7 +6,6 @@
 #include <QScreen>
 #include <iostream>
 
-
 namespace nitro::Thesis {
 
 // 6 for rendering a quad
@@ -43,11 +42,10 @@ void ShaderRenderer::initBuffers() {
     shader->enableAttributeArray(0);
     shader->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
 
-    QVector<QVector3D> quad = {
-            {-1.0, -1.0, 0.0},
-            {1.0,  -1.0, 0.0},
-            {-1.0, 1.0,  0.0},
-            {1.0,  1.0,  0.0}};
+    QVector<QVector3D> quad = {{-1.0, -1.0, 0.0},
+                               {1.0, -1.0, 0.0},
+                               {-1.0, 1.0, 0.0},
+                               {1.0, 1.0, 0.0}};
     coordsBO->allocate(quad.data(), sizeof(QVector3D) * quad.size());
 
     QVector<unsigned int> meshIndices = {0, 1, 2, 1, 3, 2};

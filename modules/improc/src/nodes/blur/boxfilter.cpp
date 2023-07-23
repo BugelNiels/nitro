@@ -1,6 +1,6 @@
 #include "boxfilter.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -46,16 +46,15 @@ void BoxFilterOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> BoxFilterOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Box Filter", "boxFilter", category);
-        return builder.
-                withOperator(std::make_unique<BoxFilterOperator>())->
-                withIcon("blur.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Average", "Median"})->
-                withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_SIZE, 5, 1, 256)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<BoxFilterOperator>())
+                ->withIcon("blur.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Average", "Median"})
+                ->withDropDown(BORDER_DROPDOWN, {"Constant", "Replicate", "Reflect"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_SIZE, 5, 1, 256)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

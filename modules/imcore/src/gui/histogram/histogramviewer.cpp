@@ -1,11 +1,11 @@
 #include "histogramviewer.hpp"
 
-#include <QLineSeries>
-#include <QChart>
-#include <opencv2/imgproc.hpp>
 #include <QApplication>
-#include <QValueAxis>
 #include <QAreaSeries>
+#include <QChart>
+#include <QLineSeries>
+#include <QValueAxis>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::ImCore {
 
@@ -27,14 +27,23 @@ HistogramView::HistogramView(QWidget *parent) : QChartView(parent) {
     setRenderHint(QPainter::Antialiasing);
 }
 
-void HistogramView::addHistSeries(cv::Mat &singleChannelImg, const QColor& color) {
+void HistogramView::addHistSeries(cv::Mat &singleChannelImg, const QColor &color) {
     int histSize = 256;
     float range[] = {0, 1};
     const float *histRange = {range};
     bool uniform = true;
     bool accumulate = false;
     cv::Mat histogram;
-    cv::calcHist(&singleChannelImg, 1, nullptr, cv::Mat(), histogram, 1, &histSize, &histRange, uniform, accumulate);
+    cv::calcHist(&singleChannelImg,
+                 1,
+                 nullptr,
+                 cv::Mat(),
+                 histogram,
+                 1,
+                 &histSize,
+                 &histRange,
+                 uniform,
+                 accumulate);
     cv::Mat normalizedHist;
     cv::normalize(histogram, normalizedHist, 0, 1, cv::NORM_MINMAX, CV_32F);
 
@@ -47,7 +56,7 @@ void HistogramView::addHistSeries(cv::Mat &singleChannelImg, const QColor& color
         bottomSeries->append(x, 0);
     }
 
-    QAreaSeries* areaSeries = new QAreaSeries(series, bottomSeries);
+    QAreaSeries *areaSeries = new QAreaSeries(series, bottomSeries);
     chart_->addSeries(areaSeries);
     QColor areaColor = color;
     areaColor.setAlpha(50);
@@ -63,15 +72,15 @@ void HistogramView::addHistSeries(cv::Mat &singleChannelImg, const QColor& color
 
 void HistogramView::updateChart(const cv::Mat &img) {
     chart_->removeAllSeries();
-    if(img.empty()) {
+    if (img.empty()) {
         return;
     }
 
     std::vector<cv::Mat> channels;
     cv::split(img, channels);
-    if(channels.size() == 1) {
+    if (channels.size() == 1) {
         addHistSeries(channels[0], {255, 255, 255});
-    } else if(channels.size() == 3) {
+    } else if (channels.size() == 3) {
         // RGB
         addHistSeries(channels[0], {255, 0, 0});
         addHistSeries(channels[1], {0, 255, 0});
@@ -84,6 +93,5 @@ void HistogramView::updateChart(const cv::Mat &img) {
 
         addHistSeries(channels[0], {255, 255, 255});
     }
-
 }
 } // namespace nitro::ImCore

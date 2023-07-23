@@ -1,6 +1,6 @@
 #include "dctransform.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -29,14 +29,13 @@ void DCTOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> DCTOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Cosine Transform", "dct", category);
-        return builder.
-                withOperator(std::make_unique<DCTOperator>())->
-                withIcon("frequency.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withCheckBox(OPTION_INVERSE, false)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<DCTOperator>())
+                ->withIcon("frequency.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withCheckBox(OPTION_INVERSE, false)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

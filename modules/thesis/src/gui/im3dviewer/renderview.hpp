@@ -1,20 +1,20 @@
 #pragma once
 
+#include <QMenu>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLWidget>
-#include <QVector3D>
-#include <QMenu>
 #include <QPainterPath>
+#include <QVector3D>
 
-#include "settings.hpp"
 #include "renderers/shaderrenderer.hpp"
+#include "settings.hpp"
 
 namespace nitro::Thesis {
 
 class RenderView : public QOpenGLWidget, protected QOpenGLFunctions_4_1_Core {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit RenderView(QWidget *parent = nullptr);
@@ -54,16 +54,13 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
-
 private slots:
 
     void onMessageLogged(QOpenGLDebugMessage Message);
 
 private:
-
     QOpenGLDebugLogger debugLogger;
     QMap<int, bool> keys;
-
 
     int frameTimer = -1;
     float baseMovementSpeed = 3;
@@ -106,7 +103,6 @@ private:
 
     void mouseMoveTranslate(QMouseEvent *Event);
 
-
     void toggleFirstPerson();
 
     void disableFirstPerson();
@@ -114,7 +110,6 @@ private:
     void enableFirstPerson();
 
     QMenu *createContextMenu();
-
 
     void alignCam(QVector3D axis, float angle = 90);
 
@@ -131,4 +126,4 @@ private:
     void moveFirstPersonCamera();
 };
 
-}  // namespace nitro::Thesis
+} // namespace nitro::Thesis

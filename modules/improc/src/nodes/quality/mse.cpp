@@ -1,8 +1,8 @@
 #include "mse.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
-#include <util.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -34,21 +34,18 @@ void MseOperator::execute(NodePorts &nodePorts) {
     imRef.convertTo(imRef8bit, CV_8U, 255);
 
     nodePorts.output<DecimalData>(OUTPUT_VALUE, mse(imIn8bit, imRef8bit));
-
 }
-
 
 std::function<std::unique_ptr<NitroNode>()> MseOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("MSE", "mse", category);
-        return builder.
-                withOperator(std::make_unique<MseOperator>())->
-                withIcon("compare.png")->
-                withNodeColor(NITRO_QUALITY_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputPort<GrayImageData>(INPUT_IMAGE_REF)->
-                withOutputValue(OUTPUT_VALUE)->
-                build();
+        return builder.withOperator(std::make_unique<MseOperator>())
+                ->withIcon("compare.png")
+                ->withNodeColor(NITRO_QUALITY_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE_REF)
+                ->withOutputValue(OUTPUT_VALUE)
+                ->build();
     };
 }
 

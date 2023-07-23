@@ -1,8 +1,8 @@
 #include "renderdockwidget.hpp"
 
-#include <QHBoxLayout>
-#include <QCheckBox>
 #include "renderview.hpp"
+#include <QCheckBox>
+#include <QHBoxLayout>
 #include <gui/mainwindow.hpp>
 
 #define EASTER_EGG_MODE
@@ -10,8 +10,8 @@
 namespace nitro::Thesis {
 
 RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
-        : QDockWidget(window),
-          renderView_(renderView) {
+    : QDockWidget(window),
+      renderView_(renderView) {
     setWindowTitle("3D Image Viewer");
     setTitleBarWidget(window->buildDockIcon(":/icons/surface_visualizer.png"));
 
@@ -43,7 +43,6 @@ RenderDockWidget::RenderDockWidget(RenderView *renderView, MainWindow *window)
         renderView_->toggleImageColors();
     });
     surfHLayout->addWidget(imageColorsCheckBox);
-
 
     surfViewTitleWrapper->setLayout(surfHLayout);
     setTitleBarWidget(surfViewTitleWrapper);

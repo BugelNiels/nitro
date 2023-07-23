@@ -1,9 +1,9 @@
 #include "reduction.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
 #include <nodes/datatypes/decimaldata.hpp>
 #include <nodes/datatypes/integerdata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 #include <unordered_set>
@@ -107,16 +107,16 @@ void ReductionOperator::execute(NodePorts &nodePorts) {
         case 0:
             nodePorts.output<DecimalData>(OUTPUT_VALUE, minMat(img));
             break;
-        case 1 :
+        case 1:
             nodePorts.output<DecimalData>(OUTPUT_VALUE, maxMat(img));
             break;
-        case 2 :
+        case 2:
             nodePorts.output<DecimalData>(OUTPUT_VALUE, sumMat(img));
             break;
-        case 3 :
+        case 3:
             nodePorts.output<DecimalData>(OUTPUT_VALUE, averageMat(img));
             break;
-        case 4 :
+        case 4:
             nodePorts.output<IntegerData>(OUTPUT_VALUE, uniqueMat(img));
             break;
         default:
@@ -128,14 +128,13 @@ void ReductionOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> ReductionOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Reduction", "reduction", category);
-        return builder.
-                withOperator(std::make_unique<ReductionOperator>())->
-                withIcon("sum.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Average", "Count Unique"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputValue(OUTPUT_VALUE)->
-                build();
+        return builder.withOperator(std::make_unique<ReductionOperator>())
+                ->withIcon("sum.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Min", "Max", "Sum", "Average", "Count Unique"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputValue(OUTPUT_VALUE)
+                ->build();
     };
 }
 

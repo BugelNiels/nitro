@@ -2,10 +2,10 @@
 #include "imageviewer.hpp"
 #include "src/gui/histogram/histogramviewer.hpp"
 
+#include <QHBoxLayout>
+#include <QTabBar>
 #include <gui/mainwindow.hpp>
 #include <gui/zoombar.hpp>
-#include <QTabBar>
-#include <QHBoxLayout>
 
 namespace nitro::ImCore {
 
@@ -18,11 +18,11 @@ static QWidget *spacing() {
 }
 
 ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window)
-        : QDockWidget(window), imageViewer_(imageViewer) {
+    : QDockWidget(window),
+      imageViewer_(imageViewer) {
     setWindowTitle("Image Viewer");
 
     QWidget *imViewTitleWrapper = initTitleBarWidget(window);
-
 
     setTitleBarWidget(imViewTitleWrapper);
 
@@ -37,7 +37,8 @@ QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
 
     imHLayout->addWidget(window->buildDockIcon(":/icons/image_viewer.png"));
 
-    auto zoomBar = new ZoomBar(imageViewer_->minScaleFactor * 100.0, imageViewer_->maxScaleFactor * 100.0);
+    auto zoomBar = new ZoomBar(imageViewer_->minScaleFactor * 100.0,
+                               imageViewer_->maxScaleFactor * 100.0);
     zoomBar->setEnabled(false);
     auto sizeLabel = new QLabel("0 x 0");
     sizeLabel->setFixedWidth(100);
@@ -50,15 +51,12 @@ QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
     imHLayout->addWidget(new QLabel("size: "));
     imHLayout->addWidget(sizeLabel);
 
-
-    connect(imageViewer_, &ImageViewer::scaleChanged, window,
-            [zoomBar](double scale) {
-                zoomBar->setZoom(scale);
-            });
-    connect(imageViewer_, &ImageViewer::imageUpdated, window,
-            [sizeLabel](const cv::Mat &img) {
-                sizeLabel->setText(QString("%1 x %2").arg(img.rows).arg(img.cols));
-            });
+    connect(imageViewer_, &ImageViewer::scaleChanged, window, [zoomBar](double scale) {
+        zoomBar->setZoom(scale);
+    });
+    connect(imageViewer_, &ImageViewer::imageUpdated, window, [sizeLabel](const cv::Mat &img) {
+        sizeLabel->setText(QString("%1 x %2").arg(img.rows).arg(img.cols));
+    });
 
     imViewTitleWrapper->setLayout(imHLayout);
     return imViewTitleWrapper;

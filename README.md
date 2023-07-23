@@ -29,7 +29,7 @@
   </p>
 </div>
 
-![Node Editor](screenshots/front.png)
+![Node Editor](docs/screenshots/front.png)
 
 ## About the project
 
@@ -84,9 +84,9 @@ A few useful shortcuts:
 
 ## Demo
 
-![Node Editor](screenshots/demo.gif)
-![Image Viewer](screenshots/imviewer.gif)
-![3D Viewer](screenshots/3dviewer.gif)
+![Node Editor](docs/screenshots/demo.gif)
+![Image Viewer](docs/screenshots/imviewer.gif)
+![3D Viewer](docs/screenshots/3dviewer.gif)
 
 ## License
 

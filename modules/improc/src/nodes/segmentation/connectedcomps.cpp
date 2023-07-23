@@ -1,6 +1,6 @@
 #include "connectedcomps.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -33,18 +33,18 @@ void ConnectedCompsOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<NitroNode>()> ConnectedCompsOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ConnectedCompsOperator::creator(
+        const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Connected Components", "connectedComps", category);
-        return builder.
-                withOperator(std::make_unique<ConnectedCompsOperator>())->
-                withIcon("connected_comps.png")->
-                withNodeColor(NITRO_SEGMENTATION_COLOR)->
-                withInputValue(INPUT_THRESH, 0.5, 0, 1)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withDropDown(OPTION_INVERSE, {"4-connectivity", "8-connectivity"})->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ConnectedCompsOperator>())
+                ->withIcon("connected_comps.png")
+                ->withNodeColor(NITRO_SEGMENTATION_COLOR)
+                ->withInputValue(INPUT_THRESH, 0.5, 0, 1)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withDropDown(OPTION_INVERSE, {"4-connectivity", "8-connectivity"})
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

@@ -1,10 +1,10 @@
 #include "compress.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <grayimagedata.hpp>
-#include <util.hpp>
+// TODO: split up the node functionality better
 #include "../../../../improc/src/nodes/quantization/kmeans.hpp"
-#include <nodes/datatypes/decimaldata.hpp>
+#include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include <opencv2/imgproc.hpp>
+#include <util.hpp>
 
 namespace nitro::Thesis {
 
@@ -58,7 +58,12 @@ void CompressOperator::execute(NodePorts &nodePorts) {
         }
 
         cv::Mat largeMain;
-        cv::GaussianBlur(smallImg, largeMain, cv::Size(3, 3), 0, 0, cv::BorderTypes::BORDER_REFLECT);
+        cv::GaussianBlur(smallImg,
+                         largeMain,
+                         cv::Size(3, 3),
+                         0,
+                         0,
+                         cv::BorderTypes::BORDER_REFLECT);
         cv::resize(largeMain, largeMain, uniformIm.size());
 
         // Residual
@@ -80,23 +85,21 @@ std::function<std::unique_ptr<NitroNode>()> CompressOperator::creator(const QStr
     return [category]() {
         auto *timeLabel = new QLabel("-");
         NitroNodeBuilder builder("Bit Compress", "bitCompress", category);
-        return builder.
-                withOperator(std::make_unique<CompressOperator>(timeLabel))->
-                withIcon("compress.png")->
-                withNodeColor(NITRO_COMPRESSION_COLOR)->
-                withDisplayWidget(TIME_LABEL, timeLabel)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_BITS, 3, 1, 8)->
-                withInputValue(INPUT_SIZE, 0.125, 0, 1, BoundMode::UPPER_LOWER)->
-                withCheckBox(QUANTIZE_SMALL, false)->
-                withCheckBox(UNIFORM_LUM, false)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE_SMALL)->
-                build();
+        return builder.withOperator(std::make_unique<CompressOperator>(timeLabel))
+                ->withIcon("compress.png")
+                ->withNodeColor(NITRO_COMPRESSION_COLOR)
+                ->withDisplayWidget(TIME_LABEL, timeLabel)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_BITS, 3, 1, 8)
+                ->withInputValue(INPUT_SIZE, 0.125, 0, 1, BoundMode::UPPER_LOWER)
+                ->withCheckBox(QUANTIZE_SMALL, false)
+                ->withCheckBox(UNIFORM_LUM, false)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE_SMALL)
+                ->build();
     };
 }
 
 CompressOperator::CompressOperator(QLabel *timeLabel) : timeLabel_(timeLabel) {}
-
 
 } // namespace nitro::Thesis

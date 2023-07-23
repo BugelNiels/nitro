@@ -1,16 +1,16 @@
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include "gui/imviewer/imageviewer.hpp"
 #include "gui/mainwindow.hpp"
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
 namespace nitro::ImCore {
 
 class ImageViewOperator : public NodeOperator {
 public:
-
-    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category, MainWindow *window);
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category,
+                                                               MainWindow *window);
 
     explicit ImageViewOperator(MainWindow *window);
 

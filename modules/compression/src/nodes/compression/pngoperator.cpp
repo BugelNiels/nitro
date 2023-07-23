@@ -1,7 +1,7 @@
 #include "pngoperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <nodes/datatypes/decimaldata.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgcodecs.hpp>
 
@@ -20,10 +20,10 @@ static inline const QString OUTPUT_COMP_SIZE = "Compressed";
 static inline const QString OUTPUT_ORIG_SIZE = "Original";
 static inline const QString OUTPUT_RATIO = "Ratio";
 
-
-PngOperator::PngOperator(QLabel *valueLabel, QLabel *originalSizeLabel,
-                         QLabel *ratioLabel)
-        : valueLabel_(valueLabel), originalSizeLabel_(originalSizeLabel), ratioLabel_(ratioLabel) {}
+PngOperator::PngOperator(QLabel *valueLabel, QLabel *originalSizeLabel, QLabel *ratioLabel)
+    : valueLabel_(valueLabel),
+      originalSizeLabel_(originalSizeLabel),
+      ratioLabel_(ratioLabel) {}
 
 void PngOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
@@ -35,7 +35,6 @@ void PngOperator::execute(NodePorts &nodePorts) {
 
     cv::Mat data;
     img.convertTo(data, CV_8U, 255);
-
 
     cv::Mat result;
     std::vector<int> compression_params = {cv::IMWRITE_PNG_COMPRESSION, quality};
@@ -68,7 +67,8 @@ void PngOperator::execute(NodePorts &nodePorts) {
 
     QString sizeString = QString("Input: %1 KB").arg(originalKb);
     QString compressSizeString = QString("Compressed: %1 KB").arg(compressKb);
-    QString ratioString = QString("Ratio: %1").arg(QString::number(originalKb / compressKb, 'f', 3));
+    QString ratioString = QString("Ratio: %1")
+                                  .arg(QString::number(originalKb / compressKb, 'f', 3));
 
     originalSizeLabel_->setText(sizeString);
     valueLabel_->setText(compressSizeString);
@@ -86,21 +86,21 @@ std::function<std::unique_ptr<NitroNode>()> PngOperator::creator(const QString &
         auto *valueLabel = new QLabel("-");
         auto *originalSizeLabel = new QLabel("-");
         auto *crLabel = new QLabel("-");
-        return builder.
-                withOperator(std::make_unique<PngOperator>(valueLabel, originalSizeLabel, crLabel))->
-                withIcon("zip.png")->
-                withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)->
-                withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)->
-                withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)->
-                withDropDown(OPTION_PNG_FLAGS, {"Default", "Filtered", "RLE"})->
-                withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_QUALITY, 9, 0, 9, BoundMode::UPPER_LOWER)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                withOutputValue(OUTPUT_ORIG_SIZE)->
-                withOutputValue(OUTPUT_COMP_SIZE)->
-                withOutputValue(OUTPUT_RATIO)->
-                build();
+        return builder
+                .withOperator(std::make_unique<PngOperator>(valueLabel, originalSizeLabel, crLabel))
+                ->withIcon("zip.png")
+                ->withDisplayWidget(DISPLAY_LABEL_ORIG, originalSizeLabel)
+                ->withDisplayWidget(DISPLAY_LABEL_COMP, valueLabel)
+                ->withDisplayWidget(DISPLAY_LABEL_RATIO, crLabel)
+                ->withDropDown(OPTION_PNG_FLAGS, {"Default", "Filtered", "RLE"})
+                ->withNodeColor(NITRO_OUTPUT_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_QUALITY, 9, 0, 9, BoundMode::UPPER_LOWER)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->withOutputValue(OUTPUT_ORIG_SIZE)
+                ->withOutputValue(OUTPUT_COMP_SIZE)
+                ->withOutputValue(OUTPUT_RATIO)
+                ->build();
     };
 }
 

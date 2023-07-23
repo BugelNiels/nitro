@@ -77,4 +77,4 @@ cv::Mat resize(const cv::Mat &imIn,
                cv::InterpolationFlags mode,
                AspectRatioMode arMode);
 
-} // nitro
+} // namespace nitro

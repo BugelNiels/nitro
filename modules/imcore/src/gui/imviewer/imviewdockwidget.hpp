@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QDockWidget>
-#include <QStatusBar>
 #include <QLabel>
+#include <QStatusBar>
 
 namespace nitro {
 class MainWindow;
@@ -10,12 +10,10 @@ class MainWindow;
 
 namespace nitro::ImCore {
 
-
 class ImageViewer;
 
 class ImViewDockWidget : public QDockWidget {
 public:
-
     explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
 
     ~ImViewDockWidget() override;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <opencv2/imgproc.hpp>
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
+#include <opencv2/imgproc.hpp>
 
 namespace nitro::ImCore {
 
@@ -18,7 +18,8 @@ public:
 private:
     std::vector<cv::ColorConversionCodes> codes_;
 
-    static void getConversions(QStringList &colorNames, std::vector<cv::ColorConversionCodes> &codes);
+    static void getConversions(QStringList &colorNames,
+                               std::vector<cv::ColorConversionCodes> &codes);
 };
 
 } // namespace nitro::ImCore

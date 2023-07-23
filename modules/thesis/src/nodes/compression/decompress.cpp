@@ -1,10 +1,9 @@
 #include "decompress.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include <grayimagedata.hpp>
-#include <util.hpp>
 #include "nodes/restoration/resample.hpp"
+#include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include <opencv2/imgproc.hpp>
-
+#include <util.hpp>
 
 namespace nitro::Thesis {
 
@@ -62,17 +61,16 @@ std::function<std::unique_ptr<NitroNode>()> DecompressOperator::creator(const QS
     return [category]() {
         auto *timeLabel = new QLabel("-");
         NitroNodeBuilder builder("Bit Decompress", "bitDecompress", category);
-        return builder.
-                withOperator(std::make_unique<DecompressOperator>(timeLabel))->
-                withIcon("expand.png")->
-                withNodeColor(NITRO_COMPRESSION_COLOR)->
-                withDisplayWidget(TIME_LABEL, timeLabel)->
-                withCheckBox(UNIFORM_LUM, false)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputPort<GrayImageData>(INPUT_SMALL)->
-                withInputValue(INPUT_K_SIZE, 1.0, 0, 1, BoundMode::UPPER_LOWER)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<DecompressOperator>(timeLabel))
+                ->withIcon("expand.png")
+                ->withNodeColor(NITRO_COMPRESSION_COLOR)
+                ->withDisplayWidget(TIME_LABEL, timeLabel)
+                ->withCheckBox(UNIFORM_LUM, false)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputPort<GrayImageData>(INPUT_SMALL)
+                ->withInputValue(INPUT_K_SIZE, 1.0, 0, 1, BoundMode::UPPER_LOWER)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

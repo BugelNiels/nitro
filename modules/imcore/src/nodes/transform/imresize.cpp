@@ -1,7 +1,7 @@
 #include "imresize.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -21,7 +21,8 @@ void ResizeOperator::execute(NodePorts &nodePorts) {
         return;
     }
 
-    AspectRatioMode arMode = static_cast<AspectRatioMode>(nodePorts.getOption(ASPECT_RATIO_DROPDOWN));
+    AspectRatioMode arMode = static_cast<AspectRatioMode>(
+            nodePorts.getOption(ASPECT_RATIO_DROPDOWN));
     int option = nodePorts.getOption(MODE_DROPDOWN);
     auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
     int width = nodePorts.inputInteger(INPUT_X);
@@ -42,19 +43,19 @@ void ResizeOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> ResizeOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Resize", "resize", category);
-        return builder.
-                withOperator(std::make_unique<ResizeOperator>())->
-                withIcon("resize.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")->
-                withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})->
-                withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")->
-                withDropDown(ASPECT_RATIO_DROPDOWN, {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_X, 256, 2, 2048, BoundMode::LOWER_ONLY)->
-                withInputInteger(INPUT_Y, 256, 2, 2048, BoundMode::LOWER_ONLY)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ResizeOperator>())
+                ->withIcon("resize.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")
+                ->withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})
+                ->withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")
+                ->withDropDown(ASPECT_RATIO_DROPDOWN,
+                               {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_X, 256, 2, 2048, BoundMode::LOWER_ONLY)
+                ->withInputInteger(INPUT_Y, 256, 2, 2048, BoundMode::LOWER_ONLY)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

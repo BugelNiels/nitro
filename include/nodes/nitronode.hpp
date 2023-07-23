@@ -1,10 +1,10 @@
 #pragma once
 
+#include "nodeoperator.hpp"
+#include "nodeports.hpp"
 #include <QString>
 #include <QtNodes/NodeDelegateModel>
 #include <QtNodes/NodeInfo.hpp>
-#include "nodeports.hpp"
-#include "nodeoperator.hpp"
 
 class QLabel;
 
@@ -18,7 +18,7 @@ namespace ValueSliders {
 class IntSlider;
 
 class DoubleSlider;
-}
+} // namespace ValueSliders
 
 namespace nitro {
 
@@ -55,18 +55,16 @@ public Q_SLOTS:
     void inputConnectionDeleted(const QtNodes::ConnectionId &) override;
 
 protected:
-
     [[nodiscard]] unsigned int nPorts(QtNodes::PortType portType) const override;
 
-    [[nodiscard]] QtNodes::NodeDataType
-    dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
+    [[nodiscard]] QtNodes::NodeDataType dataType(QtNodes::PortType portType,
+                                                 QtNodes::PortIndex portIndex) const override;
 
     std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
     void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
 private:
-
     QtNodes::NodeInfo info_;
     std::unique_ptr<NodeOperator> algo_;
     NodePorts nodePorts_;
@@ -78,12 +76,14 @@ private:
     QWidget *widget_ = nullptr;
     bool sliderInputDeleted_ = false;
 
-
     void connectInputWidget(ValueSliders::IntSlider *slider, QLabel *valLabel, int port);
 
     void connectInputWidget(ValueSliders::DoubleSlider *slider, QLabel *valLabel, int port);
 
-    void connectLoadButton(const QString &name, QPushButton *button, int port, const QString &filter);
+    void connectLoadButton(const QString &name,
+                           QPushButton *button,
+                           int port,
+                           const QString &filter);
 
     void connectComboBox(const QString &name, QComboBox *comboBox);
 
@@ -100,7 +100,6 @@ private:
     void connectLabel(const QString &name, QLabel *label);
 
     friend class NitroNodeBuilder;
-
 };
 
 } // namespace nitro

@@ -1,7 +1,7 @@
 #include "imageviewoperator.hpp"
-#include <nodes/nitronodebuilder.hpp>
-#include "include/colimagedata.hpp"
 #include "gui/imviewer/imviewdockwidget.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
 namespace nitro::ImCore {
 
@@ -36,21 +36,19 @@ void ImageViewOperator::execute(NodePorts &nodePorts) {
     }
     imViewer_->setImage(im);
     nodePorts.setOutputData(INPUT_IMAGE, nodePorts.inGet(INPUT_IMAGE));
-
 }
 
-std::function<std::unique_ptr<NitroNode>()> ImageViewOperator::creator(const QString &category, MainWindow *window) {
+std::function<std::unique_ptr<NitroNode>()> ImageViewOperator::creator(const QString &category,
+                                                                       MainWindow *window) {
     return [category, window]() {
         NitroNodeBuilder builder("Image Viewer", "ImageViewer", category);
-        return builder.
-                withOperator(std::make_unique<ImageViewOperator>(window))->
-                withIcon("viewer.png")->
-                withNodeColor(NITRO_OUTPUT_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(INPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ImageViewOperator>(window))
+                ->withIcon("viewer.png")
+                ->withNodeColor(NITRO_OUTPUT_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(INPUT_IMAGE)
+                ->build();
     };
 }
-
 
 } // namespace nitro::ImCore

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
 
 #include "renderer.hpp"
 
@@ -40,4 +40,4 @@ private:
     int m_imWidth;
     int m_imHeight;
 };
-}  // namespace nitro::Thesis
+} // namespace nitro::Thesis

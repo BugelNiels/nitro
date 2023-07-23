@@ -1,7 +1,7 @@
 #include "imflip.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -23,7 +23,7 @@ void ImFlipOperator::execute(NodePorts &nodePorts) {
         case 0:
             mode = 1;
             break;
-        case 1 :
+        case 1:
             mode = 0;
             break;
         default:
@@ -39,14 +39,13 @@ void ImFlipOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> ImFlipOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Flip", "ImFlip", category);
-        return builder.
-                withOperator(std::make_unique<ImFlipOperator>())->
-                withIcon("flip.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ImFlipOperator>())
+                ->withIcon("flip.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

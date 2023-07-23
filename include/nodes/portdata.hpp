@@ -13,7 +13,6 @@ namespace nitro {
 class PortData {
 
 public:
-
     /**
      * Creates an empty port data class.
      */
@@ -25,10 +24,9 @@ public:
      * @param data The data that this port contains.
      */
     PortData(QString name, const std::shared_ptr<QtNodes::NodeData> &data)
-            : name_(std::move(name)),
-              type_(data->type()),
-              data_(data) {
-    }
+        : name_(std::move(name)),
+          type_(data->type()),
+          data_(data) {}
 
     /**
      * Creates new port data with the given name and data type. The data itself is initialised to be empty.
@@ -36,34 +34,27 @@ public:
      * @param type The data type this port represents.
      */
     PortData(QString name, QtNodes::NodeDataType type)
-            : name_(std::move(name)),
-              type_(std::move(type)),
-              data_(nullptr) {
-    }
+        : name_(std::move(name)),
+          type_(std::move(type)),
+          data_(nullptr) {}
 
     /**
      * Retrieves the name of the port.
      * @return The name of the port.
      */
-    [[nodiscard]] const QString &getName() const {
-        return name_;
-    }
+    [[nodiscard]] const QString &getName() const { return name_; }
 
     /**
      * Retrieves the data type of the port.
      * @return The data type of the port.
      */
-    [[nodiscard]] const QtNodes::NodeDataType &getType() const {
-        return type_;
-    }
+    [[nodiscard]] const QtNodes::NodeDataType &getType() const { return type_; }
 
     /**
      * Retrieves the data of the port. Note that this can be a nullptr if it is empty.
      * @return The data of the port.
      */
-    [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &getData() const {
-        return data_;
-    }
+    [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &getData() const { return data_; }
 
 private:
     QString name_;

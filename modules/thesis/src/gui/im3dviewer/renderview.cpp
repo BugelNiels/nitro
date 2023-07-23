@@ -2,12 +2,12 @@
 
 #include <cmath>
 
+#include <QElapsedTimer>
 #include <QLoggingCategory>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QOpenGLVersionFunctionsFactory>
-#include <QMenu>
 #include <QPainter>
-#include <QElapsedTimer>
 #include <QPainterPath>
 
 namespace nitro::Thesis {
@@ -18,18 +18,22 @@ RenderView::RenderView(QWidget *Parent) : QOpenGLWidget(Parent) {
     setFocusPolicy(Qt::StrongFocus);
 }
 
-RenderView::~RenderView() { makeCurrent(); }
+RenderView::~RenderView() {
+    makeCurrent();
+}
 
 void RenderView::initializeGL() {
     initializeOpenGLFunctions();
 
-    connect(&debugLogger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this,
-            SLOT(onMessageLogged(QOpenGLDebugMessage)), Qt::DirectConnection);
+    connect(&debugLogger,
+            SIGNAL(messageLogged(QOpenGLDebugMessage)),
+            this,
+            SLOT(onMessageLogged(QOpenGLDebugMessage)),
+            Qt::DirectConnection);
 
     if (debugLogger.initialize()) {
-        QLoggingCategory::setFilterRules(
-                "qt.*=false\n"
-                "qt.text.font.*=false");
+        QLoggingCategory::setFilterRules("qt.*=false\n"
+                                         "qt.text.font.*=false");
 
         debugLogger.startLogging(QOpenGLDebugLogger::SynchronousLogging);
         debugLogger.enableMessages();
@@ -49,7 +53,8 @@ void RenderView::initializeGL() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // grab the opengl context
-    auto *functions = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_4_1_Core>(this->context());
+    auto *functions = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_4_1_Core>(
+            this->context());
 
     // initialize renderers here with the current context
     renderer.init(functions, &settings);
@@ -57,7 +62,7 @@ void RenderView::initializeGL() {
     updateMatrices();
 
     resetOrientation();
-#ifndef  NDEBUG
+#ifndef NDEBUG
     int w = 256;
     int h = 256;
     QImage img(w, h, QImage::Format_Grayscale8);
@@ -71,10 +76,8 @@ void RenderView::initializeGL() {
 #endif
 }
 
-
 void RenderView::resizeGL(int newWidth, int newHeight) {
     widgetMidPoint = mapToGlobal(QPoint(width() / 2, height() / 2));
-
 
     int crossHairSize = 15;
     crossHair.clear();
@@ -172,7 +175,10 @@ void RenderView::drawHud(QPainter &painter) {
     QPen chPen;
     chPen.setColor({150, 150, 150});
     painter.setPen(chPen);
-    painter.drawText(20, 20, QString("x: %1 y: %2 z: %3").arg(viewerPos.x()).arg(viewerPos.y()).arg(viewerPos.z()));
+    painter.drawText(
+            20,
+            20,
+            QString("x: %1 y: %2 z: %3").arg(viewerPos.x()).arg(viewerPos.y()).arg(viewerPos.z()));
 
     if (firstPersonMode) {
         if (frameCount >= 30) {
@@ -283,7 +289,9 @@ void RenderView::mouseMoveTranslate(QMouseEvent *event) {
         return;
     }
 
-    QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(), sPos.y() - oldMouseCoords.y(), 0.0);
+    QVector3D translationUpdate = QVector3D(sPos.x() - oldMouseCoords.x(),
+                                            sPos.y() - oldMouseCoords.y(),
+                                            0.0);
     translationUpdate *= settings.dragSensitivity;
 
     QMatrix4x4 rot;
@@ -325,7 +333,6 @@ void RenderView::mousePressEvent(QMouseEvent *event) {
     disableFirstPerson();
     setFocus();
 }
-
 
 /**
  * @brief RenderView::mousePressEvent Event that is called when the mouse is
@@ -391,7 +398,6 @@ void RenderView::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-
 /**
  * @brief MainView::keyReleaseEvent Event that is called when a key is released.
  * @param event The key event.
@@ -419,7 +425,6 @@ void RenderView::disableFirstPerson() {
     firstPersonMode = false;
     setCursor(Qt::OpenHandCursor);
     update();
-
 }
 
 void RenderView::enableFirstPerson() {
@@ -429,7 +434,6 @@ void RenderView::enableFirstPerson() {
     frameTimer = startTimer(1000 / 60);
     firstPersonMode = true;
 }
-
 
 void RenderView::timerEvent(QTimerEvent *event) {
     update();
@@ -446,15 +450,21 @@ QMenu *RenderView::createContextMenu() {
     });
     menu->addSeparator();
 
-    menu->addAction("First Person Mode", [this] {
-        toggleFirstPerson();
-    }, QKeySequence(Qt::SHIFT | Qt::Key_F));
+    menu->addAction(
+            "First Person Mode",
+            [this] {
+                toggleFirstPerson();
+            },
+            QKeySequence(Qt::SHIFT | Qt::Key_F));
 
-    menu->addAction("Reset", [this] {
-        disableFirstPerson();
-        resetOrientation();
-        updateMatrices();
-    }, QKeySequence(Qt::Key_R));
+    menu->addAction(
+            "Reset",
+            [this] {
+                disableFirstPerson();
+                resetOrientation();
+                updateMatrices();
+            },
+            QKeySequence(Qt::Key_R));
     // These shortcut actions don't seem to work, but they are handled elsewhere. This just ensures they are displayed
     // in the context menu
     return menu;
@@ -482,7 +492,6 @@ void RenderView::toggleOrthographic() {
     settings.orthographic = !settings.orthographic;
     settings.uniformUpdateRequired = true;
     update();
-
 }
 
 void RenderView::toggleImageColors() {
@@ -505,4 +514,4 @@ void RenderView::toggleMinecraft() {
     update();
 }
 
-}  // namespace Thesis
+} // namespace nitro::Thesis

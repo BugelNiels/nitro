@@ -1,38 +1,39 @@
 #include "nodedockwidget.hpp"
 
-#include <QLabel>
 #include <QCheckBox>
+#include <QLabel>
 
 #include "imgnodegraphicsview.hpp"
-#include "src/util/imgresourcereader.hpp"
 #include "src/gui/components/draggabletreewidget.hpp"
+#include "src/util/imgresourcereader.hpp"
 #include <gui/mainwindow.hpp>
 
-#include <QtNodes/internal/WidgetNodePainter.hpp>
-#include <QtNodes/DataFlowGraphModel>
-#include <QtNodes/NodeDelegateModelRegistry>
-#include <QKeyEvent>
-#include <QtGui/QScreen>
-#include <QtWidgets/QApplication>
 #include <QFileDialog>
+#include <QKeyEvent>
+#include <QLineEdit>
 #include <QMessageBox>
+#include <QProgressBar>
+#include <QPushButton>
 #include <QSplitter>
 #include <QTreeWidget>
-#include <QVBoxLayout>
-#include <QLineEdit>
-#include <QProgressBar>
 #include <QUndoStack>
-#include <QPushButton>
+#include <QVBoxLayout>
+#include <QtGui/QScreen>
+#include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/NodeDelegateModelRegistry>
+#include <QtNodes/internal/WidgetNodePainter.hpp>
+#include <QtWidgets/QApplication>
 
 namespace nitro {
 
-NodeDockWidget::NodeDockWidget(std::shared_ptr<NodeRegistry>& nodes, MainWindow *window)
-        : QDockWidget(window),
-          filename_("untitled.json") {
+NodeDockWidget::NodeDockWidget(std::shared_ptr<NodeRegistry> &nodes, MainWindow *window)
+    : QDockWidget(window),
+      filename_("untitled.json") {
 
     dataFlowGraphModel_ = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
     nodeScene_ = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel_);
-    nodeScene_->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene_->setNodePainter(
+            std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
     nodeScene_->toggleWidgetMode();
     view_ = new ImageNodeGraphicsView(nodes, nodeScene_, dataFlowGraphModel_, window);
 
@@ -66,13 +67,11 @@ NodeDockWidget::NodeDockWidget(std::shared_ptr<NodeRegistry>& nodes, MainWindow 
 
     setTitleBarWidget(initNodeTitleBar(window));
 
-
     setWidget(horLayout);
 
     setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
     window->registerNodeDock(this);
 }
-
 
 NodeDockWidget::~NodeDockWidget() = default;
 
@@ -89,8 +88,7 @@ void NodeDockWidget::searchTextChanged(const QString &searchText) {
 }
 
 inline bool isFuzzyMatch(const QString &str1, const QString &str2) {
-    return str1.toLower().contains(str2.toLower()) ||
-           QString::localeAwareCompare(str1, str2) == 0;
+    return str1.toLower().contains(str2.toLower()) || QString::localeAwareCompare(str1, str2) == 0;
 }
 
 bool NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString &searchText) {
@@ -142,7 +140,8 @@ bool NodeDockWidget::canQuitSafely() {
         return true;
     }
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Save changes",
+    reply = QMessageBox::question(this,
+                                  "Save changes",
                                   QString("Save changes before closing?\n%1").arg(filename_),
                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     if (reply == QMessageBox::Yes) {
@@ -156,9 +155,10 @@ bool NodeDockWidget::canQuitSafely() {
 void NodeDockWidget::saveModel(bool askFile) {
     QString filePath;
     if (askFile || filename_ == "untitled.json") {
-        filePath = QFileDialog::getSaveFileName(
-                this, "Save NITRO Config", "../data/" + filename_,
-                tr("Json Files (*.json)"));
+        filePath = QFileDialog::getSaveFileName(this,
+                                                "Save NITRO Config",
+                                                "../data/" + filename_,
+                                                tr("Json Files (*.json)"));
         if (filePath == "") {
             return;
         }
@@ -183,9 +183,10 @@ void NodeDockWidget::loadModel() {
     if (!canQuitSafely()) {
         return;
     }
-    QString filePath = QFileDialog::getOpenFileName(
-            this, "Load NITRO Config", "../data/",
-            tr("Json Files (*.json)"));
+    QString filePath = QFileDialog::getOpenFileName(this,
+                                                    "Load NITRO Config",
+                                                    "../data/",
+                                                    tr("Json Files (*.json)"));
     if (filePath == "") {
         return;
     }

@@ -1,8 +1,8 @@
 #include "layerremoval.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 #include <opencv2/imgproc.hpp>
+#include <util.hpp>
 
 #include <QDebug>
 
@@ -32,13 +32,13 @@ const int MAX_GRAY = 256;
 static void detect_peak(const std::vector<double> &data,
                         int data_count,
                         std::vector<int> &emi_peaks,
-                        double delta, int emi_first) {
+                        double delta,
+                        int emi_first) {
     double mx;
     double mn;
     int mx_pos = 0;
     int mn_pos = 0;
     int is_detecting_emi = emi_first;
-
 
     mx = data[0];
     mn = data[0];
@@ -88,7 +88,7 @@ static void find_peaks(std::vector<double> &importance, double width) {
         else
             break;
         if (impFac < 0.0002) {
-            break;//Too small, then break
+            break; //Too small, then break
         }
         numIter++;
     }
@@ -108,7 +108,8 @@ static void detect_layers(int clear_color,
     int distinguishable_interval = 1; //distinguishable_interval is set to 7
     peaks = 0;
     int i = clear_color;
-    int StartPoint = distinguishable_interval; //There is no need to check i and i+1; it is not distinguished by eyes, so check between i and i+StartPoint.
+    int StartPoint =
+            distinguishable_interval; //There is no need to check i and i+1; it is not distinguished by eyes, so check between i and i+StartPoint.
     double difference;
 
     std::vector<double> copy_upper_level = upper_level;
@@ -118,9 +119,9 @@ static void detect_layers(int clear_color,
     }
 
     while ((i + StartPoint) < (max_elem + 1)) {
-        difference =
-                copy_upper_level[i + StartPoint] - copy_upper_level[i]; //attention: here shouldn't be upper_level
-        if (difference > threshold) { //choose this layer
+        difference = copy_upper_level[i + StartPoint] -
+                     copy_upper_level[i]; //attention: here shouldn't be upper_level
+        if (difference > threshold) {     //choose this layer
             if (needAssign) {
                 upper_level[i + StartPoint] = 2; //Give it a num that it can never be.
             }
@@ -132,7 +133,6 @@ static void detect_layers(int clear_color,
             StartPoint += 1;
         }
     }
-
 }
 
 //binary search
@@ -147,7 +147,8 @@ static void find_layers(int clear_color,
     int numIter = 0;
     int peaks = 0;
     while (numIter < MAX_GRAY) {
-        if (impFac < 0.003) break;// The difference is too small
+        if (impFac < 0.003)
+            break; // The difference is too small
         detect_layers(clear_color, importance_upper, impFac, false, peaks, max_elem);
         if (peaks < width) { // impFac need a smaller one
             tail = impFac;
@@ -160,8 +161,12 @@ static void find_layers(int clear_color,
         numIter++;
     }
 
-    detect_layers(clear_color, importance_upper, impFac, true, peaks,
-                  max_elem);//the impfac to be calculated is 0.003/2
+    detect_layers(clear_color,
+                  importance_upper,
+                  impFac,
+                  true,
+                  peaks,
+                  max_elem); //the impfac to be calculated is 0.003/2
 
     for (int i = 0; i < MAX_GRAY; ++i) {
         if (importance_upper[i] == 2) {
@@ -173,11 +178,12 @@ static void find_layers(int clear_color,
     }
 }
 
-
 /*
 * Calculate the histogram of the image, which is equal to the importance for each level.
 */
-static std::vector<double> calculateImportance(const cv::Mat &img, bool cumulative, int num_layers) {
+static std::vector<double> calculateImportance(const cv::Mat &img,
+                                               bool cumulative,
+                                               int num_layers) {
     int min_elem = 1e5;
     int max_elem = 0;
 
@@ -209,7 +215,7 @@ static std::vector<double> calculateImportance(const cv::Mat &img, bool cumulati
     // Normalize. Cumulative method.
     double max = upperLevelSet[upperLevelSet.size() - 1];
     for (int i = 0; i < MAX_GRAY; ++i) {
-        upperLevelSet[i] = upperLevelSet[i] / max - EPSILON;//To avoid to be 1.
+        upperLevelSet[i] = upperLevelSet[i] / max - EPSILON; //To avoid to be 1.
     }
 
     // Cumulative method.
@@ -275,15 +281,14 @@ void LayerRemovalOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> LayerRemovalOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Layer Removal", "layerRemoval", category);
-        return builder.
-                withOperator(std::make_unique<LayerRemovalOperator>())->
-                withIcon("quantize.png")->
-                withNodeColor(NITRO_COMPRESSION_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_K, 8, 1, MAX_GRAY - 1)->
-                withCheckBox(OPTION_CUMULATIVE, true)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<LayerRemovalOperator>())
+                ->withIcon("quantize.png")
+                ->withNodeColor(NITRO_COMPRESSION_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_K, 8, 1, MAX_GRAY - 1)
+                ->withCheckBox(OPTION_CUMULATIVE, true)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

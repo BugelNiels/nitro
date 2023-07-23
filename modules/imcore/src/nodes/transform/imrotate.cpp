@@ -1,7 +1,7 @@
 #include "imrotate.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -23,7 +23,7 @@ void ImRotateOperator::execute(NodePorts &nodePorts) {
         case 0:
             mode = cv::ROTATE_90_CLOCKWISE;
             break;
-        case 1 :
+        case 1:
             mode = cv::ROTATE_90_COUNTERCLOCKWISE;
             break;
         default:
@@ -40,14 +40,13 @@ void ImRotateOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> ImRotateOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Rotate", "rotate", category);
-        return builder.
-                withOperator(std::make_unique<ImRotateOperator>())->
-                withIcon("rotate.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"90 (CW)", "90 (CCw)", "180"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<ImRotateOperator>())
+                ->withIcon("rotate.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"90 (CW)", "90 (CCw)", "180"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

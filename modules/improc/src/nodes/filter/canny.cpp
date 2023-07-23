@@ -1,6 +1,6 @@
 #include "canny.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <colimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -26,7 +26,6 @@ void CannyEdgeDetectionOperator::execute(NodePorts &nodePorts) {
         aperture -= 1;
     }
 
-
     cv::Mat intImage;
     inputImg->convertTo(intImage, CV_8U, 255);
 
@@ -41,19 +40,19 @@ void CannyEdgeDetectionOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<NitroNode>()> CannyEdgeDetectionOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> CannyEdgeDetectionOperator::creator(
+        const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Canny Edge Detector", "cannyEdgeDetect", category);
-        return builder.
-                withOperator(std::make_unique<CannyEdgeDetectionOperator>())->
-                withIcon("blur.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputValue(INPUT_THRESH_1, 75, 1, 255)->
-                withInputValue(INPUT_THRESH_2, 75, 1, 255)->
-                withInputInteger(INPUT_APERTURE, 3, 3, 7)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<CannyEdgeDetectionOperator>())
+                ->withIcon("blur.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputValue(INPUT_THRESH_1, 75, 1, 255)
+                ->withInputValue(INPUT_THRESH_2, 75, 1, 255)
+                ->withInputInteger(INPUT_APERTURE, 3, 3, 7)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

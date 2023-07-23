@@ -1,6 +1,6 @@
 #include "fouriertransform.hpp"
-#include <nodes/nitronodebuilder.hpp>
 #include <grayimagedata.hpp>
+#include <nodes/nitronodebuilder.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -28,14 +28,13 @@ void FFTOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> FFTOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Fourier Transform", "fft", category);
-        return builder.
-                withOperator(std::make_unique<FFTOperator>())->
-                withIcon("frequency.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<GrayImageData>(INPUT_IMAGE)->
-                withCheckBox(OPTION_INVERSE, false)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        return builder.withOperator(std::make_unique<FFTOperator>())
+                ->withIcon("frequency.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withInputPort<GrayImageData>(INPUT_IMAGE)
+                ->withCheckBox(OPTION_INVERSE, false)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
 

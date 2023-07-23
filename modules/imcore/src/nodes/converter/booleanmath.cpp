@@ -1,9 +1,9 @@
 #include "booleanmath.hpp"
-#include <util.hpp>
-#include <nodes/nitronodebuilder.hpp>
 #include "include/colimagedata.hpp"
-#include <nodes/datatypes/decimaldata.hpp>
 #include "include/grayimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
 #include <opencv2/imgproc.hpp>
 
@@ -36,7 +36,6 @@ double regularBoolMath(double a, double b, int option) {
             return int(std::round(a)) ^ int(std::round(b));
         default:
             return a / 2.0 + b / 2.0;
-
     }
 }
 
@@ -127,7 +126,6 @@ void BooleanMathOperator::execute(NodePorts &nodePorts) {
         default:
             cv::multiply(in1_, in2_, result);
             break;
-
     }
     nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
@@ -135,17 +133,24 @@ void BooleanMathOperator::execute(NodePorts &nodePorts) {
 std::function<std::unique_ptr<NitroNode>()> BooleanMathOperator::creator(const QString &category) {
     return [category]() {
         NitroNodeBuilder builder("Boolean Math", "booleanMath", category);
-        return builder.
-                withOperator(std::make_unique<BooleanMathOperator>())->
-                withIcon("bool_math.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"<", "<=", ">", ">=", "==", "AND", "OR", "XOR"})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withOutputValue(OUTPUT_VALUE)->
-                build();
+        return builder.withOperator(std::make_unique<BooleanMathOperator>())
+                ->withIcon("bool_math.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"<", "<=", ">", ">=", "==", "AND", "OR", "XOR"})
+                ->withInputValue(INPUT_VALUE_1,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_2,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withOutputValue(OUTPUT_VALUE)
+                ->build();
     };
 }
 

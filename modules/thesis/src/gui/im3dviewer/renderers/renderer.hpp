@@ -1,9 +1,8 @@
 #pragma once
 
+#include "gui/im3dviewer/settings.hpp"
 #include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
-#include "gui/im3dviewer/settings.hpp"
-
 
 namespace nitro::Thesis {
 /**
@@ -33,4 +32,5 @@ protected:
     QOpenGLFunctions_4_1_Core *gl;
     Settings *settings;
 };
-}  // namespace nitro::Thesis
+
+} // namespace nitro::Thesis
