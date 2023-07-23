@@ -4,7 +4,7 @@
 #include <QString>
 #include <map>
 
-#include "categorycolors.h"
+#include "categorycolors.hpp"
 
 namespace nitro {
 
