@@ -1,15 +1,15 @@
 #pragma once
 
-#include "nodes/nodeoperator.hpp"
-#include "nodes/nitronode.hpp"
+#include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
-namespace nitro {
+namespace nitro::ImCore {
 
-    class ResizeOperator : public NodeOperator {
-    public:
+class ResizeOperator : public NodeOperator {
+public:
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+    void execute(NodePorts &nodePorts) override;
+};
 
-        void execute(NodePorts &nodePorts) override;
-    };
-} // nitro
+} // namespace nitro::ImCore

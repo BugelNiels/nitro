@@ -1,17 +1,20 @@
 #include "immath.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_FAC "Fac"
-#define INPUT_VALUE_1 "Value 1"
-#define INPUT_VALUE_2 "Value 2"
-#define OUTPUT_VALUE "Value"
-#define OPTION_CLAMP "Clamp"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
+
+static inline const QString INPUT_FAC = "Fac";
+static inline const QString INPUT_VALUE_1 = "Value 1";
+static inline const QString INPUT_VALUE_2 = "Value 2";
+static inline const QString OUTPUT_VALUE = "Value";
+static inline const QString OPTION_CLAMP = "Clamp";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 // TODO: add support for pow, abs and sqrt
 
@@ -44,7 +47,6 @@ double regularBoolMath(double fac, double a, double b, int option) {
         default:
             result = a * b;
             break;
-
     }
     return (1 - fac) * a + fac * result;
 }
@@ -67,7 +69,7 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 }
 
 // ensures the images all have the same size and number of channels
-void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
+void MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     auto fac = *nodePorts.inGetAs<GrayImageData>(INPUT_FAC);
     auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
     auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
@@ -97,7 +99,7 @@ void nitro::MathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::MathOperator::execute(NodePorts &nodePorts) {
+void MathOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -147,7 +149,6 @@ void nitro::MathOperator::execute(NodePorts &nodePorts) {
         default:
             cv::multiply(in1_, in2_, result);
             break;
-
     }
     cv::blendLinear(result, in1_, fac_, 1 - fac_, result);
 
@@ -168,22 +169,36 @@ void nitro::MathOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MathOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MathOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Math", "math", category);
-        return builder.
-                withOperator(std::make_unique<nitro::MathOperator>())->
-                withIcon("math.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})->
-                withInputValue(INPUT_FAC, 1, 0, 1, BoundMode::UPPER_LOWER,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withOutputValue(OUTPUT_VALUE)->
-                withCheckBox(OPTION_CLAMP, false)->
-                build();
+        NitroNodeBuilder builder("Math", "math", category);
+        return builder.withOperator(std::make_unique<MathOperator>())
+                ->withIcon("math.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN,
+                               {"Add", "Subtract", "Multiply", "Divide", "Min", "Max", "Log"})
+                ->withInputValue(INPUT_FAC,
+                                 1,
+                                 0,
+                                 1,
+                                 BoundMode::UPPER_LOWER,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_1,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_2,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withOutputValue(OUTPUT_VALUE)
+                ->withCheckBox(OPTION_CLAMP, false)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

@@ -1,11 +1,13 @@
 #include "separate.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
 
-#define INPUT_IMAGE "Image"
+namespace nitro::ImCore {
 
-void nitro::SeparateOperator::execute(NodePorts &nodePorts) {
+static inline const QString INPUT_IMAGE = "Image";
+
+void SeparateOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -26,17 +28,18 @@ void nitro::SeparateOperator::execute(NodePorts &nodePorts) {
     }
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::SeparateOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> SeparateOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Separate Channels", "separateChannels", category);
-        return builder.
-                withOperator(std::make_unique<nitro::SeparateOperator>())->
-                withIcon("layers.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>("Image")->
-                withOutputPort<GrayImageData>("Channel 1")->
-                withOutputPort<GrayImageData>("Channel 2")->
-                withOutputPort<GrayImageData>("Channel 3")->
-                build();
+        NitroNodeBuilder builder("Separate Channels", "separateChannels", category);
+        return builder.withOperator(std::make_unique<SeparateOperator>())
+                ->withIcon("layers.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>("Image")
+                ->withOutputPort<GrayImageData>("Channel 1")
+                ->withOutputPort<GrayImageData>("Channel 2")
+                ->withOutputPort<GrayImageData>("Channel 3")
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

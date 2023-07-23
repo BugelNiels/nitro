@@ -1,37 +1,39 @@
 #include "nodedockwidget.hpp"
 
-#include <QLabel>
 #include <QCheckBox>
+#include <QLabel>
+
 #include "imgnodegraphicsview.hpp"
-
+#include "src/gui/components/draggabletreewidget.hpp"
 #include "src/util/imgresourcereader.hpp"
-#include "gui/draggabletreewidget.hpp"
+#include <gui/mainwindow.hpp>
 
-#include <QKeyEvent>
-#include <QtGui/QScreen>
-#include <QtWidgets/QApplication>
-#include "QtNodes/DataFlowGraphModel"
-#include "QtNodes/NodeDelegateModelRegistry"
-#include "gui/mainwindow.hpp"
-#include "QtNodes/internal/WidgetNodePainter.hpp"
 #include <QFileDialog>
+#include <QKeyEvent>
+#include <QLineEdit>
 #include <QMessageBox>
+#include <QProgressBar>
+#include <QPushButton>
 #include <QSplitter>
 #include <QTreeWidget>
-#include <QVBoxLayout>
-#include <QLineEdit>
-#include <QProgressBar>
-
 #include <QUndoStack>
-#include <QPushButton>
+#include <QVBoxLayout>
+#include <QtGui/QScreen>
+#include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/NodeDelegateModelRegistry>
+#include <QtNodes/internal/WidgetNodePainter.hpp>
+#include <QtWidgets/QApplication>
 
-nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
-        : QDockWidget(window),
-          filename_("untitled.json") {
+namespace nitro {
+
+NodeDockWidget::NodeDockWidget(std::shared_ptr<NodeRegistry> &nodes, MainWindow *window)
+    : QDockWidget(window),
+      filename_("untitled.json") {
 
     dataFlowGraphModel_ = new QtNodes::DataFlowGraphModel(nodes->getRegistry());
     nodeScene_ = new QtNodes::BasicGraphicsScene(*dataFlowGraphModel_);
-    nodeScene_->setNodePainter(std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
+    nodeScene_->setNodePainter(
+            std::make_unique<QtNodes::WidgetNodePainter>(QtNodes::WidgetNodePainter()));
     nodeScene_->toggleWidgetMode();
     view_ = new ImageNodeGraphicsView(nodes, nodeScene_, dataFlowGraphModel_, window);
 
@@ -50,7 +52,7 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
     connect(searchBar_, &QLineEdit::textChanged, this, &NodeDockWidget::searchTextChanged);
     QSize size(searchBar_->height(), searchBar_->height());
     auto *searchLabel = new QLabel();
-    searchLabel->setPixmap(nitro::ImResourceReader::getPixMap(":/icons/search.png", size));
+    searchLabel->setPixmap(ImResourceReader::getPixMap(":/icons/search.png", size));
 
     auto *searchHorLayout = new QHBoxLayout();
     searchHorLayout->addWidget(searchLabel);
@@ -65,17 +67,15 @@ nitro::NodeDockWidget::NodeDockWidget(NodeRegistry *nodes, MainWindow *window)
 
     setTitleBarWidget(initNodeTitleBar(window));
 
-
     setWidget(horLayout);
 
     setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
     window->registerNodeDock(this);
 }
 
+NodeDockWidget::~NodeDockWidget() = default;
 
-nitro::NodeDockWidget::~NodeDockWidget() = default;
-
-void nitro::NodeDockWidget::searchTextChanged(const QString &searchText) {
+void NodeDockWidget::searchTextChanged(const QString &searchText) {
     // Loop through all items in the tree widget
     for (int i = 0; i < nodeTreeWidget_->topLevelItemCount(); ++i) {
         QTreeWidgetItem *topLevelItem = nodeTreeWidget_->topLevelItem(i);
@@ -88,19 +88,18 @@ void nitro::NodeDockWidget::searchTextChanged(const QString &searchText) {
 }
 
 inline bool isFuzzyMatch(const QString &str1, const QString &str2) {
-    return str1.toLower().contains(str2.toLower()) ||
-           QString::localeAwareCompare(str1, str2) == 0;
+    return str1.toLower().contains(str2.toLower()) || QString::localeAwareCompare(str1, str2) == 0;
 }
 
-bool nitro::NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString &searchText) {
+bool NodeDockWidget::searchTreeItem(QTreeWidgetItem *item, const QString &searchText) {
     // Hide/show the item based on whether it matches the search text
     bool matches = isFuzzyMatch(item->text(0), searchText);
     item->setHidden(!matches);
     return !matches;
 }
 
-QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
-    auto *treeWidget = new nitro::DraggableTreeWidget(this);
+QTreeWidget *NodeDockWidget::initSideMenu() {
+    auto *treeWidget = new DraggableTreeWidget(this);
     treeWidget->setStyleSheet("QTreeView::item { padding: 4px; }");
     treeWidget->setHeaderHidden(true);
     auto nodeMenu = view_->initNodeMenu();
@@ -128,7 +127,7 @@ QTreeWidget *nitro::NodeDockWidget::initSideMenu() {
     return treeWidget;
 }
 
-void nitro::NodeDockWidget::clearModel() {
+void NodeDockWidget::clearModel() {
     for (const auto &item: dataFlowGraphModel_->allNodeIds()) {
         dataFlowGraphModel_->deleteNode(item);
     }
@@ -136,12 +135,13 @@ void nitro::NodeDockWidget::clearModel() {
     prevSave_ = dataFlowGraphModel_->save();
 }
 
-bool nitro::NodeDockWidget::canQuitSafely() {
+bool NodeDockWidget::canQuitSafely() {
     if (prevSave_ == dataFlowGraphModel_->save()) {
         return true;
     }
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Save changes",
+    reply = QMessageBox::question(this,
+                                  "Save changes",
                                   QString("Save changes before closing?\n%1").arg(filename_),
                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     if (reply == QMessageBox::Yes) {
@@ -152,12 +152,13 @@ bool nitro::NodeDockWidget::canQuitSafely() {
     return true;
 }
 
-void nitro::NodeDockWidget::saveModel(bool askFile) {
+void NodeDockWidget::saveModel(bool askFile) {
     QString filePath;
     if (askFile || filename_ == "untitled.json") {
-        filePath = QFileDialog::getSaveFileName(
-                this, "Save NITRO Config", "../data/" + filename_,
-                tr("Json Files (*.json)"));
+        filePath = QFileDialog::getSaveFileName(this,
+                                                "Save NITRO Config",
+                                                "../data/" + filename_,
+                                                tr("Json Files (*.json)"));
         if (filePath == "") {
             return;
         }
@@ -178,13 +179,14 @@ void nitro::NodeDockWidget::saveModel(bool askFile) {
     }
 }
 
-void nitro::NodeDockWidget::loadModel() {
+void NodeDockWidget::loadModel() {
     if (!canQuitSafely()) {
         return;
     }
-    QString filePath = QFileDialog::getOpenFileName(
-            this, "Load NITRO Config", "../data/",
-            tr("Json Files (*.json)"));
+    QString filePath = QFileDialog::getOpenFileName(this,
+                                                    "Load NITRO Config",
+                                                    "../data/",
+                                                    tr("Json Files (*.json)"));
     if (filePath == "") {
         return;
     }
@@ -202,7 +204,7 @@ void nitro::NodeDockWidget::loadModel() {
     QApplication::restoreOverrideCursor();
 }
 
-void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
+void NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     QWidget::keyPressEvent(event);
     switch (event->key()) {
         case Qt::Key_Space:
@@ -214,11 +216,11 @@ void nitro::NodeDockWidget::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-const QString &nitro::NodeDockWidget::getFileName() {
+const QString &NodeDockWidget::getFileName() {
     return filename_;
 }
 
-QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {
+QWidget *NodeDockWidget::initNodeTitleBar(MainWindow *window) {
     auto *wrapper = new QWidget();
     auto *hLayout = new QHBoxLayout();
     hLayout->addWidget(window->buildDockIcon(":/icons/node_editor.png"));
@@ -236,10 +238,12 @@ QWidget *nitro::NodeDockWidget::initNodeTitleBar(nitro::MainWindow *window) {
     return wrapper;
 }
 
-void nitro::NodeDockWidget::updateGraphicsView() {
+void NodeDockWidget::updateGraphicsView() {
     for (auto &item: dataFlowGraphModel_->allNodeIds()) {
         dataFlowGraphModel_->nodeUpdated(item);
     }
 
     nodeTreeWidget_->setStyleSheet("QTreeView::item { padding: 5px; }");
 }
+
+} // namespace nitro

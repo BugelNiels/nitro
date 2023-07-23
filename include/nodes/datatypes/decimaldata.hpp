@@ -1,30 +1,26 @@
 #pragma once
 
-#include <utility>
-
-#include "QtNodes/NodeData"
 #include "flexibledata.hpp"
-#include "colimagedata.hpp"
-#include "include/valueslider.hpp"
+#include <QtNodes/NodeData>
 
 namespace nitro {
-    class DecimalData : public FlexibleData<double, DecimalData> {
-    public:
-        DecimalData();
 
-        explicit DecimalData(double value);
+class DecimalData : public FlexibleData<double, DecimalData> {
+public:
+    DecimalData();
 
-        static QString id() {
-            return id_;
-        }
+    explicit DecimalData(double value);
 
-        static void registerConversions();
+    static QString id() { return id_; }
 
-        [[nodiscard]] QString getDescription() const override;
+    static void registerConversions();
 
-    private:
-        inline static const QString name_ = "Decimal";
-        inline static const QString id_ = "Decimal";
-        inline static const QColor baseColor_ = {161, 161, 161};
-    };
-} // nitro
+    [[nodiscard]] QString getDescription() const override;
+
+private:
+    inline static const QString name_ = "Decimal";
+    inline static const QString id_ = "Decimal";
+    inline static const QColor baseColor_ = {161, 161, 161};
+};
+
+} // namespace nitro

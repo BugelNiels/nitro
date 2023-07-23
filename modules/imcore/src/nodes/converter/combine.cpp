@@ -1,13 +1,15 @@
 #include "combine.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define OUTPUT_IMAGE "Image"
+namespace nitro::ImCore {
 
-void
-nitro::CombineOperator::execute(NodePorts &nodePorts) {
+static inline const QString OUTPUT_IMAGE = "Image";
+
+void CombineOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -27,20 +29,20 @@ nitro::CombineOperator::execute(NodePorts &nodePorts) {
     cv::Mat result;
     cv::merge(channels, result);
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
-
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::CombineOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> CombineOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
-        return builder.
-                withOperator(std::make_unique<nitro::CombineOperator>())->
-                withIcon("layers.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<GrayImageData>("Channel 1")->
-                withInputPort<GrayImageData>("Channel 2")->
-                withInputPort<GrayImageData>("Channel 3")->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("Combine Channels", "combineChannels", category);
+        return builder.withOperator(std::make_unique<CombineOperator>())
+                ->withIcon("layers.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<GrayImageData>("Channel 1")
+                ->withInputPort<GrayImageData>("Channel 2")
+                ->withInputPort<GrayImageData>("Channel 3")
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

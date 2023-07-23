@@ -1,13 +1,16 @@
 #include "rgbtobw.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
+namespace nitro::ImCore {
 
-void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
+
+void RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -21,15 +24,17 @@ void nitro::RgbToGrayscaleOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::RgbToGrayscaleOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> RgbToGrayscaleOperator::creator(
+        const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("RGB to Grayscale", "grayscaleConvert", category);
-        return builder.
-                withOperator(std::make_unique<nitro::RgbToGrayscaleOperator>())->
-                withIcon("greyscale.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<GrayImageData>(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("RGB to Grayscale", "grayscaleConvert", category);
+        return builder.withOperator(std::make_unique<RgbToGrayscaleOperator>())
+                ->withIcon("greyscale.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<GrayImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

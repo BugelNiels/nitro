@@ -1,25 +1,24 @@
 #include "iminfo.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/integerdata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_WIDTH "Width"
-#define OUTPUT_HEIGHT "Height"
-#define OUTPUT_AR "Aspect Ratio"
-#define OUTPUT_NUM_PIXELS "Num Pixels"
-#define OUTPUT_TYPE "Type"
+namespace nitro::ImCore {
 
-nitro::ImInfoOperator::ImInfoOperator(QLabel *typeLabel)
-        : typeLabel_(typeLabel) {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_WIDTH = "Width";
+static inline const QString OUTPUT_HEIGHT = "Height";
+static inline const QString OUTPUT_AR = "Aspect Ratio";
+static inline const QString OUTPUT_NUM_PIXELS = "Num Pixels";
+static inline const QString OUTPUT_TYPE = "Type";
 
-}
+ImInfoOperator::ImInfoOperator(QLabel *typeLabel) : typeLabel_(typeLabel) {}
 
-void
-nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
+void ImInfoOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -31,26 +30,26 @@ nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
 
     QString type;
     switch (im1->depth()) {
-        case CV_8U:  // 8-bit unsigned integer (0-255)
+        case CV_8U: // 8-bit unsigned integer (0-255)
             type = "8-bit uint";
             break;
-        case CV_8S:  // 8-bit signed integer (-128 to 127)
+        case CV_8S: // 8-bit signed integer (-128 to 127)
             type = "8-bit int";
             break;
-        case CV_16U:  // 16-bit unsigned integer (0-65535)
+        case CV_16U: // 16-bit unsigned integer (0-65535)
             type = "16-bit uint";
             break;
-        case CV_16S:  // 16-bit signed integer (-32768 to 32767)
+        case CV_16S: // 16-bit signed integer (-32768 to 32767)
             type = "16-bit int";
             break;
-        case CV_32S:  // 32-bit signed integer
+        case CV_32S: // 32-bit signed integer
             type = "32-bit int";
             break;
 
-        case CV_32F:  // 32-bit floating-point
+        case CV_32F: // 32-bit floating-point
             type = "Float";
             break;
-        case CV_64F:  // 64-bit floating-point
+        case CV_64F: // 64-bit floating-point
             type = "Double";
             break;
         default:
@@ -61,20 +60,21 @@ nitro::ImInfoOperator::execute(NodePorts &nodePorts) {
     typeLabel_->setText(QString("Type: %1").arg(type));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImInfoOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ImInfoOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Image Info", "imInfo", category);
+        NitroNodeBuilder builder("Image Info", "imInfo", category);
         auto *typeLabel = new QLabel("Type: ");
-        return builder.
-                withOperator(std::make_unique<nitro::ImInfoOperator>(typeLabel))->
-                withIcon("info.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withDisplayWidget(OUTPUT_TYPE, typeLabel)->
-                withOutputInteger(OUTPUT_WIDTH)->
-                withOutputInteger(OUTPUT_HEIGHT)->
-                withOutputInteger(OUTPUT_NUM_PIXELS)->
-                withOutputValue(OUTPUT_AR)->
-                build();
+        return builder.withOperator(std::make_unique<ImInfoOperator>(typeLabel))
+                ->withIcon("info.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withDisplayWidget(OUTPUT_TYPE, typeLabel)
+                ->withOutputInteger(OUTPUT_WIDTH)
+                ->withOutputInteger(OUTPUT_HEIGHT)
+                ->withOutputInteger(OUTPUT_NUM_PIXELS)
+                ->withOutputValue(OUTPUT_AR)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

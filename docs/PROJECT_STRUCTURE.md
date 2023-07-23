@@ -56,13 +56,13 @@ class.
 
 A simple implementation of a denoising node is then as follows:
 
-[Header file](../modules/imcore/src/nodes/filters/bilateralfilter.hpp)
+[Header file](../modules/improc/src/nodes/blur/bilateralfilter.hpp)
 
 ```c++
 #pragma once
 
-#include "nodes/nodeoperator.hpp"
-#include "nodes/nitronode.hpp"
+#include <nodes/nodeoperator.hpp>
+#include <nodes/nitronode.hpp>
 
 namespace nitro {
 
@@ -90,11 +90,11 @@ namespace nitro {
 } // nitro
 ```
 
-[Source file](../modules/imcore/src/nodes/filters/bilateralfilter.cpp)
+[Source file](../modules/improc/src/nodes/blur/bilateralfilter.cpp)
 
 ```c++
 #include "bilateralfilter.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include <nodes/nitronodebuilder.hpp>
 #include "nodes/datatypes/colimagedata.hpp"
 #include <opencv2/imgproc.hpp>
 
@@ -181,8 +181,8 @@ namespace nitro {
 [Source file](../src/core/nodes/datatypes/integerdata.cpp)
 
 ```c++
-#include "nodes/datatypes/integerdata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <nodes/datatypes/integerdata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
 
 namespace nitro {
     IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {

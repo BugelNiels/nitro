@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QString>
-#include "QtNodes/NodeDelegateModel"
-#include "QtNodes/NodeInfo.hpp"
-#include "nodeports.hpp"
 #include "nodeoperator.hpp"
+#include "nodeports.hpp"
+#include <QString>
+#include <QtNodes/NodeDelegateModel>
+#include <QtNodes/NodeInfo.hpp>
 
 class QLabel;
 
@@ -15,92 +15,91 @@ class QComboBox;
 class QCheckBox;
 
 namespace ValueSliders {
-    class IntSlider;
+class IntSlider;
 
-    class DoubleSlider;
-}
+class DoubleSlider;
+} // namespace ValueSliders
 
 namespace nitro {
 
-    class NitroNode : public QtNodes::NodeDelegateModel {
+class NitroNode : public QtNodes::NodeDelegateModel {
 
-    public:
-        NitroNode() = default;
+public:
+    NitroNode() = default;
 
-        ~NitroNode() override;
+    ~NitroNode() override;
 
-        void init(QtNodes::NodeInfo info,
-                  const NodePorts &nodePorts,
-                  std::unique_ptr<NodeOperator> algo,
-                  QWidget *widget);
+    void init(QtNodes::NodeInfo info,
+              const NodePorts &nodePorts,
+              std::unique_ptr<NodeOperator> algo,
+              QWidget *widget);
 
-        [[nodiscard]] QString caption() const override;
+    [[nodiscard]] QString caption() const override;
 
-        [[nodiscard]] bool captionVisible() const override;
+    [[nodiscard]] bool captionVisible() const override;
 
-        [[nodiscard]] QString name() const override;
+    [[nodiscard]] QString name() const override;
 
-        QWidget *embeddedWidget() override;
+    QWidget *embeddedWidget() override;
 
-        [[nodiscard]] const QtNodes::NodeInfo &getInfo() const;
+    [[nodiscard]] const QtNodes::NodeInfo &getInfo() const;
 
-        [[nodiscard]] QJsonObject save() const override;
+    [[nodiscard]] QJsonObject save() const override;
 
-        void load(const QJsonObject &) override;
+    void load(const QJsonObject &) override;
 
-    public Q_SLOTS:
+public Q_SLOTS:
 
-        void inputConnectionCreated(const QtNodes::ConnectionId &) override;
+    void inputConnectionCreated(const QtNodes::ConnectionId &) override;
+
     void inputConnectionDeleted(const QtNodes::ConnectionId &) override;
 
-    protected:
+protected:
+    [[nodiscard]] unsigned int nPorts(QtNodes::PortType portType) const override;
 
-        [[nodiscard]] unsigned int nPorts(QtNodes::PortType portType) const override;
+    [[nodiscard]] QtNodes::NodeDataType dataType(QtNodes::PortType portType,
+                                                 QtNodes::PortIndex portIndex) const override;
 
-        [[nodiscard]] QtNodes::NodeDataType
-        dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
+    std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
-        std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
+    void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
 
-        void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override;
+private:
+    QtNodes::NodeInfo info_;
+    std::unique_ptr<NodeOperator> algo_;
+    NodePorts nodePorts_;
+    QJsonObject propJson_;
+    // when new widgets_ are added, they register a function that allows it to grab a value from the json list
+    std::unordered_map<QString, std::function<void(QJsonValue)>> widgetsJson_;
+    std::unordered_map<QString, QWidget *> widgets_;
 
-    private:
+    QWidget *widget_ = nullptr;
+    bool sliderInputDeleted_ = false;
 
-        QtNodes::NodeInfo info_;
-        std::unique_ptr<NodeOperator> algo_;
-        NodePorts nodePorts_;
-        QJsonObject propJson_;
-        // when new widgets_ are added, they register a function that allows it to grab a value from the json list
-        std::unordered_map<QString, std::function<void(QJsonValue)>> widgetsJson_;
-        std::unordered_map<QString, QWidget *> widgets_;
+    void connectInputWidget(ValueSliders::IntSlider *slider, QLabel *valLabel, int port);
 
-        QWidget *widget_ = nullptr;
-        bool sliderInputDeleted_ = false;
+    void connectInputWidget(ValueSliders::DoubleSlider *slider, QLabel *valLabel, int port);
 
+    void connectLoadButton(const QString &name,
+                           QPushButton *button,
+                           int port,
+                           const QString &filter);
 
-        void connectInputWidget(ValueSliders::IntSlider *slider, QLabel* valLabel, int port);
+    void connectComboBox(const QString &name, QComboBox *comboBox);
 
-        void connectInputWidget(ValueSliders::DoubleSlider *slider, QLabel* valLabel, int port);
+    void connectCheckBox(const QString &name, QCheckBox *checkBox);
 
-        void connectLoadButton(const QString &name, QPushButton *button, int port, const QString &filter);
+    void connectSourceInteger(ValueSliders::IntSlider *slider, int port);
 
-        void connectComboBox(const QString &name, QComboBox *comboBox);
+    void connectSourceValue(ValueSliders::DoubleSlider *slider, int port);
 
-        void connectCheckBox(const QString &name, QCheckBox *checkBox);
+    [[nodiscard]] QString getInPortKey(unsigned int portIndex) const;
 
-        void connectSourceInteger(ValueSliders::IntSlider *slider, int port);
+    [[nodiscard]] QString getOutPortKey(unsigned int portIndex) const;
 
-        void connectSourceValue(ValueSliders::DoubleSlider *slider, int port);
+    void connectLabel(const QString &name, QLabel *label);
 
-        [[nodiscard]] QString getInPortKey(unsigned int portIndex) const;
+    friend class NitroNodeBuilder;
+};
 
-        [[nodiscard]] QString getOutPortKey(unsigned int portIndex) const;
-
-        void connectLabel(const QString &name, QLabel *label);
-
-        friend class NitroNodeBuilder;
-
-
-    };
-
-} // nitro
+} // namespace nitro

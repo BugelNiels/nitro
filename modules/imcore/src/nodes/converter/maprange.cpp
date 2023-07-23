@@ -1,18 +1,22 @@
 #include "maprange.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include <colimagedata.hpp>
+#include <grayimagedata.hpp>
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Value"
-#define INPUT_FROM_MIN "From Min"
-#define INPUT_FROM_MAX "From Max"
-#define INPUT_TO_MIN "To Min"
-#define INPUT_TO_MAX "To Max"
-#define OUTPUT_IMAGE "Result"
-#define OPTION_CLAMP "Clamp"
+namespace nitro::ImCore {
 
-void nitro::MapRangeOperator::execute(NodePorts &nodePorts) {
+static inline const QString INPUT_IMAGE = "Value";
+static inline const QString INPUT_FROM_MIN = "From Min";
+static inline const QString INPUT_FROM_MAX = "From Max";
+static inline const QString INPUT_TO_MIN = "To Min";
+static inline const QString INPUT_TO_MAX = "To Max";
+static inline const QString OUTPUT_IMAGE = "Result";
+static inline const QString OPTION_CLAMP = "Clamp";
+
+void MapRangeOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -52,21 +56,26 @@ void nitro::MapRangeOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<GrayImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::MapRangeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> MapRangeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Map Range", "mapRange", category);
-        return builder.
-                withOperator(std::make_unique<nitro::MapRangeOperator>())->
-                withIcon("map_range.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputValue(INPUT_IMAGE, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_FROM_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_FROM_MAX, 1, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_TO_MIN, 0, 0, 1, BoundMode::UNCHECKED)->
-                withInputValue(INPUT_TO_MAX, 1, 0, 1, BoundMode::UNCHECKED)->
-                withOutputValue(OUTPUT_IMAGE)->
-                withCheckBox(OPTION_CLAMP, false)->
-                build();
+        NitroNodeBuilder builder("Map Range", "mapRange", category);
+        return builder.withOperator(std::make_unique<MapRangeOperator>())
+                ->withIcon("map_range.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputValue(INPUT_IMAGE,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_FROM_MIN, 0, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_FROM_MAX, 1, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_TO_MIN, 0, 0, 1, BoundMode::UNCHECKED)
+                ->withInputValue(INPUT_TO_MAX, 1, 0, 1, BoundMode::UNCHECKED)
+                ->withOutputValue(OUTPUT_IMAGE)
+                ->withCheckBox(OPTION_CLAMP, false)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

@@ -1,13 +1,16 @@
 #include "invert.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
+namespace nitro::ImCore {
 
-void nitro::InvertOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
+
+void InvertOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
 
@@ -29,15 +32,16 @@ void nitro::InvertOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::InvertOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> InvertOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Invert", "invert", category);
-        return builder.
-                withOperator(std::make_unique<nitro::InvertOperator>())->
-                withIcon("invert.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("Invert", "invert", category);
+        return builder.withOperator(std::make_unique<InvertOperator>())
+                ->withIcon("invert.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

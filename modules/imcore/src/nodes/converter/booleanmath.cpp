@@ -1,15 +1,18 @@
 #include "booleanmath.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_VALUE_1 "Value 1"
-#define INPUT_VALUE_2 "Value 2"
-#define OUTPUT_VALUE "Value"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
+
+static inline const QString INPUT_VALUE_1 = "Value 1";
+static inline const QString INPUT_VALUE_2 = "Value 2";
+static inline const QString OUTPUT_VALUE = "Value";
+static inline const QString MODE_DROPDOWN = "Mode";
 
 double regularBoolMath(double a, double b, int option) {
     switch (option) {
@@ -33,7 +36,6 @@ double regularBoolMath(double a, double b, int option) {
             return int(std::round(a)) ^ int(std::round(b));
         default:
             return a / 2.0 + b / 2.0;
-
     }
 }
 
@@ -55,7 +57,7 @@ static void match(const cv::Mat &src, cv::Mat &dest, const cv::Size &size, int n
 }
 
 // ensures the images all have the same size and number of channels
-void nitro::BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
+void BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     auto in1 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_1);
     auto in2 = *nodePorts.inGetAs<ColImageData>(INPUT_VALUE_2);
 
@@ -70,7 +72,7 @@ void nitro::BooleanMathOperator::initUnifiedInputs(NodePorts &nodePorts) {
     match(in2, in2_, size, numChannels);
 }
 
-void nitro::BooleanMathOperator::execute(NodePorts &nodePorts) {
+void BooleanMathOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -124,24 +126,32 @@ void nitro::BooleanMathOperator::execute(NodePorts &nodePorts) {
         default:
             cv::multiply(in1_, in2_, result);
             break;
-
     }
     nodePorts.output<ColImageData>(OUTPUT_VALUE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BooleanMathOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> BooleanMathOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Boolean Math", "booleanMath", category);
-        return builder.
-                withOperator(std::make_unique<nitro::BooleanMathOperator>())->
-                withIcon("bool_math.png")->
-                withNodeColor(NITRO_CONVERTER_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"<", "<=", ">", ">=", "==", "AND", "OR", "XOR"})->
-                withInputValue(INPUT_VALUE_1, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withInputValue(INPUT_VALUE_2, 0.5, 0, 1, BoundMode::UNCHECKED,
-                               {ColImageData::id(), GrayImageData::id()})->
-                withOutputValue(OUTPUT_VALUE)->
-                build();
+        NitroNodeBuilder builder("Boolean Math", "booleanMath", category);
+        return builder.withOperator(std::make_unique<BooleanMathOperator>())
+                ->withIcon("bool_math.png")
+                ->withNodeColor(NITRO_CONVERTER_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"<", "<=", ">", ">=", "==", "AND", "OR", "XOR"})
+                ->withInputValue(INPUT_VALUE_1,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withInputValue(INPUT_VALUE_2,
+                                 0.5,
+                                 0,
+                                 1,
+                                 BoundMode::UNCHECKED,
+                                 {ColImageData::id(), GrayImageData::id()})
+                ->withOutputValue(OUTPUT_VALUE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

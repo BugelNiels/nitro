@@ -1,12 +1,15 @@
 #include "randomoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "nodes/datatypes/decimaldata.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/nitronodebuilder.hpp>
+
 #include <opencv2/imgproc.hpp>
 #include <random>
 
-#define INPUT_SEED "Seed"
-#define OUTPUT_VAL "Value"
+namespace nitro::ImCore {
+
+static inline const QString INPUT_SEED = "Seed";
+static inline const QString OUTPUT_VAL = "Value";
 
 static double generateRandomDouble(int seed) {
     std::default_random_engine generator(seed);
@@ -14,7 +17,7 @@ static double generateRandomDouble(int seed) {
     return distribution(generator);
 }
 
-void nitro::RandomOperator::execute(NodePorts &nodePorts) {
+void RandomOperator::execute(NodePorts &nodePorts) {
     if (!nodePorts.allInputsPresent()) {
         return;
     }
@@ -23,15 +26,16 @@ void nitro::RandomOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<DecimalData>(OUTPUT_VAL, generateRandomDouble(seed));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::RandomOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> RandomOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Random", "random", category);
-        return builder.
-                withOperator(std::make_unique<nitro::RandomOperator>())->
-                withIcon("number.png")->
-                withNodeColor(NITRO_INPUT_COLOR)->
-                withInputInteger(INPUT_SEED, 0, 0, 100, BoundMode::LOWER_ONLY)->
-                withOutputValue(OUTPUT_VAL)->
-                build();
+        NitroNodeBuilder builder("Random", "random", category);
+        return builder.withOperator(std::make_unique<RandomOperator>())
+                ->withIcon("number.png")
+                ->withNodeColor(NITRO_INPUT_COLOR)
+                ->withInputInteger(INPUT_SEED, 0, 0, 100, BoundMode::LOWER_ONLY)
+                ->withOutputValue(OUTPUT_VAL)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

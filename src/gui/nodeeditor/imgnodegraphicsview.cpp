@@ -1,38 +1,38 @@
 #include "imgnodegraphicsview.hpp"
-#include "QtNodes/DataFlowGraphModel"
 
 #include "src/util/imgresourcereader.hpp"
-#include "QtNodes/internal/AbstractNodeGeometry.hpp"
+#include <util.hpp>
 
-#include "util.hpp"
+#include <QtNodes/BasicGraphicsScene>
+#include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/Definitions>
+#include <QtNodes/InvalidData.hpp>
+#include <QtNodes/internal/AbstractNodeGeometry.hpp>
+#include <QtNodes/internal/ConnectionGraphicsObject.hpp>
+#include <QtNodes/internal/NodeGraphicsObject.hpp>
+#include <QtNodes/internal/UndoCommands.hpp>
 
-#include "QtNodes/internal/ConnectionGraphicsObject.hpp"
-#include "QtNodes/internal/NodeGraphicsObject.hpp"
-#include "QtNodes/InvalidData.hpp"
-#include "QtNodes/Definitions"
 #include <QAction>
-#include "QtNodes/BasicGraphicsScene"
-#include "QtNodes/internal/UndoCommands.hpp"
+#include <QApplication>
+#include <QKeyEvent>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMimeData>
 #include <QUndoStack>
-#include <QApplication>
 
-#include <QKeyEvent>
-#include <QLineEdit>
+namespace nitro {
 
-
-nitro::ImageNodeGraphicsView::ImageNodeGraphicsView(NodeRegistry *nodes,
-                                                    QtNodes::BasicGraphicsScene *scene,
-                                                    QtNodes::DataFlowGraphModel *model, QWidget *parent)
-        : NodeGraphicsView(scene, model, parent),
-          nodeBeingViewed_(QtNodes::InvalidNodeId),
-          nodes_(nodes) {
+ImageNodeGraphicsView::ImageNodeGraphicsView(std::shared_ptr<NodeRegistry> &nodes,
+                                             QtNodes::BasicGraphicsScene *scene,
+                                             QtNodes::DataFlowGraphModel *model,
+                                             QWidget *parent)
+    : NodeGraphicsView(scene, model, parent),
+      nodeBeingViewed_(QtNodes::InvalidNodeId),
+      nodes_(nodes) {
     setAcceptDrops(true);
 }
 
-QAction *
-nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
+QAction *ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
     const QString &menuName = info.getNodeName();
     const QString &nodeType = info.getNodeId();
     const QString &iconPath = info.getIconPath();
@@ -47,12 +47,12 @@ nitro::ImageNodeGraphicsView::spawnNodeAction(const QtNodes::NodeInfo &info) {
         }
     });
     QIcon icon;
-    icon.addPixmap(nitro::ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
+    icon.addPixmap(ImResourceReader::getPixMap(iconPath, {16, 16}, makeReadable(icColor)));
     createNodeAction->setIcon(icon);
     return createNodeAction;
 }
 
-QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
+QMenu *ImageNodeGraphicsView::initNodeMenu() {
     auto *menu = new QMenu(this);
     const int padding = 12;
     menu->setContentsMargins(padding, padding, padding, padding);
@@ -64,14 +64,14 @@ QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
 
     // TODO
     // Add filterbox to the context menu
-//    auto *txtBox = new QLineEdit(menu);
-//    txtBox->setPlaceholderText(QStringLiteral("Filter"));
-//    txtBox->setClearButtonEnabled(true);
-//
-//    auto *txtBoxAction = new QWidgetAction(menu);
-//    txtBoxAction->setDefaultWidget(txtBox);
-//
-//    menu->addAction(txtBoxAction);
+    //    auto *txtBox = new QLineEdit(menu);
+    //    txtBox->setPlaceholderText(QStringLiteral("Filter"));
+    //    txtBox->setClearButtonEnabled(true);
+    //
+    //    auto *txtBoxAction = new QWidgetAction(menu);
+    //    txtBoxAction->setDefaultWidget(txtBox);
+    //
+    //    menu->addAction(txtBoxAction);
     menu->addSeparator();
 
     auto categories = nodes_->getCategories();
@@ -90,8 +90,7 @@ QMenu *nitro::ImageNodeGraphicsView::initNodeMenu() {
     return menu;
 }
 
-
-void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
+void ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
     // Spawn and connect to viewer if possible
     QGraphicsItem *item = itemAt(x, y);
     // Update position of current selected node?
@@ -100,11 +99,13 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
         QtNodes::NodeGraphicsObject *ngo;
         ngo = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item);
         while (!ngo) {
+            if (item == nullptr) {
+                return;
+            }
             item = item->parentItem();
             ngo = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item);
         }
         if (auto c = qgraphicsitem_cast<QtNodes::NodeGraphicsObject *>(item)) {
-
 
             QtNodes::NodeId viewerNodeId = QtNodes::InvalidNodeId;
             auto allNodes = dataModel_->allNodeIds();
@@ -113,7 +114,8 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
             // Loop over the ports and check if there is a viewer node available for said port
             QString viewerNodeName = "ImageViewer";
             for (auto id: allNodes) {
-                if (viewerNodeName == dataModel_->nodeData(id, QtNodes::NodeRole::Type).value<QString>()) {
+                if (viewerNodeName ==
+                    dataModel_->nodeData(id, QtNodes::NodeRole::Type).value<QString>()) {
                     viewerNodeId = id;
                     break;
                 }
@@ -126,19 +128,30 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
                 createCommand = new QtNodes::CreateCommand(scene_, viewerNodeName, posView);
                 scene_->undoStack().push(createCommand);
                 viewerNodeId = createCommand->getNodeId();
-
             }
-            auto viewerType = dataModel_->portData(viewerNodeId, QtNodes::PortType::In, 0,
-                                                   QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
+            auto viewerType = dataModel_
+                                      ->portData(viewerNodeId,
+                                                 QtNodes::PortType::In,
+                                                 0,
+                                                 QtNodes::PortRole::DataType)
+                                      .value<QtNodes::NodeDataType>();
 
             auto const &cid = c->nodeId();
+            if (viewerNodeName ==
+                dataModel_->nodeData(cid, QtNodes::NodeRole::Type).value<QString>()) {
+                return;
+            }
             // Find a suitable port to view; multiple clicks will cycle through the ports
             if (nodeBeingViewed_ == cid) {
                 int numPorts = dataModel_->nodeData(cid, QtNodes::NodeRole::OutPortCount).toInt();
                 for (int i = 0; i < numPorts; ++i) {
                     currentPort_++;
-                    auto pData = dataModel_->portData(nodeBeingViewed_, QtNodes::PortType::Out, currentPort_,
-                                                      QtNodes::PortRole::DataType).value<QtNodes::NodeDataType>();
+                    auto pData = dataModel_
+                                         ->portData(nodeBeingViewed_,
+                                                    QtNodes::PortType::Out,
+                                                    currentPort_,
+                                                    QtNodes::PortRole::DataType)
+                                         .value<QtNodes::NodeDataType>();
                     if (pData.id == viewerType.id || viewerType.allowConversionFrom(pData.id)) {
                         break;
                     }
@@ -149,12 +162,18 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
             } else {
                 currentPort_ = 0;
             }
-            QtNodes::ConnectionId connectionId = {.outNodeId = cid, .outPortIndex = currentPort_, .inNodeId = viewerNodeId, .inPortIndex = 0};
+            QtNodes::ConnectionId connectionId = {.outNodeId = cid,
+                                                  .outPortIndex = currentPort_,
+                                                  .inNodeId = viewerNodeId,
+                                                  .inPortIndex = 0};
             if (dataModel_->connectionPossible(connectionId)) {
 
                 QtNodes::NodeId const nodeId = getNodeId(QtNodes::PortType::In, connectionId);
-                QtNodes::PortIndex const portIndex = getPortIndex(QtNodes::PortType::In, connectionId);
-                auto const connections = dataModel_->connections(nodeId, QtNodes::PortType::In, portIndex);
+                QtNodes::PortIndex const portIndex = getPortIndex(QtNodes::PortType::In,
+                                                                  connectionId);
+                auto const connections = dataModel_->connections(nodeId,
+                                                                 QtNodes::PortType::In,
+                                                                 portIndex);
                 // Delete existing connections from viewer node
                 for (auto &con: connections) {
                     dataModel_->deleteConnection(con);
@@ -168,18 +187,18 @@ void nitro::ImageNodeGraphicsView::spawnViewerNodeAt(int x, int y) {
     }
 }
 
-void nitro::ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
-    if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
-        event->button() == Qt::LeftButton) {
+void ImageNodeGraphicsView::mousePressEvent(QMouseEvent *event) {
+    if (event->modifiers().testFlag(Qt::ControlModifier) &&
+        event->modifiers().testFlag(Qt::ShiftModifier) && event->button() == Qt::LeftButton) {
         spawnViewerNodeAt(event->pos().x(), event->pos().y());
     } else {
         QtNodes::GraphicsView::mousePressEvent(event);
     }
 }
 
-void nitro::ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
-    if (event->modifiers().testFlag(Qt::ControlModifier) && event->modifiers().testFlag(Qt::ShiftModifier) &&
-        event->button() == Qt::LeftButton) {
+void ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->modifiers().testFlag(Qt::ControlModifier) &&
+        event->modifiers().testFlag(Qt::ShiftModifier) && event->button() == Qt::LeftButton) {
         // Fix to ensure we can cycle the viewer node quickly between ports
         mousePressEvent(event);
         return;
@@ -187,7 +206,7 @@ void nitro::ImageNodeGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 }
 
-void nitro::ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
+void ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
     if (event->mimeData()->hasUrls()) {
         QList<QUrl> urls = event->mimeData()->urls();
         if (!urls.isEmpty()) {
@@ -213,12 +232,13 @@ void nitro::ImageNodeGraphicsView::dropEvent(QDropEvent *event) {
     }
 }
 
-void nitro::ImageNodeGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
+void ImageNodeGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
-
 }
 
-void nitro::ImageNodeGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
+void ImageNodeGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
     QGraphicsView::dragMoveEvent(event);
     event->acceptProposedAction();
 }
+
+} // namespace nitro

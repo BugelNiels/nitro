@@ -1,15 +1,18 @@
 #include "imflip.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
 
-void nitro::ImFlipOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+
+void ImFlipOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     int option = nodePorts.getOption(MODE_DROPDOWN);
@@ -20,7 +23,7 @@ void nitro::ImFlipOperator::execute(NodePorts &nodePorts) {
         case 0:
             mode = 1;
             break;
-        case 1 :
+        case 1:
             mode = 0;
             break;
         default:
@@ -33,16 +36,17 @@ void nitro::ImFlipOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ImFlipOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ImFlipOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Flip", "ImFlip", category);
-        return builder.
-                withOperator(std::make_unique<nitro::ImFlipOperator>())->
-                withIcon("flip.png")->
-                withNodeColor(NITRO_TRANSFORM_COLOR)->
-                withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("Flip", "ImFlip", category);
+        return builder.withOperator(std::make_unique<ImFlipOperator>())
+                ->withIcon("flip.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withDropDown(MODE_DROPDOWN, {"Horizontal", "Vertical", "Diagonal"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

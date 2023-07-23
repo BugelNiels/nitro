@@ -10,6 +10,7 @@
 @MODULE_INCLUDES@
 
 namespace nitro {
+
     // Initialize modules
     inline std::vector<std::unique_ptr<NitroModule>> initModules() {
         std::vector<std::unique_ptr<NitroModule>> modules;
@@ -19,4 +20,4 @@ namespace nitro {
         return modules;
     }
 
-}
+} // namespace nitro

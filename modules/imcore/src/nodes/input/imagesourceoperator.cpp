@@ -1,18 +1,20 @@
 #include "imagesourceoperator.hpp"
-#include "nodes/nitronodebuilder.hpp"
-#include "nodes/datatypes/colimagedata.hpp"
-#include "util.hpp"
-#include "nodes/datatypes/grayimagedata.hpp"
+#include "include/colimagedata.hpp"
+#include "include/grayimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
 
-#include <QDebug>
-#include <opencv2/imgcodecs.hpp>
 #include <QImageReader>
+#include <opencv2/imgcodecs.hpp>
 
-#define OUTPUT_IMAGE "Image"
-#define DISPLAY_IMAGE "Display Img"
-#define OUTPUT_ALPHA "Alpha"
+namespace nitro::ImCore {
 
-nitro::ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel) : displayImgLabel_(displayImgLabel) {}
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString DISPLAY_IMAGE = "Display Img";
+static inline const QString OUTPUT_ALPHA = "Alpha";
+
+ImageSourceOperator::ImageSourceOperator(QLabel *displayImgLabel)
+    : displayImgLabel_(displayImgLabel) {}
 
 void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     cv::Mat inputImg = cv::imread(filePath.toStdString(), -1);
@@ -36,7 +38,7 @@ void loadImage(const QString &filePath, cv::Mat &dest, cv::Mat &alpha) {
     inputImg.convertTo(dest, CV_32F, 1.0 / nitro::getMaxValue(inputImg));
 }
 
-void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
+void ImageSourceOperator::execute(NodePorts &nodePorts) {
     QString filePath = nodePorts.getGlobalProperty(OUTPUT_IMAGE);
     cv::Mat img;
     cv::Mat alpha;
@@ -46,7 +48,13 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
         nodePorts.output<ColImageData>(OUTPUT_IMAGE, blankImg_);
         nodePorts.output<GrayImageData>(OUTPUT_ALPHA, blankImg_);
     } else {
-        nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
+        if (isGrayscale(img)) {
+
+            nodePorts.output<GrayImageData>(OUTPUT_IMAGE, img);
+        } else {
+
+            nodePorts.output<ColImageData>(OUTPUT_IMAGE, img);
+        }
         if (alpha.empty()) {
             alpha = {img.rows, img.cols, CV_32FC1, cv::Scalar(0)};
             nodePorts.output<GrayImageData>(OUTPUT_ALPHA, alpha);
@@ -56,29 +64,26 @@ void nitro::ImageSourceOperator::execute(NodePorts &nodePorts) {
     }
     int size = displayImgLabel_->width();
     displayImgLabel_->setFixedHeight(size);
-    displayImgLabel_->setPixmap(
-            QPixmap::fromImage(cvMatToQImage(img, displayBuf_))
-                    .scaled(size, size, Qt::KeepAspectRatio));
-
+    displayImgLabel_->setPixmap(QPixmap::fromImage(cvMatToQImage(img, displayBuf_))
+                                        .scaled(size, size, Qt::KeepAspectRatio));
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()>
-nitro::ImageSourceOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ImageSourceOperator::creator(const QString &category) {
 
     return [category]() {
-        NitroNodeBuilder builder("Image Source", "ImageSource", category);
-
         auto *imgDisplayLabel = new QLabel();
         imgDisplayLabel->setAlignment(Qt::AlignCenter);
         imgDisplayLabel->setStyleSheet("border: 1px solid grey;");
-        return builder.
-                withOperator(std::make_unique<nitro::ImageSourceOperator>(imgDisplayLabel))->
-                withLoadButton(OUTPUT_IMAGE, "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")->
-                withDisplayWidget(DISPLAY_IMAGE, imgDisplayLabel)->
-                withIcon("image_source.png")->
-                withNodeColor(NITRO_IMAGE_COLOR)->
-                withOutputPort<GrayImageData>(OUTPUT_ALPHA)->
-                build();
+        NitroNodeBuilder builder("Image Source", "ImageSource", category);
+        return builder.withOperator(std::make_unique<ImageSourceOperator>(imgDisplayLabel))
+                ->withLoadButton(OUTPUT_IMAGE,
+                                 "Img Files (*.png *.jpg *.jpeg *.tiff *.tif *pgm *ppm)")
+                ->withDisplayWidget(DISPLAY_IMAGE, imgDisplayLabel)
+                ->withIcon("image_source.png")
+                ->withNodeColor(NITRO_IMAGE_COLOR)
+                ->withOutputPort<GrayImageData>(OUTPUT_ALPHA)
+                ->build();
     };
 }
 
+} // namespace nitro::ImCore

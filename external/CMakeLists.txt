@@ -15,11 +15,8 @@ list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/flip/cpp/common)
 # QT Value Sliders
 option(SLIDER_LIBRARY ON)
 add_subdirectory(qt-value-slider)
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/qt-value-slider)
+list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/qt-value-slider/include)
 list(APPEND EXTERNAL_LIBS valueSliders)
-
-# Spline
-list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/spline/src)
 
 # Update parent variable.
 set(NITRO_INCLUDE_DIRS ${NITRO_INCLUDE_DIRS} PARENT_SCOPE)
