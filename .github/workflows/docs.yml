@@ -26,6 +26,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen
 
+      - name: Initialize and update doxygen-awesome-css
+        run: |
+          git submodule update --init --recursive external/doxygen-awesome-css
+
       - name: Generate documentation
         run: |
           project_version=$(head -n 1 version.txt)
