@@ -1,6 +1,9 @@
 #!/bin/bash
-
 # Cleans up build files
+
+# Setup the correct working directory
+initial_loc=$(pwd)
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd ..
 rm build -rf
@@ -13,6 +16,4 @@ rm lib/ -rf
 rm share/doc -rf
 rm plugins/ -rf
 rm translations/ -rf
-cd ..
-cd ..
-cd scripts || exit
+cd "$initial_loc"

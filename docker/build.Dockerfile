@@ -21,6 +21,8 @@ RUN apt-get -y update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     build-essential  \
     patchelf \
     libfuse2 \
+    libxkbcommon-x11-0 \
+    libxcb-*    \
     libgl1-mesa-dev -y
 
 RUN apt-get upgrade -y
@@ -39,5 +41,19 @@ ENV QT_PLUGIN_PATH /lib/qt/${QT}/gcc_64/plugins/
 ENV QML_IMPORT_PATH /lib/qt/${QT}/gcc_64/qml/
 ENV QML2_IMPORT_PATH /lib/qt/${QT}/gcc_64/qml/
 
+RUN apt-get install -y \
+    libx11-xcb-dev  \
+    libglu1-mesa-dev  \
+    libxrender-dev libxi-dev \
+    libxkbcommon-dev  \
+    libxkbcommon-x11-dev \
+    wget
+
 # Set the working directory
 WORKDIR /app/scripts
+
+RUN chmod +x clean.sh
+RUN ./clean.sh
+
+RUN chmod +x build-image.sh
+ENTRYPOINT ["./build-image.sh"]

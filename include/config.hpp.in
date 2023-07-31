@@ -1,6 +1,7 @@
 #pragma once
 
 #define NITRO_VERSION "@NITRO_VERSION@"
+#define NITRO_NAME "@NITRO_NAME"
 
 #include <memory>
 #include <vector>
@@ -9,6 +10,7 @@
 @MODULE_INCLUDES@
 
 namespace nitro {
+
     // Initialize modules
     inline std::vector<std::unique_ptr<NitroModule>> initModules() {
         std::vector<std::unique_ptr<NitroModule>> modules;
@@ -18,4 +20,4 @@ namespace nitro {
         return modules;
     }
 
-}
+} // namespace nitro

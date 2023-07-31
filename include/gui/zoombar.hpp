@@ -3,41 +3,43 @@
 #include <QProgressBar>
 
 namespace nitro {
+
+/**
+ * @brief A simple zoom bar widget that can be used to display zoom percentages.
+ */
+class ZoomBar : public QProgressBar {
+public:
     /**
+     * @brief Creates a new zoom bar.
      *
+     * @param minZoom The minimum zoom percentage.
+     * @param maxZoom The maximum zoom percentage.
+     * @param parent Parent widget.
      */
-    class ZoomBar : public QProgressBar {
-    public:
-        /**
-         *
-         * @param minZoom
-         * @param maxZoom
-         * @param parent
-         */
-        explicit ZoomBar(int minZoom, int maxZoom, QWidget *parent = nullptr);
+    explicit ZoomBar(int minZoom, int maxZoom, QWidget *parent = nullptr);
 
-        /**
-         *
-         * @return
-         */
-        [[nodiscard]] QString text() const override;
+    /**
+     * @brief The text to be displayed in the widget itself. Displays the zoom percentage.
+     * @return The text displayed in the widget.
+     */
+    [[nodiscard]] QString text() const override;
 
-        /**
-         *
-         * @param zoom
-         */
-        void setZoom(int zoom);
+    /**
+     * @brief Set the zoom to the provided percentage. (e.g. zoom=1 -> 1%).
+     * @param zoom Zoom percentage.
+     */
+    void setZoom(int zoom);
 
-        /**
-         *
-         * @param zoomFactor
-         */
-        void setZoom(double zoomFactor);
-    private:
-        int curZoom_;
-        int minZoom_;
-        int maxZoom_;
-    };
-} // nitro
+    /**
+     * @brief Set the zoom to the provided factor. (e.g. zoom=0.1 -> 10%).
+     * @param zoomFactor Zoom factor.
+     */
+    void setZoom(double zoomFactor);
 
+private:
+    int curZoom_;
+    int minZoom_;
+    int maxZoom_;
+};
 
+} // namespace nitro

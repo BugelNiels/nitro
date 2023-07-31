@@ -1,22 +1,27 @@
 #pragma once
 
 #include <QDockWidget>
+#include <QLabel>
+#include <QStatusBar>
 
 namespace nitro {
-    class MainWindow;
+class MainWindow;
+}
 
-    class ImageViewer;
+namespace nitro::ImCore {
 
-    class ImViewDockWidget : public QDockWidget {
-    public:
+class ImageViewer;
 
-        explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
+class ImViewDockWidget : public QDockWidget {
+public:
+    explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
 
-        ~ImViewDockWidget() override;
+    ~ImViewDockWidget() override;
 
-    private:
+private:
+    ImageViewer *imageViewer_;
 
-        ImageViewer *imageViewer_;
-    };
+    QWidget *initTitleBarWidget(MainWindow *window) const;
+};
 
-} // nitro
+} // namespace nitro::ImCore

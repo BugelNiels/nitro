@@ -1,19 +1,31 @@
 #pragma once
 
-#include <QPalette>
 #include <QColor>
-
-class Settings;
+#include <QPalette>
 
 namespace nitro {
 
-    typedef struct StylePreset {
-        QPalette palette;
-    } StylePreset;
+/**
+ * @brief Struct containing the information for the application style.
+ */
+using StylePreset = struct StylePreset { QPalette palette; };
 
-    void applyStylePreset(const StylePreset &preset);
+/**
+ * @brief Applies the provided style preset to the application.
+ * @param preset The style preset to use.
+ */
+void applyStylePreset(const StylePreset &preset);
 
-    StylePreset getDarkModePalette();
+/**
+ * @brief Constructs a default dark mode style present.
+ * @return A default dark mode style present.
+ */
+StylePreset getDarkModePalette();
 
-    StylePreset getLightModePalette();
-} // nitro
+/**
+ * @brief Constructs a default light mode style present.
+ * @return A default light mode style present.
+ */
+StylePreset getLightModePalette();
+
+} // namespace nitro

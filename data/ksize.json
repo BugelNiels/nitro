@@ -1,0 +1,905 @@
+{
+    "connections": [
+        {
+            "inPortIndex": 0,
+            "intNodeId": 32,
+            "outNodeId": 68,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 30,
+            "outNodeId": 67,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 25,
+            "outNodeId": 66,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 17,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 14,
+            "outNodeId": 64,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 11,
+            "outNodeId": 63,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 15,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 20,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 23,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 27,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 23,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 28,
+            "outNodeId": 27,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 22,
+            "outNodeId": 24,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 7,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 18,
+            "outNodeId": 20,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 21,
+            "outNodeId": 18,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 3,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 24,
+            "outNodeId": 25,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 26,
+            "outNodeId": 25,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 20,
+            "outNodeId": 19,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 18,
+            "outNodeId": 17,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 13,
+            "outNodeId": 14,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 15,
+            "outNodeId": 13,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 29,
+            "outNodeId": 28,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 34,
+            "outNodeId": 32,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 2,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 33,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 5,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 2,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 7,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 24,
+            "outNodeId": 23,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 10,
+            "outNodeId": 11,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 36,
+            "outNodeId": 32,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 6,
+            "outNodeId": 2,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 8,
+            "outNodeId": 10,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 31,
+            "outNodeId": 30,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 4,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 12,
+            "outNodeId": 15,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 9,
+            "outNodeId": 11,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 12,
+            "outNodeId": 14,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 16,
+            "outNodeId": 12,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 28,
+            "outNodeId": 30,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 34,
+            "outNodeId": 33,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 19,
+            "outNodeId": 17,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 10,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 33,
+            "outNodeId": 36,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 35,
+            "outNodeId": 34,
+            "outPortIndex": 2
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 27,
+            "outNodeId": 31,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 1,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 4,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 36,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -89.11519999999999,
+                "y": 1449.3888000000004
+            }
+        },
+        {
+            "id": 35,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1410.5343999999996,
+                "y": 832.1151999999996
+            }
+        },
+        {
+            "id": 34,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 577.1488000000002,
+                "y": 1514.8608
+            }
+        },
+        {
+            "id": 33,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 206.87679999999995,
+                "y": 1450.3808000000001
+            }
+        },
+        {
+            "id": 32,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -397.83520000000004,
+                "y": 1562.9568
+            }
+        },
+        {
+            "id": 31,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -89.11520000000002,
+                "y": 1131.4368
+            }
+        },
+        {
+            "id": 30,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -397.8351999999998,
+                "y": 1245.0047999999995
+            }
+        },
+        {
+            "id": 29,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1402.2399999999993,
+                "y": 719.449599999999
+            }
+        },
+        {
+            "id": 12,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 566.7807999999995,
+                "y": 322.54079999999993
+            }
+        },
+        {
+            "id": 11,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -389.1952,
+                "y": 42.316800000000086
+            }
+        },
+        {
+            "id": 10,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 585.7888,
+                "y": -5.779199999999975
+            }
+        },
+        {
+            "id": 23,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 289.8207999999999,
+                "y": 835.2127999999999
+            }
+        },
+        {
+            "id": 24,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 660.0927999999997,
+                "y": 899.6927999999998
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 443.904,
+                "y": -285.288
+            }
+        },
+        {
+            "id": 63,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/peppers.pgm"
+                }
+            },
+            "position": {
+                "x": -772,
+                "y": 85.99999999999999
+            }
+        },
+        {
+            "id": 25,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -314.89119999999997,
+                "y": 947.7887999999998
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+                "model-name": "ImageViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 1286.512,
+                "y": -302.0879999999999
+            }
+        },
+        {
+            "id": 64,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/cat.pgm"
+                }
+            },
+            "position": {
+                "x": -760.8000000000001,
+                "y": 352.79999999999995
+            }
+        },
+        {
+            "id": 26,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -6.171200000000169,
+                "y": 834.2208
+            }
+        },
+        {
+            "id": 6,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1394.5823999999998,
+                "y": 180.9391999999999
+            }
+        },
+        {
+            "id": 65,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/kodim21.png"
+                }
+            },
+            "position": {
+                "x": -724.8,
+                "y": 665.9999999999999
+            }
+        },
+        {
+            "id": 27,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 206.8768,
+                "y": 1132.4287999999997
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 215.5167999999999,
+                "y": -70.25920000000002
+            }
+        },
+        {
+            "id": 66,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/kodim20.png"
+                }
+            },
+            "position": {
+                "x": -644.4,
+                "y": 927.5999999999999
+            }
+        },
+        {
+            "id": 28,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 577.1487999999999,
+                "y": 1196.9087999999995
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1392.2175999999995,
+                "y": 290.21439999999984
+            }
+        },
+        {
+            "id": 67,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/bborg.pgm"
+                }
+            },
+            "position": {
+                "x": -645.5999999999999,
+                "y": 1282.8
+            }
+        },
+        {
+            "id": 9,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -80.47520000000011,
+                "y": -71.25119999999987
+            }
+        },
+        {
+            "id": 68,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/ducks.jpg"
+                }
+            },
+            "position": {
+                "x": -669.5999999999998,
+                "y": 1592.4
+            }
+        },
+        {
+            "id": 22,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1406.3871999999994,
+                "y": 615.0783999999998
+            }
+        },
+        {
+            "id": 21,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1405.3503999999996,
+                "y": 510.3615999999995
+            }
+        },
+        {
+            "id": 20,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 201.6928000000001,
+                "y": 529.3567999999998
+            }
+        },
+        {
+            "id": 19,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -94.29919999999991,
+                "y": 528.3648
+            }
+        },
+        {
+            "id": 18,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 571.9647999999999,
+                "y": 593.8367999999997
+            }
+        },
+        {
+            "id": 17,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -403.0191999999997,
+                "y": 641.9327999999997
+            }
+        },
+        {
+            "id": 16,
+            "internal-data": {
+                "model-name": "valueViewer",
+                "properties": {
+                    "valueLabel": "-"
+                }
+            },
+            "position": {
+                "x": 1402.239999999999,
+                "y": 400.8063999999998
+            }
+        },
+        {
+            "id": 15,
+            "internal-data": {
+                "model-name": "resample",
+                "properties": {
+                    "Correct Luminance": true,
+                    "In 1": 0.05
+                }
+            },
+            "position": {
+                "x": 196.5087999999999,
+                "y": 258.0607999999999
+            }
+        },
+        {
+            "id": 14,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -408.2032,
+                "y": 370.63679999999994
+            }
+        },
+        {
+            "id": 13,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": -99.48320000000012,
+                "y": 257.0688
+            }
+        },
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Documents/repos/nitro/data/gradient2.pgm"
+                }
+            },
+            "position": {
+                "x": -746.1999999999999,
+                "y": -203.6
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "grayscaleConvert",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": -160.80799999999994,
+                "y": -172.7119999999999
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+                "model-name": "nvidiaFlip",
+                "properties": {
+                    "In 2": 0.7,
+                    "In 3": 1920,
+                    "In 4": 0.7
+                }
+            },
+            "position": {
+                "x": 814.1760000000002,
+                "y": -220.80799999999996
+            }
+        },
+        {
+            "id": 62,
+            "internal-data": {
+                "model-name": "ValueSource",
+                "properties": {
+                    "Out 0": 0.6
+                }
+            },
+            "position": {
+                "x": 1185.5395199999998,
+                "y": 82.38559999999926
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "model-name": "kMeans",
+                "properties": {
+                    "In 1": 20,
+                    "In 2": 8
+                }
+            },
+            "position": {
+                "x": 147.91199999999998,
+                "y": -286.27999999999986
+            }
+        }
+    ]
+}

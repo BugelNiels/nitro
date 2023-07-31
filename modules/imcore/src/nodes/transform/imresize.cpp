@@ -1,49 +1,62 @@
 #include "imresize.hpp"
-#include "util.hpp"
-#include "nodes/nitronodebuilder.hpp"
+#include "include/colimagedata.hpp"
+#include <nodes/nitronodebuilder.hpp>
+#include <util.hpp>
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_WIDTH "Width"
-#define INPUT_HEIGHT "Height"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImCore {
 
-void nitro::ResizeOperator::execute(nitro::NodePorts &nodePorts, const std::map<QString, int> &options) const {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_X = "Width";
+static inline const QString INPUT_Y = "Height";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+static inline const QString ASPECT_RATIO_DROPDOWN = "Keep Aspect Ratio";
+static inline const QString INTERPOL_METHOD_LABEL = "Interpolation Method";
+static inline const QString AR_METHOD_LABEL = "Aspect Ratio Method";
 
-    if (!nodePorts.inputsPresent({INPUT_IMAGE, INPUT_WIDTH, INPUT_HEIGHT})) {
+void ResizeOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
-    int option = options.at(MODE_DROPDOWN);
-    auto im1 = nodePorts.getInputImage(INPUT_IMAGE);
-    int width = nodePorts.getInputInteger(INPUT_WIDTH);
-    int height = nodePorts.getInputInteger(INPUT_HEIGHT);
+
+    AspectRatioMode arMode = static_cast<AspectRatioMode>(
+            nodePorts.getOption(ASPECT_RATIO_DROPDOWN));
+    int option = nodePorts.getOption(MODE_DROPDOWN);
+    auto im1 = nodePorts.inGetAs<ColImageData>(INPUT_IMAGE);
+    int width = nodePorts.inputInteger(INPUT_X);
+    int height = nodePorts.inputInteger(INPUT_Y);
 
     cv::InterpolationFlags mode;
     if (option == 0) {
+        mode = cv::INTER_LINEAR;
+    } else if (option == 1) {
         mode = cv::INTER_CUBIC;
     } else {
         mode = cv::INTER_NEAREST;
     }
-
-    cv::Mat result;
-    cv::resize(*im1, result, cv::Size(width, height), mode);
-
-    nodePorts.setOutputImage(OUTPUT_IMAGE, std::make_shared<cv::Mat>(result));
+    cv::Mat result = resize(*im1, cv::Size(width, height), mode, arMode);
+    nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::ResizeOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> ResizeOperator::creator(const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Resize", "resize", category);
-        return builder.
-                withOperator(std::make_unique<nitro::ResizeOperator>())->
-                withIcon("resize.png")->
-                withNodeColor({60, 60, 131})->
-                withDropDown(MODE_DROPDOWN, {"Cubic", "Nearest-Neighbour"})->
-                withInputImage(INPUT_IMAGE)->
-                withInputInteger(INPUT_WIDTH, 256, 1, 4096)->
-                withInputInteger(INPUT_HEIGHT, 256, 1, 4096)->
-                withOutputImage(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("Resize", "resize", category);
+        return builder.withOperator(std::make_unique<ResizeOperator>())
+                ->withIcon("resize.png")
+                ->withNodeColor(NITRO_TRANSFORM_COLOR)
+                ->withDisplayWidget(INTERPOL_METHOD_LABEL, "Interpolation Method:")
+                ->withDropDown(MODE_DROPDOWN, {"Linear", "Cubic", "Nearest-Neighbour"})
+                ->withDisplayWidget(AR_METHOD_LABEL, "Aspect Ratio:")
+                ->withDropDown(ASPECT_RATIO_DROPDOWN,
+                               {"Ignore", "Keep Crop", "Keep Shrink", "Keep Grow"})
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_X, 256, 2, 2048, BoundMode::LOWER_ONLY)
+                ->withInputInteger(INPUT_Y, 256, 2, 2048, BoundMode::LOWER_ONLY)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImCore

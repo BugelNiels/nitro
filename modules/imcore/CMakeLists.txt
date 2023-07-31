@@ -1,34 +1,44 @@
-set(MODULE_NAME imCore)
-
+set(MODULE_NAME ImCore)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# -------------------------------------------------------------------------- #
+#                                Dependencies                                #
+# -------------------------------------------------------------------------- #
+requires_module(ImCore)
+
+find_package(Qt6 REQUIRED COMPONENTS Charts)
+list(APPEND MODULE_LIBS Qt6::Charts)
+
+# -------------------------------------------------------------------------- #
+#                            Create module target                            #
+# -------------------------------------------------------------------------- #
 file(GLOB_RECURSE MODULE_SOURCES src/*.cpp)
 file(GLOB_RECURSE MODULE_HEADERS src/*.hpp)
+add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES} ${MODULE_HEADERS})
 
-add_library(${MODULE_NAME} STATIC
-        ${MODULE_SOURCES} ${MODULE_HEADERS}
+target_link_libraries(${MODULE_NAME}
+        PRIVATE
+        ${MODULE_LIBS}
         )
 
-target_include_directories(${MODULE_NAME}
-        PUBLIC
-        ${NITRO_INCLUDE_DIRS}
+# -------------------------------------------------------------------------- #
+#                         Set up include directories                         #
+# -------------------------------------------------------------------------- #
+set(INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
-# Always required
-target_link_libraries(${MODULE_NAME}
+target_include_directories(${MODULE_NAME}
         PUBLIC
-        ${EXTERNAL_LIBS}
-
-        PRIVATE
-        ${NITRO_LIBS}
-        ${MODULE_LIBS}
+        ${INCLUDE_DIRS}
         )
 
-target_link_libraries(${PROJECT_NAME}
-        PUBLIC
-        ${MODULE_NAME}
-        PRIVATE
-        ${MODULE_LIBS}
-        )
+# -------------------------------------------------------------------------- #
+#                                  Finalize                                  #
+# -------------------------------------------------------------------------- #
+list(APPEND NITRO_INCLUDE_DIRS ${INCLUDE_DIRS})
+set(MODULE_NAME ${MODULE_NAME} PARENT_SCOPE)
+set(MODULE_LIBS ${MODULE_LIBS} PARENT_SCOPE)
+set(NITRO_INCLUDE_DIRS ${NITRO_INCLUDE_DIRS} PARENT_SCOPE)
+set(MODULE_RESOURCES resources/resources.qrc PARENT_SCOPE)

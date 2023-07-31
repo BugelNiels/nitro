@@ -1,32 +1,47 @@
 #pragma once
 
-#include <utility>
-
-#include "QtNodes/NodeData"
-#include "QtNodes/DataInfo.hpp"
+#include "flexibledata.hpp"
+#include <QtNodes/NodeData>
 
 namespace nitro {
-    class DecimalData : public QtNodes::NodeData {
-    public:
-        DecimalData() = default;
 
-        explicit DecimalData(double val) : val_(val) {}
+/**
+ * @brief Describes a decimal data type.
+ */
+class DecimalData : public FlexibleData<double, DecimalData> {
+public:
+    /**
+     * @brief Creates a new empty decimal data type.
+     */
+    DecimalData();
 
-        static QtNodes::DataInfo dataInfo() {
-            return {"Value", "decimal", {161, 161, 161}};
-        }
+    /**
+     * @brief Creates a decimal data type with the provided value.
+     * @param value The value this type should have.
+     */
+    explicit DecimalData(double value);
 
-        [[nodiscard]] QtNodes::NodeDataType type() const override {
-            return QtNodes::NodeDataType{dataInfo().getDataId(), dataInfo().getDataName()};
-        }
+    /**
+     * @brief Returns the unique id of this data type.
+     * @return The unique id of this data type.
+     */
+    static QString id() { return id_; }
 
-        [[nodiscard]] double value() const { return val_; }
+    /**
+     * @brief Registers the conversions that this data type allows.
+     */
+    static void registerConversions();
 
-        [[nodiscard]] QString getDescription() const override  {
-            return QString::number(val_, 'f', 3);
-        }
+    /**
+     * @brief Retrieves the description of this data type.
+     * @return The description of this data type.
+     */
+    [[nodiscard]] QString getDescription() const override;
 
-    private:
-        double val_ = 0;
-    };
-} // nitro
+private:
+    inline static const QString name_ = "Decimal";
+    inline static const QString id_ = "Decimal";
+    inline static const QColor baseColor_ = {161, 161, 161};
+};
+
+} // namespace nitro

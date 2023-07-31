@@ -1,29 +1,37 @@
 #!/bin/bash
-
 # Builds an AppImage from the project
 
+# Setup the correct working directory
+initial_loc=$(pwd)
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+# Build the project
 cd ..
 mkdir -p build
 cd build/ || exit
-export QT_QPA_PLATFORM_PLUGIN_PATH=/lib/x86_64-linux-gnu/qt6/plugins/platforms/
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib
 make -j$(nproc)
-mkdir share/doc/libc6
 make DESTDIR=../appdir -j$(nproc) install
+
+# Navigate to the appdir directory
 find ../appdir/
 if [[ $? -eq 0 ]]; then
   cd ..
-  mkdir -p appdir/usr/share/doc/
-  mkdir -p appdir/usr/share/doc/libc6
-  touch appdir/usr/share/doc/libc6/copyright
+  # Ensure Qt6 is in the path
   export PATH=/usr/lib/qt6/bin/:$PATH
 
+  # Get the linuxdeployqt tool if it does not exist yet
   if [[ ! -f linuxdeployqt-continuous-x86_64.AppImage ]]; then
     wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     chmod u+x linuxdeployqt-continuous-x86_64.AppImage
   fi
+  project_version=$(head -n 1 version.txt)
+  export VERSION=$project_version
   ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-  cd scripts || exit
+  mkdir bin/
+  echo "Copying to bin"
+  cp NITRO-${project_version}-x86_64.AppImage bin/
+  cd "$initial_loc"
 else
-  cd .. || exit
+  cd "$initial_loc"
 fi

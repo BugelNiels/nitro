@@ -1,4 +1,14 @@
 #!/bin/bash
+# Builds the documentation and pushes it to the gh-pages branch
+
+# Setup the correct working directory
+initial_loc=$(pwd)
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+cd ..
+
+project_version=$(head -n 1 version.txt)
+( cat docs/Doxyfile ; echo "$project_version" ) | doxygen docs/Doxyfile
 
 # Exit if any command fails
 set -e
@@ -25,3 +35,8 @@ git checkout -
 rm -rf "$tmp_dir"
 
 echo "Documentation generated and pushed to $target_branch branch."
+
+git submodule init
+git submodule update
+
+cd "$initial_loc"

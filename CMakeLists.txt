@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(NITRO_VERSION 1.1.1)
+# -------------------------------------------------------------------------- #
+#                                 Versioning                                 #
+# -------------------------------------------------------------------------- #
+
+file(STRINGS "version.txt" NITRO_VERSION LIMIT_COUNT 1)
+set(NITRO_NAME "NITRO")
 
 project(nitro VERSION ${NITRO_VERSION} LANGUAGES CXX)
+
+# -------------------------------------------------------------------------- #
+#                                   Options                                  #
+# -------------------------------------------------------------------------- #
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 cmake_policy(SET CMP0079 NEW)
@@ -12,37 +21,57 @@ include(GNUInstallDirs)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets OpenGL OpenGLWidgets)
-find_package(OpenCV REQUIRED)
-find_package(OpenMP REQUIRED)
+# -------------------------------------------------------------------------- #
+#                             Required components                            #
+# -------------------------------------------------------------------------- #
 
-set(NITRO_INCLUDE_DIRS "")
-set(EXTERNAL_LIBS "")
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS OpenGL OpenGLWidgets)
+find_package(OpenCV REQUIRED)
+find_package(OpenMP)
+
+# -------------------------------------------------------------------------- #
+#                           3rd Party dependencies                           #
+# -------------------------------------------------------------------------- #
+
 add_subdirectory(external)
 list(APPEND NITRO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
 
+# -------------------------------------------------------------------------- #
+#                             Requires libraries                             #
+# -------------------------------------------------------------------------- #
+
 set(NITRO_LIBS "")
-list(APPEND NITRO_LIBS ${OpenCV_LIBS})
+list(APPEND NITRO_LIBS opencv_core)
+list(APPEND NITRO_LIBS opencv_imgproc)
+list(APPEND NITRO_LIBS opencv_imgcodecs)
+
 list(APPEND NITRO_LIBS Qt6::Core)
 list(APPEND NITRO_LIBS Qt6::Gui)
 list(APPEND NITRO_LIBS Qt6::Widgets)
 if (OpenMP_FOUND)
     list(APPEND NITRO_LIBS OpenMP::OpenMP_CXX)
 else ()
-    message("OpenMP was not found.")
+    message("OpenMP was not found. Compiling without OpenMP support.")
 endif ()
+
+# -------------------------------------------------------------------------- #
+#                         Create main project target                         #
+# -------------------------------------------------------------------------- #
 
 include_directories(
         ${CMAKE_BINARY_DIR}
         ${OpenCV_INCLUDE_DIRS})
+
 
 file(GLOB_RECURSE CPPS src/*.cpp)
 file(GLOB_RECURSE HPPS src/*.hpp include/*.hpp)
 
 qt_add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
         ${CPPS} ${HPPS}
-        resources/resources.qrc)
+        resources/resources.qrc
+        )
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
@@ -56,14 +85,24 @@ target_link_libraries(${PROJECT_NAME}
         ${NITRO_LIBS}
         )
 
-# Enable Modules - add more modules if required
-set(ENABLED_MODULES
-        ImCore
-        ImExtra
-        Im3D
-        )
+# -------------------------------------------------------------------------- #
+#                                   Modules                                  #
+# -------------------------------------------------------------------------- #
 
+# Include the custom module functions
+include(cmake/modules.cmake)
+
+add_module(ImCore)
+add_module(ImProc)
+add_module(Compression)
+#add_module(Thesis)
+
+# Adds and links the modules
 include(cmake/config.cmake)
+
+# -------------------------------------------------------------------------- #
+#                                   Install                                  #
+# -------------------------------------------------------------------------- #
 
 install(TARGETS ${PROJECT_NAME}
         BUNDLE DESTINATION .

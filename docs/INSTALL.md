@@ -85,11 +85,13 @@ installed.
 
 ## 3. Building & Running
 
-To build the project, can execute the `build.sh` script and run the resulting binary:
+To build the project, can execute the `build.sh` script in the `scripts/` directory and run the resulting binary:
 
-```shellell
-sh build.sh
-./bin/nitro
+```shell
+cd scripts
+bash build.sh
+cd ..
+./bin/nitro 
 ```
 
 Alternatively, you can manually build and run the program:

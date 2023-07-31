@@ -1,0 +1,29 @@
+<RCC>
+	<qresource prefix="/">
+		<file>./icons/nodes/invert.png</file>
+		<file>./icons/nodes/colormap.png</file>
+		<file>./icons/nodes/number.png</file>
+		<file>./icons/nodes/rotate.png</file>
+		<file>./icons/nodes/greyscale.png</file>
+		<file>./icons/nodes/gradient.png</file>
+		<file>./icons/nodes/bool_math.png</file>
+		<file>./icons/nodes/map_range.png</file>
+		<file>./icons/nodes/flip.png</file>
+		<file>./icons/nodes/viewer.png</file>
+		<file>./icons/nodes/resize.png</file>
+		<file>./icons/nodes/hist.png</file>
+		<file>./icons/nodes/match_size.png</file>
+		<file>./icons/nodes/image_source.png</file>
+		<file>./icons/nodes/color.png</file>
+		<file>./icons/nodes/layers.png</file>
+		<file>./icons/nodes/pad.png</file>
+		<file>./icons/nodes/info.png</file>
+		<file>./icons/nodes/sum.png</file>
+		<file>./icons/nodes/mix.png</file>
+		<file>./icons/nodes/toggle.png</file>
+		<file>./icons/nodes/math.png</file>
+		<file>./icons/nodes/normalize.png</file>
+		<file>./icons/image_viewer.png</file>
+		<file>./icons/hist_viewer.png</file>
+	</qresource>
+</RCC>

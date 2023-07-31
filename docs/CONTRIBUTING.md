@@ -1,7 +1,7 @@
 # Contributing Guidelines
 
-Thank you for considering contributing to this project! I appreciate your time and effort.
-To maintain a productive and collaborative community, please review and follow the guidelines below when contributing.
+Thank you for considering contributing to this project!
+To maintain a productive and collaborative community, please review and follow the guidelines below.
 
 ## Table of Contents
 
@@ -10,7 +10,6 @@ To maintain a productive and collaborative community, please review and follow t
     - [Submitting Contributions](#submitting-contributions)
     - [Development Setup](#development-setup)
     - [Coding Guidelines](#coding-guidelines)
-    - [Commit Guidelines](#commit-guidelines)
 - [License](#license)
 
 ## Contributing
@@ -64,5 +63,5 @@ that all contributions align with the existing codebase.
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the [LICENSE](LICENSE.md) of the
+By contributing to this project, you agree that your contributions will be licensed under the [LICENSE](../LICENSE.md) of the
 project.
