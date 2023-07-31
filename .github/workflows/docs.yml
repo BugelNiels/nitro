@@ -39,7 +39,7 @@ jobs:
       - name: Checkout gh-pages branch
         uses: actions/checkout@v3
         with:
-          path: gh-pages
+          ref: gh-pages
 
       - name: Update gh-pages content
         run: |
@@ -51,4 +51,4 @@ jobs:
         run: |
           git add .
           git commit -m "Updated documentation"
-          git push
+          git push origin gh-pages
