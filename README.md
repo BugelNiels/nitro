@@ -29,7 +29,7 @@
   </p>
 </div>
 
-![Node Editor](docs/screenshots/front.png)
+![Node Editor](docs/screenshots/front.webp)
 
 ## About the project
 

@@ -22,7 +22,7 @@
   </p>
 </div>
 
-![Node Editor](screenshots/front.png)
+![Node Editor](screenshots/front.webp)
 
 ## Documentation
 
