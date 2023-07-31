@@ -92,11 +92,14 @@ $(document).ready(function(){initNavTree('df/d06/md_docs_INSTALL.html','../../')
 <h1><a class="anchor" id="autotoc_md15"></a>
 1. Downloading the Repository</h1>
 <p>To set up the repository locally, clone the repository:</p>
-<div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:BugelNiels/nitro.git</div>
+<div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/BugelNiels/nitro.git</div>
 </div><!-- fragment --><p>In case <code>--recurse-submodules</code> was not used, you can initialize the submodules using:</p>
 <div class="fragment"><div class="line">git submodule init</div>
 <div class="line">git submodule update</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><p>Note, if you are a developer on the project, you probably want to clone everything using <code>ssh</code> instead of <code>https</code>. To do this, execute:</p>
+<div class="fragment"><div class="line">git config url.&quot;ssh://git@&quot;.insteadOf https://</div>
+</div><!-- fragment --><p>before cloning.</p>
+<h1><a class="anchor" id="autotoc_md16"></a>
 2. Prerequisites</h1>
 <ul>
 <li><a href="https://cmake.org/">CMake 3.9+</a></li>
