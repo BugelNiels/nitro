@@ -9,7 +9,7 @@ look at the latest release instead.
 To set up the repository locally, clone the repository:
 
 ```shell
-git clone --recurse-submodules git@github.com:BugelNiels/nitro.git
+git clone --recurse-submodules https://github.com/BugelNiels/nitro.git
 ```
 
 In case `--recurse-submodules` was not used, you can initialize the submodules using:
@@ -18,6 +18,15 @@ In case `--recurse-submodules` was not used, you can initialize the submodules u
 git submodule init
 git submodule update
 ```
+
+Note, if you are a developer on the project, you probably want to clone everything using `ssh` instead of `https`.
+To do this, execute:
+
+```shell
+git config url."ssh://git@".insteadOf https://
+```
+
+before cloning.
 
 ## 2. Prerequisites
 
