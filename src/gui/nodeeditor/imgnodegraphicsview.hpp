@@ -10,18 +10,33 @@
 
 namespace nitro {
 
+/**
+ * A graphics view for the node graph. Comes with a unique context menu and ability to spawn viewer nodes.
+ */
 class ImageNodeGraphicsView : public NodeGraphicsView {
 public:
+    /**
+     * Creates a new graphics view.
+     * @param nodes The node registry.
+     * @param scene The graph scene.
+     * @param model The graph model.
+     * @param parent Parent widget.
+     */
     ImageNodeGraphicsView(std::shared_ptr<NodeRegistry> &nodes,
                           QtNodes::BasicGraphicsScene *scene,
                           QtNodes::DataFlowGraphModel *model,
                           QWidget *parent);
 
+    /**
+     * Builds a context menu for spawning nodes.
+     * @return A context menu for spawning nodes.
+     */
+    QMenu *initNodeMenu() override;
+
+protected:
     void mousePressEvent(QMouseEvent *event) override;
 
     void mouseDoubleClickEvent(QMouseEvent *event) override;
-
-    QMenu *initNodeMenu() override;
 
 public Q_SLOTS:
 

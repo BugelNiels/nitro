@@ -27,10 +27,10 @@ NitroNode::~NitroNode() = default;
 
 void NitroNode::init(QtNodes::NodeInfo info,
                      const NodePorts &nodePorts,
-                     std::unique_ptr<NodeOperator> algo,
+                     std::unique_ptr<NodeOperator> op,
                      QWidget *widget) {
     info_ = std::move(info);
-    algo_ = std::move(algo);
+    algo_ = std::move(op);
     nodePorts_ = nodePorts;
     widget_ = widget;
     // Force auto generating nodes to update
