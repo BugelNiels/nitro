@@ -22,31 +22,77 @@ class DoubleSlider;
 
 namespace nitro {
 
+/**
+ * @brief The nodes used by NITRO. These should only be constructed using the NitroNodeBuilder.
+ * @see nitro::NitroNodeBuilder
+ */
 class NitroNode : public QtNodes::NodeDelegateModel {
 
 public:
+    /**
+     * @brief Creates a new empty node.
+     */
     NitroNode() = default;
 
+    /**
+     * @brief Destructor.
+     */
     ~NitroNode() override;
 
+    /**
+     * @brief Initialises this node with info.
+     * @param info The node information.
+     * @param nodePorts The node ports containing the information about the input/output ports and options.
+     * @param op The node operator.
+     * @param widget The display widget for this node as constructed by the builder.
+     */
     void init(QtNodes::NodeInfo info,
               const NodePorts &nodePorts,
-              std::unique_ptr<NodeOperator> algo,
+              std::unique_ptr<NodeOperator> op,
               QWidget *widget);
 
+    /**
+     * @brief Retrieves the caption of this node.
+     * @return The caption of this node.
+     */
     [[nodiscard]] QString caption() const override;
 
+    /**
+     * @brief Retrieves whether or not the caption should be visible or not.
+     * @return Whether the caption of the node should be visible.
+     */
     [[nodiscard]] bool captionVisible() const override;
 
+    /**
+     * @brief Retrieves the unique id of the node.
+     * @return The id of this node.
+     */
     [[nodiscard]] QString name() const override;
 
+    /**
+     * @brief Retrieves the widget displayed in this node.
+     * @return The widget displayed in this node.
+     */
     QWidget *embeddedWidget() override;
 
+    /**
+     * @brief Retrieves the node info.
+     * @return The node info.
+     */
     [[nodiscard]] const QtNodes::NodeInfo &getInfo() const;
 
+    /**
+     * @brief Saves this node information to JSON.
+     * @return A JSON string containing the node data.
+     */
     [[nodiscard]] QJsonObject save() const override;
 
-    void load(const QJsonObject &) override;
+    /**
+     * @brief Updated the node with the information from the JSON string.
+     * @see nitro::NitroNode#save
+     * @param json A JSON string containing the node data.
+     */
+    void load(const QJsonObject &json) override;
 
 public Q_SLOTS:
 

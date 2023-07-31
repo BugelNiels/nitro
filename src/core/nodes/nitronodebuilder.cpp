@@ -276,7 +276,7 @@ NitroNodeBuilder *NitroNodeBuilder::withIcon(const QString &path) {
     return this;
 }
 
-NitroNodeBuilder *NitroNodeBuilder::withOperator(std::unique_ptr<NodeOperator> algo) {
-    algo_ = std::move(algo);
+NitroNodeBuilder *NitroNodeBuilder::withOperator(std::unique_ptr<NodeOperator> op) {
+    algo_ = std::move(op);
     return this;
 }

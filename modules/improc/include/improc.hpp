@@ -8,10 +8,19 @@ namespace nitro::ImProc {
 
 class ImageViewer;
 
+/**
+ * @brief Describes the ImProc module. This module contains a number of nodes used for image processing, ranging from various filters to restoration and quantization nodes.
+ */
 class ImProc : public NitroModule {
 public:
+    /**
+     * @brief Creates the module.
+     */
     ImProc();
 
+    /**
+     * @inherit
+     */
     void registerNodes(std::shared_ptr<NodeRegistry> &registry, MainWindow *window) override;
 
 private:

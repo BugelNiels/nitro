@@ -19,7 +19,7 @@ class NodeDataType;
 namespace nitro {
 
 /**
- * Class that encapsulates the following information of a particular node:
+ * @brief Class that encapsulates the following information of a particular node:
  * - Input data/ports
  * - Output data/ports
  * - Any additional node options, as defined by e.g. dropdowns in the view.
@@ -27,12 +27,12 @@ namespace nitro {
 class NodePorts {
 public:
     /**
-     * Creates an empty collection of ports.
+     * @brief Creates an empty collection of ports.
      */
     NodePorts();
 
     /**
-     * Creates a new collection of ports with the desired input data, output data and options.
+     * @brief Creates a new collection of ports with the desired input data, output data and options.
      * @param inputList Ordered list of ports that should function as the input ports of the node in question.
      * @param outputList Ordered list of ports that should function as the output ports of the node in question.
      * @param options Options that describe the options used when evaluating the node operation.
@@ -42,52 +42,52 @@ public:
               std::unordered_map<QString, int> options);
 
     /**
-     * Destructor.
+     * @brief Destructor.
      */
     ~NodePorts();
 
     /**
-     * Retrieves the name of an input port at the provided index.
+     * @brief Retrieves the name of an input port at the provided index.
      * @param port The index of the port to retrieve the name of.
      * @return Name of the input port.
      */
     [[nodiscard]] const QString &inPortName(QtNodes::PortIndex port) const;
 
     /**
-     * Retrieves the name of an output port at the provided index.
+     * @brief Retrieves the name of an output port at the provided index.
      * @param port The index of the port to retrieve the name of.
      * @return Name of the output port.
      */
     [[nodiscard]] const QString &outPortName(QtNodes::PortIndex port) const;
 
     /**
-     * Retrieves the data type of an input port at the provided index.
+     * @brief Retrieves the data type of an input port at the provided index.
      * @param port The index of the port to retrieve the data type of.
      * @return Data type of the input port.
      */
     [[nodiscard]] QtNodes::NodeDataType inDataType(QtNodes::PortIndex port) const;
 
     /**
-     * Retrieves the data type of an output port at the provided index.
+     * @brief Retrieves the data type of an output port at the provided index.
      * @param port The index of the port to retrieve the data type of.
      * @return Data type of the output port.
      */
     [[nodiscard]] QtNodes::NodeDataType outDataType(QtNodes::PortIndex port) const;
 
     /**
-     * Retrieves the number of input ports.
+     * @brief Retrieves the number of input ports.
      * @return The number of input ports.
      */
     [[nodiscard]] int numInPorts() const;
 
     /**
-     * Retrieves the number of output ports.
+     * @brief Retrieves the number of output ports.
      * @return The number of output ports.
      */
     [[nodiscard]] int numOutPorts() const;
 
     /**
-     * Retrieves a pointer to the data of the output port at the provided index.
+     * @brief Retrieves a pointer to the data of the output port at the provided index.
      * This data can be changed to change the output of the node.
      * @param portIndex The index of the output port at which to retrieve the data.
      * @return A pointer to the data associated with the output port at the provided index.
@@ -95,7 +95,7 @@ public:
     [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(QtNodes::PortIndex portIndex);
 
     /**
-     * Retrieves a pointer to the data of the input port with the provided name.
+     * @brief Retrieves a pointer to the data of the input port with the provided name.
      * This data cannot be changed here. Use setInData for this instead. @see setInData.
      * @param name The name of the input port at which to retrieve the data.
      * @return A pointer to the data associated with the input port with the provided name.
@@ -103,7 +103,7 @@ public:
     [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getInData(const QString &name) const;
 
     /**
-     * Retrieves a pointer to the data of the output port with the provided name.
+     * @brief Retrieves a pointer to the data of the output port with the provided name.
      * This data can be changed to change the output of the node.
      * @param name The name of the output port at which to retrieve the data.
      * @return A pointer to the data associated with the output port with the provided name.
@@ -111,7 +111,7 @@ public:
     [[nodiscard]] std::shared_ptr<QtNodes::NodeData> getOutData(const QString &name);
 
     /**
-     * Retrieves an integer value from the input port with the provided name.
+     * @brief Retrieves an integer value from the input port with the provided name.
      * Equivalent to calling: *nodePorts.inGetAs<IntegerData>(name);
      * @see NodePorts::inGetAs.
      * @param name Name of the input port.
@@ -120,7 +120,7 @@ public:
     [[nodiscard]] int inputInteger(const QString &name) const;
 
     /**
-     * Retrieves a double value from the input port with the provided name.
+     * @brief Retrieves a double value from the input port with the provided name.
      * Equivalent to calling: *nodePorts.inGetAs<DecimalData>(name);
      * @see NodePorts::inGetAs.
      * @param name Name of the input port.
@@ -129,7 +129,7 @@ public:
     [[nodiscard]] double inputValue(const QString &name) const;
 
     /**
-     * Retrieves the generic NodeData from the input port with the provided name.
+     * @brief Retrieves the generic NodeData from the input port with the provided name.
      * Ideally, use nodePorts.inGetAs instead to prevent manual and error-prone casting.
      * @see NodePorts::inGetAs.
      * @param name Name of the input port.
@@ -144,7 +144,7 @@ public:
     }
 
     /**
-     * Retrieves the node data of type T from the input port with the provided name.
+     * @brief Retrieves the node data of type T from the input port with the provided name.
      * Note that this data should be convertable to T, otherwise this will throw an error.
      * @see FlexibleData::from.
      * @tparam T Type of the data that should be retrieved.
@@ -162,7 +162,7 @@ public:
     }
 
     /**
-     * Checks whether the data at the input port with the name "name" is of type T.
+     * @brief Checks whether the data at the input port with the name "name" is of type T.
      * @tparam T The type to check the data at the input port against.
      * @param name The name of the input port.
      * @return True if the data at input port "name" is of type T. False otherwise.
@@ -173,7 +173,7 @@ public:
     }
 
     /**
-     * Checks whether the data at all input ports are of type T.
+     * @brief Checks whether the data at all input ports are of type T.
      * @tparam T The type to check the data at the input ports against.
      * @return True if the data at all input ports is of type T. False otherwise.
      */
@@ -188,7 +188,7 @@ public:
     }
 
     /**
-     * Sets the data for an output port. All data is encapsulated by a custom type. For example, IntegerDataType encapsulated integers.
+     * @brief Sets the data for an output port. All data is encapsulated by a custom type. For example, IntegerDataType encapsulated integers.
      * This function allows you to directly output an integer as an IntegerData without doing all the intermediate steps.
      * @tparam T The type of the data that the output should be of. In the example, this would be IntegerData.
      * @tparam U The type of the data that is encapsulated by the output port. This does not need to be set explicitly and can be inferred by the compiler. In the example, this would be int.
@@ -201,7 +201,7 @@ public:
     }
 
     /**
-     * Sets the data for an output port. All data is encapsulated by a custom type. For example, IntegerDataType encapsulated integers.
+     * @brief Sets the data for an output port. All data is encapsulated by a custom type. For example, IntegerDataType encapsulated integers.
      * In this case, the custom type can be provided here.
      * @param name The name of the output port.
      * @param data The data to set.
@@ -209,48 +209,48 @@ public:
     void setOutputData(const QString &name, std::shared_ptr<QtNodes::NodeData> data);
 
     /**
-     * Get the option associated with the provided name.
+     * @brief Get the option associated with the provided name.
      * @param optionName Name of the option.
      * @return The integer option.
      */
     int getOption(const QString &optionName);
 
     /**
-     * Checks whether the option with the provided name is enabled.
+     * @brief Checks whether the option with the provided name is enabled.
      * @param optionName Name of the option.
      * @return True if the option is enabled. False otherwise.
      */
     bool optionEnabled(const QString &optionName);
 
     /**
-     * Sets the value of an option.
+     * @brief Sets the value of an option.
      * @param optionName Name of the option.
      * @param val Value to set the option to.
      */
     void setOption(const QString &optionName, int val);
 
     /**
-     * Sets generic input data.
+     * @brief Sets generic input data.
      * @param port The index of the input port to set the data at.
      * @param data The data to set at the input port with the provided index.
      */
     void setInData(QtNodes::PortIndex port, std::shared_ptr<QtNodes::NodeData> data);
 
     /**
-     * Checks if all the input ports contain valid data.
+     * @brief Checks if all the input ports contain valid data.
      * @return True if all the input ports contain valid data (e.g. no null pointers). False otherwise.
      */
     bool allInputsPresent();
 
     /**
-     * Sets a global property of the node. This differs from the options in that these global properties are not associated with a visual component.
+     * @brief Sets a global property of the node. This differs from the options in that these global properties are not associated with a visual component.
      * @param key The key describing this property. Should be unique.
      * @param value The corresponding value.
      */
     void setGlobalProperty(const QString &key, QString value);
 
     /**
-     * Retrieves a global property.
+     * @brief Retrieves a global property.
      * @param key The key of the property to retrieve.
      * @return The property associated with the key. Returns "" if the key does not exist.
      */

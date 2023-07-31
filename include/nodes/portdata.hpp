@@ -7,19 +7,19 @@
 namespace nitro {
 
 /**
- * Represents data of a single port belonging to a node. It contains information about the name of the port, the data type that this port has and the data itself that is at this port.
+ * @brief Represents data of a single port belonging to a node. It contains information about the name of the port, the data type that this port has and the data itself that is at this port.
  * The name of a port is unique amongst its category. That is, all input ports have unique names and all unique output ports have unique names. However, an output port can have a name that already exists in the input ports.
  */
 class PortData {
 
 public:
     /**
-     * Creates an empty port data class.
+     * @brief Creates an empty port data class.
      */
     PortData() = default;
 
     /**
-     * Creates new port data with the given name and data.
+     * @brief Creates new port data with the given name and data.
      * @param name The name of the port. Note that this name should not already exist.
      * @param data The data that this port contains.
      */
@@ -29,7 +29,7 @@ public:
           data_(data) {}
 
     /**
-     * Creates new port data with the given name and data type. The data itself is initialised to be empty.
+     * @brief Creates new port data with the given name and data type. The data itself is initialised to be empty.
      * @param name The name of the port. Note that this name should not already exist.
      * @param type The data type this port represents.
      */
@@ -39,19 +39,19 @@ public:
           data_(nullptr) {}
 
     /**
-     * Retrieves the name of the port.
+     * @brief Retrieves the name of the port.
      * @return The name of the port.
      */
     [[nodiscard]] const QString &getName() const { return name_; }
 
     /**
-     * Retrieves the data type of the port.
+     * @brief Retrieves the data type of the port.
      * @return The data type of the port.
      */
     [[nodiscard]] const QtNodes::NodeDataType &getType() const { return type_; }
 
     /**
-     * Retrieves the data of the port. Note that this can be a nullptr if it is empty.
+     * @brief Retrieves the data of the port. Note that this can be a nullptr if it is empty.
      * @return The data of the port.
      */
     [[nodiscard]] const std::shared_ptr<QtNodes::NodeData> &getData() const { return data_; }
