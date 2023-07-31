@@ -1,12 +1,17 @@
 var searchData=
 [
-  ['indatatype_245',['inDataType',['../da/da7/classnitro_1_1NodePorts.html#ab468fe4fe8493920211cf21340bfbadf',1,'nitro::NodePorts']]],
-  ['inget_246',['inGet',['../da/da7/classnitro_1_1NodePorts.html#aef8ff414e2fbf14b3a0b5696fc46ea2a',1,'nitro::NodePorts']]],
-  ['ingetas_247',['inGetAs',['../da/da7/classnitro_1_1NodePorts.html#af7c4d81740fb73bdaba3cfd465a5184f',1,'nitro::NodePorts']]],
-  ['init_248',['init',['../d8/d7c/classnitro_1_1Thesis_1_1Renderer.html#a45a75cb904a1bd5a89ff973d1bd20d28',1,'nitro::Thesis::Renderer']]],
-  ['inportname_249',['inPortName',['../da/da7/classnitro_1_1NodePorts.html#a1bac08b6e8cbba240eff63df4838cb48',1,'nitro::NodePorts']]],
-  ['inputinteger_250',['inputInteger',['../da/da7/classnitro_1_1NodePorts.html#a73e9e18c9c93c6e0c90003d2c298d4dd',1,'nitro::NodePorts']]],
-  ['inputoftype_251',['inputOfType',['../da/da7/classnitro_1_1NodePorts.html#ae1b4e586b1415bff6c9f3b5442286190',1,'nitro::NodePorts']]],
-  ['inputvalue_252',['inputValue',['../da/da7/classnitro_1_1NodePorts.html#aeef8649ec53cdf8dfa1a7df47877185e',1,'nitro::NodePorts']]],
-  ['isfinalized_253',['isFinalized',['../dc/d7d/classnitro_1_1MainWindow.html#a8ff07b993a434d68bc592db112d719bb',1,'nitro::MainWindow']]]
+  ['getcategories_295',['getCategories',['../df/dd2/classnitro_1_1NodeRegistry.html#aa111dda5934316e3291a435384ee1d5d',1,'nitro::NodeRegistry']]],
+  ['getdata_296',['getData',['../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac',1,'nitro::PortData']]],
+  ['getdescription_297',['getDescription',['../d9/dad/classnitro_1_1DecimalData.html#a113ad0830f3ff44e9fc0f59b9be6e33c',1,'nitro::DecimalData::getDescription()'],['../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b',1,'nitro::FlexibleData::getDescription()'],['../d2/d9f/classnitro_1_1IntegerData.html#aa95acf123f4b95eedb15e3828ebc3217',1,'nitro::IntegerData::getDescription()'],['../d8/da4/classnitro_1_1ColImageData.html#ab9122a53f3ae318fb609382b0fda05d1',1,'nitro::ColImageData::getDescription()'],['../d1/dad/classnitro_1_1GrayImageData.html#aab69e3dc9eb9032d00ed875e2ae80909',1,'nitro::GrayImageData::getDescription()']]],
+  ['getfilename_298',['getFileName',['../de/db3/classnitro_1_1NodeDockWidget.html#ab2a3c534ab7aa9679f208a132e3835e8',1,'nitro::NodeDockWidget']]],
+  ['getglobalproperty_299',['getGlobalProperty',['../da/da7/classnitro_1_1NodePorts.html#a997b09411153ec7539af2157e75cc77e',1,'nitro::NodePorts']]],
+  ['getindata_300',['getInData',['../da/da7/classnitro_1_1NodePorts.html#ab9f90b255820793fc7e54e7c439f4911',1,'nitro::NodePorts']]],
+  ['getinfo_301',['getInfo',['../da/d5a/classnitro_1_1NitroNode.html#a67e7577c09609529f227519de584c4c0',1,'nitro::NitroNode']]],
+  ['getname_302',['getName',['../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6',1,'nitro::PortData']]],
+  ['getoption_303',['getOption',['../da/da7/classnitro_1_1NodePorts.html#ae6603c00091284bd41c11d98c2ef2bae',1,'nitro::NodePorts']]],
+  ['getoutdata_304',['getOutData',['../da/da7/classnitro_1_1NodePorts.html#ab45dbf2c52a02e2b753c46767e68a492',1,'nitro::NodePorts::getOutData(QtNodes::PortIndex portIndex)'],['../da/da7/classnitro_1_1NodePorts.html#a846de18644e97a7a6b3e2bd53f531a9f',1,'nitro::NodePorts::getOutData(const QString &amp;name)']]],
+  ['getpixmap_305',['getPixMap',['../d9/d52/classnitro_1_1ImResourceReader.html#a2e1fc8874badcd430ee125dff9dc5f50',1,'nitro::ImResourceReader']]],
+  ['getregistry_306',['getRegistry',['../df/dd2/classnitro_1_1NodeRegistry.html#a831ba3b159a95054492537577d26771d',1,'nitro::NodeRegistry']]],
+  ['gettype_307',['getType',['../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1',1,'nitro::PortData']]],
+  ['grayimagedata_308',['GrayImageData',['../d1/dad/classnitro_1_1GrayImageData.html#a50470238ea6bf513ab908fb964449427',1,'nitro::GrayImageData::GrayImageData()'],['../d1/dad/classnitro_1_1GrayImageData.html#a329f6ccb6fc1e609f7ae4091f592b289',1,'nitro::GrayImageData::GrayImageData(std::shared_ptr&lt; cv::Mat &gt; img)'],['../d1/dad/classnitro_1_1GrayImageData.html#a0385b04413ad21836d0255a055784dfe',1,'nitro::GrayImageData::GrayImageData(const cv::Mat &amp;img)']]]
 ];

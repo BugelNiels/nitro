@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['mainwindow_256',['MainWindow',['../dc/d7d/classnitro_1_1MainWindow.html#a3380fb34b95440f055cbcbc65229230b',1,'nitro::MainWindow']]],
-  ['mousemoveevent_257',['mouseMoveEvent',['../d6/d1e/classnitro_1_1Thesis_1_1RenderView.html#a1a58b4e520b65154f2875f4510f3d5bf',1,'nitro::Thesis::RenderView']]],
-  ['mousepressevent_258',['mousePressEvent',['../d6/d1e/classnitro_1_1Thesis_1_1RenderView.html#a263c3e95aff1d88bdfcb738ee6cabbae',1,'nitro::Thesis::RenderView']]],
-  ['mousereleaseevent_259',['mouseReleaseEvent',['../d6/d1e/classnitro_1_1Thesis_1_1RenderView.html#a133144c2d17b36f7754fa09eaa3024dd',1,'nitro::Thesis::RenderView']]]
+  ['keypressevent_324',['keyPressEvent',['../d6/d1e/classnitro_1_1Thesis_1_1RenderView.html#aa8d681c215627683af70e322ce949bfa',1,'nitro::Thesis::RenderView']]],
+  ['keyreleaseevent_325',['keyReleaseEvent',['../d6/d1e/classnitro_1_1Thesis_1_1RenderView.html#a4a4aaf1584fe85456a35126f67c97289',1,'nitro::Thesis::RenderView']]]
 ];

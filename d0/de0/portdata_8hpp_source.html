@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -125,14 +125,14 @@ $(document).ready(function(){initNavTree('d0/de0/portdata_8hpp_source.html','../
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1NodePorts_html"><div class="ttname"><a href="../../da/da7/classnitro_1_1NodePorts.html">nitro::NodePorts</a></div><div class="ttdef"><b>Definition:</b> nodeports.hpp:27</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html">nitro::PortData</a></div><div class="ttdef"><b>Definition:</b> portdata.hpp:13</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_a1c7c39cdecf914062bd473ace764f3ac"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac">nitro::PortData::getData</a></div><div class="ttdeci">const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp; getData() const</div><div class="ttdef"><b>Definition:</b> portdata.hpp:57</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_a4b0bb54b764430e4ca7fae2e4416be10"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a4b0bb54b764430e4ca7fae2e4416be10">nitro::PortData::PortData</a></div><div class="ttdeci">PortData()=default</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_a508b9390eb94fb3c43eecb6d5a846633"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a508b9390eb94fb3c43eecb6d5a846633">nitro::PortData::PortData</a></div><div class="ttdeci">PortData(QString name, QtNodes::NodeDataType type)</div><div class="ttdef"><b>Definition:</b> portdata.hpp:36</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_a55075852450855319cd53df0e4c184a1"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1">nitro::PortData::getType</a></div><div class="ttdeci">const QtNodes::NodeDataType &amp; getType() const</div><div class="ttdef"><b>Definition:</b> portdata.hpp:51</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_a66b454767aa1922bf916dcd4535dbaf6"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6">nitro::PortData::getName</a></div><div class="ttdeci">const QString &amp; getName() const</div><div class="ttdef"><b>Definition:</b> portdata.hpp:45</div></div>
-<div class="ttc" id="aclassnitro_1_1PortData_html_aeab4b68b3fd32eba9ea5e8541191eb0b"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#aeab4b68b3fd32eba9ea5e8541191eb0b">nitro::PortData::PortData</a></div><div class="ttdeci">PortData(QString name, const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;data)</div><div class="ttdef"><b>Definition:</b> portdata.hpp:26</div></div>
+<div class="ttc" id="aclassnitro_1_1NodePorts_html"><div class="ttname"><a href="../../da/da7/classnitro_1_1NodePorts.html">nitro::NodePorts</a></div><div class="ttdoc">Class that encapsulates the following information of a particular node:</div><div class="ttdef"><b>Definition:</b> nodeports.hpp:27</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html">nitro::PortData</a></div><div class="ttdoc">Represents data of a single port belonging to a node. It contains information about the name of the p...</div><div class="ttdef"><b>Definition:</b> portdata.hpp:13</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_a1c7c39cdecf914062bd473ace764f3ac"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac">nitro::PortData::getData</a></div><div class="ttdeci">const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp; getData() const</div><div class="ttdoc">Retrieves the data of the port. Note that this can be a nullptr if it is empty.</div><div class="ttdef"><b>Definition:</b> portdata.hpp:57</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_a4b0bb54b764430e4ca7fae2e4416be10"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a4b0bb54b764430e4ca7fae2e4416be10">nitro::PortData::PortData</a></div><div class="ttdeci">PortData()=default</div><div class="ttdoc">Creates an empty port data class.</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_a508b9390eb94fb3c43eecb6d5a846633"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a508b9390eb94fb3c43eecb6d5a846633">nitro::PortData::PortData</a></div><div class="ttdeci">PortData(QString name, QtNodes::NodeDataType type)</div><div class="ttdoc">Creates new port data with the given name and data type. The data itself is initialised to be empty.</div><div class="ttdef"><b>Definition:</b> portdata.hpp:36</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_a55075852450855319cd53df0e4c184a1"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1">nitro::PortData::getType</a></div><div class="ttdeci">const QtNodes::NodeDataType &amp; getType() const</div><div class="ttdoc">Retrieves the data type of the port.</div><div class="ttdef"><b>Definition:</b> portdata.hpp:51</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_a66b454767aa1922bf916dcd4535dbaf6"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6">nitro::PortData::getName</a></div><div class="ttdeci">const QString &amp; getName() const</div><div class="ttdoc">Retrieves the name of the port.</div><div class="ttdef"><b>Definition:</b> portdata.hpp:45</div></div>
+<div class="ttc" id="aclassnitro_1_1PortData_html_aeab4b68b3fd32eba9ea5e8541191eb0b"><div class="ttname"><a href="../../d9/d6d/classnitro_1_1PortData.html#aeab4b68b3fd32eba9ea5e8541191eb0b">nitro::PortData::PortData</a></div><div class="ttdeci">PortData(QString name, const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;data)</div><div class="ttdoc">Creates new port data with the given name and data.</div><div class="ttdef"><b>Definition:</b> portdata.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

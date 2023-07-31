@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -86,28 +86,26 @@ $(document).ready(function(){initNavTree('d7/d22/classnitro_1_1ImageNodeGraphics
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="../../d9/d52/classnitro_1_1ImageNodeGraphicsView-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">nitro::ImageNodeGraphicsView Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A graphics view for the node graph. Comes with a unique context menu and ability to spawn viewer nodes.  
+ <a href="../../d7/d22/classnitro_1_1ImageNodeGraphicsView.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d4/dd8/imgnodegraphicsview_8hpp_source.html">imgnodegraphicsview.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for nitro::ImageNodeGraphicsView:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d68/classnitro_1_1ImageNodeGraphicsView__inherit__graph.png" border="0" usemap="#anitro_1_1ImageNodeGraphicsView_inherit__map" alt="Inheritance graph"/></div>
-<map name="anitro_1_1ImageNodeGraphicsView_inherit__map" id="anitro_1_1ImageNodeGraphicsView_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,229,107"/>
-<area shape="rect" title=" " alt="" coords="45,5,190,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for nitro::ImageNodeGraphicsView:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d83/classnitro_1_1ImageNodeGraphicsView__coll__graph.png" border="0" usemap="#anitro_1_1ImageNodeGraphicsView_coll__map" alt="Collaboration graph"/></div>
-<map name="anitro_1_1ImageNodeGraphicsView_coll__map" id="anitro_1_1ImageNodeGraphicsView_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,229,107"/>
-<area shape="rect" title=" " alt="" coords="45,5,190,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
@@ -124,19 +122,105 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropEvent</b> (QDropE
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af0a6fde4506fb092c79f4c9651774782"><td class="memItemLeft" align="right" valign="top"><a id="af0a6fde4506fb092c79f4c9651774782"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ImageNodeGraphicsView</b> (std::shared_ptr&lt; <a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> &gt; &amp;nodes, QtNodes::BasicGraphicsScene *scene, QtNodes::DataFlowGraphModel *model, QWidget *parent)</td></tr>
+<tr class="memitem:af0a6fde4506fb092c79f4c9651774782"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classnitro_1_1ImageNodeGraphicsView.html#af0a6fde4506fb092c79f4c9651774782">ImageNodeGraphicsView</a> (std::shared_ptr&lt; <a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> &gt; &amp;nodes, QtNodes::BasicGraphicsScene *scene, QtNodes::DataFlowGraphModel *model, QWidget *parent)</td></tr>
+<tr class="memdesc:af0a6fde4506fb092c79f4c9651774782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new graphics view.  <a href="../../d7/d22/classnitro_1_1ImageNodeGraphicsView.html#af0a6fde4506fb092c79f4c9651774782">More...</a><br /></td></tr>
 <tr class="separator:af0a6fde4506fb092c79f4c9651774782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4aef67247ac1f5fb90f6f0a86ad9e32"><td class="memItemLeft" align="right" valign="top">QMenu *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classnitro_1_1ImageNodeGraphicsView.html#ae4aef67247ac1f5fb90f6f0a86ad9e32">initNodeMenu</a> () override</td></tr>
+<tr class="memdesc:ae4aef67247ac1f5fb90f6f0a86ad9e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a context menu for spawning nodes.  <a href="../../d7/d22/classnitro_1_1ImageNodeGraphicsView.html#ae4aef67247ac1f5fb90f6f0a86ad9e32">More...</a><br /></td></tr>
+<tr class="separator:ae4aef67247ac1f5fb90f6f0a86ad9e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
 <tr class="memitem:a1fe44f2599bbcb3b555017c3a07c703d"><td class="memItemLeft" align="right" valign="top"><a id="a1fe44f2599bbcb3b555017c3a07c703d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>mousePressEvent</b> (QMouseEvent *event) override</td></tr>
 <tr class="separator:a1fe44f2599bbcb3b555017c3a07c703d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dc19e8f228fc940167b97efc520b019"><td class="memItemLeft" align="right" valign="top"><a id="a1dc19e8f228fc940167b97efc520b019"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>mouseDoubleClickEvent</b> (QMouseEvent *event) override</td></tr>
 <tr class="separator:a1dc19e8f228fc940167b97efc520b019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4aef67247ac1f5fb90f6f0a86ad9e32"><td class="memItemLeft" align="right" valign="top"><a id="ae4aef67247ac1f5fb90f6f0a86ad9e32"></a>
-QMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>initNodeMenu</b> () override</td></tr>
-<tr class="separator:ae4aef67247ac1f5fb90f6f0a86ad9e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A graphics view for the node graph. Comes with a unique context menu and ability to spawn viewer nodes. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af0a6fde4506fb092c79f4c9651774782"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0a6fde4506fb092c79f4c9651774782">&#9670;&nbsp;</a></span>ImageNodeGraphicsView()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">nitro::ImageNodeGraphicsView::ImageNodeGraphicsView </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../df/dd2/classnitro_1_1NodeRegistry.html">NodeRegistry</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>nodes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QtNodes::BasicGraphicsScene *&#160;</td>
+          <td class="paramname"><em>scene</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QtNodes::DataFlowGraphModel *&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QWidget *&#160;</td>
+          <td class="paramname"><em>parent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new graphics view. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nodes</td><td>The node registry. </td></tr>
+    <tr><td class="paramname">scene</td><td>The graph scene. </td></tr>
+    <tr><td class="paramname">model</td><td>The graph model. </td></tr>
+    <tr><td class="paramname">parent</td><td>Parent widget. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae4aef67247ac1f5fb90f6f0a86ad9e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4aef67247ac1f5fb90f6f0a86ad9e32">&#9670;&nbsp;</a></span>initNodeMenu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QMenu * nitro::ImageNodeGraphicsView::initNodeMenu </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Builds a context menu for spawning nodes. </p>
+<dl class="section return"><dt>Returns</dt><dd>A context menu for spawning nodes. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/gui/nodeeditor/<a class="el" href="../../d4/dd8/imgnodegraphicsview_8hpp_source.html">imgnodegraphicsview.hpp</a></li>
 <li>src/gui/nodeeditor/imgnodegraphicsview.cpp</li>

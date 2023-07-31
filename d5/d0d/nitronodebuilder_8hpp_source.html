@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -103,137 +103,150 @@ $(document).ready(function(){initNavTree('d5/d0d/nitronodebuilder_8hpp_source.ht
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>nitro {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a>(QString name, QString <span class="keywordtype">id</span>, QString category);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    std::unique_ptr&lt;NitroNode&gt; build();</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOperator(std::unique_ptr&lt;NodeOperator&gt; algo);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Misc</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withNodeColor(<span class="keyword">const</span> QColor &amp;color);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withIcon(<span class="keyword">const</span> QString &amp;path);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withInputPort(<span class="keyword">const</span> QString &amp;name) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        inputList_.emplace_back(name, imDataType);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        addInPortWidget(<span class="keyword">new</span> QLabel(name));</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aa3f521829c04aa62480348e3ec783454">NitroNodeBuilder</a>(QString name, QString <span class="keywordtype">id</span>, QString category);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::unique_ptr&lt;NitroNode&gt; <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a98173e459e727e551f412f72119c862c">build</a>();</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withInputPort(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                                    std::initializer_list&lt;QString&gt; allowedConversions) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;type: allowedConversions) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            imDataType.allowedFromConversions.insert(type);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        inputList_.emplace_back(name, imDataType);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        addInPortWidget(<span class="keyword">new</span> QLabel(name));</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// TODO: refactor this with fewer parameters</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a81ed9e7a2f478971ecdb3b4efaf0b6c3">withOperator</a>(std::unique_ptr&lt;NodeOperator&gt; op);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#af490f81165cba253742c728b72ad8a64">withNodeColor</a>(<span class="keyword">const</span> QColor &amp;color);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withInputInteger(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                       <span class="keywordtype">int</span> defaultVal,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                       <span class="keywordtype">int</span> min,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                       <span class="keywordtype">int</span> max,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                       BoundMode boundMode = BoundMode::UPPER_LOWER,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                       std::initializer_list&lt;QString&gt; allowedConversions = {});</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a08c105c45f514f1bd56f615611bd9962">withIcon</a>(<span class="keyword">const</span> QString &amp;path);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withInputValue(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                     <span class="keywordtype">double</span> defaultVal,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                     <span class="keywordtype">double</span> min,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                     <span class="keywordtype">double</span> max,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                     BoundMode boundMode = BoundMode::UPPER_LOWER,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                     std::initializer_list&lt;QString&gt; allowedConversions = {});</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Output</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOutputPort(<span class="keyword">const</span> QString &amp;name) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        outputList_.emplace_back(name, imDataType);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        addOutPortWidget(<span class="keyword">new</span> QLabel(name));</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withLoadButton(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QString &amp;filters);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOutputInteger(<span class="keyword">const</span> QString &amp;name);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOutputInteger(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">int</span> defaultVal);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOutputValue(<span class="keyword">const</span> QString &amp;name);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withOutputValue(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">double</span> defaultVal);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withSourcedOutputInteger(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                               <span class="keywordtype">int</span> defaultVal,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                               <span class="keywordtype">int</span> min,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                               <span class="keywordtype">int</span> max,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                               BoundMode boundMode = BoundMode::UPPER_LOWER);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withSourcedOutputValue(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                             <span class="keywordtype">double</span> defaultVal,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                             <span class="keywordtype">double</span> min,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                             <span class="keywordtype">double</span> max,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                             BoundMode boundMode = BoundMode::UPPER_LOWER);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Option Widgets</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withDropDown(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QStringList &amp;options);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withCheckBox(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">bool</span> checked = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withDisplayWidget(<span class="keyword">const</span> QString &amp;name, QLabel *label);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *withDisplayWidget(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QString &amp;text);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> portWidgetWidth_ = 150;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">const</span> QString name_;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">const</span> QString id_;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">const</span> QString category_;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    std::unique_ptr&lt;NodeOperator&gt; algo_;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    std::unique_ptr&lt;NitroNode&gt; node_;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">int</span> portWidgetHeight_;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    QColor nodeColor_ = NITRO_CONVERTER_COLOR;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    QString iconPath_;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    std::vector&lt;PortData&gt; inputList_;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    std::vector&lt;PortData&gt; outputList_;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::unordered_map&lt;QString, int&gt; options_;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    QVBoxLayout *inLayout_;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    QVBoxLayout *outLayout_;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    QVBoxLayout *optionLayout_;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">void</span> addInPortWidget(QWidget *widget);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span> addInPortWidget(QLabel *label);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span> addOutPortWidget(QWidget *widget);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span> addOutPortWidget(QLabel *label);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">void</span> addOptionWidget(QWidget *widget);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">void</span> initInputValue(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                        ValueSliders::IntSlider *slider,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                        std::initializer_list&lt;QString&gt; list);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span> initInputVal(<span class="keyword">const</span> QString &amp;name,</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                      ValueSliders::DoubleSlider *slider,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                      std::initializer_list&lt;QString&gt; list);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a3d60bf8b01ade41aa02c2e2fd4bf2570">   72</a></span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a3d60bf8b01ade41aa02c2e2fd4bf2570">withInputPort</a>(<span class="keyword">const</span> QString &amp;name) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        inputList_.emplace_back(name, imDataType);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        addInPortWidget(<span class="keyword">new</span> QLabel(name));</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a7fd4b06bda285fce9a01b65b961655a6">   93</a></span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a7fd4b06bda285fce9a01b65b961655a6">withInputPort</a>(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                    std::initializer_list&lt;QString&gt; allowedConversions) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;type: allowedConversions) {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            imDataType.allowedFromConversions.insert(type);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        inputList_.emplace_back(name, imDataType);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        addInPortWidget(<span class="keyword">new</span> QLabel(name));</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a8ede5ed5794408660d84e944e674b398">withInputInteger</a>(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                       <span class="keywordtype">int</span> defaultVal,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                                       <span class="keywordtype">int</span> min,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                                       <span class="keywordtype">int</span> max,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                       BoundMode boundMode = BoundMode::UPPER_LOWER,</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                                       std::initializer_list&lt;QString&gt; allowedConversions = {});</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aa3f521829c04aa62480348e3ec783454">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aabf3e4816194be24adb1f1cd8d005ae4">withInputValue</a>(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                                     <span class="keywordtype">double</span> defaultVal,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                                     <span class="keywordtype">double</span> min,</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                                     <span class="keywordtype">double</span> max,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                                     BoundMode boundMode = BoundMode::UPPER_LOWER,</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                                     std::initializer_list&lt;QString&gt; allowedConversions = {});</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">nitro::NitroNodeBuilder</a></div><div class="ttdef"><b>Definition:</b> nitronodebuilder.hpp:17</div></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a68475b4ed84c7c63712be00fb0465a75">  156</a></span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a68475b4ed84c7c63712be00fb0465a75">withOutputPort</a>(<span class="keyword">const</span> QString &amp;name) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        QtNodes::NodeDataType imDataType = T().type();</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        outputList_.emplace_back(name, imDataType);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        addOutPortWidget(<span class="keyword">new</span> QLabel(name));</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a9083f52cbfbbacdc871dde8de47234a4">withLoadButton</a>(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QString &amp;filters);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a47b07e7c0be30c0f2e031aee4d0dfcb7">withOutputInteger</a>(<span class="keyword">const</span> QString &amp;name);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a47b07e7c0be30c0f2e031aee4d0dfcb7">withOutputInteger</a>(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">int</span> defaultVal);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a35fd9e5eab01858aeeacac591c92424b">withOutputValue</a>(<span class="keyword">const</span> QString &amp;name);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a35fd9e5eab01858aeeacac591c92424b">withOutputValue</a>(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">double</span> defaultVal);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aa41dc0f0370bbb1cabe7fe0aec29860a">withSourcedOutputInteger</a>(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                                               <span class="keywordtype">int</span> defaultVal,</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                                               <span class="keywordtype">int</span> min,</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                                               <span class="keywordtype">int</span> max,</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                                               BoundMode boundMode = BoundMode::UPPER_LOWER);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a740346041002511d4b1fb9bfc791a855">withSourcedOutputValue</a>(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                                             <span class="keywordtype">double</span> defaultVal,</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                                             <span class="keywordtype">double</span> min,</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                                             <span class="keywordtype">double</span> max,</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                                             BoundMode boundMode = BoundMode::UPPER_LOWER);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#ab549cff7e0bf6e74b9af4ad4d7b309a7">withDropDown</a>(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QStringList &amp;options);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a43873a652adcc71d048714e38ec849a8">withCheckBox</a>(<span class="keyword">const</span> QString &amp;name, <span class="keywordtype">bool</span> checked = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a1d3b4e42af0301db2a3f1b00f01bcfe8">withDisplayWidget</a>(<span class="keyword">const</span> QString &amp;name, QLabel *label);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">NitroNodeBuilder</a> *<a class="code" href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a1d3b4e42af0301db2a3f1b00f01bcfe8">withDisplayWidget</a>(<span class="keyword">const</span> QString &amp;name, <span class="keyword">const</span> QString &amp;text);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> portWidgetWidth_ = 150;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keyword">const</span> QString name_;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">const</span> QString id_;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">const</span> QString category_;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    std::unique_ptr&lt;NodeOperator&gt; algo_;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    std::unique_ptr&lt;NitroNode&gt; node_;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keywordtype">int</span> portWidgetHeight_;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    QColor nodeColor_ = NITRO_CONVERTER_COLOR;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    QString iconPath_;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    std::vector&lt;PortData&gt; inputList_;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    std::vector&lt;PortData&gt; outputList_;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    std::unordered_map&lt;QString, int&gt; options_;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    QVBoxLayout *inLayout_;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    QVBoxLayout *outLayout_;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    QVBoxLayout *optionLayout_;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordtype">void</span> addInPortWidget(QWidget *widget);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">void</span> addInPortWidget(QLabel *label);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordtype">void</span> addOutPortWidget(QWidget *widget);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordtype">void</span> addOutPortWidget(QLabel *label);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keywordtype">void</span> addOptionWidget(QWidget *widget);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordtype">void</span> initInputValue(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                        ValueSliders::IntSlider *slider,</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                        std::initializer_list&lt;QString&gt; list);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordtype">void</span> initInputVal(<span class="keyword">const</span> QString &amp;name,</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                      ValueSliders::DoubleSlider *slider,</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                      std::initializer_list&lt;QString&gt; list);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;};</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html">nitro::NitroNodeBuilder</a></div><div class="ttdoc">Builder class that can be used to build new node types. All nodes should be constructed via this buil...</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.hpp:22</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a08c105c45f514f1bd56f615611bd9962"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a08c105c45f514f1bd56f615611bd9962">nitro::NitroNodeBuilder::withIcon</a></div><div class="ttdeci">NitroNodeBuilder * withIcon(const QString &amp;path)</div><div class="ttdoc">Gives the node an icon. The icon path should be present in one of the resource files.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:274</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a1d3b4e42af0301db2a3f1b00f01bcfe8"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a1d3b4e42af0301db2a3f1b00f01bcfe8">nitro::NitroNodeBuilder::withDisplayWidget</a></div><div class="ttdeci">NitroNodeBuilder * withDisplayWidget(const QString &amp;name, QLabel *label)</div><div class="ttdoc">Adds a simple label to the node. Can be used to display images by adding a PixMap to the label.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:256</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a35fd9e5eab01858aeeacac591c92424b"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a35fd9e5eab01858aeeacac591c92424b">nitro::NitroNodeBuilder::withOutputValue</a></div><div class="ttdeci">NitroNodeBuilder * withOutputValue(const QString &amp;name)</div><div class="ttdoc">Adds an output port producing doubles to the node. Unique variation of withOutputPort for double type...</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:200</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a3d60bf8b01ade41aa02c2e2fd4bf2570"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a3d60bf8b01ade41aa02c2e2fd4bf2570">nitro::NitroNodeBuilder::withInputPort</a></div><div class="ttdeci">NitroNodeBuilder * withInputPort(const QString &amp;name)</div><div class="ttdoc">Gives the node an input port that takes inputs of type T.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.hpp:72</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a43873a652adcc71d048714e38ec849a8"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a43873a652adcc71d048714e38ec849a8">nitro::NitroNodeBuilder::withCheckBox</a></div><div class="ttdeci">NitroNodeBuilder * withCheckBox(const QString &amp;name, bool checked=false)</div><div class="ttdoc">Adds a checkbox widget to the node.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:247</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a47b07e7c0be30c0f2e031aee4d0dfcb7"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a47b07e7c0be30c0f2e031aee4d0dfcb7">nitro::NitroNodeBuilder::withOutputInteger</a></div><div class="ttdeci">NitroNodeBuilder * withOutputInteger(const QString &amp;name)</div><div class="ttdoc">Adds an output port producing integers to the node. Unique variation of withOutputPort for integer ty...</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:189</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a68475b4ed84c7c63712be00fb0465a75"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a68475b4ed84c7c63712be00fb0465a75">nitro::NitroNodeBuilder::withOutputPort</a></div><div class="ttdeci">NitroNodeBuilder * withOutputPort(const QString &amp;name)</div><div class="ttdoc">Gives the node an output port that produces outputs of type T. Note that this type could be changed b...</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.hpp:156</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a740346041002511d4b1fb9bfc791a855"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a740346041002511d4b1fb9bfc791a855">nitro::NitroNodeBuilder::withSourcedOutputValue</a></div><div class="ttdeci">NitroNodeBuilder * withSourcedOutputValue(const QString &amp;name, double defaultVal, double min, double max, BoundMode boundMode=BoundMode::UPPER_LOWER)</div><div class="ttdoc">Special port that produces a value not via the node operator by via a slider widget....</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:223</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a7fd4b06bda285fce9a01b65b961655a6"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a7fd4b06bda285fce9a01b65b961655a6">nitro::NitroNodeBuilder::withInputPort</a></div><div class="ttdeci">NitroNodeBuilder * withInputPort(const QString &amp;name, std::initializer_list&lt; QString &gt; allowedConversions)</div><div class="ttdoc">Gives the node an input port that takes inputs of type T. The port, however, also accepts any data ty...</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.hpp:93</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a81ed9e7a2f478971ecdb3b4efaf0b6c3"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a81ed9e7a2f478971ecdb3b4efaf0b6c3">nitro::NitroNodeBuilder::withOperator</a></div><div class="ttdeci">NitroNodeBuilder * withOperator(std::unique_ptr&lt; NodeOperator &gt; op)</div><div class="ttdoc">Adds an operator to the node. The operator is what is executed when a node is being evaluated.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:279</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a8ede5ed5794408660d84e944e674b398"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a8ede5ed5794408660d84e944e674b398">nitro::NitroNodeBuilder::withInputInteger</a></div><div class="ttdeci">NitroNodeBuilder * withInputInteger(const QString &amp;name, int defaultVal, int min, int max, BoundMode boundMode=BoundMode::UPPER_LOWER, std::initializer_list&lt; QString &gt; allowedConversions={})</div><div class="ttdoc">Unique variation of withInputPort for integer types. Adds a slider widget to the node itself.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:118</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a9083f52cbfbbacdc871dde8de47234a4"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a9083f52cbfbbacdc871dde8de47234a4">nitro::NitroNodeBuilder::withLoadButton</a></div><div class="ttdeci">NitroNodeBuilder * withLoadButton(const QString &amp;name, const QString &amp;filters)</div><div class="ttdoc">Gives the node a load button to load a particular data type.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:175</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_a98173e459e727e551f412f72119c862c"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#a98173e459e727e551f412f72119c862c">nitro::NitroNodeBuilder::build</a></div><div class="ttdeci">std::unique_ptr&lt; NitroNode &gt; build()</div><div class="ttdoc">Creates the node as configured.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:57</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_aa3f521829c04aa62480348e3ec783454"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aa3f521829c04aa62480348e3ec783454">nitro::NitroNodeBuilder::NitroNodeBuilder</a></div><div class="ttdeci">NitroNodeBuilder(QString name, QString id, QString category)</div><div class="ttdoc">Creates a new builder.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:35</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_aa41dc0f0370bbb1cabe7fe0aec29860a"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aa41dc0f0370bbb1cabe7fe0aec29860a">nitro::NitroNodeBuilder::withSourcedOutputInteger</a></div><div class="ttdeci">NitroNodeBuilder * withSourcedOutputInteger(const QString &amp;name, int defaultVal, int min, int max, BoundMode boundMode=BoundMode::UPPER_LOWER)</div><div class="ttdoc">Special port that produces a value not via the node operator by via a slider widget....</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:210</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_aabf3e4816194be24adb1f1cd8d005ae4"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#aabf3e4816194be24adb1f1cd8d005ae4">nitro::NitroNodeBuilder::withInputValue</a></div><div class="ttdeci">NitroNodeBuilder * withInputValue(const QString &amp;name, double defaultVal, double min, double max, BoundMode boundMode=BoundMode::UPPER_LOWER, std::initializer_list&lt; QString &gt; allowedConversions={})</div><div class="ttdoc">Unique variation of withInputPort for double types. Adds a slider widget to the node itself.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:165</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_ab549cff7e0bf6e74b9af4ad4d7b309a7"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#ab549cff7e0bf6e74b9af4ad4d7b309a7">nitro::NitroNodeBuilder::withDropDown</a></div><div class="ttdeci">NitroNodeBuilder * withDropDown(const QString &amp;name, const QStringList &amp;options)</div><div class="ttdoc">Adds a dropdown widget to the node.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:236</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroNodeBuilder_html_af490f81165cba253742c728b72ad8a64"><div class="ttname"><a href="../../da/dd1/classnitro_1_1NitroNodeBuilder.html#af490f81165cba253742c728b72ad8a64">nitro::NitroNodeBuilder::withNodeColor</a></div><div class="ttdeci">NitroNodeBuilder * withNodeColor(const QColor &amp;color)</div><div class="ttdoc">Gives the node a specific color. Affects the icon color and caption background of a node.</div><div class="ttdef"><b>Definition:</b> nitronodebuilder.cpp:269</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

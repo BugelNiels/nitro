@@ -1,0 +1,16 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node79 [label="QDockWidget",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node79 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="nitro::ImCore::Histogram\lViewerDockWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html",tooltip=" "];
+  Node79 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="nitro::ImCore::ImViewDock\lWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d91/classnitro_1_1ImCore_1_1ImViewDockWidget.html",tooltip=" "];
+  Node79 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="nitro::NodeDockWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/db3/classnitro_1_1NodeDockWidget.html",tooltip="A dock widget used for the node editor view."];
+  Node79 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="nitro::Thesis::RenderDock\lWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d2b/classnitro_1_1Thesis_1_1RenderDockWidget.html",tooltip=" "];
+}

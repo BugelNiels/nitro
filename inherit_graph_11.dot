@@ -1,0 +1,8 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="nitro::NitroNodeBuilder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dd1/classnitro_1_1NitroNodeBuilder.html",tooltip="Builder class that can be used to build new node types. All nodes should be constructed via this buil..."];
+}

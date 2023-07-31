@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -96,61 +96,72 @@ $(document).ready(function(){initNavTree('d8/d9a/flexibledata_8hpp_source.html',
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>nitro {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> U&gt;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a> : <span class="keyword">public</span> QtNodes::NodeData {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">using</span> DataType = T;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>(T val, <span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>, <span class="keyword">const</span> QString &amp;name, QColor color)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        : data_(val),</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;          type_({id, name, color}) {}</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    [[nodiscard]] QString getDescription()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>; }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    [[nodiscard]] T data()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data_; }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    [[nodiscard]] <span class="keyword">static</span> T from(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;data) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">if</span> (data == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Data is null.\n&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        QString <span class="keywordtype">id</span> = data-&gt;type().id;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> (conversions.count(<span class="keywordtype">id</span>) == 0) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">throw</span> std::invalid_argument(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    QString(<span class="stringliteral">&quot;Conversion from %1 is not supported. Id %2 not found.\n&quot;</span>)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                            .arg(data-&gt;type().name, <span class="keywordtype">id</span>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                            .toStdString());</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> conversions[id](data);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    [[nodiscard]] <span class="keywordtype">bool</span> empty()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> allowConversionFrom(<span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>) <span class="keyword">final</span> { type_.allowedFromConversions.insert(<span class="keywordtype">id</span>); }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    [[nodiscard]] QtNodes::NodeDataType type()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> type_; }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> V&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> registerConversionFrom(</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            std::function&lt;T(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;)&gt; conversion) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        QString <span class="keywordtype">id</span> = V::id();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        conversions[id] = std::move(conversion);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> std::unordered_map&lt;QString,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                     std::function&lt;T(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;)&gt;&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            conversions;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    T data_;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    QtNodes::NodeDataType type_;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:16</div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> U&gt;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a> : <span class="keyword">public</span> QtNodes::NodeData {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#a933120efcfda0eda19c12daf49c50ff7">   22</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a933120efcfda0eda19c12daf49c50ff7">DataType</a> = T;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#a13f8aeed3447d20c5c19307950b3310a">   27</a></span>&#160;    <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a13f8aeed3447d20c5c19307950b3310a">FlexibleData</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#af9e1ee393dd6fa0cfb1201dc3296341e">   36</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#af9e1ee393dd6fa0cfb1201dc3296341e">FlexibleData</a>(T val, <span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>, <span class="keyword">const</span> QString &amp;name, QColor color)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        : data_(val),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;          type_({id, name, color}) {}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b">   44</a></span>&#160;    [[nodiscard]] QString <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b">getDescription</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>; }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">   50</a></span>&#160;    [[nodiscard]] T <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data_; }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#ab9d7114b024eafd2e052c0f4b4258cf4">   58</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> T <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#ab9d7114b024eafd2e052c0f4b4258cf4">from</a>(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;<a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a> == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Data is null.\n&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        QString <span class="keywordtype">id</span> = <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>-&gt;type().id;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (conversions.count(<span class="keywordtype">id</span>) == 0) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">throw</span> std::invalid_argument(</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    QString(<span class="stringliteral">&quot;Conversion from %1 is not supported. Id %2 not found.\n&quot;</span>)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                            .arg(<a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>-&gt;type().name, <span class="keywordtype">id</span>)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                            .toStdString());</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> conversions[id](<a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#a99412eb25bae77e9e16a48fb8ed954f1">   78</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a99412eb25bae77e9e16a48fb8ed954f1">allowConversionFrom</a>(<span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>) <span class="keyword">final</span> { type_.allowedFromConversions.insert(<span class="keywordtype">id</span>); }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#aa02b762891bcdc627fd05d61d6b77498">   84</a></span>&#160;    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#aa02b762891bcdc627fd05d61d6b77498">empty</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#ae39ed220f776daaaffd322d0da03129c">   90</a></span>&#160;    [[nodiscard]] QtNodes::NodeDataType <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#ae39ed220f776daaaffd322d0da03129c">type</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> type_; }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> V&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="../../d8/dac/classnitro_1_1FlexibleData.html#a16449d8091af855aae7eaf7d90ef700a">  100</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html#a16449d8091af855aae7eaf7d90ef700a">registerConversionFrom</a>(</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            std::function&lt;T(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;)&gt; conversion) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        QString <span class="keywordtype">id</span> = V::id();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        conversions[id] = std::move(conversion);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> std::unordered_map&lt;QString,</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                     std::function&lt;T(<span class="keyword">const</span> std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;)&gt;&gt;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            conversions;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    T data_;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    QtNodes::NodeDataType type_;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdoc">A flexible data type that can contain any type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:17</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_a13f8aeed3447d20c5c19307950b3310a"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#a13f8aeed3447d20c5c19307950b3310a">nitro::FlexibleData::FlexibleData</a></div><div class="ttdeci">FlexibleData()=default</div><div class="ttdoc">Creates a new empty flexible data type.</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_a16449d8091af855aae7eaf7d90ef700a"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#a16449d8091af855aae7eaf7d90ef700a">nitro::FlexibleData::registerConversionFrom</a></div><div class="ttdeci">static void registerConversionFrom(std::function&lt; T(const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;)&gt; conversion)</div><div class="ttdoc">Registers a function that can convert from type A to B, where B is the data type described by the cla...</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:100</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_a1a11f5daeb86ccaf4e95264b30083c91"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">nitro::FlexibleData::data</a></div><div class="ttdeci">T data() const</div><div class="ttdoc">Retrieves the data encapsulated by this class.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:50</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_a933120efcfda0eda19c12daf49c50ff7"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#a933120efcfda0eda19c12daf49c50ff7">nitro::FlexibleData::DataType</a></div><div class="ttdeci">T DataType</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:22</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_a99412eb25bae77e9e16a48fb8ed954f1"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#a99412eb25bae77e9e16a48fb8ed954f1">nitro::FlexibleData::allowConversionFrom</a></div><div class="ttdeci">void allowConversionFrom(const QString &amp;id) final</div><div class="ttdoc">Allow the type with the provided id to be converted to this data type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:78</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_aa02b762891bcdc627fd05d61d6b77498"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#aa02b762891bcdc627fd05d61d6b77498">nitro::FlexibleData::empty</a></div><div class="ttdeci">bool empty() const override</div><div class="ttdoc">Checks whether the data is empty or not.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:84</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_ab9d7114b024eafd2e052c0f4b4258cf4"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#ab9d7114b024eafd2e052c0f4b4258cf4">nitro::FlexibleData::from</a></div><div class="ttdeci">static T from(const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;data)</div><div class="ttdoc">Retrieve data of type T from the provided node data. Only possible if a conversion is registered betw...</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:58</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_abcd5419760224c8817abb1399eaa819b"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b">nitro::FlexibleData::getDescription</a></div><div class="ttdeci">QString getDescription() const override</div><div class="ttdoc">Retrieves the description of this data type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:44</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_ae39ed220f776daaaffd322d0da03129c"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#ae39ed220f776daaaffd322d0da03129c">nitro::FlexibleData::type</a></div><div class="ttdeci">QtNodes::NodeDataType type() const override</div><div class="ttdoc">Retrieves the type of this data.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:90</div></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html_af9e1ee393dd6fa0cfb1201dc3296341e"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html#af9e1ee393dd6fa0cfb1201dc3296341e">nitro::FlexibleData::FlexibleData</a></div><div class="ttdeci">FlexibleData(T val, const QString &amp;id, const QString &amp;name, QColor color)</div><div class="ttdoc">Creates a new instance of this flexible data type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:36</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

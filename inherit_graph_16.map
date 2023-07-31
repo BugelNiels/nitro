@@ -1,4 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d8/d7c/classnitro_1_1Thesis_1_1Renderer.html" title="The Renderer class represents a generic renderer class. The class is essentially abstract and should ..." alt="" coords="5,5,175,32"/>
-<area shape="rect" id="node2" href="$d6/d2a/classnitro_1_1Thesis_1_1ShaderRenderer.html" title="The MeshRenderer class is responsible for rendering a mesh. Can render any arbitrary mesh." alt="" coords="223,5,437,32"/>
-</map>

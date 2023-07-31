@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -96,27 +96,31 @@ $(document).ready(function(){initNavTree('d4/d0e/integerdata_8hpp_source.html','
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>nitro {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="../../d2/d9f/classnitro_1_1IntegerData.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html">IntegerData</a> : <span class="keyword">public</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>&lt;int, IntegerData&gt; {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html">IntegerData</a>();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html">IntegerData</a>(<span class="keywordtype">int</span> value);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">static</span> QString id() { <span class="keywordflow">return</span> id_; }</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> registerConversions();</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="../../d2/d9f/classnitro_1_1IntegerData.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html">IntegerData</a> : <span class="keyword">public</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>&lt;int, IntegerData&gt; {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html#ace60f6e8d8e4a48557f3b4444b7915aa">IntegerData</a>();</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    [[nodiscard]] QString getDescription() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString name_ = <span class="stringliteral">&quot;Integer&quot;</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString id_ = <span class="stringliteral">&quot;Integer&quot;</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QColor baseColor_ = {89, 140, 92};</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:16</div></div>
-<div class="ttc" id="aclassnitro_1_1IntegerData_html"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html">nitro::IntegerData</a></div><div class="ttdef"><b>Definition:</b> integerdata.hpp:10</div></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html#ace60f6e8d8e4a48557f3b4444b7915aa">IntegerData</a>(<span class="keywordtype">int</span> value);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="../../d2/d9f/classnitro_1_1IntegerData.html#afd1acedd4a2aa6b54d92d359552a87da">   30</a></span>&#160;    <span class="keyword">static</span> QString <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html#afd1acedd4a2aa6b54d92d359552a87da">id</a>() { <span class="keywordflow">return</span> id_; }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html#a9aff0e4c8eed04998e69c93f28030603">registerConversions</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    [[nodiscard]] QString <a class="code" href="../../d2/d9f/classnitro_1_1IntegerData.html#aa95acf123f4b95eedb15e3828ebc3217">getDescription</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString name_ = <span class="stringliteral">&quot;Integer&quot;</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString id_ = <span class="stringliteral">&quot;Integer&quot;</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QColor baseColor_ = {89, 140, 92};</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdoc">A flexible data type that can contain any type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:17</div></div>
+<div class="ttc" id="aclassnitro_1_1IntegerData_html"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html">nitro::IntegerData</a></div><div class="ttdoc">Describes an integer data type.</div><div class="ttdef"><b>Definition:</b> integerdata.hpp:13</div></div>
+<div class="ttc" id="aclassnitro_1_1IntegerData_html_a9aff0e4c8eed04998e69c93f28030603"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html#a9aff0e4c8eed04998e69c93f28030603">nitro::IntegerData::registerConversions</a></div><div class="ttdeci">static void registerConversions()</div><div class="ttdoc">Registers the conversions that this data type allows.</div><div class="ttdef"><b>Definition:</b> integerdata.cpp:19</div></div>
+<div class="ttc" id="aclassnitro_1_1IntegerData_html_aa95acf123f4b95eedb15e3828ebc3217"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html#aa95acf123f4b95eedb15e3828ebc3217">nitro::IntegerData::getDescription</a></div><div class="ttdeci">QString getDescription() const override</div><div class="ttdoc">Retrieves the description of this data type.</div><div class="ttdef"><b>Definition:</b> integerdata.cpp:15</div></div>
+<div class="ttc" id="aclassnitro_1_1IntegerData_html_ace60f6e8d8e4a48557f3b4444b7915aa"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html#ace60f6e8d8e4a48557f3b4444b7915aa">nitro::IntegerData::IntegerData</a></div><div class="ttdeci">IntegerData()</div><div class="ttdoc">Creates a new empty integer data type.</div><div class="ttdef"><b>Definition:</b> integerdata.cpp:6</div></div>
+<div class="ttc" id="aclassnitro_1_1IntegerData_html_afd1acedd4a2aa6b54d92d359552a87da"><div class="ttname"><a href="../../d2/d9f/classnitro_1_1IntegerData.html#afd1acedd4a2aa6b54d92d359552a87da">nitro::IntegerData::id</a></div><div class="ttdeci">static QString id()</div><div class="ttdoc">Returns the unique id of this data type.</div><div class="ttdef"><b>Definition:</b> integerdata.hpp:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

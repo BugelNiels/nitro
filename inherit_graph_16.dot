@@ -1,0 +1,10 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="nitro::Thesis::Renderer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d7c/classnitro_1_1Thesis_1_1Renderer.html",tooltip="The Renderer class represents a generic renderer class. The class is essentially abstract and should ..."];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="nitro::Thesis::ShaderRenderer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d2a/classnitro_1_1Thesis_1_1ShaderRenderer.html",tooltip="The MeshRenderer class is responsible for rendering a mesh. Can render any arbitrary mesh."];
+}

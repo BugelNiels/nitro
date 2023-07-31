@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -115,11 +115,11 @@ $(document).ready(function(){initNavTree('dc/db6/noderegistry_8hpp_source.html',
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html">nitro::NodeRegistry</a></div><div class="ttdef"><b>Definition:</b> noderegistry.hpp:12</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_a0abd04c7b199282ac1f467fd894ebe56"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#a0abd04c7b199282ac1f467fd894ebe56">nitro::NodeRegistry::registerNode</a></div><div class="ttdeci">void registerNode(const std::function&lt; std::unique_ptr&lt; NitroNode &gt;()&gt; &amp;buildFunction)</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:26</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_a831ba3b159a95054492537577d26771d"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#a831ba3b159a95054492537577d26771d">nitro::NodeRegistry::getRegistry</a></div><div class="ttdeci">const std::shared_ptr&lt; QtNodes::NodeDelegateModelRegistry &gt; &amp; getRegistry() const</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:9</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_aa111dda5934316e3291a435384ee1d5d"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#aa111dda5934316e3291a435384ee1d5d">nitro::NodeRegistry::getCategories</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; QString, std::vector&lt; QtNodes::NodeInfo &gt; &gt; &gt; getCategories() const</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:14</div></div>
-<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_ae9f2cb5880a9a8e3be4a0564181014c7"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#ae9f2cb5880a9a8e3be4a0564181014c7">nitro::NodeRegistry::NodeRegistry</a></div><div class="ttdeci">NodeRegistry()</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:5</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeRegistry_html"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html">nitro::NodeRegistry</a></div><div class="ttdoc">General registry class containing the information of all the supported nodes.</div><div class="ttdef"><b>Definition:</b> noderegistry.hpp:12</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_a0abd04c7b199282ac1f467fd894ebe56"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#a0abd04c7b199282ac1f467fd894ebe56">nitro::NodeRegistry::registerNode</a></div><div class="ttdeci">void registerNode(const std::function&lt; std::unique_ptr&lt; NitroNode &gt;()&gt; &amp;buildFunction)</div><div class="ttdoc">This function can be used to register a new node.</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:26</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_a831ba3b159a95054492537577d26771d"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#a831ba3b159a95054492537577d26771d">nitro::NodeRegistry::getRegistry</a></div><div class="ttdeci">const std::shared_ptr&lt; QtNodes::NodeDelegateModelRegistry &gt; &amp; getRegistry() const</div><div class="ttdoc">Get the registry as required by the QtNodes library.</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:9</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_aa111dda5934316e3291a435384ee1d5d"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#aa111dda5934316e3291a435384ee1d5d">nitro::NodeRegistry::getCategories</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; QString, std::vector&lt; QtNodes::NodeInfo &gt; &gt; &gt; getCategories() const</div><div class="ttdoc">Get all the node categories and the nodes within said category.</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:14</div></div>
+<div class="ttc" id="aclassnitro_1_1NodeRegistry_html_ae9f2cb5880a9a8e3be4a0564181014c7"><div class="ttname"><a href="../../df/dd2/classnitro_1_1NodeRegistry.html#ae9f2cb5880a9a8e3be4a0564181014c7">nitro::NodeRegistry::NodeRegistry</a></div><div class="ttdeci">NodeRegistry()</div><div class="ttdoc">Creates a new empty registry.</div><div class="ttdef"><b>Definition:</b> noderegistry.cpp:5</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

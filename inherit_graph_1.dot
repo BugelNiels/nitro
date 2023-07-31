@@ -1,0 +1,26 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node8 [label="QtNodes::NodeData",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node8 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="nitro::FlexibleData\l\< std::shared_ptr\< cv\l::Mat \>, ColImageData \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dac/classnitro_1_1FlexibleData.html",tooltip=" "];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="nitro::ColImageData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/da4/classnitro_1_1ColImageData.html",tooltip="Describes a data type for color images."];
+  Node8 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="nitro::FlexibleData\l\< double, DecimalData \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dac/classnitro_1_1FlexibleData.html",tooltip=" "];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="nitro::DecimalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dad/classnitro_1_1DecimalData.html",tooltip="Describes a decimal data type."];
+  Node8 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="nitro::FlexibleData\l\< int, IntegerData \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dac/classnitro_1_1FlexibleData.html",tooltip=" "];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="nitro::IntegerData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d9f/classnitro_1_1IntegerData.html",tooltip="Describes an integer data type."];
+  Node8 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="nitro::FlexibleData\l\< std::shared_ptr\< cv\l::Mat \>, GrayImageData \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dac/classnitro_1_1FlexibleData.html",tooltip=" "];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="nitro::GrayImageData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dad/classnitro_1_1GrayImageData.html",tooltip="Describes a data type for grayscale images."];
+  Node8 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="nitro::FlexibleData\l\< T, U \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dac/classnitro_1_1FlexibleData.html",tooltip="A flexible data type that can contain any type."];
+}

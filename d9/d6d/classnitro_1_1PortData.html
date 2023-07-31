@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -92,21 +92,31 @@ $(document).ready(function(){initNavTree('d9/d6d/classnitro_1_1PortData.html','.
 </div><!--header-->
 <div class="contents">
 
+<p>Represents data of a single port belonging to a node. It contains information about the name of the port, the data type that this port has and the data itself that is at this port. The name of a port is unique amongst its category. That is, all input ports have unique names and all unique output ports have unique names. However, an output port can have a name that already exists in the input ports.  
+ <a href="../../d9/d6d/classnitro_1_1PortData.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../d0/de0/portdata_8hpp_source.html">portdata.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4b0bb54b764430e4ca7fae2e4416be10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a4b0bb54b764430e4ca7fae2e4416be10">PortData</a> ()=default</td></tr>
+<tr class="memitem:a4b0bb54b764430e4ca7fae2e4416be10"><td class="memItemLeft" align="right" valign="top"><a id="a4b0bb54b764430e4ca7fae2e4416be10"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a4b0bb54b764430e4ca7fae2e4416be10">PortData</a> ()=default</td></tr>
+<tr class="memdesc:a4b0bb54b764430e4ca7fae2e4416be10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty port data class. <br /></td></tr>
 <tr class="separator:a4b0bb54b764430e4ca7fae2e4416be10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeab4b68b3fd32eba9ea5e8541191eb0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#aeab4b68b3fd32eba9ea5e8541191eb0b">PortData</a> (QString name, const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;data)</td></tr>
+<tr class="memdesc:aeab4b68b3fd32eba9ea5e8541191eb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates new port data with the given name and data.  <a href="../../d9/d6d/classnitro_1_1PortData.html#aeab4b68b3fd32eba9ea5e8541191eb0b">More...</a><br /></td></tr>
 <tr class="separator:aeab4b68b3fd32eba9ea5e8541191eb0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a508b9390eb94fb3c43eecb6d5a846633"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a508b9390eb94fb3c43eecb6d5a846633">PortData</a> (QString name, QtNodes::NodeDataType type)</td></tr>
+<tr class="memdesc:a508b9390eb94fb3c43eecb6d5a846633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates new port data with the given name and data type. The data itself is initialised to be empty.  <a href="../../d9/d6d/classnitro_1_1PortData.html#a508b9390eb94fb3c43eecb6d5a846633">More...</a><br /></td></tr>
 <tr class="separator:a508b9390eb94fb3c43eecb6d5a846633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b454767aa1922bf916dcd4535dbaf6"><td class="memItemLeft" align="right" valign="top">const QString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6">getName</a> () const</td></tr>
+<tr class="memdesc:a66b454767aa1922bf916dcd4535dbaf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the name of the port.  <a href="../../d9/d6d/classnitro_1_1PortData.html#a66b454767aa1922bf916dcd4535dbaf6">More...</a><br /></td></tr>
 <tr class="separator:a66b454767aa1922bf916dcd4535dbaf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55075852450855319cd53df0e4c184a1"><td class="memItemLeft" align="right" valign="top">const QtNodes::NodeDataType &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1">getType</a> () const</td></tr>
+<tr class="memdesc:a55075852450855319cd53df0e4c184a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the data type of the port.  <a href="../../d9/d6d/classnitro_1_1PortData.html#a55075852450855319cd53df0e4c184a1">More...</a><br /></td></tr>
 <tr class="separator:a55075852450855319cd53df0e4c184a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c7c39cdecf914062bd473ace764f3ac"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac">getData</a> () const</td></tr>
+<tr class="memdesc:a1c7c39cdecf914062bd473ace764f3ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the data of the port. Note that this can be a nullptr if it is empty.  <a href="../../d9/d6d/classnitro_1_1PortData.html#a1c7c39cdecf914062bd473ace764f3ac">More...</a><br /></td></tr>
 <tr class="separator:a1c7c39cdecf914062bd473ace764f3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -118,34 +128,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents data of a single port belonging to a node. It contains information about the name of the port, the data type that this port has and the data itself that is at this port. The name of a port is unique amongst its category. That is, all input ports have unique names and all unique output ports have unique names. However, an output port can have a name that already exists in the input ports. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4b0bb54b764430e4ca7fae2e4416be10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b0bb54b764430e4ca7fae2e4416be10">&#9670;&nbsp;</a></span>PortData() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">nitro::PortData::PortData </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Creates an empty port data class. </p>
-
-</div>
-</div>
 <a id="aeab4b68b3fd32eba9ea5e8541191eb0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeab4b68b3fd32eba9ea5e8541191eb0b">&#9670;&nbsp;</a></span>PortData() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeab4b68b3fd32eba9ea5e8541191eb0b">&#9670;&nbsp;</a></span>PortData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +161,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Creates new port data with the given name and data. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Creates new port data with the given name and data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the port. Note that this name should not already exist. </td></tr>
     <tr><td class="paramname">data</td><td>The data that this port contains. </td></tr>
@@ -188,7 +174,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
 </div>
 </div>
 <a id="a508b9390eb94fb3c43eecb6d5a846633"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a508b9390eb94fb3c43eecb6d5a846633">&#9670;&nbsp;</a></span>PortData() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a508b9390eb94fb3c43eecb6d5a846633">&#9670;&nbsp;</a></span>PortData() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,7 +206,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Creates new port data with the given name and data type. The data itself is initialised to be empty. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Creates new port data with the given name and data type. The data itself is initialised to be empty. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the port. Note that this name should not already exist. </td></tr>
     <tr><td class="paramname">type</td><td>The data type this port represents. </td></tr>
@@ -253,7 +241,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Retrieves the data of the port. Note that this can be a nullptr if it is empty. </p><dl class="section return"><dt>Returns</dt><dd>The data of the port. </dd></dl>
+
+<p>Retrieves the data of the port. Note that this can be a nullptr if it is empty. </p>
+<dl class="section return"><dt>Returns</dt><dd>The data of the port. </dd></dl>
 
 </div>
 </div>
@@ -279,7 +269,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Retrieves the name of the port. </p><dl class="section return"><dt>Returns</dt><dd>The name of the port. </dd></dl>
+
+<p>Retrieves the name of the port. </p>
+<dl class="section return"><dt>Returns</dt><dd>The name of the port. </dd></dl>
 
 </div>
 </div>
@@ -305,7 +297,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodePorts</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Retrieves the data type of the port. </p><dl class="section return"><dt>Returns</dt><dd>The data type of the port. </dd></dl>
+
+<p>Retrieves the data type of the port. </p>
+<dl class="section return"><dt>Returns</dt><dd>The data type of the port. </dd></dl>
 
 </div>
 </div>

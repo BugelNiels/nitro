@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -94,78 +94,390 @@ $(document).ready(function(){initNavTree('d8/dac/classnitro_1_1FlexibleData.html
 </div><!--header-->
 <div class="contents">
 
+<p>A flexible data type that can contain any type.  
+ <a href="../../d8/dac/classnitro_1_1FlexibleData.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../d8/d9a/flexibledata_8hpp_source.html">flexibledata.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for nitro::FlexibleData&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/ddd/classnitro_1_1FlexibleData__inherit__graph.png" border="0" usemap="#anitro_1_1FlexibleData_3_01T_00_01U_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="anitro_1_1FlexibleData_3_01T_00_01U_01_4_inherit__map" id="anitro_1_1FlexibleData_3_01T_00_01U_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="9,80,152,121"/>
-<area shape="rect" title=" " alt="" coords="5,5,156,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for nitro::FlexibleData&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d9b/classnitro_1_1FlexibleData__coll__graph.png" border="0" usemap="#anitro_1_1FlexibleData_3_01T_00_01U_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="anitro_1_1FlexibleData_3_01T_00_01U_01_4_coll__map" id="anitro_1_1FlexibleData_3_01T_00_01U_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="9,80,152,121"/>
-<area shape="rect" title=" " alt="" coords="5,5,156,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a933120efcfda0eda19c12daf49c50ff7"><td class="memItemLeft" align="right" valign="top"><a id="a933120efcfda0eda19c12daf49c50ff7"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>DataType</b> = T</td></tr>
+<tr class="memitem:a933120efcfda0eda19c12daf49c50ff7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a933120efcfda0eda19c12daf49c50ff7">DataType</a> = T</td></tr>
 <tr class="separator:a933120efcfda0eda19c12daf49c50ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af9e1ee393dd6fa0cfb1201dc3296341e"><td class="memItemLeft" align="right" valign="top"><a id="af9e1ee393dd6fa0cfb1201dc3296341e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FlexibleData</b> (T val, const QString &amp;id, const QString &amp;name, QColor color)</td></tr>
+<tr class="memitem:a13f8aeed3447d20c5c19307950b3310a"><td class="memItemLeft" align="right" valign="top"><a id="a13f8aeed3447d20c5c19307950b3310a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a13f8aeed3447d20c5c19307950b3310a">FlexibleData</a> ()=default</td></tr>
+<tr class="memdesc:a13f8aeed3447d20c5c19307950b3310a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new empty flexible data type. <br /></td></tr>
+<tr class="separator:a13f8aeed3447d20c5c19307950b3310a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9e1ee393dd6fa0cfb1201dc3296341e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#af9e1ee393dd6fa0cfb1201dc3296341e">FlexibleData</a> (T val, const QString &amp;id, const QString &amp;name, QColor color)</td></tr>
+<tr class="memdesc:af9e1ee393dd6fa0cfb1201dc3296341e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new instance of this flexible data type.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#af9e1ee393dd6fa0cfb1201dc3296341e">More...</a><br /></td></tr>
 <tr class="separator:af9e1ee393dd6fa0cfb1201dc3296341e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcd5419760224c8817abb1399eaa819b"><td class="memItemLeft" align="right" valign="top"><a id="abcd5419760224c8817abb1399eaa819b"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> () const override</td></tr>
+<tr class="memitem:abcd5419760224c8817abb1399eaa819b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b">getDescription</a> () const override</td></tr>
+<tr class="memdesc:abcd5419760224c8817abb1399eaa819b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the description of this data type.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#abcd5419760224c8817abb1399eaa819b">More...</a><br /></td></tr>
 <tr class="separator:abcd5419760224c8817abb1399eaa819b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a11f5daeb86ccaf4e95264b30083c91"><td class="memItemLeft" align="right" valign="top"><a id="a1a11f5daeb86ccaf4e95264b30083c91"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () const</td></tr>
+<tr class="memitem:a1a11f5daeb86ccaf4e95264b30083c91"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a> () const</td></tr>
+<tr class="memdesc:a1a11f5daeb86ccaf4e95264b30083c91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the data encapsulated by this class.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">More...</a><br /></td></tr>
 <tr class="separator:a1a11f5daeb86ccaf4e95264b30083c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa02b762891bcdc627fd05d61d6b77498"><td class="memItemLeft" align="right" valign="top"><a id="aa02b762891bcdc627fd05d61d6b77498"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const override</td></tr>
-<tr class="separator:aa02b762891bcdc627fd05d61d6b77498"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99412eb25bae77e9e16a48fb8ed954f1"><td class="memItemLeft" align="right" valign="top"><a id="a99412eb25bae77e9e16a48fb8ed954f1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>allowConversionFrom</b> (const QString &amp;id) final</td></tr>
+<tr class="memitem:a99412eb25bae77e9e16a48fb8ed954f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a99412eb25bae77e9e16a48fb8ed954f1">allowConversionFrom</a> (const QString &amp;id) final</td></tr>
+<tr class="memdesc:a99412eb25bae77e9e16a48fb8ed954f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow the type with the provided id to be converted to this data type.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#a99412eb25bae77e9e16a48fb8ed954f1">More...</a><br /></td></tr>
 <tr class="separator:a99412eb25bae77e9e16a48fb8ed954f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae39ed220f776daaaffd322d0da03129c"><td class="memItemLeft" align="right" valign="top"><a id="ae39ed220f776daaaffd322d0da03129c"></a>
-QtNodes::NodeDataType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> () const override</td></tr>
+<tr class="memitem:aa02b762891bcdc627fd05d61d6b77498"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#aa02b762891bcdc627fd05d61d6b77498">empty</a> () const override</td></tr>
+<tr class="memdesc:aa02b762891bcdc627fd05d61d6b77498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the data is empty or not.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#aa02b762891bcdc627fd05d61d6b77498">More...</a><br /></td></tr>
+<tr class="separator:aa02b762891bcdc627fd05d61d6b77498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39ed220f776daaaffd322d0da03129c"><td class="memItemLeft" align="right" valign="top">QtNodes::NodeDataType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#ae39ed220f776daaaffd322d0da03129c">type</a> () const override</td></tr>
+<tr class="memdesc:ae39ed220f776daaaffd322d0da03129c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the type of this data.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#ae39ed220f776daaaffd322d0da03129c">More...</a><br /></td></tr>
 <tr class="separator:ae39ed220f776daaaffd322d0da03129c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab9d7114b024eafd2e052c0f4b4258cf4"><td class="memItemLeft" align="right" valign="top"><a id="ab9d7114b024eafd2e052c0f4b4258cf4"></a>
-static T&#160;</td><td class="memItemRight" valign="bottom"><b>from</b> (const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;data)</td></tr>
+<tr class="memitem:ab9d7114b024eafd2e052c0f4b4258cf4"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#ab9d7114b024eafd2e052c0f4b4258cf4">from</a> (const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;<a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a1a11f5daeb86ccaf4e95264b30083c91">data</a>)</td></tr>
+<tr class="memdesc:ab9d7114b024eafd2e052c0f4b4258cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve data of type T from the provided node data. Only possible if a conversion is registered between the type encapsulated by the parameter data and this type.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#ab9d7114b024eafd2e052c0f4b4258cf4">More...</a><br /></td></tr>
 <tr class="separator:ab9d7114b024eafd2e052c0f4b4258cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a16449d8091af855aae7eaf7d90ef700a"><td class="memTemplParams" colspan="2"><a id="a16449d8091af855aae7eaf7d90ef700a"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:a16449d8091af855aae7eaf7d90ef700a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>registerConversionFrom</b> (std::function&lt; T(const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;)&gt; conversion)</td></tr>
+<tr class="memitem:a16449d8091af855aae7eaf7d90ef700a"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:a16449d8091af855aae7eaf7d90ef700a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a16449d8091af855aae7eaf7d90ef700a">registerConversionFrom</a> (std::function&lt; T(const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;)&gt; conversion)</td></tr>
+<tr class="memdesc:a16449d8091af855aae7eaf7d90ef700a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a function that can convert from type A to B, where B is the data type described by the class that this method is called on. Only one conversion function can exist per type of A.  <a href="../../d8/dac/classnitro_1_1FlexibleData.html#a16449d8091af855aae7eaf7d90ef700a">More...</a><br /></td></tr>
 <tr class="separator:a16449d8091af855aae7eaf7d90ef700a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T, class U&gt;<br />
 class nitro::FlexibleData&lt; T, U &gt;</h3>
 
+<p>A flexible data type that can contain any type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>Type of the data it contains </td></tr>
-    <tr><td class="paramname">U</td><td>Type of the derived class. Used to ensure each derived class gets its own conversion map, regardless of the type of T. </td></tr>
+    <tr><td class="paramname">T</td><td>Type of the data it contains. This can be for example, int, double, cv::Mat or std::shared_ptr&lt;cv::Mat&gt;. </td></tr>
+    <tr><td class="paramname">U</td><td>Type of the derived class. Used to ensure each derived class gets its own conversion map, regardless of the type of T. For example, if two data types both encapsulate an int, but do different, this type U is needed to differentiate between the two. </td></tr>
   </table>
   </dd>
 </dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a933120efcfda0eda19c12daf49c50ff7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a933120efcfda0eda19c12daf49c50ff7">&#9670;&nbsp;</a></span>DataType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::<a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html#a933120efcfda0eda19c12daf49c50ff7">DataType</a> =  T</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used for <a class="el" href="../../da/da7/classnitro_1_1NodePorts.html#af7c4d81740fb73bdaba3cfd465a5184f" title="Retrieves the node data of type T from the input port with the provided name. Note that this data sho...">nitro::NodePorts::inGetAs</a> </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af9e1ee393dd6fa0cfb1201dc3296341e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9e1ee393dd6fa0cfb1201dc3296341e">&#9670;&nbsp;</a></span>FlexibleData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::<a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a> </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QColor&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new instance of this flexible data type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>The data this class should encapsulate. </td></tr>
+    <tr><td class="paramname">id</td><td>The id of this type. Should be unique among all types. </td></tr>
+    <tr><td class="paramname">name</td><td>The name of this data type. </td></tr>
+    <tr><td class="paramname">color</td><td>The color associated with this data type. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a99412eb25bae77e9e16a48fb8ed954f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99412eb25bae77e9e16a48fb8ed954f1">&#9670;&nbsp;</a></span>allowConversionFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::allowConversionFrom </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allow the type with the provided id to be converted to this data type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The id of the data type to allow the conversion from. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1a11f5daeb86ccaf4e95264b30083c91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a11f5daeb86ccaf4e95264b30083c91">&#9670;&nbsp;</a></span>data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the data encapsulated by this class. </p>
+<dl class="section return"><dt>Returns</dt><dd>The data encapsulated by this class. </dd></dl>
+
+</div>
+</div>
+<a id="aa02b762891bcdc627fd05d61d6b77498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02b762891bcdc627fd05d61d6b77498">&#9670;&nbsp;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks whether the data is empty or not. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the data is empty; false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ab9d7114b024eafd2e052c0f4b4258cf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9d7114b024eafd2e052c0f4b4258cf4">&#9670;&nbsp;</a></span>from()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::from </td>
+          <td>(</td>
+          <td class="paramtype">const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve data of type T from the provided node data. Only possible if a conversion is registered between the type encapsulated by the parameter data and this type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>The data to convert to type T. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The converted data. </dd></dl>
+
+</div>
+</div>
+<a id="abcd5419760224c8817abb1399eaa819b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcd5419760224c8817abb1399eaa819b">&#9670;&nbsp;</a></span>getDescription()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::getDescription </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the description of this data type. </p>
+<dl class="section return"><dt>Returns</dt><dd>The description of the data type. Will be displayed when the user hovers over an output port of this type. </dd></dl>
+
+</div>
+</div>
+<a id="a16449d8091af855aae7eaf7d90ef700a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16449d8091af855aae7eaf7d90ef700a">&#9670;&nbsp;</a></span>registerConversionFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<div class="memtemplate">
+template&lt;class V &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::registerConversionFrom </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; T(const std::shared_ptr&lt; QtNodes::NodeData &gt; &amp;)&gt;&#160;</td>
+          <td class="paramname"><em>conversion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a function that can convert from type A to B, where B is the data type described by the class that this method is called on. Only one conversion function can exist per type of A. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">V</td><td>The type of the data that is being converted (i.e. type A). </td></tr>
+    <tr><td class="paramname">conversion</td><td>The conversion function that specifies how to convert from A to B. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae39ed220f776daaaffd322d0da03129c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae39ed220f776daaaffd322d0da03129c">&#9670;&nbsp;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QtNodes::NodeDataType <a class="el" href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a>&lt; T, U &gt;::type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the type of this data. </p>
+<dl class="section return"><dt>Returns</dt><dd>The type of this data. </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/nodes/datatypes/<a class="el" href="../../d8/d9a/flexibledata_8hpp_source.html">flexibledata.hpp</a></li>
 </ul>
 </div><!-- contents -->

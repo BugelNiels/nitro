@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -90,37 +90,40 @@ $(document).ready(function(){initNavTree('dc/d18/classnitro_1_1ZoomBar.html','..
 <div class="title">nitro::ZoomBar Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A simple zoom bar widget that can be used to display zoom percentages.  
+ <a href="../../dc/d18/classnitro_1_1ZoomBar.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d7/dda/zoombar_8hpp_source.html">zoombar.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for nitro::ZoomBar:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d84/classnitro_1_1ZoomBar__inherit__graph.png" border="0" usemap="#anitro_1_1ZoomBar_inherit__map" alt="Inheritance graph"/></div>
-<map name="anitro_1_1ZoomBar_inherit__map" id="anitro_1_1ZoomBar_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,125,107"/>
-<area shape="rect" title=" " alt="" coords="10,5,121,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for nitro::ZoomBar:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d1e/classnitro_1_1ZoomBar__coll__graph.png" border="0" usemap="#anitro_1_1ZoomBar_coll__map" alt="Collaboration graph"/></div>
-<map name="anitro_1_1ZoomBar_coll__map" id="anitro_1_1ZoomBar_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,125,107"/>
-<area shape="rect" title=" " alt="" coords="10,5,121,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1a5feff829ac088c501763474c1f1819"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/classnitro_1_1ZoomBar.html#a1a5feff829ac088c501763474c1f1819">ZoomBar</a> (int minZoom, int maxZoom, QWidget *parent=nullptr)</td></tr>
+<tr class="memdesc:a1a5feff829ac088c501763474c1f1819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new zoom bar.  <a href="../../dc/d18/classnitro_1_1ZoomBar.html#a1a5feff829ac088c501763474c1f1819">More...</a><br /></td></tr>
 <tr class="separator:a1a5feff829ac088c501763474c1f1819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa23b8bb36f585d0c0572e8baea5c67f4"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/classnitro_1_1ZoomBar.html#aa23b8bb36f585d0c0572e8baea5c67f4">text</a> () const override</td></tr>
+<tr class="memdesc:aa23b8bb36f585d0c0572e8baea5c67f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text to be displayed in the widget itself. Displays the zoom percentage.  <a href="../../dc/d18/classnitro_1_1ZoomBar.html#aa23b8bb36f585d0c0572e8baea5c67f4">More...</a><br /></td></tr>
 <tr class="separator:aa23b8bb36f585d0c0572e8baea5c67f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02e59cc79821d0eb43ba11c55551dd64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/classnitro_1_1ZoomBar.html#a02e59cc79821d0eb43ba11c55551dd64">setZoom</a> (int zoom)</td></tr>
+<tr class="memdesc:a02e59cc79821d0eb43ba11c55551dd64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the zoom to the provided percentage. (e.g. zoom=1 -&gt; 1%).  <a href="../../dc/d18/classnitro_1_1ZoomBar.html#a02e59cc79821d0eb43ba11c55551dd64">More...</a><br /></td></tr>
 <tr class="separator:a02e59cc79821d0eb43ba11c55551dd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60340d378bbcb4cfd3351b021b932f2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d18/classnitro_1_1ZoomBar.html#a60340d378bbcb4cfd3351b021b932f2f">setZoom</a> (double zoomFactor)</td></tr>
+<tr class="memdesc:a60340d378bbcb4cfd3351b021b932f2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the zoom to the provided factor. (e.g. zoom=0.1 -&gt; 10%).  <a href="../../dc/d18/classnitro_1_1ZoomBar.html#a60340d378bbcb4cfd3351b021b932f2f">More...</a><br /></td></tr>
 <tr class="separator:a60340d378bbcb4cfd3351b021b932f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A simple zoom bar widget that can be used to display zoom percentages. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1a5feff829ac088c501763474c1f1819"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a5feff829ac088c501763474c1f1819">&#9670;&nbsp;</a></span>ZoomBar()</h2>
 
@@ -160,11 +163,13 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Creates a new zoom bar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">minZoom</td><td></td></tr>
-    <tr><td class="paramname">maxZoom</td><td></td></tr>
-    <tr><td class="paramname">parent</td><td></td></tr>
+    <tr><td class="paramname">minZoom</td><td>The minimum zoom percentage. </td></tr>
+    <tr><td class="paramname">maxZoom</td><td>The maximum zoom percentage. </td></tr>
+    <tr><td class="paramname">parent</td><td>Parent widget. </td></tr>
   </table>
   </dd>
 </dl>
@@ -187,9 +192,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the zoom to the provided factor. (e.g. zoom=0.1 -&gt; 10%). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">zoomFactor</td><td></td></tr>
+    <tr><td class="paramname">zoomFactor</td><td>Zoom factor. </td></tr>
   </table>
   </dd>
 </dl>
@@ -211,9 +218,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the zoom to the provided percentage. (e.g. zoom=1 -&gt; 1%). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">zoom</td><td></td></tr>
+    <tr><td class="paramname">zoom</td><td>Zoom percentage. </td></tr>
   </table>
   </dd>
 </dl>
@@ -242,7 +251,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>The text to be displayed in the widget itself. Displays the zoom percentage. </p>
+<dl class="section return"><dt>Returns</dt><dd>The text displayed in the widget. </dd></dl>
 
 </div>
 </div>

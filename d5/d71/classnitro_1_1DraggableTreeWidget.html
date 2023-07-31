@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -91,32 +91,29 @@ $(document).ready(function(){initNavTree('d5/d71/classnitro_1_1DraggableTreeWidg
 <div class="title">nitro::DraggableTreeWidget Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A tree widget that allows for the dragging of its components to other widgets.  
+ <a href="../../d5/d71/classnitro_1_1DraggableTreeWidget.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../db/d5e/draggabletreewidget_8hpp_source.html">draggabletreewidget.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for nitro::DraggableTreeWidget:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/d22/classnitro_1_1DraggableTreeWidget__inherit__graph.png" border="0" usemap="#anitro_1_1DraggableTreeWidget_inherit__map" alt="Inheritance graph"/></div>
-<map name="anitro_1_1DraggableTreeWidget_inherit__map" id="anitro_1_1DraggableTreeWidget_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,205,107"/>
-<area shape="rect" title=" " alt="" coords="53,5,158,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for nitro::DraggableTreeWidget:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/df0/classnitro_1_1DraggableTreeWidget__coll__graph.png" border="0" usemap="#anitro_1_1DraggableTreeWidget_coll__map" alt="Collaboration graph"/></div>
-<map name="anitro_1_1DraggableTreeWidget_coll__map" id="anitro_1_1DraggableTreeWidget_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,205,107"/>
-<area shape="rect" title=" " alt="" coords="53,5,158,32"/>
-</map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab266b26c0cda374ef7122dd874e4bab0"><td class="memItemLeft" align="right" valign="top"><a id="ab266b26c0cda374ef7122dd874e4bab0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DraggableTreeWidget</b> (QWidget *parent=nullptr)</td></tr>
+<tr class="memitem:ab266b26c0cda374ef7122dd874e4bab0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/classnitro_1_1DraggableTreeWidget.html#ab266b26c0cda374ef7122dd874e4bab0">DraggableTreeWidget</a> (QWidget *parent=nullptr)</td></tr>
+<tr class="memdesc:ab266b26c0cda374ef7122dd874e4bab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new empty tree widget.  <a href="../../d5/d71/classnitro_1_1DraggableTreeWidget.html#ab266b26c0cda374ef7122dd874e4bab0">More...</a><br /></td></tr>
 <tr class="separator:ab266b26c0cda374ef7122dd874e4bab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa84545b91ac14a73bd05c0c07b35f10"><td class="memItemLeft" align="right" valign="top"><a id="aaa84545b91ac14a73bd05c0c07b35f10"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerAction</b> (const QString &amp;key, QAction *action)</td></tr>
+<tr class="memitem:aaa84545b91ac14a73bd05c0c07b35f10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/classnitro_1_1DraggableTreeWidget.html#aaa84545b91ac14a73bd05c0c07b35f10">registerAction</a> (const QString &amp;key, QAction *action)</td></tr>
+<tr class="memdesc:aaa84545b91ac14a73bd05c0c07b35f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new action to be associated with a particular item in the tree.  <a href="../../d5/d71/classnitro_1_1DraggableTreeWidget.html#aaa84545b91ac14a73bd05c0c07b35f10">More...</a><br /></td></tr>
 <tr class="separator:aaa84545b91ac14a73bd05c0c07b35f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -131,6 +128,81 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>mouseReleaseEvent</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>mouseMoveEvent</b> (QMouseEvent *event) override</td></tr>
 <tr class="separator:ab7ce9bbc92ca179ddff4a40ff99ca999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A tree widget that allows for the dragging of its components to other widgets. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ab266b26c0cda374ef7122dd874e4bab0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab266b26c0cda374ef7122dd874e4bab0">&#9670;&nbsp;</a></span>DraggableTreeWidget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">nitro::DraggableTreeWidget::DraggableTreeWidget </td>
+          <td>(</td>
+          <td class="paramtype">QWidget *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new empty tree widget. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>Parent widget. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaa84545b91ac14a73bd05c0c07b35f10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa84545b91ac14a73bd05c0c07b35f10">&#9670;&nbsp;</a></span>registerAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nitro::DraggableTreeWidget::registerAction </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QAction *&#160;</td>
+          <td class="paramname"><em>action</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Registers a new action to be associated with a particular item in the tree. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>A unique id of the action. Should correspond to the text of the item that should trigger this action. </td></tr>
+    <tr><td class="paramname">action</td><td>The action to be triggered when the item is dropped at the end of a drag and drop. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/gui/components/<a class="el" href="../../db/d5e/draggabletreewidget_8hpp_source.html">draggabletreewidget.hpp</a></li>
 <li>src/gui/components/draggabletreewidget.cpp</li>

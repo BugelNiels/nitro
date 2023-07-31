@@ -17,7 +17,6 @@
 <script type="text/javascript" src="../../search/searchdata.js"></script>
 <script type="text/javascript" src="../../search/search.js"></script>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
-<link href="../../doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,6 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
+   &#160;<span id="projectnumber">1.3.2</span>
    </div>
   </td>
  </tr>
@@ -94,31 +94,36 @@ $(document).ready(function(){initNavTree('dc/d6a/grayimagedata_8hpp_source.html'
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>nitro {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="../../d1/dad/classnitro_1_1GrayImageData.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html">GrayImageData</a> : <span class="keyword">public</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>&lt;std::shared_ptr&lt;cv::Mat&gt;, GrayImageData&gt; {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html">GrayImageData</a>();</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html">GrayImageData</a>(std::shared_ptr&lt;cv::Mat&gt; img);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html">GrayImageData</a>(<span class="keyword">const</span> cv::Mat &amp;img);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">static</span> QString id() { <span class="keywordflow">return</span> id_; }</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="../../d1/dad/classnitro_1_1GrayImageData.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html">GrayImageData</a> : <span class="keyword">public</span> <a class="code" href="../../d8/dac/classnitro_1_1FlexibleData.html">FlexibleData</a>&lt;std::shared_ptr&lt;cv::Mat&gt;, GrayImageData&gt; {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a50470238ea6bf513ab908fb964449427">GrayImageData</a>();</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> registerConversions();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    [[nodiscard]] QString getDescription() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    [[nodiscard]] <span class="keywordtype">bool</span> empty() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a50470238ea6bf513ab908fb964449427">GrayImageData</a>(std::shared_ptr&lt;cv::Mat&gt; img);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString name_ = <span class="stringliteral">&quot;GrayImage&quot;</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString id_ = <span class="stringliteral">&quot;GrayImage&quot;</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QColor baseColor_ = {161, 161, 161};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a50470238ea6bf513ab908fb964449427">GrayImageData</a>(<span class="keyword">const</span> cv::Mat &amp;img);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;} <span class="comment">// namespace nitro</span></div>
-<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:16</div></div>
-<div class="ttc" id="aclassnitro_1_1GrayImageData_html"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html">nitro::GrayImageData</a></div><div class="ttdef"><b>Definition:</b> grayimagedata.hpp:8</div></div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d1/dad/classnitro_1_1GrayImageData.html#a8bb577046881951bea87bb7c80086799">   34</a></span>&#160;    <span class="keyword">static</span> QString <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a8bb577046881951bea87bb7c80086799">id</a>() { <span class="keywordflow">return</span> id_; }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a803e7d38a8af1362f39f52077b19b962">registerConversions</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    [[nodiscard]] QString <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#aab69e3dc9eb9032d00ed875e2ae80909">getDescription</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="../../d1/dad/classnitro_1_1GrayImageData.html#a88a8d5ebb7c7114f320f5842018f73f1">empty</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString name_ = <span class="stringliteral">&quot;GrayImage&quot;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QString id_ = <span class="stringliteral">&quot;GrayImage&quot;</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">const</span> QColor baseColor_ = {161, 161, 161};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <span class="comment">// namespace nitro</span></div>
+<div class="ttc" id="aclassnitro_1_1FlexibleData_html"><div class="ttname"><a href="../../d8/dac/classnitro_1_1FlexibleData.html">nitro::FlexibleData</a></div><div class="ttdoc">A flexible data type that can contain any type.</div><div class="ttdef"><b>Definition:</b> flexibledata.hpp:17</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html">nitro::GrayImageData</a></div><div class="ttdoc">Describes a data type for grayscale images.</div><div class="ttdef"><b>Definition:</b> grayimagedata.hpp:11</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html_a50470238ea6bf513ab908fb964449427"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html#a50470238ea6bf513ab908fb964449427">nitro::GrayImageData::GrayImageData</a></div><div class="ttdeci">GrayImageData()</div><div class="ttdoc">Creates a new empty grayscale image data type. Does not allocate any memory (i.e. the image is a null...</div><div class="ttdef"><b>Definition:</b> grayimagedata.cpp:8</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html_a803e7d38a8af1362f39f52077b19b962"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html#a803e7d38a8af1362f39f52077b19b962">nitro::GrayImageData::registerConversions</a></div><div class="ttdeci">static void registerConversions()</div><div class="ttdoc">Registers the conversions that this data type allows.</div><div class="ttdef"><b>Definition:</b> grayimagedata.cpp:40</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html_a88a8d5ebb7c7114f320f5842018f73f1"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html#a88a8d5ebb7c7114f320f5842018f73f1">nitro::GrayImageData::empty</a></div><div class="ttdeci">bool empty() const override</div><div class="ttdoc">Checks whether the data is empty or not.</div><div class="ttdef"><b>Definition:</b> grayimagedata.cpp:36</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html_a8bb577046881951bea87bb7c80086799"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html#a8bb577046881951bea87bb7c80086799">nitro::GrayImageData::id</a></div><div class="ttdeci">static QString id()</div><div class="ttdoc">Returns the unique id of this data type.</div><div class="ttdef"><b>Definition:</b> grayimagedata.hpp:34</div></div>
+<div class="ttc" id="aclassnitro_1_1GrayImageData_html_aab69e3dc9eb9032d00ed875e2ae80909"><div class="ttname"><a href="../../d1/dad/classnitro_1_1GrayImageData.html#aab69e3dc9eb9032d00ed875e2ae80909">nitro::GrayImageData::getDescription</a></div><div class="ttdeci">QString getDescription() const override</div><div class="ttdoc">Retrieves the description of this data type.</div><div class="ttdef"><b>Definition:</b> grayimagedata.cpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
