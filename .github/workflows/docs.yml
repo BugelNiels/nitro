@@ -46,6 +46,9 @@ jobs:
           # Remove existing page content
           rm -rf ./* 
           cp -r ${{ runner.temp }}/docs/* .
+
+      - name: Push changes
+        run: |
           git add .
           git commit -m "Updated documentation"
-          git push origin gh-pages
+          git push
