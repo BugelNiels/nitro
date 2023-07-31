@@ -5,12 +5,20 @@ on:
     branches:
       - main
 
+env:
+  GH_TOKEN: ${{ secrets.DOC_TOKEN }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: GitHub Config
+        run: |
+          git config --global user.email "bugelniels@gmail.com"
+          git config --global user.name "BugelNiels"
+
+      - name: Checkout base repository
         uses: actions/checkout@v3
 
       - name: Set up Doxygen
@@ -18,8 +26,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen
 
-      - name: Build and push documentation
+      - name: Generate documentation
         run: |
-          chmod +x ./scripts/build-docs.sh 
-          ./scripts/build-docs.sh
-        shell: bash
+          project_version=$(head -n 1 version.txt)
+          ( cat docs/Doxyfile ; echo "PROJECT_NUMBER = $project_version" ) | doxygen -
+
+      - name: Copy documentation
+        run: |
+          mkdir -p ${{ runner.temp }}/docs
+          cp -r docs/html/* ${{ runner.temp }}/docs/
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v3
+        with:
+          path: gh-pages
+
+      - name: Update gh-pages content
+        run: |
+          # Remove existing page content
+          rm -rf ./* 
+          cp -r ${{ runner.temp }}/docs/* .
+          git add .
+          git commit -m "Updated documentation"
+          git push origin gh-pages
