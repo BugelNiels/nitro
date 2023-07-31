@@ -94,28 +94,30 @@ Modules</h2>
 <p>NITRO works with a module system for its node. By using this module system, users can determine at compile-time which modules to include and which modules to exclude. These modules are then automatically registered when the program starts.</p>
 <p>The different modules can be found in the <a href="../../../modules">modules/</a> directory. Currently, there are two modules here:</p>
 <ul>
-<li><b>ImCore</b>. This is the main module. It provides support for basic image operations and the image viewer widget.</li>
-<li><b>ImExtra</b>. Contains additional image processing routines such as morphological operators and frequency domain related operators.</li>
-<li><b>Im3D</b>. This module contains some nodes that can be used to compress and enhance bit-depth. Additionally, it contains a widget that allows for viewing of images as 3D objects:</li>
+<li><b>ImCore</b>. This is the main module. It provides support for basic image and number operations and the image viewer widget.</li>
+<li><b>ImProc</b>. Contains a significant number of image processing routines such as morphological operators and frequency domain related operators.</li>
+<li><b>Compression</b>. This module contains some nodes that can be used to compress images.</li>
+<li><b>Thesis</b>. This module contains the nodes relevant for Niels' Master thesis (disabled by default). Includes the 3D viewer.</li>
 </ul>
 <p>Adding new modules can be done by following a similar structure to the existing module:</p>
 <ul>
 <li>Create a new directory in the <code>modules</code> directory. The folder structure should be all lower-case.</li>
 <li>Create an implementation of <code>imcoremodule.hpp</code>. This implementation should register the new nodes, in addition to the data types and widgets (if there are any).</li>
-<li>Create a <code>CMakeLists.txt</code> to create a library of the module. See e.g. <a href="../../../modules/imcore/CMakeLists.txt">this CMakeLists.txt</a> on how to do this. Note that any libraries used in the module, must unfortunately still be found and linked in the main <a href="../../../CMakeLists.txt">CMakeLists.txt</a>. A future release should hopefully fix this issue.</li>
+<li>Create a <code>CMakeLists.txt</code> to create a library of the module. See e.g. <a href="../../../modules/imcore/CMakeLists.txt">this CMakeLists.txt</a> on how to do this. Note that some libraries used in the module, must unfortunately still be found and linked in the main <a href="../../../CMakeLists.txt">CMakeLists.txt</a>. A future release should hopefully fix this issue.</li>
 <li>Add any nodes, data types or widgets as needed (see below).</li>
 </ul>
 <p>The basic directory structure will then look as follows:</p>
 <div class="fragment"><div class="line">└── modules</div>
-<div class="line">    ├── im3d</div>
+<div class="line">    ├── compression</div>
 <div class="line">    ├── imcore</div>
-<div class="line">    ├── imextra</div>
+<div class="line">    ├── improc</div>
+<div class="line">    ├── thesis</div>
 <div class="line">    └── &lt;new module&gt;</div>
 <div class="line">        ├── CMakeLists.txt</div>
 <div class="line">        ├── include</div>
-<div class="line">        │   └── &lt;my module&gt;module.hpp</div>
+<div class="line">        │   └── &lt;my module&gt;.hpp</div>
 <div class="line">        └── src</div>
-<div class="line">            ├── &lt;my module&gt;module.cpp</div>
+<div class="line">            ├── &lt;my module&gt;.cpp</div>
 <div class="line">            ├── gui       # Dock widgets go here</div>
 <div class="line">            └── nodes     # Node implementation go here</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md22"></a>
@@ -126,49 +128,52 @@ Nodes</h2>
 <div class="fragment"><div class="line"> {c++}</div>
 <div class="line">#pragma once</div>
 <div class="line"> </div>
-<div class="line">#include &lt;nodes/nodeoperator.hpp&gt;</div>
 <div class="line">#include &lt;nodes/nitronode.hpp&gt;</div>
+<div class="line">#include &lt;nodes/nodeoperator.hpp&gt;</div>
 <div class="line"> </div>
-<div class="line">namespace nitro {</div>
+<div class="line">namespace nitro::ImProc {</div>
+<div class="line"> </div>
+<div class="line">/**</div>
+<div class="line"> * Node that performs Bilateral filtering on an input image.</div>
+<div class="line"> */</div>
+<div class="line">class BilateralFilterOperator : public NodeOperator {</div>
+<div class="line">public:</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Responsible for creating a function that builds this node.</div>
+<div class="line">     *</div>
+<div class="line">     * @param category Category name this node should be put in.</div>
+<div class="line">     * @return A function that creates this particular node.</div>
+<div class="line">     */</div>
+<div class="line">    static std::function&lt;std::unique_ptr&lt;NitroNode&gt;()&gt; creator(const QString &amp;category);</div>
 <div class="line"> </div>
 <div class="line">    /**</div>
-<div class="line">     * Node that performs Bilateral filtering on an input image.</div>
+<div class="line">     * @brief Executes the Bilateral filtering algorithm of this node on the current input data.</div>
+<div class="line">     * @param nodePorts Port data containing the current input and output information.</div>
+<div class="line">     * @param options Options for passing additional parameters to the algorithm. Currently unused.</div>
 <div class="line">     */</div>
-<div class="line">    class BilateralFilterOperator : public NodeOperator {</div>
-<div class="line">    public:</div>
-<div class="line">        /**</div>
-<div class="line">         * Responsible for creating a function that builds this node.</div>
-<div class="line">         *</div>
-<div class="line">         * @param category Category name this node should be put in.</div>
-<div class="line">         * @return A function that creates this particular node.</div>
-<div class="line">         */</div>
-<div class="line">        static std::function&lt;std::unique_ptr&lt;NitroNode&gt;()&gt; creator(const QString &amp;category);</div>
+<div class="line">    void execute(NodePorts &amp;nodePorts) override;</div>
+<div class="line">};</div>
 <div class="line"> </div>
-<div class="line">        /**</div>
-<div class="line">         * Executes the Bilateral filtering algorithm of this node on the current input data.</div>
-<div class="line">         * @param nodePorts Port data containing the current input and output information.</div>
-<div class="line">         * @param options Options for passing additional parameters to the algorithm. Currently unused.</div>
-<div class="line">         */</div>
-<div class="line">        void execute(NodePorts &amp;nodePorts) override;</div>
-<div class="line"> </div>
-<div class="line">    };</div>
-<div class="line">} // nitro</div>
+<div class="line">} // namespace nitro::ImProc</div>
 </div><!-- fragment --><p><a href="../../../modules/improc/src/nodes/blur/bilateralfilter.cpp">Source file</a></p>
 <div class="fragment"><div class="line"> {c++}</div>
 <div class="line">#include &quot;bilateralfilter.hpp&quot;</div>
+<div class="line">#include &lt;colimagedata.hpp&gt;</div>
 <div class="line">#include &lt;nodes/nitronodebuilder.hpp&gt;</div>
-<div class="line">#include &quot;nodes/datatypes/colimagedata.hpp&quot;</div>
+<div class="line"> </div>
 <div class="line">#include &lt;opencv2/imgproc.hpp&gt;</div>
 <div class="line"> </div>
-<div class="line">#define INPUT_IMAGE &quot;Image&quot;</div>
-<div class="line">#define INPUT_SIGMA_C &quot;Sigma (c)&quot;</div>
-<div class="line">#define INPUT_SIGMA_S &quot;Sigma (s)&quot;</div>
-<div class="line">#define INPUT_D &quot;Diameter&quot;</div>
-<div class="line">#define OUTPUT_IMAGE &quot;Image&quot;</div>
-<div class="line">#define MODE_DROPDOWN &quot;Mode&quot;</div>
+<div class="line">namespace nitro::ImProc {</div>
 <div class="line"> </div>
-<div class="line">void nitro::BilateralFilterOperator::execute(NodePorts &amp;nodePorts) {</div>
-<div class="line">    if(!nodePorts.allInputsPresent()) {</div>
+<div class="line">static inline const QString INPUT_IMAGE = &quot;Image&quot;;</div>
+<div class="line">static inline const QString INPUT_SIGMA_C = &quot;Sigma (c)&quot;;</div>
+<div class="line">static inline const QString INPUT_SIGMA_S = &quot;Sigma (s)&quot;;</div>
+<div class="line">static inline const QString INPUT_D = &quot;Diameter&quot;;</div>
+<div class="line">static inline const QString OUTPUT_IMAGE = &quot;Image&quot;;</div>
+<div class="line">static inline const QString MODE_DROPDOWN = &quot;Mode&quot;;</div>
+<div class="line"> </div>
+<div class="line">void BilateralFilterOperator::execute(NodePorts &amp;nodePorts) {</div>
+<div class="line">    if (!nodePorts.allInputsPresent()) {</div>
 <div class="line">        return;</div>
 <div class="line">    }</div>
 <div class="line">    // Get the input data</div>
@@ -185,21 +190,23 @@ Nodes</h2>
 <div class="line">    nodePorts.output&lt;ColImageData&gt;(OUTPUT_IMAGE, result);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">std::function&lt;std::unique_ptr&lt;nitro::NitroNode&gt;()&gt; nitro::BilateralFilterOperator::creator(const QString &amp;category) {</div>
+<div class="line">std::function&lt;std::unique_ptr&lt;NitroNode&gt;()&gt; BilateralFilterOperator::creator(</div>
+<div class="line">        const QString &amp;category) {</div>
 <div class="line">    return [category]() {</div>
-<div class="line">        nitro::NitroNodeBuilder builder(&quot;Bilateral Filter&quot;, &quot;bilateralFilter&quot;, category);</div>
-<div class="line">        return builder.</div>
-<div class="line">                withOperator(std::make_unique&lt;nitro::BilateralFilterOperator&gt;())-&gt;</div>
-<div class="line">                withIcon(&quot;blur.png&quot;)-&gt;</div>
-<div class="line">                withNodeColor(NITRO_FILTER_COLOR)-&gt;</div>
-<div class="line">                withInputPort&lt;ColImageData&gt;(INPUT_IMAGE)-&gt;</div>
-<div class="line">                withInputInteger(INPUT_D, 9, 1, 64)-&gt;</div>
-<div class="line">                withInputValue(INPUT_SIGMA_C, 75, 2, 255)-&gt;</div>
-<div class="line">                withInputValue(INPUT_SIGMA_S, 75, 2, 255)-&gt;</div>
-<div class="line">                withOutputPort&lt;ColImageData&gt;(OUTPUT_IMAGE)-&gt;</div>
-<div class="line">                build();</div>
+<div class="line">        NitroNodeBuilder builder(&quot;Bilateral Filter&quot;, &quot;bilateralFilter&quot;, category);</div>
+<div class="line">        return builder.withOperator(std::make_unique&lt;BilateralFilterOperator&gt;())</div>
+<div class="line">                -&gt;withIcon(&quot;blur.png&quot;)</div>
+<div class="line">                -&gt;withNodeColor(NITRO_FILTER_COLOR)</div>
+<div class="line">                -&gt;withInputPort&lt;ColImageData&gt;(INPUT_IMAGE)</div>
+<div class="line">                -&gt;withInputInteger(INPUT_D, 9, 1, 64)</div>
+<div class="line">                -&gt;withInputValue(INPUT_SIGMA_C, 75, 2, 255)</div>
+<div class="line">                -&gt;withInputValue(INPUT_SIGMA_S, 75, 2, 255)</div>
+<div class="line">                -&gt;withOutputPort&lt;ColImageData&gt;(OUTPUT_IMAGE)</div>
+<div class="line">                -&gt;build();</div>
 <div class="line">    };</div>
 <div class="line">}</div>
+<div class="line"> </div>
+<div class="line">} // namespace nitro::ImProc</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
 Data Types</h2>
 <p>New data types can be added by creating an implementation of <code>QtNodes::NodeData</code>. For example, the <a href="../../../include/nodes/datatypes/integerdata.hpp">integer data type</a> has the following structure:</p>
@@ -209,65 +216,87 @@ Data Types</h2>
 <div class="line"> </div>
 <div class="line">#include &lt;utility&gt;</div>
 <div class="line"> </div>
-<div class="line">#include &quot;QtNodes/NodeData&quot;</div>
 <div class="line">#include &quot;flexibledata.hpp&quot;</div>
+<div class="line">#include &lt;QtNodes/NodeData&gt;</div>
 <div class="line"> </div>
 <div class="line">namespace nitro {</div>
-<div class="line">    class IntegerData : public FlexibleData&lt;int, IntegerData&gt; {</div>
-<div class="line">    public:</div>
-<div class="line">        IntegerData();</div>
 <div class="line"> </div>
-<div class="line">        explicit IntegerData(int value);</div>
+<div class="line">/**</div>
+<div class="line"> * @brief Describes an integer data type.</div>
+<div class="line"> */</div>
+<div class="line">class IntegerData : public FlexibleData&lt;int, IntegerData&gt; {</div>
+<div class="line">public:</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Creates a new empty integer data type.</div>
+<div class="line">     */</div>
+<div class="line">    IntegerData();</div>
 <div class="line"> </div>
-<div class="line">        static QString id() {</div>
-<div class="line">            return id_;</div>
-<div class="line">        }</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Creates a integer data type with the provided value.</div>
+<div class="line">     * @param value The value this type should have.</div>
+<div class="line">     */</div>
+<div class="line">    explicit IntegerData(int value);</div>
 <div class="line"> </div>
-<div class="line">        static void registerConversions();</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Returns the unique id of this data type.</div>
+<div class="line">     * @return The unique id of this data type.</div>
+<div class="line">     */</div>
+<div class="line">    static QString id() { return id_; }</div>
 <div class="line"> </div>
-<div class="line">        [[nodiscard]] QString getDescription() const override;</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Registers the conversions that this data type allows.</div>
+<div class="line">     */</div>
+<div class="line">    static void registerConversions();</div>
 <div class="line"> </div>
-<div class="line">    private:</div>
-<div class="line">        inline static const QString name_ = &quot;Integer&quot;;</div>
-<div class="line">        inline static const QString id_ = &quot;Integer&quot;;</div>
-<div class="line">        inline static const QColor baseColor_ = {89, 140, 92};</div>
-<div class="line">    };</div>
-<div class="line">} // nitro</div>
+<div class="line">    /**</div>
+<div class="line">     * @brief Retrieves the description of this data type.</div>
+<div class="line">     * @return The description of this data type.</div>
+<div class="line">     */</div>
+<div class="line">    [[nodiscard]] QString getDescription() const override;</div>
+<div class="line"> </div>
+<div class="line">private:</div>
+<div class="line">    inline static const QString name_ = &quot;Integer&quot;;</div>
+<div class="line">    inline static const QString id_ = &quot;Integer&quot;;</div>
+<div class="line">    inline static const QColor baseColor_ = {89, 140, 92};</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">} // namespace nitro</div>
 </div><!-- fragment --><p><a href="../../../src/core/nodes/datatypes/integerdata.cpp">Source file</a></p>
 <div class="fragment"><div class="line"> {c++}</div>
-<div class="line">#include &lt;nodes/datatypes/integerdata.hpp&gt;</div>
 <div class="line">#include &lt;nodes/datatypes/decimaldata.hpp&gt;</div>
+<div class="line">#include &lt;nodes/datatypes/integerdata.hpp&gt;</div>
 <div class="line"> </div>
 <div class="line">namespace nitro {</div>
-<div class="line">    IntegerData::IntegerData() : FlexibleData&lt;int, IntegerData&gt;(0, id_, name_, baseColor_) {</div>
-<div class="line">        // By default, always allow conversions from doubles</div>
-<div class="line">        allowConversionFrom(DecimalData::id());</div>
-<div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    IntegerData::IntegerData(int value) : FlexibleData&lt;int, IntegerData&gt;(value, id_, name_, baseColor_) {</div>
-<div class="line">        // By default, always allow conversions from doubles</div>
-<div class="line">        allowConversionFrom(DecimalData::id());</div>
-<div class="line">    }</div>
+<div class="line">IntegerData::IntegerData() : FlexibleData&lt;int, IntegerData&gt;(0, id_, name_, baseColor_) {</div>
+<div class="line">    allowConversionFrom(DecimalData::id());</div>
+<div class="line">}</div>
 <div class="line"> </div>
-<div class="line">    QString IntegerData::getDescription() const {</div>
-<div class="line">        return QString::number(data());</div>
-<div class="line">    }</div>
+<div class="line">IntegerData::IntegerData(int value)</div>
+<div class="line">    : FlexibleData&lt;int, IntegerData&gt;(value, id_, name_, baseColor_) {</div>
+<div class="line">    allowConversionFrom(DecimalData::id());</div>
+<div class="line">}</div>
 <div class="line"> </div>
-<div class="line">    void IntegerData::registerConversions() {</div>
+<div class="line">QString IntegerData::getDescription() const {</div>
+<div class="line">    return QString::number(data());</div>
+<div class="line">}</div>
 <div class="line"> </div>
-<div class="line">        // Every type needs a &quot;conversion&quot; to itself</div>
-<div class="line">        IntegerData::registerConversionFrom&lt;IntegerData&gt;(</div>
-<div class="line">                [](const std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;nodeData) {</div>
-<div class="line">                    return std::static_pointer_cast&lt;IntegerData&gt;(nodeData)-&gt;data();</div>
-<div class="line">                });</div>
+<div class="line">void IntegerData::registerConversions() {</div>
 <div class="line"> </div>
-<div class="line">        IntegerData::registerConversionFrom&lt;DecimalData&gt;(</div>
-<div class="line">                [](const std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;nodeData) {</div>
-<div class="line">                    auto doubleData = std::static_pointer_cast&lt;DecimalData&gt;(nodeData);</div>
-<div class="line">                    return int(std::round(doubleData-&gt;data()));</div>
-<div class="line">                });</div>
-<div class="line">    }</div>
-<div class="line">} // nitro</div>
+<div class="line">    // Every type needs a &quot;conversion&quot; to itself</div>
+<div class="line">    IntegerData::registerConversionFrom&lt;IntegerData&gt;(</div>
+<div class="line">            [](const std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;nodeData) {</div>
+<div class="line">                return std::static_pointer_cast&lt;IntegerData&gt;(nodeData)-&gt;data();</div>
+<div class="line">            });</div>
+<div class="line"> </div>
+<div class="line">    IntegerData::registerConversionFrom&lt;DecimalData&gt;(</div>
+<div class="line">            [](const std::shared_ptr&lt;QtNodes::NodeData&gt; &amp;nodeData) {</div>
+<div class="line">                auto doubleData = std::static_pointer_cast&lt;DecimalData&gt;(nodeData);</div>
+<div class="line">                return int(std::round(doubleData-&gt;data()));</div>
+<div class="line">            });</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">} // namespace nitro</div>
 </div><!-- fragment --><p>Data types allow for custom conversions. These are defined in the <code>registerConversions()</code> function. Note that not all the conversions. By default, only the conversions registered in the constructor are enabled. If more conversions should be supported, then these should be specified in the node builder (see e.g. <a href="../../../modules/imcore/src/nodes/converter/immath.cpp">immath.cpp</a>). </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
