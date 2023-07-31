@@ -1,0 +1,25 @@
+name: Build documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen
+
+      - name: Build and push documentation
+        run: |
+          chmod +x ./scripts/build-docs.sh 
+          ./scripts/build-docs.sh
+        shell: bash
