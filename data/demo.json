@@ -1,0 +1,174 @@
+{
+    "connections": [
+        {
+            "inPortIndex": 1,
+            "intNodeId": 7,
+            "outNodeId": 8,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 8,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 3,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 1,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 2,
+            "intNodeId": 7,
+            "outNodeId": 5,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 5,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 1,
+            "intNodeId": 4,
+            "outNodeId": 2,
+            "outPortIndex": 1
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 4,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inPortIndex": 0,
+            "intNodeId": 2,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "ImageSource",
+                "properties": {
+                    "Display Img": "",
+                    "Out 0": "/home/niels/Downloads/niels-bugel-earth2-shopped.jpeg"
+                }
+            },
+            "position": {
+                "x": -677,
+                "y": -176
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "ImageViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 1162,
+                "y": -185
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+                "model-name": "imInfo",
+                "properties": {
+                    "Type": "Type: "
+                }
+            },
+            "position": {
+                "x": -252,
+                "y": -10
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "model-name": "HistogramViewer",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 1185,
+                "y": 128
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+                "model-name": "mask",
+                "properties": {
+                    "In 0": 256,
+                    "In 1": 256,
+                    "In 2": 1,
+                    "In 3": 1,
+                    "In 4": 0.5,
+                    "In 5": 0.5,
+                    "Mode": 0
+                }
+            },
+            "position": {
+                "x": 87,
+                "y": -37
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+                "model-name": "gaussianFilter",
+                "properties": {
+                    "Border": 0,
+                    "In 1": 564,
+                    "In 2": 312.32000000000005
+                }
+            },
+            "position": {
+                "x": 452,
+                "y": 9
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "model-name": "math",
+                "properties": {
+                    "Clamp": false,
+                    "In 0": 0.3,
+                    "In 1": 0.5,
+                    "In 2": 0.5,
+                    "Mode": 2
+                }
+            },
+            "position": {
+                "x": 769,
+                "y": -219
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+                "model-name": "denoise",
+                "properties": {
+                }
+            },
+            "position": {
+                "x": 74,
+                "y": -208
+            }
+        }
+    ]
+}

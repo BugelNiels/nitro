@@ -11,12 +11,12 @@ starts.
 
 The different modules can be found in the [modules/](../modules) directory. Currently, there are two modules here:
 
-- **ImCore**. This is the main module. It provides support for basic image operations and the image viewer
+- **ImCore**. This is the main module. It provides support for basic image and number operations and the image viewer
   widget.
-- **ImExtra**. Contains additional image processing routines such as morphological operators and frequency domain
+- **ImProc**. Contains a significant number of image processing routines such as morphological operators and frequency domain
   related operators.
-- **Im3D**. This module contains some nodes that can be used to compress and enhance bit-depth. Additionally, it
-  contains a widget that allows for viewing of images as 3D objects:
+- **Compression**. This module contains some nodes that can be used to compress images.
+- **Thesis**. This module contains the nodes relevant for Niels' Master thesis (disabled by default). Includes the 3D viewer.
 
 Adding new modules can be done by following a similar structure to the existing module:
 
@@ -25,7 +25,7 @@ Adding new modules can be done by following a similar structure to the existing 
   data types and widgets (if there are any).
 - Create a `CMakeLists.txt` to create a library of the module. See
   e.g. [this CMakeLists.txt](../modules/imcore/CMakeLists.txt) on how to do this.
-  Note that any libraries used in the module, must unfortunately still be found and linked in the
+  Note that some libraries used in the module, must unfortunately still be found and linked in the
   main [CMakeLists.txt](../CMakeLists.txt). A future release should hopefully fix this issue.
 - Add any nodes, data types or widgets as needed (see below).
 
@@ -33,15 +33,16 @@ The basic directory structure will then look as follows:
 
 ```shell
 └── modules
-    ├── im3d
+    ├── compression
     ├── imcore
-    ├── imextra
+    ├── improc
+    ├── thesis
     └── <new module>
         ├── CMakeLists.txt
         ├── include
-        │   └── <my module>module.hpp
+        │   └── <my module>.hpp
         └── src
-            ├── <my module>module.cpp
+            ├── <my module>.cpp
             ├── gui       # Dock widgets go here
             └── nodes     # Node implementation go here
 ```
@@ -61,52 +62,56 @@ A simple implementation of a denoising node is then as follows:
 ```c++
 #pragma once
 
-#include <nodes/nodeoperator.hpp>
 #include <nodes/nitronode.hpp>
+#include <nodes/nodeoperator.hpp>
 
-namespace nitro {
+namespace nitro::ImProc {
+
+/**
+ * Node that performs Bilateral filtering on an input image.
+ */
+class BilateralFilterOperator : public NodeOperator {
+public:
+    /**
+     * @brief Responsible for creating a function that builds this node.
+     *
+     * @param category Category name this node should be put in.
+     * @return A function that creates this particular node.
+     */
+    static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
 
     /**
-     * Node that performs Bilateral filtering on an input image.
+     * @brief Executes the Bilateral filtering algorithm of this node on the current input data.
+     * @param nodePorts Port data containing the current input and output information.
+     * @param options Options for passing additional parameters to the algorithm. Currently unused.
      */
-    class BilateralFilterOperator : public NodeOperator {
-    public:
-        /**
-         * Responsible for creating a function that builds this node.
-         *
-         * @param category Category name this node should be put in.
-         * @return A function that creates this particular node.
-         */
-        static std::function<std::unique_ptr<NitroNode>()> creator(const QString &category);
+    void execute(NodePorts &nodePorts) override;
+};
 
-        /**
-         * Executes the Bilateral filtering algorithm of this node on the current input data.
-         * @param nodePorts Port data containing the current input and output information.
-         * @param options Options for passing additional parameters to the algorithm. Currently unused.
-         */
-        void execute(NodePorts &nodePorts) override;
+} // namespace nitro::ImProc
 
-    };
-} // nitro
 ```
 
 [Source file](../modules/improc/src/nodes/blur/bilateralfilter.cpp)
 
 ```c++
 #include "bilateralfilter.hpp"
+#include <colimagedata.hpp>
 #include <nodes/nitronodebuilder.hpp>
-#include "nodes/datatypes/colimagedata.hpp"
+
 #include <opencv2/imgproc.hpp>
 
-#define INPUT_IMAGE "Image"
-#define INPUT_SIGMA_C "Sigma (c)"
-#define INPUT_SIGMA_S "Sigma (s)"
-#define INPUT_D "Diameter"
-#define OUTPUT_IMAGE "Image"
-#define MODE_DROPDOWN "Mode"
+namespace nitro::ImProc {
 
-void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
-    if(!nodePorts.allInputsPresent()) {
+static inline const QString INPUT_IMAGE = "Image";
+static inline const QString INPUT_SIGMA_C = "Sigma (c)";
+static inline const QString INPUT_SIGMA_S = "Sigma (s)";
+static inline const QString INPUT_D = "Diameter";
+static inline const QString OUTPUT_IMAGE = "Image";
+static inline const QString MODE_DROPDOWN = "Mode";
+
+void BilateralFilterOperator::execute(NodePorts &nodePorts) {
+    if (!nodePorts.allInputsPresent()) {
         return;
     }
     // Get the input data
@@ -123,21 +128,23 @@ void nitro::BilateralFilterOperator::execute(NodePorts &nodePorts) {
     nodePorts.output<ColImageData>(OUTPUT_IMAGE, result);
 }
 
-std::function<std::unique_ptr<nitro::NitroNode>()> nitro::BilateralFilterOperator::creator(const QString &category) {
+std::function<std::unique_ptr<NitroNode>()> BilateralFilterOperator::creator(
+        const QString &category) {
     return [category]() {
-        nitro::NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
-        return builder.
-                withOperator(std::make_unique<nitro::BilateralFilterOperator>())->
-                withIcon("blur.png")->
-                withNodeColor(NITRO_FILTER_COLOR)->
-                withInputPort<ColImageData>(INPUT_IMAGE)->
-                withInputInteger(INPUT_D, 9, 1, 64)->
-                withInputValue(INPUT_SIGMA_C, 75, 2, 255)->
-                withInputValue(INPUT_SIGMA_S, 75, 2, 255)->
-                withOutputPort<ColImageData>(OUTPUT_IMAGE)->
-                build();
+        NitroNodeBuilder builder("Bilateral Filter", "bilateralFilter", category);
+        return builder.withOperator(std::make_unique<BilateralFilterOperator>())
+                ->withIcon("blur.png")
+                ->withNodeColor(NITRO_FILTER_COLOR)
+                ->withInputPort<ColImageData>(INPUT_IMAGE)
+                ->withInputInteger(INPUT_D, 9, 1, 64)
+                ->withInputValue(INPUT_SIGMA_C, 75, 2, 255)
+                ->withInputValue(INPUT_SIGMA_S, 75, 2, 255)
+                ->withOutputPort<ColImageData>(OUTPUT_IMAGE)
+                ->build();
     };
 }
+
+} // namespace nitro::ImProc
 ```
 
 ### Data Types
@@ -152,68 +159,90 @@ the [integer data type](../include/nodes/datatypes/integerdata.hpp) has the foll
 
 #include <utility>
 
-#include "QtNodes/NodeData"
 #include "flexibledata.hpp"
+#include <QtNodes/NodeData>
 
 namespace nitro {
-    class IntegerData : public FlexibleData<int, IntegerData> {
-    public:
-        IntegerData();
 
-        explicit IntegerData(int value);
+/**
+ * @brief Describes an integer data type.
+ */
+class IntegerData : public FlexibleData<int, IntegerData> {
+public:
+    /**
+     * @brief Creates a new empty integer data type.
+     */
+    IntegerData();
 
-        static QString id() {
-            return id_;
-        }
+    /**
+     * @brief Creates a integer data type with the provided value.
+     * @param value The value this type should have.
+     */
+    explicit IntegerData(int value);
 
-        static void registerConversions();
+    /**
+     * @brief Returns the unique id of this data type.
+     * @return The unique id of this data type.
+     */
+    static QString id() { return id_; }
 
-        [[nodiscard]] QString getDescription() const override;
+    /**
+     * @brief Registers the conversions that this data type allows.
+     */
+    static void registerConversions();
 
-    private:
-        inline static const QString name_ = "Integer";
-        inline static const QString id_ = "Integer";
-        inline static const QColor baseColor_ = {89, 140, 92};
-    };
-} // nitro
+    /**
+     * @brief Retrieves the description of this data type.
+     * @return The description of this data type.
+     */
+    [[nodiscard]] QString getDescription() const override;
+
+private:
+    inline static const QString name_ = "Integer";
+    inline static const QString id_ = "Integer";
+    inline static const QColor baseColor_ = {89, 140, 92};
+};
+
+} // namespace nitro
 ```
 
 [Source file](../src/core/nodes/datatypes/integerdata.cpp)
 
 ```c++
-#include <nodes/datatypes/integerdata.hpp>
 #include <nodes/datatypes/decimaldata.hpp>
+#include <nodes/datatypes/integerdata.hpp>
 
 namespace nitro {
-    IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {
-        // By default, always allow conversions from doubles
-        allowConversionFrom(DecimalData::id());
-    }
 
-    IntegerData::IntegerData(int value) : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
-        // By default, always allow conversions from doubles
-        allowConversionFrom(DecimalData::id());
-    }
+IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {
+    allowConversionFrom(DecimalData::id());
+}
 
-    QString IntegerData::getDescription() const {
-        return QString::number(data());
-    }
+IntegerData::IntegerData(int value)
+    : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
+    allowConversionFrom(DecimalData::id());
+}
 
-    void IntegerData::registerConversions() {
+QString IntegerData::getDescription() const {
+    return QString::number(data());
+}
 
-        // Every type needs a "conversion" to itself
-        IntegerData::registerConversionFrom<IntegerData>(
-                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                    return std::static_pointer_cast<IntegerData>(nodeData)->data();
-                });
+void IntegerData::registerConversions() {
 
-        IntegerData::registerConversionFrom<DecimalData>(
-                [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
-                    auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
-                    return int(std::round(doubleData->data()));
-                });
-    }
-} // nitro
+    // Every type needs a "conversion" to itself
+    IntegerData::registerConversionFrom<IntegerData>(
+            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                return std::static_pointer_cast<IntegerData>(nodeData)->data();
+            });
+
+    IntegerData::registerConversionFrom<DecimalData>(
+            [](const std::shared_ptr<QtNodes::NodeData> &nodeData) {
+                auto doubleData = std::static_pointer_cast<DecimalData>(nodeData);
+                return int(std::round(doubleData->data()));
+            });
+}
+
+} // namespace nitro
 ```
 
 Data types allow for custom conversions. These are defined in the `registerConversions()` function. Note that not all
