@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDockWidget>
+#include "gui/nitrodockwidget.hpp"
 
 namespace nitro {
 
@@ -10,7 +10,7 @@ namespace Thesis {
 
 class RenderView;
 
-class RenderDockWidget : public QDockWidget {
+class RenderDockWidget : public NitroDockWidget {
 public:
     explicit RenderDockWidget(RenderView *renderView, MainWindow *window);
 
