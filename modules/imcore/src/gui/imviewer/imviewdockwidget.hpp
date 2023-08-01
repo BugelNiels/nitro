@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gui/nitrodockwidget.hpp"
 #include <QDockWidget>
 #include <QLabel>
 #include <QStatusBar>
@@ -12,7 +13,7 @@ namespace nitro::ImCore {
 
 class ImageViewer;
 
-class ImViewDockWidget : public QDockWidget {
+class ImViewDockWidget : public NitroDockWidget {
 public:
     explicit ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window);
 
@@ -20,8 +21,7 @@ public:
 
 private:
     ImageViewer *imageViewer_;
-
-    QWidget *initTitleBarWidget(MainWindow *window) const;
+    void initTitleBar(const MainWindow *window);
 };
 
 } // namespace nitro::ImCore

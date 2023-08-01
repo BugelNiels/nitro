@@ -18,6 +18,8 @@ HistogramViewOperator::HistogramViewOperator(MainWindow *window) : window_(windo
 HistogramViewOperator::~HistogramViewOperator() {
     if (window_->isFinalized()) {
         window_->removeDockWidget(dockWidget_);
+        delete histViewer_;
+        delete dockWidget_;
     }
 }
 

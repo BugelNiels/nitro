@@ -20,6 +20,8 @@ SurfaceViewOperator::SurfaceViewOperator(MainWindow *window) : window_(window) {
 SurfaceViewOperator::~SurfaceViewOperator() {
     if (window_->isFinalized()) {
         window_->removeDockWidget(dockWidget_);
+        delete surfViewer_;
+        delete dockWidget_;
     }
 }
 

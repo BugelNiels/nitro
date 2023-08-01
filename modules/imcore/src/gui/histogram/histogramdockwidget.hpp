@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDockWidget>
+#include "gui/nitrodockwidget.hpp"
 #include <QLabel>
 #include <QStatusBar>
 
@@ -12,7 +12,7 @@ namespace nitro::ImCore {
 
 class HistogramView;
 
-class HistogramViewerDockWidget : public QDockWidget {
+class HistogramViewerDockWidget : public NitroDockWidget {
 public:
     explicit HistogramViewerDockWidget(HistogramView *histViewer, MainWindow *window);
 
@@ -20,8 +20,6 @@ public:
 
 private:
     HistogramView *histViewer_;
-
-    QWidget *initTitleBarWidget(MainWindow *window);
 };
 
 } // namespace nitro::ImCore

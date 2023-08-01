@@ -9,33 +9,16 @@
 
 namespace nitro::ImCore {
 
-const int SPACING = 10;
-
-static QWidget *spacing() {
-    auto label = new QLabel("|");
-    label->setContentsMargins(SPACING, 0, SPACING, 0);
-    return label;
-}
-
 ImViewDockWidget::ImViewDockWidget(ImageViewer *imageViewer, MainWindow *window)
-    : QDockWidget(window),
+    : NitroDockWidget("Image Viewer",window),
       imageViewer_(imageViewer) {
-    setWindowTitle("Image Viewer");
-
-    QWidget *imViewTitleWrapper = initTitleBarWidget(window);
-
-    setTitleBarWidget(imViewTitleWrapper);
 
     setWidget(imageViewer_);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    setFeatures(features() & ~(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable));
+
+    initTitleBar(window);
 }
-
-QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
-    auto imViewTitleWrapper = new QWidget();
-    auto imHLayout = new QHBoxLayout();
-
-    imHLayout->addWidget(window->buildDockIcon(":/icons/image_viewer.png"));
+void ImViewDockWidget::initTitleBar(const MainWindow *window) {
+    setIcon(":/icons/image_viewer.png");
 
     auto zoomBar = new ZoomBar(imageViewer_->minScaleFactor * 100.0,
                                imageViewer_->maxScaleFactor * 100.0);
@@ -44,12 +27,13 @@ QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
     sizeLabel->setFixedWidth(100);
     zoomBar->setMaximumWidth(200);
     auto zoomLabel = new QLabel("zoom:");
-    imHLayout->addStretch();
-    imHLayout->addWidget(zoomLabel);
-    imHLayout->addWidget(zoomBar);
-    imHLayout->addWidget(spacing());
-    imHLayout->addWidget(new QLabel("size: "));
-    imHLayout->addWidget(sizeLabel);
+
+
+    addTitleBarWidget(zoomLabel);
+    addTitleBarWidget(zoomBar);
+    addTitleBarWidget(spacing());
+    addTitleBarWidget(new QLabel("size: "));
+    addTitleBarWidget(sizeLabel);
 
     connect(imageViewer_, &ImageViewer::scaleChanged, window, [zoomBar](double scale) {
         zoomBar->setZoom(scale);
@@ -57,9 +41,6 @@ QWidget *ImViewDockWidget::initTitleBarWidget(MainWindow *window) const {
     connect(imageViewer_, &ImageViewer::imageUpdated, window, [sizeLabel](const cv::Mat &img) {
         sizeLabel->setText(QString("%1 x %2").arg(img.rows).arg(img.cols));
     });
-
-    imViewTitleWrapper->setLayout(imHLayout);
-    return imViewTitleWrapper;
 }
 
 ImViewDockWidget::~ImViewDockWidget() = default;

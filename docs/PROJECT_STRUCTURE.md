@@ -198,7 +198,7 @@ public:
     [[nodiscard]] QString getDescription() const override;
 
 private:
-    inline static const QString name_ = "Integer";
+    inline static const QString title_ = "Integer";
     inline static const QString id_ = "Integer";
     inline static const QColor baseColor_ = {89, 140, 92};
 };
@@ -214,12 +214,12 @@ private:
 
 namespace nitro {
 
-IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, name_, baseColor_) {
+IntegerData::IntegerData() : FlexibleData<int, IntegerData>(0, id_, title_, baseColor_) {
     allowConversionFrom(DecimalData::id());
 }
 
 IntegerData::IntegerData(int value)
-    : FlexibleData<int, IntegerData>(value, id_, name_, baseColor_) {
+    : FlexibleData<int, IntegerData>(value, id_, title_, baseColor_) {
     allowConversionFrom(DecimalData::id());
 }
 

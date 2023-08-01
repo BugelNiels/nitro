@@ -19,6 +19,8 @@ ImageViewOperator::ImageViewOperator(MainWindow *window) : window_(window) {
 ImageViewOperator::~ImageViewOperator() {
     if (window_->isFinalized()) {
         window_->removeDockWidget(dockWidget_);
+        delete imViewer_;
+        delete dockWidget_;
     }
 }
 

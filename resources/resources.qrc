@@ -2,8 +2,10 @@
 	<qresource prefix="/">
 		<file>./icons/node_editor.png</file>
 		<file>./icons/nitro.png</file>
+		<file>./icons/undock.png</file>
 		<file>./icons/folder_open.png</file>
 		<file>./icons/search.png</file>
+		<file>./icons/dock.png</file>
 		<file>./icons/theme.png</file>
 		<file>./icons/expand.png</file>
 	</qresource>
