@@ -28,7 +28,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">1.3.2</span>
+   &#160;<span id="projectnumber">1.3.3</span>
    </div>
   </td>
  </tr>
@@ -255,7 +255,7 @@ Data Types</h2>
 <div class="line">    [[nodiscard]] QString getDescription() const override;</div>
 <div class="line"> </div>
 <div class="line">private:</div>
-<div class="line">    inline static const QString name_ = &quot;Integer&quot;;</div>
+<div class="line">    inline static const QString title_ = &quot;Integer&quot;;</div>
 <div class="line">    inline static const QString id_ = &quot;Integer&quot;;</div>
 <div class="line">    inline static const QColor baseColor_ = {89, 140, 92};</div>
 <div class="line">};</div>
@@ -268,12 +268,12 @@ Data Types</h2>
 <div class="line"> </div>
 <div class="line">namespace nitro {</div>
 <div class="line"> </div>
-<div class="line">IntegerData::IntegerData() : FlexibleData&lt;int, IntegerData&gt;(0, id_, name_, baseColor_) {</div>
+<div class="line">IntegerData::IntegerData() : FlexibleData&lt;int, IntegerData&gt;(0, id_, title_, baseColor_) {</div>
 <div class="line">    allowConversionFrom(DecimalData::id());</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">IntegerData::IntegerData(int value)</div>
-<div class="line">    : FlexibleData&lt;int, IntegerData&gt;(value, id_, name_, baseColor_) {</div>
+<div class="line">    : FlexibleData&lt;int, IntegerData&gt;(value, id_, title_, baseColor_) {</div>
 <div class="line">    allowConversionFrom(DecimalData::id());</div>
 <div class="line">}</div>
 <div class="line"> </div>

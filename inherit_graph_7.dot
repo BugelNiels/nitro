@@ -4,5 +4,7 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node0 [label="nitro::ImResourceReader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d52/classnitro_1_1ImResourceReader.html",tooltip="Responsible for reading Pixmaps for the icons."];
+  Node87 [label="QMainWindow",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node87 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="nitro::MainWindow",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d7d/classnitro_1_1MainWindow.html",tooltip="The main window of the application. Contains the node editor, GUI dock widgets, file menu and footer."];
 }

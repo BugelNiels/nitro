@@ -76,6 +76,7 @@ var annotated_dup =
         [ "ResampleOperator", "d0/dfa/classnitro_1_1Thesis_1_1ResampleOperator.html", "d0/dfa/classnitro_1_1Thesis_1_1ResampleOperator" ]
       ] ],
       [ "MainWindow", "dc/d7d/classnitro_1_1MainWindow.html", "dc/d7d/classnitro_1_1MainWindow" ],
+      [ "NitroDockWidget", "de/df7/classnitro_1_1NitroDockWidget.html", "de/df7/classnitro_1_1NitroDockWidget" ],
       [ "ZoomBar", "dc/d18/classnitro_1_1ZoomBar.html", "dc/d18/classnitro_1_1ZoomBar" ],
       [ "NitroModule", "d7/d57/classnitro_1_1NitroModule.html", "d7/d57/classnitro_1_1NitroModule" ],
       [ "DecimalData", "d9/dad/classnitro_1_1DecimalData.html", "d9/dad/classnitro_1_1DecimalData" ],

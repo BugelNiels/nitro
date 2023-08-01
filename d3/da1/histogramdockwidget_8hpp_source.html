@@ -28,7 +28,7 @@
   <td id="projectlogo"><img alt="Logo" src="../../logo48x48.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NITRO
-   &#160;<span id="projectnumber">1.3.2</span>
+   &#160;<span id="projectnumber">1.3.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('d3/da1/histogramdockwidget_8hpp_source
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;QDockWidget&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;gui/nitrodockwidget.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;QLabel&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;QStatusBar&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('d3/da1/histogramdockwidget_8hpp_source
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">class </span>HistogramView;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">HistogramViewerDockWidget</a> : <span class="keyword">public</span> QDockWidget {</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">HistogramViewerDockWidget</a> : <span class="keyword">public</span> <a class="code" href="../../de/df7/classnitro_1_1NitroDockWidget.html">NitroDockWidget</a> {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">HistogramViewerDockWidget</a>(<a class="code" href="../../d2/d2a/classnitro_1_1ImCore_1_1HistogramView.html">HistogramView</a> *histViewer, <a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
@@ -110,14 +110,13 @@ $(document).ready(function(){initNavTree('d3/da1/histogramdockwidget_8hpp_source
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../d2/d2a/classnitro_1_1ImCore_1_1HistogramView.html">HistogramView</a> *histViewer_;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    QWidget *initTitleBarWidget(<a class="code" href="../../dc/d7d/classnitro_1_1MainWindow.html">MainWindow</a> *window);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <span class="comment">// namespace nitro::ImCore</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;} <span class="comment">// namespace nitro::ImCore</span></div>
 <div class="ttc" id="aclassnitro_1_1ImCore_1_1HistogramView_html"><div class="ttname"><a href="../../d2/d2a/classnitro_1_1ImCore_1_1HistogramView.html">nitro::ImCore::HistogramView</a></div><div class="ttdef"><b>Definition:</b> histogramviewer.hpp:11</div></div>
 <div class="ttc" id="aclassnitro_1_1ImCore_1_1HistogramViewerDockWidget_html"><div class="ttname"><a href="../../d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html">nitro::ImCore::HistogramViewerDockWidget</a></div><div class="ttdef"><b>Definition:</b> histogramdockwidget.hpp:15</div></div>
 <div class="ttc" id="aclassnitro_1_1MainWindow_html"><div class="ttname"><a href="../../dc/d7d/classnitro_1_1MainWindow.html">nitro::MainWindow</a></div><div class="ttdoc">The main window of the application. Contains the node editor, GUI dock widgets, file menu and footer.</div><div class="ttdef"><b>Definition:</b> mainwindow.hpp:16</div></div>
+<div class="ttc" id="aclassnitro_1_1NitroDockWidget_html"><div class="ttname"><a href="../../de/df7/classnitro_1_1NitroDockWidget.html">nitro::NitroDockWidget</a></div><div class="ttdoc">Dock widget used for custom GUI widgets. Provides basic functionality for constructing a (consistent)...</div><div class="ttdef"><b>Definition:</b> nitrodockwidget.hpp:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

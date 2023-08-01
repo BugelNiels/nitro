@@ -4,5 +4,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node0 [label="nitro::ImCore::ImageViewer\l::ScaleRange",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/de7/structnitro_1_1ImCore_1_1ImageViewer_1_1ScaleRange.html",tooltip=" "];
+  Node0 [label="nitro::ImResourceReader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d52/classnitro_1_1ImResourceReader.html",tooltip="Responsible for reading Pixmaps for the icons."];
 }

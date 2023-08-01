@@ -1,0 +1,16 @@
+digraph "nitro::NitroDockWidget"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="nitro::NitroDockWidget",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Dock widget used for custom GUI widgets. Provides basic functionality for constructing a (consistent)..."];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="QDockWidget",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="nitro::ImCore::Histogram\lViewerDockWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="nitro::ImCore::ImViewDock\lWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d91/classnitro_1_1ImCore_1_1ImViewDockWidget.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="nitro::Thesis::RenderDock\lWidget",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d2b/classnitro_1_1Thesis_1_1RenderDockWidget.html",tooltip=" "];
+}

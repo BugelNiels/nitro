@@ -89,10 +89,12 @@ var hierarchy =
       [ "nitro::ImCore::HistogramView", "d2/d2a/classnitro_1_1ImCore_1_1HistogramView.html", null ]
     ] ],
     [ "QDockWidget", null, [
-      [ "nitro::ImCore::HistogramViewerDockWidget", "d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html", null ],
-      [ "nitro::ImCore::ImViewDockWidget", "d8/d91/classnitro_1_1ImCore_1_1ImViewDockWidget.html", null ],
-      [ "nitro::NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html", null ],
-      [ "nitro::Thesis::RenderDockWidget", "d7/d2b/classnitro_1_1Thesis_1_1RenderDockWidget.html", null ]
+      [ "nitro::NitroDockWidget", "de/df7/classnitro_1_1NitroDockWidget.html", [
+        [ "nitro::ImCore::HistogramViewerDockWidget", "d7/dc4/classnitro_1_1ImCore_1_1HistogramViewerDockWidget.html", null ],
+        [ "nitro::ImCore::ImViewDockWidget", "d8/d91/classnitro_1_1ImCore_1_1ImViewDockWidget.html", null ],
+        [ "nitro::Thesis::RenderDockWidget", "d7/d2b/classnitro_1_1Thesis_1_1RenderDockWidget.html", null ]
+      ] ],
+      [ "nitro::NodeDockWidget", "de/db3/classnitro_1_1NodeDockWidget.html", null ]
     ] ],
     [ "QGraphicsView", null, [
       [ "nitro::ImCore::ImageViewer", "df/dc9/classnitro_1_1ImCore_1_1ImageViewer.html", null ]
