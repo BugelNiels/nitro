@@ -1,14 +1,14 @@
 [submodule "external/flip"]
 	path = external/flip
-	url = https://github.com:NVlabs/flip.git
+	url = https://github.com/NVlabs/flip.git
 
 [submodule "external/nodeeditor"]
 	path = external/nodeeditor
-	url = https://github.com:paceholder/nodeeditor.git
+	url = https://github.com/paceholder/nodeeditor.git
 
 [submodule "external/qt-value-slider"]
     path = external/qt-value-slider
-    url = https://github.com:BugelNiels/qt-value-slider.git
+    url = https://github.com/BugelNiels/qt-value-slider.git
 
 [submodule "external/doxygen-awesome-css"]
 	path = external/doxygen-awesome-css
