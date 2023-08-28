@@ -1,6 +1,5 @@
 #include "distancefield.hpp"
 
-#include <QDebug>
 #include <opencv2/imgproc.hpp>
 
 namespace nitro::Thesis {
