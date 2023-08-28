@@ -4,7 +4,6 @@
 #include <nodes/nitronodebuilder.hpp>
 #include <util.hpp>
 
-#include <QDebug>
 #include <opencv2/imgproc.hpp>
 
 namespace nitro::ImProc {

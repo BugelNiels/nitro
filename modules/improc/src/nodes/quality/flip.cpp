@@ -6,7 +6,6 @@
 #include <nodes/datatypes/decimaldata.hpp>
 #include <nodes/nitronodebuilder.hpp>
 
-#include <QDebug>
 #include <opencv2/imgproc.hpp>
 
 namespace nitro::ImProc {
